@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability Pro | The Theory of Chance</title>
+    <meta name="description" content="A comprehensive, interactive educational platform for Probability Theory, Statistics, and Math Simulations.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-left">
+            <div class="logo">Probability<span class="highlight">Pro</span></div>
+        </div>
+        
+        <div class="nav-right">
+            <!-- Desktop Menu -->
+            <div class="nav-links" id="nav-links">
+                <button onclick="showPage('theory')" class="nav-btn active" data-target="theory" data-i18n="nav_theory">Theory</button>
+                <button onclick="showPage('practice')" class="nav-btn" data-target="practice" data-i18n="nav_practice">Practice</button>
+                <button onclick="showPage('lab')" class="nav-btn" data-target="lab" data-i18n="nav_lab">The Lab</button>
+                <button onclick="showPage('simulations')" class="nav-btn" data-target="simulations" data-i18n="nav_simulations">Simulations</button>
+            </div>
+
+            <!-- Language Switcher -->
+            <div class="lang-switcher">
+                <button onclick="setLanguage('hy')" class="lang-btn active">HY</button>
+                <button onclick="setLanguage('en')" class="lang-btn">EN</button>
+                <button onclick="setLanguage('ru')" class="lang-btn">RU</button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Menu (Overlay) -->
+    <div class="mobile-menu-overlay" id="mobile-menu">
+        <div class="mobile-menu-content glass-panel">
+            <button class="close-menu" onclick="toggleMobileMenu()">&times;</button>
+            <button onclick="showPage('theory'); toggleMobileMenu()" class="mobile-nav-btn" data-i18n="nav_theory">Theory</button>
+            <button onclick="showPage('practice'); toggleMobileMenu()" class="mobile-nav-btn" data-i18n="nav_practice">Practice</button>
+            <button onclick="showPage('lab'); toggleMobileMenu()" class="mobile-nav-btn" data-i18n="nav_lab">The Lab</button>
+            <button onclick="showPage('simulations'); toggleMobileMenu()" class="mobile-nav-btn" data-i18n="nav_simulations">Simulations</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main id="app-container">
+        
+        <!-- PAGE 1: THEORY -->
+        <section id="theory" class="page-section active-section">
+            <div class="theory-layout">
+                <aside class="sidebar glass-panel">
+                    <h3>Contents</h3>
+                    <div class="accordion" id="theory-nav">
+                        <!-- Populated by JS or hardcoded -->
+                    </div>
+                </aside>
+                <div class="content-area glass-panel" id="theory-content">
+                    <h1>The Theory Encyclopedia</h1>
+                    <p class="intro-text">Welcome to the world of chance. Select a topic to begin.</p>
+                    <div id="theory-dynamic-render"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: PRACTICE -->
+        <section id="practice" class="page-section" style="display: none;">
+            <div class="practice-header">
+                <h1>The Practice Arena</h1>
+                <div class="filters">
+                    <button class="filter-btn active" onclick="filterProblems('all')">All</button>
+                    <button class="filter-btn" onclick="filterProblems('beginner')">Beginner</button>
+                    <button class="filter-btn" onclick="filterProblems('intermediate')">Intermediate</button>
+                    <button class="filter-btn" onclick="filterProblems('advanced')">Advanced</button>
+                    <button class="filter-btn gold" onclick="filterProblems('olympic')">Olympic</button>
+                </div>
+            </div>
+            <div id="problems-grid" class="grid-container">
+                <!-- Problems injected here -->
+            </div>
+        </section>
+
+        <!-- PAGE 3: THE LAB -->
+        <section id="lab" class="page-section" style="display: none;">
+            <h1>The Lab</h1>
+            <div class="lab-grid">
+                <div class="calculator-panel glass-panel">
+                    <h2>Uncertainty Calculator</h2>
+                    <div class="calc-display-container">
+                        <input type="text" id="calc-input" placeholder="Enter expression..." readonly>
+                        <div id="calc-result">Result: 0</div>
+                    </div>
+                    <div class="keypad">
+                        <!-- Special Keys -->
+                        <button class="key op" onclick="addToCalc('P(')">P(</button>
+                        <button class="key op" onclick="addToCalc('C(')">C</button>
+                        <button class="key op" onclick="addToCalc('A(')">A</button>
+                        <button class="key op" onclick="addToCalc('!')">!</button>
+                        <button class="key op" onclick="addToCalc('∩')">∩</button>
+                        <button class="key op" onclick="addToCalc('∪')">∪</button>
+                        <button class="key op" onclick="addToCalc('Ω')">Ω</button>
+                        <button class="key op" onclick="addToCalc('λ')">λ</button>
+                        <button class="key op" onclick="addToCalc('σ')">σ</button>
+                        <button class="key op" onclick="addToCalc('μ')">μ</button>
+                        <!-- Numbers & Basics -->
+                        <button class="key" onclick="addToCalc('(')">(</button>
+                        <button class="key" onclick="addToCalc(')')">)</button>
+                        <button class="key action" onclick="clearCalc()">AC</button>
+                        <button class="key action" onclick="backspaceCalc()">⌫</button>
+                        
+                        <button class="key num" onclick="addToCalc('7')">7</button>
+                        <button class="key num" onclick="addToCalc('8')">8</button>
+                        <button class="key num" onclick="addToCalc('9')">9</button>
+                        <button class="key op" onclick="addToCalc('/')">÷</button>
+                        
+                        <button class="key num" onclick="addToCalc('4')">4</button>
+                        <button class="key num" onclick="addToCalc('5')">5</button>
+                        <button class="key num" onclick="addToCalc('6')">6</button>
+                        <button class="key op" onclick="addToCalc('*')">×</button>
+                        
+                        <button class="key num" onclick="addToCalc('1')">1</button>
+                        <button class="key num" onclick="addToCalc('2')">2</button>
+                        <button class="key num" onclick="addToCalc('3')">3</button>
+                        <button class="key op" onclick="addToCalc('-')">-</button>
+                        
+                        <button class="key num" onclick="addToCalc('0')">0</button>
+                        <button class="key num" onclick="addToCalc('.')">.</button>
+                        <button class="key enter" onclick="calculateResult()">=</button>
+                        <button class="key op" onclick="addToCalc('+')">+</button>
+                    </div>
+                </div>
+                
+                <div class="visualizer-panel glass-panel">
+                    <h2>Distribution Visualizer</h2>
+                    <div class="controls">
+                        <select id="dist-select" onchange="updateVisualizer()">
+                            <option value="normal">Normal Distribution</option>
+                            <option value="venn">Venn Diagram</option>
+                        </select>
+                        <div id="dist-params">
+                            <!-- Injected by JS -->
+                             <label>μ: <input type="number" id="param-mu" value="0"></label>
+                             <label>σ: <input type="number" id="param-sigma" value="1"></label>
+                        </div>
+                        <button class="glow-btn" onclick="drawGraph()">Visualize</button>
+                    </div>
+                    <canvas id="lab-canvas" width="500" height="300"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: SIMULATIONS -->
+        <section id="simulations" class="page-section" style="display: none;">
+            <h1>Simulation Laboratory</h1>
+            <div class="sim-nav">
+                <button class="sim-tab active" onclick="switchSim('galton')">Galton Board</button>
+                <button class="sim-tab" onclick="switchSim('monty')">Monty Hall</button>
+                <button class="sim-tab" onclick="switchSim('buffon')">Buffon's Needle</button>
+            </div>
+            
+            <div id="sim-galton" class="sim-container glass-panel active-sim">
+                <h2>Galton Board (Central Limit Theorem)</h2>
+                <div class="sim-controls">
+                    <button class="glow-btn" onclick="startGalton()">Drop 500 Balls</button>
+                    <button class="glow-btn secondary" onclick="resetGalton()">Reset</button>
+                </div>
+                <canvas id="galton-canvas" width="600" height="400"></canvas>
+            </div>
+
+            <div id="sim-monty" class="sim-container glass-panel" style="display:none;">
+                <h2>Monty Hall Paradox</h2>
+                <div class="sim-controls">
+                    <button class="glow-btn" onclick="runMonty(100)">Simulate 100 Runs</button>
+                    <button class="glow-btn" onclick="runMonty(1000)">Simulate 1000 Runs</button>
+                </div>
+                <div class="monty-results">
+                    <div class="result-box">
+                        <h3>Stay Wins</h3>
+                        <div class="bar-container"><div id="bar-stay" class="bar"></div></div>
+                        <span id="text-stay">0%</span>
+                    </div>
+                    <div class="result-box">
+                        <h3>Switch Wins</h3>
+                        <div class="bar-container"><div id="bar-switch" class="bar"></div></div>
+                        <span id="text-switch">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sim-buffon" class="sim-container glass-panel" style="display:none;">
+                <h2>Buffon's Needle (Calculating π)</h2>
+                <div class="sim-controls">
+                    <button class="glow-btn" onclick="dropNeedles()">Drop Needles</button>
+                </div>
+                <div class="sim-stats">
+                    <p>Dropped: <span id="needle-count">0</span> | Crosses: <span id="needle-cross">0</span></p>
+                    <p class="pi-display">Approximated π: <span id="pi-val" class="highlight">0.0000</span></p>
+                </div>
+                <canvas id="buffon-canvas" width="600" height="300"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal for Hint/Feedback -->
+    <div id="feedback-modal" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Result</h2>
+            <p id="modal-msg">Message goes here.</p>
+            <button id="modal-action-btn" class="glow-btn">Go to Theory</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="simulations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
