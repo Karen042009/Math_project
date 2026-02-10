@@ -29,14 +29,19 @@
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
 
-    <link rel="stylesheet" href="style.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/simulations.css">
+    <link rel="stylesheet" href="css/lab.css">
 </head>
 <body>
 
     <!-- Navigation -->
     <nav class="glass-nav">
-        <div class="nav-left">
-            <div class="logo">Probability<span class="highlight">Pro</span></div>
+            <div class="nav-left">
+            <div class="logo" onclick="showPage('theory')">Probability<span class="highlight">Pro</span></div>
         </div>
         
         <div class="nav-right">
@@ -66,10 +71,10 @@
     <div class="mobile-menu-overlay" id="mobile-menu">
         <div class="mobile-menu-content glass-panel">
             <button class="close-menu" onclick="toggleMobileMenu()">&times;</button>
-            <button onclick="showPage('theory'); toggleMobileMenu()" class="mobile-nav-btn" data-i18n="nav_theory">Theory</button>
-            <button onclick="showPage('practice'); toggleMobileMenu()" class="mobile-nav-btn" data-i18n="nav_practice">Practice</button>
-            <button onclick="showPage('lab'); toggleMobileMenu()" class="mobile-nav-btn" data-i18n="nav_lab">The Lab</button>
-            <button onclick="showPage('simulations'); toggleMobileMenu()" class="mobile-nav-btn" data-i18n="nav_simulations">Simulations</button>
+            <button onclick="showPage('theory'); toggleMobileMenu()" class="mobile-nav-btn" data-target="theory" data-i18n="nav_theory">Theory</button>
+            <button onclick="showPage('practice'); toggleMobileMenu()" class="mobile-nav-btn" data-target="practice" data-i18n="nav_practice">Practice</button>
+            <button onclick="showPage('lab'); toggleMobileMenu()" class="mobile-nav-btn" data-target="lab" data-i18n="nav_lab">The Lab</button>
+            <button onclick="showPage('simulations'); toggleMobileMenu()" class="mobile-nav-btn" data-target="simulations" data-i18n="nav_simulations">Simulations</button>
         </div>
     </div>
 
@@ -93,35 +98,98 @@
             </div>
         </section>
 
-        <!-- PAGE 2: PRACTICE -->
+        <!-- PAGE 2: PRACTICE (AI POWERED) -->
         <section id="practice" class="page-section" style="display: none;">
             <div class="practice-header">
-                <h1>The Practice Arena</h1>
-                <div class="filters">
-                    <button class="filter-btn active" onclick="filterProblems('all')">All</button>
-                    <button class="filter-btn" onclick="filterProblems('beginner')">Beginner</button>
-                    <button class="filter-btn" onclick="filterProblems('intermediate')">Intermediate</button>
-                    <button class="filter-btn" onclick="filterProblems('advanced')">Advanced</button>
-                    <button class="filter-btn gold" onclick="filterProblems('olympic')">Olympic</button>
+                <h1 data-i18n="practice_title">The Practice Arena</h1>
+                <p class="ai-badge"><i class="fas fa-robot"></i> Powered by Gemini AI</p>
+                
+                <!-- AI Controls -->
+                <div class="ai-controls glass-panel">
+                    <div class="ai-input-group">
+                        <select id="ai-topic" class="ai-select">
+                            <option value="Combinatorics">Combinatorics</option>
+                            <option value="Bayes Theorem">Bayes Theorem</option>
+                            <option value="Normal Distribution">Normal Distribution</option>
+                            <option value="Poisson Distribution">Poisson Distribution</option>
+                            <option value="Geometric Probability">Geometric Probability</option>
+                        </select>
+                        <select id="ai-difficulty" class="ai-select">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                            <option value="Olympic">Olympic</option>
+                        </select>
+                        <button class="glow-btn" onclick="generateAIProblem()">
+                            <i class="fas fa-bolt"></i> <span data-i18n="btn_generate">Generate Problem</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div id="problems-grid" class="grid-container">
-                <!-- Problems injected here -->
+
+            <!-- AI Interaction Area -->
+            <div id="ai-workspace" style="display:none;">
+                <div class="problem-card ai-problem">
+                    <span class="problem-tag tag-ai">AI Generated</span>
+                    <h3 id="ai-question-text">Loading...</h3>
+                </div>
+
+                <div class="solution-area glass-panel">
+                    <h3 data-i18n="lbl_solution">Your Solution:</h3>
+                    <textarea id="ai-user-text" placeholder="Type your solution step-by-step or upload an image..." rows="5"></textarea>
+                    
+                    <div class="upload-container">
+                        <label for="ai-user-image" class="file-label">
+                            <i class="fas fa-camera"></i> <span data-i18n="btn_upload">Upload Image / Take Photo</span>
+                        </label>
+                        <input type="file" id="ai-user-image" accept="image/*" onchange="previewImage(this)">
+                        <div id="img-preview-container" style="display:none;">
+                            <img id="img-preview" src="" alt="Solution Preview">
+                            <button onclick="clearImage()" class="clear-img-btn">&times;</button>
+                        </div>
+                    </div>
+
+                    <button class="check-btn ai-check-btn" onclick="checkSolutionWithAI()">
+                        <i class="fas fa-microchip"></i> <span data-i18n="btn_check_ai">Ask AI to Check</span>
+                    </button>
+                </div>
+
+                <!-- AI Feedback Display -->
+                <div id="ai-feedback" class="glass-panel feedback-panel" style="display:none;">
+                    <div class="feedback-header">
+                        <h2 data-i18n="lbl_feedback">AI Assessment</h2>
+                        <div id="ai-score" class="score-badge">--/10</div>
+                    </div>
+                    <div id="ai-feedback-content" class="feedback-content">
+                        <!-- AI Stream goes here -->
+                    </div>
+                </div>
             </div>
+
+            <!-- Fallback to Classic Grid if needed or just replace it -->
+            <div class="divider"><span>OR Classic Problems</span></div>
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterProblems('all', this)">All</button>
+                <button class="filter-btn" onclick="filterProblems('beginner', this)">Beginner</button>
+                <button class="filter-btn" onclick="filterProblems('intermediate', this)">Intermediate</button>
+                <button class="filter-btn" onclick="filterProblems('advanced', this)">Advanced</button>
+                <button class="filter-btn gold" onclick="filterProblems('olympic', this)">Olympic</button>
+            </div>
+            <div id="practice-stats" class="glass-panel practice-stats"></div>
+            <div id="problems-grid" class="grid-container"></div>
         </section>
 
         <!-- PAGE 3: THE LAB -->
         <section id="lab" class="page-section" style="display: none;">
-            <h1>The Lab</h1>
+            <h1 data-i18n="lab_title">The Lab</h1>
             <div class="lab-grid">
                 <div class="calculator-panel glass-panel">
-                    <h2>Uncertainty Calculator</h2>
+                    <h2 data-i18n="calc_title">Uncertainty Calculator</h2>
                     <div class="calc-display-container">
-                        <input type="text" id="calc-input" placeholder="Enter expression..." readonly>
+                        <input type="text" id="calc-input" placeholder="Enter expression...">
                         <div id="calc-result">Result: 0</div>
                     </div>
                     <div class="keypad">
-                        <!-- Special Keys -->
                         <button class="key op" onclick="addToCalc('P(')">P(</button>
                         <button class="key op" onclick="addToCalc('C(')">C</button>
                         <button class="key op" onclick="addToCalc('A(')">A</button>
@@ -131,48 +199,45 @@
                         <button class="key op" onclick="addToCalc('Ω')">Ω</button>
                         <button class="key op" onclick="addToCalc('λ')">λ</button>
                         <button class="key op" onclick="addToCalc('σ')">σ</button>
+                        <button class="key op" onclick="addToCalc('π')">π</button>
+                        <button class="key op" onclick="addToCalc('sqrt(')">√</button>
                         <button class="key op" onclick="addToCalc('μ')">μ</button>
-                        <!-- Numbers & Basics -->
                         <button class="key" onclick="addToCalc('(')">(</button>
                         <button class="key" onclick="addToCalc(')')">)</button>
                         <button class="key action" onclick="clearCalc()">AC</button>
                         <button class="key action" onclick="backspaceCalc()">⌫</button>
-                        
                         <button class="key num" onclick="addToCalc('7')">7</button>
                         <button class="key num" onclick="addToCalc('8')">8</button>
                         <button class="key num" onclick="addToCalc('9')">9</button>
                         <button class="key op" onclick="addToCalc('/')">÷</button>
-                        
                         <button class="key num" onclick="addToCalc('4')">4</button>
                         <button class="key num" onclick="addToCalc('5')">5</button>
                         <button class="key num" onclick="addToCalc('6')">6</button>
                         <button class="key op" onclick="addToCalc('*')">×</button>
-                        
                         <button class="key num" onclick="addToCalc('1')">1</button>
                         <button class="key num" onclick="addToCalc('2')">2</button>
                         <button class="key num" onclick="addToCalc('3')">3</button>
                         <button class="key op" onclick="addToCalc('-')">-</button>
-                        
                         <button class="key num" onclick="addToCalc('0')">0</button>
                         <button class="key num" onclick="addToCalc('.')">.</button>
                         <button class="key enter" onclick="calculateResult()">=</button>
                         <button class="key op" onclick="addToCalc('+')">+</button>
                     </div>
                 </div>
-                
                 <div class="visualizer-panel glass-panel">
-                    <h2>Distribution Visualizer</h2>
+                    <h2 data-i18n="vis_title">Distribution Visualizer</h2>
                     <div class="controls">
                         <select id="dist-select" onchange="updateVisualizer()">
                             <option value="normal">Normal Distribution</option>
                             <option value="venn">Venn Diagram</option>
+                            <option value="tree">Probability Tree</option>
                         </select>
                         <div id="dist-params">
-                            <!-- Injected by JS -->
                              <label>μ: <input type="number" id="param-mu" value="0"></label>
                              <label>σ: <input type="number" id="param-sigma" value="1"></label>
                         </div>
-                        <button class="glow-btn" onclick="drawGraph()">Visualize</button>
+                        <div id="dist-output" class="dist-output"></div>
+                        <button class="glow-btn" onclick="drawGraph()" data-i18n="btn_visualize">Visualize</button>
                     </div>
                     <canvas id="lab-canvas" width="500" height="300"></canvas>
                 </div>
@@ -181,46 +246,123 @@
 
         <!-- PAGE 4: SIMULATIONS -->
         <section id="simulations" class="page-section" style="display: none;">
-            <h1>Simulation Laboratory</h1>
+            <h1 data-i18n="sim_title">Simulation Laboratory</h1>
             <div class="sim-nav">
-                <button class="sim-tab active" onclick="switchSim('galton')">Galton Board</button>
-                <button class="sim-tab" onclick="switchSim('monty')">Monty Hall</button>
-                <button class="sim-tab" onclick="switchSim('buffon')">Buffon's Needle</button>
+                <button class="sim-tab active" onclick="switchSim('galton')" data-i18n="sim_galton">Galton Board</button>
+                <button class="sim-tab" onclick="switchSim('monty')" data-i18n="sim_monty">Monty Hall</button>
+                <button class="sim-tab" onclick="switchSim('buffon')" data-i18n="sim_buffon">Buffon's Needle</button>
             </div>
             
-            <div id="sim-galton" class="sim-container glass-panel active-sim">
+            <!-- GALTON -->
+            <div id="sim-galton" class="sim-container glass-panel">
                 <h2>Galton Board (Central Limit Theorem)</h2>
+                
+                <div class="sim-description">
+                    <p class="desc-hy">
+                        <strong>Ի՞նչ է սա:</strong> Гալտոնի տախտակը ցույց է տալիս, թե ինչպես է պատահականությունը ստեղծում կանոնավոր օրենք։ 
+                        Երբ հարյուրավոր գնդիկներ ընկնում են մեխերի միջով, այն ստեղծում է <strong>Գաուսյան կոր</strong> 
+                        (նորմալ բաշխում)՝ ապացուցելով <strong>Կենտրոնական Սահմանային Թեորեմը</strong>։
+                    </p>
+                    <p class="desc-en" style="display:none;">
+                        <strong>What is this:</strong> The Galton Board demonstrates how randomness creates predictable patterns. 
+                        When hundreds of balls drop through pegs, they form a <strong>Bell Curve</strong> (Normal Distribution), 
+                        proving the <strong>Central Limit Theorem</strong>.
+                    </p>
+                    <p class="desc-ru" style="display:none;">
+                        <strong>Что это:</strong> Доска Гальтона показывает, как случайность создает предсказуемые закономерности. 
+                        Когда сотни шаров падают через колышки, они образуют <strong>колоколообразную кривую</strong> 
+                        (нормальное распределение), доказывая <strong>Центральную предельную теорему</strong>.
+                    </p>
+                </div>
+
                 <div class="sim-controls">
-                    <button class="glow-btn" onclick="startGalton()">Drop 500 Balls</button>
-                    <button class="glow-btn secondary" onclick="resetGalton()">Reset</button>
+                    <div class="input-group">
+                        <label>Balls:</label>
+                        <input type="number" id="galton-count" value="500" min="10" max="5000">
+                    </div>
+                    <button class="glow-btn" onclick="startGalton()" data-i18n="btn_drop_balls">Drop Balls</button>
+                    <button class="glow-btn secondary" onclick="resetGalton()" data-i18n="btn_reset">Reset</button>
                 </div>
                 <canvas id="galton-canvas" width="600" height="400"></canvas>
             </div>
 
+            <!-- MONTY HALL -->
             <div id="sim-monty" class="sim-container glass-panel" style="display:none;">
                 <h2>Monty Hall Paradox</h2>
-                <div class="sim-controls">
-                    <button class="glow-btn" onclick="runMonty(100)">Simulate 100 Runs</button>
-                    <button class="glow-btn" onclick="runMonty(1000)">Simulate 1000 Runs</button>
+                
+                <div class="sim-description">
+                    <p class="desc-hy">
+                        <strong>Ի՞նչ է սա:</strong> Մոնտի Հոլի պարադոքսը ցույց է տալիս, որ ձեր ինտուիցիան կարող է սխալ լինել հավանականության մասին։ 
+                        Երբ դուք փոխում եք ձեր ընտրությունը, հաղթելու հավանականությունը <strong>կրկնապատկվում է</strong> 
+                        (33%-ից մինչև 67%)։ Փորձեք 100 անգամ՝ տեսնելու համար ձեր սեփական աչքերով։
+                    </p>
+                    <p class="desc-en" style="display:none;">
+                        <strong>What is this:</strong> The Monty Hall Paradox shows that your intuition about probability can be wrong. 
+                        When you switch your choice, your winning chance <strong>doubles</strong> (from 33% to 67%). 
+                        Try it 100 times to see it with your own eyes.
+                    </p>
+                    <p class="desc-ru" style="display:none;">
+                        <strong>Что это:</strong> Парадокс Монти Холла показывает, что ваша интуиция о вероятности может быть неверной. 
+                        Когда вы меняете свой выбор, ваши шансы на победу <strong>удваиваются</strong> (с 33% до 67%). 
+                        Попробуйте 100 раз, чтобы увидеть своими глазами.
+                    </p>
                 </div>
-                <div class="monty-results">
-                    <div class="result-box">
-                        <h3>Stay Wins</h3>
-                        <div class="bar-container"><div id="bar-stay" class="bar"></div></div>
-                        <span id="text-stay">0%</span>
+
+                <div class="sim-controls">
+                    <button class="glow-btn" onclick="initMontyGame()">New Game</button>
+                    <div class="input-group">
+                         <label>Runs:</label>
+                         <input type="number" id="monty-count" value="1000" min="10" max="100000">
                     </div>
-                    <div class="result-box">
-                        <h3>Switch Wins</h3>
-                        <div class="bar-container"><div id="bar-switch" class="bar"></div></div>
-                        <span id="text-switch">0%</span>
+                    <button class="glow-btn secondary" onclick="autoMontyWithInput()">Auto Run</button>
+                    <button class="glow-btn secondary" onclick="resetMontyStats()">Reset Stats</button>
+                </div>
+                
+                <div class="doors-container" id="doors-container"></div>
+
+                <div class="monty-results">
+                    <div class="result-row">
+                        <span style="width: 80px;">Stay:</span>
+                        <div class="bar-bg"><div id="bar-stay" class="bar-fill"></div></div>
+                        <span id="text-stay">0</span>
+                    </div>
+                    <div class="result-row">
+                        <span style="width: 80px;">Switch:</span>
+                        <div class="bar-bg"><div id="bar-switch" class="bar-fill gold"></div></div>
+                        <span id="text-switch">0</span>
                     </div>
                 </div>
             </div>
 
+            <!-- BUFFON -->
             <div id="sim-buffon" class="sim-container glass-panel" style="display:none;">
                 <h2>Buffon's Needle (Calculating π)</h2>
+                
+                <div class="sim-description">
+                    <p class="desc-hy">
+                        <strong>Ի՞նչ է սա:</strong> Բուֆֆոնի Ասեղը հիանալի օրինակ է, թե ինչպես կարող ենք <strong>հաշվել π-ը</strong> 
+                        (3.14159...) օգտագործելով պատահական քցված ասեղներ։ Որքան ավելի շատ ասեղներ քցենք, 
+                        այնքան ավելի մոտ կլինենք իրական արժեքին։ Սա կապ է պատահականության և երկրաչափության միջև։
+                    </p>
+                    <p class="desc-en" style="display:none;">
+                        <strong>What is this:</strong> Buffon's Needle is a brilliant example of how we can <strong>calculate π</strong> 
+                        (3.14159...) using randomly dropped needles. The more needles we drop, the closer we get to the real value. 
+                        This is a bridge between randomness and geometry.
+                    </p>
+                    <p class="desc-ru" style="display:none;">
+                        <strong>Что это:</strong> Игла Бюффона — блестящий пример того, как можно <strong>вычислить π</strong> 
+                        (3.14159...) используя случайно брошенные иглы. Чем больше игл мы бросаем, тем ближе к реальному значению. 
+                        Это мост между случайностью и геометрией.
+                    </p>
+                </div>
+
                 <div class="sim-controls">
-                    <button class="glow-btn" onclick="dropNeedles()">Drop Needles</button>
+                    <div class="input-group">
+                        <label>Needles:</label>
+                        <input type="number" id="buffon-count" value="500" min="100" max="10000">
+                    </div>
+                    <button class="glow-btn" onclick="dropNeedlesWithInput()" data-i18n="btn_drop_needles">Drop Needles</button>
+                    <button class="glow-btn secondary" onclick="resetBuffon()">Reset</button>
                 </div>
                 <div class="sim-stats">
                     <p>Dropped: <span id="needle-count">0</span> | Crosses: <span id="needle-cross">0</span></p>
@@ -242,8 +384,11 @@
         </div>
     </div>
 
-    <script src="data.js"></script>
-    <script src="simulations.js"></script>
-    <script src="script.js"></script>
+    <!-- Load JS Files in Order -->
+    <script src="js/data.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/simulations.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

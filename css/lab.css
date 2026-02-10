@@ -1,0 +1,246 @@
+/* 
+ * 5. LAB & CALCULATOR 
+ */
+.lab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 30px;
+    height: auto;
+    min-height: 60vh;
+}
+
+@media (max-width: 900px) {
+    .lab-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.lab-panel {
+    background: linear-gradient(145deg, rgba(20, 10, 30, 0.9), rgba(10, 5, 20, 0.95));
+    border: 1px solid rgba(157, 78, 221, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.lab-panel h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+
+/* Calculator Specifics */
+.calc-display-container {
+    background: #000;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(157, 78, 221, 0.5);
+    box-shadow: inset 0 0 20px rgba(157, 78, 221, 0.1);
+    text-align: right;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#calc-input {
+    font-family: 'Fira Code', monospace;
+    font-size: 2.2rem; /* Larger text */
+    color: #ffffff !important; /* Force bright white */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Glow effect */
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: right;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+#calc-input::placeholder {
+    color: rgba(255,255,255,0.2);
+    font-size: 1.5rem;
+}
+
+#calc-result {
+    color: var(--accent-gold);
+    font-family: 'Fira Code', monospace;
+    font-size: 1.6rem;
+    font-weight: bold;
+    min-height: 2rem;
+    text-shadow: 0 0 10px rgba(255, 214, 10, 0.3);
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.key {
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    transition: all 0.2s;
+    font-family: 'Fira Code', monospace;
+}
+
+.key:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+}
+
+.key.op { color: var(--accent-blue); }
+.key.num { font-weight: bold; font-size: 1.4rem; }
+.key.action { color: var(--accent-pink); }
+.key.enter {
+    background: var(--neon-purple);
+    color: white;
+    box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
+}
+.key.enter:hover {
+    background: #b066ff;
+    box-shadow: 0 0 25px rgba(157, 78, 221, 0.6);
+}
+
+/* Visualizer Controls */
+.vis-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#dist-select {
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: 1px solid var(--neon-purple);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    cursor: pointer;
+}
+
+#dist-params {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#dist-params input {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    width: 60px;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Output area under visualizer params */
+.dist-output {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.25);
+    color: #eaeaea;
+    font-size: 0.95rem;
+}
+
+#venn-op {
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 8px 10px;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* Canvas in Lab */
+#lab-canvas {
+    background: #000;
+    border-radius: 12px;
+    width: 100%;
+    height: 400px; /* Fixed height for consistency */
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+}
+
+/* AI Panel */
+#ai-workspace {
+    display: none;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.ai-problem {
+    background: rgba(76, 201, 240, 0.1);
+    border-left: 4px solid var(--accent-blue);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 0 12px 12px 0;
+}
+
+.ai-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.ai-select {
+    padding: 10px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 8px;
+}
+
+.ai-input-area textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 12px;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+.file-upload-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.1);
+    border: 1px dashed rgba(255,255,255,0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.file-upload-label:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: var(--accent-blue);
+}
+
+#ai-feedback {
+    display: none;
+    margin-top: 30px;
+    padding: 25px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 15px;
+    border: 1px solid var(--accent-gold);
+}

@@ -25,6 +25,18 @@ npx http-server .
 
 Then navigate to `http://localhost:8000`.
 
+## Optional: AI (Gemini)
+
+The AI Practice checker is **disabled by default** to avoid committing API keys into the repository.
+
+To enable it, inject your key at runtime (local-only), e.g. add this before `js/ai.js` in `index.html`:
+
+```html
+<script>
+  window.GEMINI_API_KEY = "YOUR_KEY_HERE";
+</script>
+```
+
 ## Technologies
 
 *   **Core**: HTML5, CSS3, Vanilla JavaScript
