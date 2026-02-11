@@ -1,588 +1,554 @@
-/* 
- * ROBUST SIMULATIONS ENGINE
- * Optimized for performance and visual clarity.
+/*
+ * SIMULATIONS.JS — Monte Carlo Interactive Simulations
+ * 1. Galton Board (Bean Machine) — demonstrates CLT
+ * 2. Monty Hall Problem — demonstrates probability paradox
+ * 3. Buffon's Needle — estimates π
  */
 
-/* --- GLOBAL & INITIALIZATION --- */
-let activeSimId = 'galton'; 
-let animationFrameId;
+/* ============================================================
+ * SIMULATION SELECTOR
+ * ============================================================ */
+let currentSim = 'galton';
 
-document.addEventListener('DOMContentLoaded', () => {
-    switchSim('galton'); // Start with Galton
-});
+function showSimulation(simId, btnEl) {
+    currentSim = simId;
+    document.querySelectorAll('.sim-tab-btn').forEach(b => b.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
 
-function switchSim(simId) {
-    activeSimId = simId;
-    cancelAnimationFrame(animationFrameId);
-
-    // Toggle UI Tabs
-    document.querySelectorAll('.sim-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.sim-container').forEach(c => c.style.display = 'none');
-    
-    const container = document.getElementById(`sim-${simId}`);
-    if (container) {
-        container.style.display = 'flex';
-        container.classList.add('fade-in-up');
-        
-        // Toggle description language visibility
-        updateSimDescriptions();
+    document.querySelectorAll('.sim-panel').forEach(p => {
+        p.style.display = 'none';
+    });
+    const panel = document.getElementById('sim-' + simId);
+    if (panel) {
+        panel.style.display = 'block';
+        panel.classList.add('fade-in-up');
+        setTimeout(() => panel.classList.remove('fade-in-up'), 600);
     }
 
-    // Init specific logic
     if (simId === 'galton') initGalton();
-    else if (simId === 'monty') initMontyGame(); 
-    else if (simId === 'buffon') initBuffon();
+    if (simId === 'buffon') initBuffon();
 }
 
 function updateSimDescriptions() {
-    // Show correct language descriptions in simulations
-    document.querySelectorAll('.desc-hy, .desc-en, .desc-ru').forEach(el => {
-        el.style.display = 'none';
-    });
-    
-    const activeLang = currentLang || 'hy';
-    document.querySelectorAll(`.desc-${activeLang}`).forEach(el => {
-        el.style.display = 'block';
-    });
+    // Placeholder for language updates
 }
 
 
-/* ----------------------------------------------------------------
- * 1. GALTON BOARD (Optimized Logic)
- * ---------------------------------------------------------------- */
-const GALTON_ROWS = 12;
-const BALL_R = 4;
+/* ============================================================
+ * 1. GALTON BOARD (Bean Machine)
+ * ============================================================ */
+let galtonCanvas, galtonCtx;
+let galtonPegs = [];
 let galtonBalls = [];
 let galtonBins = [];
-let galtonPegs = [];
-let galtonFloorY = 0;
+let galtonRows = 12;
+let galtonAnimating = false;
+let galtonAnimId = null;
+let galtonBallsToAdd = 0;
+let galtonFrameCount = 0;
 
 function initGalton() {
-    const canvas = document.getElementById('galton-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    
-    // Clear State
-    galtonBalls = [];
-    galtonBins = new Array(GALTON_ROWS + 1).fill(0);
-    
-    // Pre-calculate Peg Positions
-    galtonPegs = [];
-    const w = canvas.width;
-    const startY = 50;
-    const spacingX = w / (GALTON_ROWS + 4);
-    const spacingY = 25;
-    galtonFloorY = canvas.height - 95; // keep bottom area for histogram
+    galtonCanvas = document.getElementById('galton-canvas');
+    if (!galtonCanvas) return;
+    galtonCtx = galtonCanvas.getContext('2d');
 
-    for (let r = 0; r < GALTON_ROWS; r++) {
-        const cols = r + 1;
-        const rowWidth = (cols - 1) * spacingX;
-        const startX = (w - rowWidth) / 2;
-        
-        for (let c = 0; c < cols; c++) {
+    // Set canvas size
+    galtonCanvas.width = galtonCanvas.offsetWidth || 600;
+    galtonCanvas.height = galtonCanvas.offsetHeight || 500;
+
+    galtonRows = parseInt(document.getElementById('galton-rows')?.value) || 12;
+    galtonPegs = [];
+    galtonBalls = [];
+    galtonBins = new Array(galtonRows + 1).fill(0);
+    galtonBallsToAdd = 0;
+    galtonFrameCount = 0;
+
+    // Build pegs
+    const w = galtonCanvas.width;
+    const h = galtonCanvas.height;
+    const pegAreaTop = 60;
+    const pegAreaBottom = h * 0.6;
+    const pegSpacingY = (pegAreaBottom - pegAreaTop) / galtonRows;
+    const pegSpacingX = (w - 80) / galtonRows;
+
+    for (let row = 0; row < galtonRows; row++) {
+        const numPegs = row + 1;
+        const y = pegAreaTop + row * pegSpacingY;
+        const startX = w / 2 - (numPegs - 1) * pegSpacingX / 2;
+        for (let col = 0; col < numPegs; col++) {
             galtonPegs.push({
-                x: startX + c * spacingX,
-                y: startY + r * spacingY
+                x: startX + col * pegSpacingX,
+                y: y,
+                r: 3
             });
         }
     }
 
-    // Start Loop
-    loopGalton();
+    drawGaltonFrame();
 }
 
-function spawnGaltonBall() {
-    const canvas = document.getElementById('galton-canvas');
-    if (!canvas) return;
-    const w = canvas.width;
-    
-    // Start at top center
-    galtonBalls.push({
-        x: w / 2,
-        y: 20,
-        vx: (Math.random() - 0.5) * 2, // slight jitter
-        vy: 0,
-        row: -1, // track logical progress through peg rows
-        targetX: w / 2, // for smooth animation
-        settled: false
-    });
-}
-
-function updateGalton() {
-    const canvas = document.getElementById('galton-canvas');
-    const w = canvas.width;
-    const h = canvas.height;
-    const spacingX = w / (GALTON_ROWS + 4);
-    const spacingY = 25;
-    const startY = 50;
-    const floorY = galtonFloorY || (h - 95);
-
-    galtonBalls.forEach(ball => {
-        if (ball.settled) return;
-
-        // Gravity
-        ball.vy += 0.5;
-        ball.y += ball.vy;
-        
-        // Horizontal smoothing towards target
-        ball.x += (ball.targetX - ball.x) * 0.1;
-
-        // Peg Collision Logic (Simplified to "Steps")
-        // Check if ball passed a row threshold
-        const currentRow = Math.floor((ball.y - startY + 10) / spacingY);
-        
-        if (currentRow > ball.row && currentRow < GALTON_ROWS) {
-            ball.row = currentRow;
-            // Hit peg -> Random Decision Left or Right
-            // Bounce up a bit to simulate collision
-            ball.vy = -2; 
-            // 50/50 Chance
-            const dir = Math.random() < 0.5 ? -1 : 1;
-            ball.targetX += dir * (spacingX / 2);
-            ball.vx = dir; // slight push
-        }
-
-        // Floor / Bin Logic
-        // Calculate Bin Height
-        // Map x to bin index
-        const binW = spacingX;
-        // The pegs form a triangle. The bins are between the last row of pegs.
-        // Last row width = (GALTON_ROWS-1)*spacingX
-        // StartX of last row = (w - rowWidth)/2
-        // We can just clamp x to find bin.
-        
-        const center = w / 2;
-        // Relative to center, bin index 0 is far left? No.
-        // Bin index ranges from 0 to GALTON_ROWS.
-        // Center bin is index GALTON_ROWS/2.
-        // x offset from center / (spacingX/2) roughly gives steps
-        
-        // Let's just use exact x position for settlement
-        if (ball.y >= floorY - 10) {
-             // Find closest bin bucket
-             // Visual pile-up
-             // Approximate logical bin index
-             let binIdx = Math.round((ball.x - (w/2 - (GALTON_ROWS * spacingX)/2)) / spacingX);
-             // Clamp
-             if(binIdx < 0) binIdx = 0;
-             if(binIdx > GALTON_ROWS) binIdx = GALTON_ROWS;
-             
-             // Stack height
-             const stackHeight = galtonBins[binIdx] * (BALL_R * 2);
-             const landY = floorY - stackHeight;
-             
-             if (ball.y >= landY) {
-                 ball.y = landY;
-                 ball.settled = true;
-                 if (galtonBins[binIdx] !== undefined) galtonBins[binIdx]++;
-             }
-        }
-    });
-
-    // Cleanup balls that fell off screen (rare bug safety)
-    if (galtonBalls.length > 800) galtonBalls.shift(); 
-}
-
-function drawGalton() {
-    const canvas = document.getElementById('galton-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const w = canvas.width;
-    const h = canvas.height;
-    const floorY = galtonFloorY || (h - 95);
-
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0,0,w,h);
-
-    // Draw Pegs
-    ctx.fillStyle = 'rgba(255,255,255,0.35)';
-    galtonPegs.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-        ctx.fill();
-    });
-
-    // Draw Balls
-    galtonBalls.forEach(b => {
-        ctx.fillStyle = b.settled ? '#7b2cbf' : '#f72585';
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, BALL_R, 0, Math.PI * 2);
-        ctx.fill();
-    });
-    
-    // Draw Floor Line
-    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
-    ctx.beginPath();
-    ctx.moveTo(0, floorY);
-    ctx.lineTo(w, floorY);
-    ctx.stroke();
-
-    // Histogram area (bottom)
-    const histTop = floorY + 10;
-    const histH = h - histTop - 10;
-    const bins = galtonBins;
-    const max = Math.max(...bins, 1);
-    const bw = w / (bins.length);
-
-    // bars
-    for (let i = 0; i < bins.length; i++) {
-        const val = bins[i];
-        const barH = (val / max) * (histH - 14);
-        const x = i * bw;
-        const y = h - 10 - barH;
-        ctx.fillStyle = 'rgba(157, 78, 221, 0.45)';
-        ctx.fillRect(x + 2, y, bw - 4, barH);
+function dropGaltonBalls(count) {
+    galtonBallsToAdd += count;
+    if (!galtonAnimating) {
+        galtonAnimating = true;
+        galtonAnimate();
     }
-
-    // overlay "normal-ish" curve (binomial approx) scaled to histogram
-    const n = GALTON_ROWS;
-    const p = 0.5;
-    const mean = n * p;
-    const varr = n * p * (1 - p);
-    const sigma = Math.sqrt(varr);
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgba(255, 214, 10, 0.9)';
-    ctx.lineWidth = 2;
-    for (let i = 0; i < bins.length; i++) {
-        // normal pdf at integer i
-        const x = i;
-        const yVal = (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - mean) / sigma, 2));
-        // scale yVal to histogram max
-        const scaled = (yVal / (1 / (sigma * Math.sqrt(2 * Math.PI)))) * (histH - 14);
-        const px = (i + 0.5) * bw;
-        const py = (h - 10) - scaled;
-        if (i === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-    }
-    ctx.stroke();
-
-    // labels
-    ctx.fillStyle = 'rgba(255,255,255,0.75)';
-    ctx.font = '12px sans-serif';
-    ctx.fillText('Histogram', 10, histTop + 12);
-}
-
-function loopGalton() {
-    if (activeSimId !== 'galton') return;
-    updateGalton();
-    drawGalton();
-    animationFrameId = requestAnimationFrame(loopGalton);
-}
-
-/* ----------------------------------------------------------------
- * SIMULATION CONTROLS (WITH USER INPUT)
- * ---------------------------------------------------------------- */
-
-/* ----------------------------------------------------------------
- * SIMULATION CONTROLS (WITH USER INPUT)
- * ---------------------------------------------------------------- */
-
-let galtonInterval;
-
-function startGalton() {
-    if (galtonInterval) clearInterval(galtonInterval);
-
-    // Get custom ball count
-    const input = document.getElementById('galton-count');
-    let count = input ? parseInt(input.value) : 500;
-    if (isNaN(count) || count < 1) count = 1; // Allow 1 ball
-    if (count > 5000) count = 5000; // Cap for performance
-
-    // Spawn balls
-    let spawned = 0;
-    galtonInterval = setInterval(() => {
-        if(activeSimId !== 'galton') { clearInterval(galtonInterval); return; }
-        
-        // Dynamic batch size for speed
-        let batchSize = 1;
-        if (count > 100) batchSize = 5;
-        if (count > 1000) batchSize = 20;
-        
-        for(let i=0; i<batchSize; i++) {
-            if (spawned >= count) break;
-            spawnGaltonBall();
-            spawned++;
-        }
-
-        if(spawned >= count) clearInterval(galtonInterval);
-    }, 20);
 }
 
 function resetGalton() {
-    if (galtonInterval) clearInterval(galtonInterval);
-    const canvas = document.getElementById('galton-canvas');
-    if(canvas) {
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+    if (galtonAnimId) cancelAnimationFrame(galtonAnimId);
+    galtonAnimating = false;
+    galtonBalls = [];
+    galtonBins = new Array(galtonRows + 1).fill(0);
+    galtonBallsToAdd = 0;
+    galtonFrameCount = 0;
+    drawGaltonFrame();
+    updateGaltonStats();
+}
+
+function galtonAnimate() {
+    const w = galtonCanvas.width;
+    const h = galtonCanvas.height;
+
+    galtonFrameCount++;
+
+    // Add new balls (stagger them)
+    if (galtonBallsToAdd > 0 && galtonFrameCount % 2 === 0) {
+        const pegAreaTop = 60;
+        galtonBalls.push({
+            x: w / 2 + (Math.random() - 0.5) * 4,
+            y: 15,
+            vx: 0,
+            vy: 1.5,
+            r: 4,
+            settled: false,
+            bin: -1,
+            color: `hsl(${270 + Math.random() * 60}, 80%, ${55 + Math.random() * 20}%)`
+        });
+        galtonBallsToAdd--;
     }
-    initGalton();
-}
 
-/* ----------------------------------------------------------------
- * 2. MONTY HALL (Interactive Game Logic)
- * ---------------------------------------------------------------- */
-let montyState = {
-    prizeDoor: 0,
-    selectedDoor: -1,
-    openedDoor: -1,
-    phase: 'pick', // 'pick', 'reveal', 'final'
-    stats: { stayWins: 0, switchWins: 0, total: 0 }
-};
+    // Physics step
+    const pegAreaBottom = h * 0.6;
+    const binAreaTop = pegAreaBottom + 20;
+    const pegSpacingX = (w - 80) / galtonRows;
+    const gravity = 0.15;
+    const damping = 0.7;
 
-function initMontyGame() {
-    montyState.prizeDoor = Math.floor(Math.random() * 3);
-    montyState.selectedDoor = -1;
-    montyState.openedDoor = -1;
-    montyState.phase = 'pick';
-    if(activeSimId === 'monty') renderMonty();
-}
+    for (const ball of galtonBalls) {
+        if (ball.settled) continue;
 
-function selectDoor(doorIdx) {
-    if (montyState.phase !== 'pick') return;
-    
-    montyState.selectedDoor = doorIdx;
-    
-    // Host opens a non-prize, non-selected door
-    let openArr = [0, 1, 2].filter(d => d !== montyState.prizeDoor && d !== montyState.selectedDoor);
-    montyState.openedDoor = openArr[Math.floor(Math.random() * openArr.length)];
-    
-    montyState.phase = 'reveal';
-    renderMonty();
-}
+        ball.vy += gravity;
+        ball.x += ball.vx;
+        ball.y += ball.vy;
 
-function finalizeMonty(stay) {
-    if (montyState.phase !== 'reveal') return;
+        // Peg collision
+        for (const peg of galtonPegs) {
+            const dx = ball.x - peg.x;
+            const dy = ball.y - peg.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < ball.r + peg.r + 2) {
+                // Bounce off
+                const dir = dx > 0 ? 1 : -1;
+                ball.vx = dir * (1.5 + Math.random() * 1.0);
+                ball.vy = -Math.abs(ball.vy) * 0.3;
+                ball.y = peg.y - peg.r - ball.r - 3;
+            }
+        }
 
-    const kept = montyState.selectedDoor;
-    const switched = [0,1,2].find(d => d !== montyState.selectedDoor && d !== montyState.openedDoor);
-    
-    const finalChoice = stay ? kept : switched;
-    const win = finalChoice === montyState.prizeDoor;
+        // Wall bounds
+        if (ball.x < ball.r) { ball.x = ball.r; ball.vx = Math.abs(ball.vx) * damping; }
+        if (ball.x > w - ball.r) { ball.x = w - ball.r; ball.vx = -Math.abs(ball.vx) * damping; }
 
-    montyState.phase = 'final';
-    montyState.selectedDoor = finalChoice; // Update visual selection
-    
-    // Update Stats
-    if (stay) {
-        if (win) montyState.stats.stayWins++;
+        // Settle in bin
+        if (ball.y >= binAreaTop) {
+            // Determine bin
+            const binWidth = w / (galtonRows + 1);
+            let binIdx = Math.floor(ball.x / binWidth);
+            binIdx = Math.max(0, Math.min(galtonRows, binIdx));
+
+            const binX = binIdx * binWidth + binWidth / 2;
+            const binCount = galtonBins[binIdx];
+            const ballDiam = ball.r * 2 + 1;
+            const targetY = h - 10 - binCount * ballDiam;
+
+            ball.x = binX + (Math.random() - 0.5) * 2;
+            ball.y = Math.max(targetY, binAreaTop);
+            ball.settled = true;
+            ball.bin = binIdx;
+            galtonBins[binIdx]++;
+        }
+    }
+
+    drawGaltonFrame();
+    updateGaltonStats();
+
+    // Continue animation if needed
+    const stillActive = galtonBalls.some(b => !b.settled) || galtonBallsToAdd > 0;
+    if (stillActive) {
+        galtonAnimId = requestAnimationFrame(galtonAnimate);
     } else {
-        if (win) montyState.stats.switchWins++;
+        galtonAnimating = false;
     }
-    montyState.stats.total++;
+}
 
-    renderMonty();
+function drawGaltonFrame() {
+    if (!galtonCtx) return;
+    const ctx = galtonCtx;
+    const w = galtonCanvas.width;
+    const h = galtonCanvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Background
+    const bg = ctx.createLinearGradient(0, 0, 0, h);
+    bg.addColorStop(0, '#0a0514');
+    bg.addColorStop(1, '#140a1e');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Bin separators
+    const binWidth = w / (galtonRows + 1);
+    ctx.strokeStyle = 'rgba(157, 78, 221, 0.2)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= galtonRows + 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * binWidth, h * 0.6 + 20);
+        ctx.lineTo(i * binWidth, h);
+        ctx.stroke();
+    }
+
+    // Draw Pegs
+    for (const peg of galtonPegs) {
+        ctx.beginPath();
+        ctx.arc(peg.x, peg.y, peg.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 214, 10, 0.7)';
+        ctx.fill();
+    }
+
+    // Draw Balls
+    for (const ball of galtonBalls) {
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+        ctx.fillStyle = ball.color || '#9d4edd';
+        ctx.fill();
+        // Subtle glow
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.r + 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(157, 78, 221, 0.15)';
+        ctx.fill();
+    }
+
+    // Draw bin counts
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.font = '11px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    for (let i = 0; i <= galtonRows; i++) {
+        if (galtonBins[i] > 0) {
+            ctx.fillText(galtonBins[i], i * binWidth + binWidth / 2, h - 2);
+        }
+    }
+
+    // Funnel at top
+    ctx.beginPath();
+    ctx.moveTo(w / 2 - 40, 0);
+    ctx.lineTo(w / 2 - 8, 45);
+    ctx.lineTo(w / 2 + 8, 45);
+    ctx.lineTo(w / 2 + 40, 0);
+    ctx.strokeStyle = 'rgba(76, 201, 240, 0.4)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+}
+
+function updateGaltonStats() {
+    const totalBalls = galtonBalls.length;
+    const settled = galtonBalls.filter(b => b.settled).length;
+    const statsEl = document.getElementById('galton-stats');
+    if (statsEl) {
+        statsEl.innerHTML = `
+            <p>Balls dropped: <span>${totalBalls}</span></p>
+            <p>Settled: <span>${settled}</span></p>
+        `;
+    }
+}
+
+/* ============================================================
+ * 2. MONTY HALL PROBLEM
+ * ============================================================ */
+let montyDoors = [0, 0, 0]; // 0 = goat, 1 = car
+let montyState = 'choose'; // choose -> revealed -> result
+let montyCarPosition = 0;
+let montyPlayerChoice = -1;
+let montyRevealedDoor = -1;
+let montyStats = { switchWin: 0, switchLose: 0, stayWin: 0, stayLose: 0, total: 0 };
+
+function initMonty() {
+    montyStats = { switchWin: 0, switchLose: 0, stayWin: 0, stayLose: 0, total: 0 };
+    montyNewGame();
     updateMontyStats();
 }
 
-function renderMonty() {
-    const container = document.getElementById('doors-container');
+function montyNewGame() {
+    montyState = 'choose';
+    montyCarPosition = Math.floor(Math.random() * 3);
+    montyDoors = [0, 0, 0];
+    montyDoors[montyCarPosition] = 1;
+    montyPlayerChoice = -1;
+    montyRevealedDoor = -1;
+    renderMontyDoors();
+    document.getElementById('monty-message').innerText = 'Choose a door!';
+}
+
+function montyChooseDoor(doorIndex) {
+    if (montyState !== 'choose') return;
+
+    montyPlayerChoice = doorIndex;
+    montyState = 'revealed';
+
+    // Host reveals a goat door (not player's choice, not the car)
+    const options = [0, 1, 2].filter(d => d !== montyPlayerChoice && d !== montyCarPosition);
+    montyRevealedDoor = options[Math.floor(Math.random() * options.length)];
+
+    renderMontyDoors();
+    document.getElementById('monty-message').innerHTML = `
+        Door ${montyRevealedDoor + 1} has a 🐐! <br>
+        <strong>Do you want to SWITCH or STAY?</strong>
+    `;
+    document.getElementById('monty-actions').style.display = 'flex';
+}
+
+function montyDecision(shouldSwitch) {
+    montyState = 'result';
+    document.getElementById('monty-actions').style.display = 'none';
+
+    let finalChoice = montyPlayerChoice;
+    if (shouldSwitch) {
+        finalChoice = [0, 1, 2].find(d => d !== montyPlayerChoice && d !== montyRevealedDoor);
+    }
+
+    const won = montyDoors[finalChoice] === 1;
+    montyStats.total++;
+
+    if (shouldSwitch) {
+        if (won) montyStats.switchWin++;
+        else montyStats.switchLose++;
+    } else {
+        if (won) montyStats.stayWin++;
+        else montyStats.stayLose++;
+    }
+
+    montyPlayerChoice = finalChoice;
+    renderMontyDoors(true);
+    updateMontyStats();
+
+    document.getElementById('monty-message').innerHTML = won
+        ? `🎉 <strong style="color:#4cc9f0">You WON the 🚗!</strong> (You ${shouldSwitch ? 'switched' : 'stayed'})`
+        : `😔 <strong style="color:#f72585">You got a 🐐!</strong> (You ${shouldSwitch ? 'switched' : 'stayed'})`;
+
+    setTimeout(montyNewGame, 2000);
+}
+
+function montyAutoRun(count) {
+    for (let i = 0; i < count; i++) {
+        const car = Math.floor(Math.random() * 3);
+        const pick = Math.floor(Math.random() * 3);
+        const options = [0, 1, 2].filter(d => d !== pick && d !== car);
+        const revealed = options[Math.floor(Math.random() * options.length)];
+        const switched = [0, 1, 2].find(d => d !== pick && d !== revealed);
+
+        montyStats.total++;
+        if (switched === car) montyStats.switchWin++;
+        else montyStats.switchLose++;
+        if (pick === car) montyStats.stayWin++;
+        else montyStats.stayLose++;
+    }
+    updateMontyStats();
+    document.getElementById('monty-message').innerHTML = `<strong>Simulated ${count} games!</strong> Check the results below.`;
+}
+
+function renderMontyDoors(showAll) {
+    const container = document.getElementById('monty-doors');
     if (!container) return;
 
-    let html = '';
-    for(let i=0; i<3; i++) {
-        let content = '🚪';
-        let classes = 'door-box';
-        let onclick = `selectDoor(${i})`;
+    container.innerHTML = [0, 1, 2].map(i => {
+        let cls = 'door';
+        let content = `<span class="door-number">${i + 1}</span><span class="door-content">🚪</span>`;
 
-        if (montyState.phase === 'reveal' && i === montyState.openedDoor) {
-            classes += ' open';
-            content = '🐐';
-            onclick = '';
-        } else if (montyState.phase === 'final') {
-            classes += ' open';
-            if (i === montyState.prizeDoor) content = '🚗'; // Car
-            else content = '🐐'; // Goat
+        if (i === montyPlayerChoice) cls += ' selected';
+        if (showAll || i === montyRevealedDoor) {
+            cls += ' open';
+            content = `<span class="door-number">${i + 1}</span><span class="door-content">${montyDoors[i] === 1 ? '🚗' : '🐐'}</span>`;
         }
 
-        if (montyState.selectedDoor === i) {
-            classes += ' selected';
-            content += ' 👈';
-        }
-
-        html += `<div class="${classes}" onclick="${onclick}">
-            <div class="door-content">${content}</div>
-        </div>`;
-    }
-
-    if (montyState.phase === 'reveal') {
-        html += `
-        <div style="position: absolute; bottom: 20%; width: 100%; text-align: center; pointer-events: none;">
-            <div style="pointer-events: auto; display: inline-block; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px;">
-                <p style="margin-bottom: 10px; color: #fff;">Host opened a Goat door!</p>
-                <button class="glow-btn" onclick="finalizeMonty(true)">Stay</button>
-                <button class="glow-btn secondary" onclick="finalizeMonty(false)">Switch</button>
-            </div>
-        </div>`;
-    } else if (montyState.phase === 'final') {
-        const win = montyState.selectedDoor === montyState.prizeDoor;
-        html += `
-        <div style="position: absolute; bottom: 20%; width: 100%; text-align: center;">
-             <div style="display: inline-block; background: rgba(0,0,0,0.8); padding: 10px 20px; border-radius: 10px;">
-                <h3 style="color: ${win ? '#4cc9f0' : '#f72585'}">${win ? 'YOU WON!' : 'YOU LOST!'}</h3>
-                <button class="glow-btn" style="margin-top:5px; font-size:0.8rem;" onclick="initMontyGame()">Again</button>
-             </div>
-        </div>`;
-    }
-
-    container.innerHTML = html;
-    container.style.position = 'relative';
+        return `<div class="${cls}" onclick="montyChooseDoor(${i})">${content}</div>`;
+    }).join('');
 }
 
 function updateMontyStats() {
-    const s = montyState.stats;
-    const total = Math.max(s.total, 1);
-    const stayPct = (s.stayWins / total) * 100;
-    const switchPct = (s.switchWins / total) * 100;
-    
-    document.getElementById('text-stay').innerText = `${s.stayWins} (${stayPct.toFixed(1)}%)`;
-    document.getElementById('text-switch').innerText = `${s.switchWins} (${switchPct.toFixed(1)}%)`;
-    
-    document.getElementById('bar-stay').style.width = `${stayPct}%`;
-    document.getElementById('bar-switch').style.width = `${switchPct}%`;
+    const switchTotal = montyStats.switchWin + montyStats.switchLose;
+    const stayTotal = montyStats.stayWin + montyStats.stayLose;
+    const switchPct = switchTotal > 0 ? ((montyStats.switchWin / switchTotal) * 100).toFixed(1) : '0.0';
+    const stayPct = stayTotal > 0 ? ((montyStats.stayWin / stayTotal) * 100).toFixed(1) : '0.0';
+
+    const statsEl = document.getElementById('monty-stats');
+    if (statsEl) {
+        statsEl.innerHTML = `
+            <p>Total games: <span>${montyStats.total}</span></p>
+            <p>Switch wins: <span>${montyStats.switchWin} / ${switchTotal}</span></p>
+            <p>Stay wins: <span>${montyStats.stayWin} / ${stayTotal}</span></p>
+        `;
+    }
+
+    // Bar charts
+    const switchBar = document.getElementById('monty-switch-bar');
+    const stayBar = document.getElementById('monty-stay-bar');
+    const switchLabel = document.getElementById('monty-switch-pct');
+    const stayLabel = document.getElementById('monty-stay-pct');
+
+    if (switchBar) switchBar.style.width = switchPct + '%';
+    if (stayBar) stayBar.style.width = stayPct + '%';
+    if (switchLabel) switchLabel.textContent = switchPct + '%';
+    if (stayLabel) stayLabel.textContent = stayPct + '%';
 }
 
-function autoMontyWithInput() {
-    const input = document.getElementById('monty-count');
-    let runs = input ? parseInt(input.value) : 1000;
-    if (isNaN(runs) || runs < 1) runs = 100;
-    if (runs > 1000000) runs = 1000000;
-    autoMonty(runs);
-}
-function autoMonty(runs) {
-    let remaining = runs;
-    const step = () => {
-        if (activeSimId !== 'monty') return;
-        const batch = Math.min(8000, remaining);
-        for (let i = 0; i < batch; i++) {
-            const prize = Math.floor(Math.random() * 3);
-            const choice = Math.floor(Math.random() * 3);
-            if (choice === prize) montyState.stats.stayWins++;
-            else montyState.stats.switchWins++;
-        }
-        montyState.stats.total += batch;
-        remaining -= batch;
-        updateMontyStats();
-        if (remaining > 0) {
-            animationFrameId = requestAnimationFrame(step);
-        }
-    };
-    step();
-}
-
-function resetMontyStats() {
-    montyState.stats = { stayWins: 0, switchWins: 0, total: 0 };
+function resetMonty() {
+    montyStats = { switchWin: 0, switchLose: 0, stayWin: 0, stayLose: 0, total: 0 };
+    montyNewGame();
     updateMontyStats();
 }
 
-/* ----------------------------------------------------------------
+/* ============================================================
  * 3. BUFFON'S NEEDLE
- * ---------------------------------------------------------------- */
-const NEEDLE_L = 40;
-const LINE_gap = 40;
+ * ============================================================ */
+let buffonCanvas, buffonCtx;
+let buffonNeedles = [];
+let buffonCrossing = 0;
 let buffonTotal = 0;
-let buffonCross = 0;
+let buffonLineSpacing = 60;
+let buffonNeedleLength = 40;
 
 function initBuffon() {
-    const canvas = document.getElementById('buffon-canvas');
-    if (!canvas) return;
-    
-    // Resize for high DPI or full width?
-    // For now, assume fixed logic size but responsive CSS.
-    // We should clear and redraw background immediately.
-    
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-    
-    // Draw Background Lines Logic
-    ctx.fillStyle = '#111';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    
-    ctx.strokeStyle = '#666';
-    ctx.lineWidth = 1;
-    for (let y = LINE_gap; y < canvas.height; y += LINE_gap) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
-    
-    buffonTotal = 0;
-    buffonCross = 0;
-    document.getElementById('needle-count').innerText = "0";
-    document.getElementById('needle-cross').innerText = "0";
-    document.getElementById('pi-val').innerText = "-";
-}
+    buffonCanvas = document.getElementById('buffon-canvas');
+    if (!buffonCanvas) return;
+    buffonCtx = buffonCanvas.getContext('2d');
 
-function dropNeedlesWithInput() {
-    const input = document.getElementById('buffon-count');
-    let needles = input ? parseInt(input.value) : 500;
-    if (isNaN(needles) || needles < 1) needles = 10;
-    
-    const canvas = document.getElementById('buffon-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const w = canvas.width;
-    const h = canvas.height;
-    
-    // Ensure background is there (in case we didn't init properly)
-    if (buffonTotal === 0) {
-        ctx.fillStyle = '#111';
-        ctx.fillRect(0,0,w,h);
-        ctx.strokeStyle = '#666';
-        ctx.lineWidth = 1;
-        for (let y = LINE_gap; y < h; y += LINE_gap) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(w, y);
-            ctx.stroke();
-        }
-    }
+    buffonCanvas.width = buffonCanvas.offsetWidth || 600;
+    buffonCanvas.height = buffonCanvas.offsetHeight || 400;
 
-    for(let i=0; i<needles; i++) {
-        const angle = Math.random() * Math.PI;
-        // Keep within bounds visually so we see them
-        const cy = Math.random() * (h - 20) + 10;
-        const cx = Math.random() * (w - 20) + 10;
-        
-        const dy = (NEEDLE_L/2) * Math.sin(angle);
-        const dx = (NEEDLE_L/2) * Math.cos(angle);
-        
-        const y1 = cy - dy;
-        const y2 = cy + dy;
-        const x1 = cx - dx;
-        const x2 = cx + dx;
-        
-        const row1 = Math.floor(y1 / LINE_gap);
-        const row2 = Math.floor(y2 / LINE_gap);
-        const hit = row1 !== row2;
-        
-        buffonTotal++;
-        if(hit) buffonCross++;
-        
-        ctx.beginPath();
-        ctx.strokeStyle = hit ? '#f72585' : 'rgba(255,255,255,0.3)';
-        ctx.lineWidth = 2;
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-    }
-    
-    updateBuffonStats();
-}
-
-function updateBuffonStats() {
-    document.getElementById('needle-count').innerText = buffonTotal;
-    document.getElementById('needle-cross').innerText = buffonCross;
-    if (buffonCross > 0) {
-        // Buffon's needle (for L <= d):  P(hit) = (2L)/(π d)  =>  π ≈ (2 L N)/(d H)
-        const pi = (2 * NEEDLE_L * buffonTotal) / (LINE_gap * buffonCross);
-        document.getElementById('pi-val').innerText = pi.toFixed(5);
-    }
+    resetBuffon();
 }
 
 function resetBuffon() {
+    buffonNeedles = [];
+    buffonCrossing = 0;
     buffonTotal = 0;
-    buffonCross = 0;
-    initBuffon();
+    buffonNeedleLength = parseInt(document.getElementById('buffon-length')?.value) || 40;
+    buffonLineSpacing = parseInt(document.getElementById('buffon-spacing')?.value) || 60;
+    drawBuffonFrame();
+    updateBuffonStats();
+}
+
+function dropNeedles(count) {
+    const w = buffonCanvas.width;
+    const h = buffonCanvas.height;
+    const d = buffonLineSpacing;
+    const l = buffonNeedleLength;
+
+    for (let i = 0; i < count; i++) {
+        const cx = Math.random() * w;
+        const cy = Math.random() * h;
+        const angle = Math.random() * Math.PI;
+
+        const x1 = cx - (l / 2) * Math.cos(angle);
+        const y1 = cy - (l / 2) * Math.sin(angle);
+        const x2 = cx + (l / 2) * Math.cos(angle);
+        const y2 = cy + (l / 2) * Math.sin(angle);
+
+        // Check crossing
+        const minY = Math.min(y1, y2);
+        const maxY = Math.max(y1, y2);
+        let crosses = false;
+
+        for (let lineY = 0; lineY < h; lineY += d) {
+            if (minY <= lineY && maxY >= lineY) {
+                crosses = true;
+                break;
+            }
+        }
+
+        buffonNeedles.push({ x1, y1, x2, y2, crosses });
+        buffonTotal++;
+        if (crosses) buffonCrossing++;
+    }
+
+    drawBuffonFrame();
+    updateBuffonStats();
+}
+
+function animateBuffonDrop(count) {
+    let dropped = 0;
+    const batchSize = Math.max(1, Math.floor(count / 50));
+
+    function dropBatch() {
+        const toDrop = Math.min(batchSize, count - dropped);
+        dropNeedles(toDrop);
+        dropped += toDrop;
+        if (dropped < count) {
+            requestAnimationFrame(dropBatch);
+        }
+    }
+    dropBatch();
+}
+
+function drawBuffonFrame() {
+    if (!buffonCtx) return;
+    const ctx = buffonCtx;
+    const w = buffonCanvas.width;
+    const h = buffonCanvas.height;
+    const d = buffonLineSpacing;
+
+    // Background
+    ctx.fillStyle = '#0a0514';
+    ctx.fillRect(0, 0, w, h);
+
+    // Parallel lines
+    ctx.strokeStyle = 'rgba(76, 201, 240, 0.3)';
+    ctx.lineWidth = 1;
+    for (let y = 0; y < h; y += d) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+    }
+
+    // Draw needles (limit visual to last 2000)
+    const startIdx = Math.max(0, buffonNeedles.length - 2000);
+    for (let i = startIdx; i < buffonNeedles.length; i++) {
+        const n = buffonNeedles[i];
+        ctx.beginPath();
+        ctx.moveTo(n.x1, n.y1);
+        ctx.lineTo(n.x2, n.y2);
+        ctx.strokeStyle = n.crosses
+            ? 'rgba(247, 37, 133, 0.8)'
+            : 'rgba(157, 78, 221, 0.5)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+    }
+}
+
+function updateBuffonStats() {
+    const piEstimate = buffonTotal > 0 && buffonCrossing > 0
+        ? (2 * buffonNeedleLength * buffonTotal) / (buffonLineSpacing * buffonCrossing)
+        : 0;
+
+    const statsEl = document.getElementById('buffon-stats');
+    if (statsEl) {
+        statsEl.innerHTML = `
+            <p>Total needles: <span>${buffonTotal}</span></p>
+            <p>Crossing: <span>${buffonCrossing}</span></p>
+            <p>π estimate: <span style="color:#ffd60a; font-size: 1.3rem;">${piEstimate.toFixed(6)}</span></p>
+            <p>Actual π: <span style="color:#4cc9f0">${Math.PI.toFixed(6)}</span></p>
+            <p>Error: <span>${buffonTotal > 0 ? Math.abs(piEstimate - Math.PI).toFixed(6) : '—'}</span></p>
+        `;
+    }
 }

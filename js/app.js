@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if user set lang before
     const savedLang = localStorage.getItem('probProLang');
     if (savedLang) currentLang = savedLang;
-    
+
     setLanguage(currentLang);
-    
+
     // Init Visualizer default
     updateVisualizer();
     drawGraph();
-    
+
     if (typeof initGalton === 'function') initGalton();
 
     // Hash routing / deep-linking
@@ -28,11 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
 function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('probProLang', lang);
-    
+
     // Update language buttons
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll(`.lang-btn[onclick*="${lang}"]`).forEach(b => b.classList.add('active'));
-    
+
     // Update UI text
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -40,19 +40,19 @@ function setLanguage(lang) {
             el.innerText = window.probabilityData.ui[key][lang] || window.probabilityData.ui[key]['en'];
         }
     });
-    
+
     // Re-render dynamic content
     initTheory();
     initProblems();
 
     // Re-init scroll reveal for newly rendered theory DOM
     initTheoryScrollReveal();
-    
+
     // Update simulation descriptions
     if (typeof updateSimDescriptions === 'function') {
         updateSimDescriptions();
     }
-    
+
     // Re-render MathJax
     if (window.MathJax) {
         MathJax.typesetPromise();
@@ -84,7 +84,7 @@ function showPage(pageId) {
 function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
     const content = menu.querySelector('.mobile-menu-content');
-    
+
     if (menu.style.display === 'flex') {
         content.style.animation = 'slideIn 0.3s reverse forwards';
         // Simplified close - needs timeout to match animation actually
@@ -99,7 +99,7 @@ function toggleMobileMenu() {
 function initTheory() {
     const navContainer = document.getElementById('theory-nav');
     const contentContainer = document.getElementById('theory-dynamic-render');
-    
+
     if (!window.probabilityData || !window.probabilityData.theory) return;
 
     let navHTML = '';
@@ -107,7 +107,7 @@ function initTheory() {
 
     window.probabilityData.theory.forEach((section, index) => {
         const title = section.title[currentLang] || section.title['en'];
-        
+
         // Sidebar Item
         navHTML += `
             <div class="accordion-item">
@@ -139,8 +139,8 @@ function initTheory() {
         `;
     });
 
-    if(navContainer) navContainer.innerHTML = navHTML;
-    if(contentContainer) {
+    if (navContainer) navContainer.innerHTML = navHTML;
+    if (contentContainer) {
         contentContainer.innerHTML = contentHTML;
         // Re-render MathJax specifically for theory content
         if (window.MathJax) {
@@ -213,25 +213,25 @@ function renderPracticeStats() {
 }
 
 function initProblems() {
-    if(window.probabilityData && window.probabilityData.problems)
+    if (window.probabilityData && window.probabilityData.problems)
         renderProblems(window.probabilityData.problems);
     renderPracticeStats();
 }
 
 function renderProblems(problems) {
     const grid = document.getElementById('problems-grid');
-    if(!grid) return;
+    if (!grid) return;
     const ui = window.probabilityData.ui;
     const prog = loadProgress();
-    
+
     grid.innerHTML = problems.map(prob => {
         const qText = prob.question[currentLang] || prob.question['en'];
         const solved = !!prog.solved[String(prob.id)];
-        
+
         return `
         <div class="problem-card ${solved ? 'problem-solved' : ''}" data-id="${prob.id}">
             <span class="problem-tag tag-${prob.difficulty}">
-                ${ui['filter_'+prob.difficulty] ? ui['filter_'+prob.difficulty][currentLang] : prob.difficulty}
+                ${ui['filter_' + prob.difficulty] ? ui['filter_' + prob.difficulty][currentLang] : prob.difficulty}
             </span>
             <p>${qText}</p>
             <input type="text" class="problem-input" placeholder="..." id="input-${prob.id}" ${solved ? 'disabled' : ''}>
@@ -241,7 +241,7 @@ function renderProblems(problems) {
         </div>
         `
     }).join('');
-    
+
     if (window.MathJax) MathJax.typesetPromise([grid]);
 }
 
@@ -273,12 +273,12 @@ function checkAnswer(id) {
     const currentFilterBtn = document.querySelector('.filter-btn.active');
     const filterLevel = currentFilterBtn ? (currentFilterBtn.textContent || '').trim().toLowerCase() : 'all';
     // Best-effort: if filter label isn't in English, just re-render all
-    if (['beginner','intermediate','advanced','olympic'].includes(filterLevel)) {
+    if (['beginner', 'intermediate', 'advanced', 'olympic'].includes(filterLevel)) {
         renderProblems(window.probabilityData.problems.filter(p => p.difficulty === filterLevel));
     } else {
         renderProblems(window.probabilityData.problems);
     }
-    
+
     showModal(isCorrect, problem);
 }
 
@@ -387,7 +387,7 @@ function showModal(isCorrect, problem) {
         } else {
             msg.innerText = ui.modal_incorrect_msg[currentLang];
         }
-        
+
         if (problem.related_theory_id) {
             btn.style.display = 'inline-block';
             btn.innerText = ui.btn_goto_theory[currentLang];
@@ -412,9 +412,9 @@ function closeModal() {
 
 // Modal Global Listeners
 const closeModalBtn = document.querySelector('.close-modal');
-if(closeModalBtn) closeModalBtn.onclick = closeModal;
+if (closeModalBtn) closeModalBtn.onclick = closeModal;
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     const modal = document.getElementById('feedback-modal');
     if (event.target === modal) {
         closeModal();
@@ -440,7 +440,7 @@ function handleInitialHashRoute() {
     }
 
     // Fallback: allow #theory / #practice / #lab / #simulations
-    const known = ['theory', 'practice', 'lab', 'simulations'];
+    const known = ['home', 'theory', 'practice', 'lab', 'simulations'];
     if (known.includes(hash)) showPage(hash);
 }
 
@@ -448,7 +448,7 @@ function handleInitialHashRoute() {
 function initTheoryScrollReveal() {
     // Cleanup previous observer
     if (revealObserver) {
-        try { revealObserver.disconnect(); } catch {}
+        try { revealObserver.disconnect(); } catch { }
         revealObserver = null;
     }
 
