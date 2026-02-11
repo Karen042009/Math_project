@@ -11,7 +11,9 @@ function addToCalc(val) {
 
 function clearCalc() {
     document.getElementById('calc-input').value = '';
-    document.getElementById('calc-result').innerText = 'Result: 0';
+    const ui = window.probabilityData.ui;
+    const lang = currentLang || 'hy';
+    document.getElementById('calc-result').innerText = `${ui.calc_result_label[lang]} 0`;
 }
 
 function backspaceCalc() {
@@ -62,20 +64,25 @@ async function calculateResult() {
         const res = safeEval(P, C, factorial, Math);
         
         if (isNaN(res) || res === undefined) throw new Error("NaN");
-        resultDisplay.innerText = `Result: ${parseFloat(res.toFixed(6))}`;
+        const ui = window.probabilityData.ui;
+        const lang = currentLang || 'hy';
+        resultDisplay.innerText = `${ui.calc_result_label[lang]} ${parseFloat(res.toFixed(6))}`;
         resultDisplay.style.color = 'var(--accent-gold)';
 
     } catch (e) {
         // Fallback to AI!
-        resultDisplay.innerText = "Analyzing complexity...";
+        const lang = currentLang || 'hy';
+        resultDisplay.innerText = lang === 'hy' ? "Վերլուծություն..." : (lang === 'ru' ? "Анализ..." : "Analyzing complexity...");
         resultDisplay.style.color = '#4cc9f0';
         
         try {
             // Assumes solveWithAI is available globally (from ai.js)
             const aiRes = await solveWithAI(expr);
-            resultDisplay.innerText = `AI Result: ${aiRes}`;
+            const lang = currentLang || 'hy';
+            resultDisplay.innerText = `AI ${window.probabilityData.ui.calc_result_label[lang]} ${aiRes}`;
         } catch (aiError) {
-             resultDisplay.innerText = "Error";
+             const lang = currentLang || 'hy';
+             resultDisplay.innerText = lang === 'hy' ? "Սխալ" : (lang === 'ru' ? "Ошибка" : "Error");
              resultDisplay.style.color = 'red';
         }
     }
@@ -96,9 +103,10 @@ function updateVisualizer() {
             <label>b: <input type="number" id="param-b" value="1"></label>
         `;
     } else if (type === 'venn') {
+        const lang = currentLang || 'hy';
         paramsDiv.innerHTML = `
           <label style="min-width: 220px;">
-            Op:
+            ${lang === 'hy' ? 'Գործողություն՝' : (lang === 'ru' ? 'Операция:' : 'Op:')}
             <select id="venn-op">
               <option value="intersect">A ∩ B</option>
               <option value="union">A ∪ B</option>
@@ -108,8 +116,9 @@ function updateVisualizer() {
           </label>
         `;
     } else if (type === 'tree') {
+        const lang = currentLang || 'hy';
         paramsDiv.innerHTML = `
-          <label>Steps: <input type="number" id="tree-steps" value="3" min="1" max="6"></label>
+          <label>${lang === 'hy' ? 'Քայլեր՝' : (lang === 'ru' ? 'Шаги:' : 'Steps:')} <input type="number" id="tree-steps" value="3" min="1" max="6"></label>
           <label>p: <input type="number" id="tree-p" value="0.6" min="0" max="1" step="0.01"></label>
         `;
     }
@@ -369,7 +378,13 @@ function drawGraph() {
         // We'll interpret left as "success" with prob p, right as "fail" with q.
         const out = document.getElementById('dist-output');
         if (out) {
-            out.innerHTML = `<div><strong>Binary tree</strong> with ${steps} steps. Left branch prob = p, right branch prob = q.</div>`;
+            const lang = currentLang || 'hy';
+            const treeDesc = {
+                hy: `<strong>Բինար ծառ</strong> ${steps} քայլերով: Ձախ ճյուղի հավան. = p, աջ ճյուղի հավան. = q:`,
+                en: `<strong>Binary tree</strong> with ${steps} steps. Left branch prob = p, right branch prob = q.`,
+                ru: `<strong>Бинарное дерево</strong> с ${steps} шагами. Вер. левой ветви = p, пр. ветви = q.`
+            };
+            out.innerHTML = `<div>${treeDesc[lang]}</div>`;
         }
 
         ctx.fillStyle = 'rgba(255,255,255,0.8)';

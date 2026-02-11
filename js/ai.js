@@ -16,9 +16,10 @@ async function generateAIProblem() {
     const topic = document.getElementById('ai-topic').value;
     const difficulty = document.getElementById('ai-difficulty').value;
     const btn = document.querySelector('.ai-controls button');
+    const lang = currentLang || 'hy';
     
     // UI Loading State
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${lang === 'hy' ? 'Ստեղծվում է...' : (lang === 'ru' ? 'Генерация...' : 'Generating...')}`;
     btn.disabled = true;
     document.getElementById('ai-workspace').style.display = 'none';
 
@@ -53,9 +54,10 @@ async function generateAIProblem() {
 
     } catch (error) {
         console.error("AI Error:", error);
-        alert("Failed to generate problem. Please try again.");
+        alert(lang === 'hy' ? "Չհաջողվեց ստեղծել խնդիրը:" : "Failed to generate problem.");
     } finally {
-        btn.innerHTML = '<i class="fas fa-bolt"></i> Generate Problem';
+        const ui = window.probabilityData.ui;
+        btn.innerHTML = `<i class="fas fa-bolt"></i> ${ui.btn_generate_problem[lang]}`;
         btn.disabled = false;
     }
 }
@@ -70,11 +72,12 @@ async function checkSolutionWithAI() {
     const btn = document.querySelector('.ai-check-btn');
 
     if (!userText && !userImg) {
-        alert("Please provide a text solution or upload an image!");
+        alert(currentLang === 'hy' ? "Խնդրում ենք տրամադրել լուծումը:" : "Please provide a solution!");
         return;
     }
 
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+    const lang = currentLang || 'hy';
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${lang === 'hy' ? 'Վերլուծություն...' : (lang === 'ru' ? 'Анализ...' : 'Analyzing...')}`;
     btn.disabled = true;
 
     // Prepare content parts
@@ -99,7 +102,7 @@ async function checkSolutionWithAI() {
     }
 
     parts.push({ text: `
-    Act as a strict but helpful math tutor. Analyze my solution.
+    Act as a strict but helpful math tutor. Analyze my solution. Use language: ${lang}.
     1. Is the final answer correct?
     2. Review my steps (from text or image).
     3. Identify any theoretical mistakes.
@@ -107,7 +110,7 @@ async function checkSolutionWithAI() {
     
     Output format:
     HTML format inside a <div>.
-    Use <h4> for sections (Verdict, Analysis, Strengths, Weaknesses).
+    Use <h4> for sections (Verdict, Analysis, Strengths, Weaknesses, correctly translated to ${lang}).
     Use <ul><li> for points.
     Rate my solution X/10.
     ` });
@@ -141,9 +144,10 @@ async function checkSolutionWithAI() {
 
     } catch (error) {
         console.error("AI Analysis Error:", error);
-        alert("AI could not analyze the solution.");
+        alert(lang === 'hy' ? "AI-ն չկարողացավ վերլուծել:" : "AI could not analyze.");
     } finally {
-        btn.innerHTML = '<i class="fas fa-microchip"></i> Ask AI to Check';
+        const ui = window.probabilityData.ui;
+        btn.innerHTML = `<i class="fas fa-microchip"></i> ${ui.btn_ask_ai[lang]}`;
         btn.disabled = false;
     }
 }

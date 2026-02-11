@@ -37,7 +37,19 @@ function setLanguage(lang) {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (window.probabilityData && window.probabilityData.ui && window.probabilityData.ui[key]) {
-            el.innerText = window.probabilityData.ui[key][lang] || window.probabilityData.ui[key]['en'];
+            const translated = window.probabilityData.ui[key][lang] || window.probabilityData.ui[key]['en'];
+            
+            // Handle placeholders
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = translated;
+            } else {
+                // If it contains HTML tags, use innerHTML
+                if (translated.includes('<')) {
+                    el.innerHTML = translated;
+                } else {
+                    el.innerText = translated;
+                }
+            }
         }
     });
 
@@ -199,16 +211,13 @@ function renderPracticeStats() {
     const solvedCount = Object.values(prog.solved).filter(Boolean).length;
     const attemptsTotal = Object.values(prog.attempts).reduce((a, b) => a + (parseInt(b, 10) || 0), 0);
 
-    const labels = {
-        solved: currentLang === 'hy' ? 'Լուծված' : currentLang === 'ru' ? 'Решено' : 'Solved',
-        attempts: currentLang === 'hy' ? 'Փորձեր' : currentLang === 'ru' ? 'Попытки' : 'Attempts',
-        total: currentLang === 'hy' ? 'Ընդամենը' : currentLang === 'ru' ? 'Всего' : 'Total'
-    };
+    const ui = window.probabilityData.ui;
+    const lang = currentLang || 'hy';
 
     box.innerHTML = `
-      <div class="stat"><div class="label">${labels.solved}</div><div class="value">${solvedCount}/${total}</div></div>
-      <div class="stat"><div class="label">${labels.attempts}</div><div class="value">${attemptsTotal}</div></div>
-      <div class="stat"><div class="label">${labels.total}</div><div class="value">${total}</div></div>
+      <div class="stat"><div class="label">${ui.stat_solved[lang]}</div><div class="value">${solvedCount}/${total}</div></div>
+      <div class="stat"><div class="label">${ui.stat_attempts[lang]}</div><div class="value">${attemptsTotal}</div></div>
+      <div class="stat"><div class="label">${ui.stat_total[lang]}</div><div class="value">${total}</div></div>
     `;
 }
 
@@ -357,7 +366,7 @@ function showModal(isCorrect, problem) {
         title.innerText = ui.modal_correct[currentLang];
         title.style.color = '#4cc9f0';
         msg.innerText = ui.modal_correct_msg[currentLang];
-        btn.innerText = ui.btn_continue[currentLang] || "Continue";
+        btn.innerText = ui.btn_continue[currentLang];
         btn.onclick = closeModal;
         btn.style.display = 'inline-block';
     } else {
@@ -377,17 +386,17 @@ function showModal(isCorrect, problem) {
 
         if (theoryTitle) {
             // Smart feedback that teaches (not just "wrong")
-            if (currentLang === 'hy') {
-                msg.innerHTML = `Ցավոք, սխալ է։ Կարծես թե Դուք դժվարանում եք <strong>«${theoryTitle}»</strong> թեմայում։ ${hintText ? ('<br><em>Հուշում՝</em> ' + hintText) : ''}`.trim();
-            } else if (currentLang === 'ru') {
-                msg.innerHTML = `К сожалению, неверно. Похоже, вы затрудняетесь в теме <strong>«${theoryTitle}»</strong>. ${hintText ? ('<br><em>Подсказка:</em> ' + hintText) : ''}`.trim();
-            } else {
-                msg.innerHTML = `Unfortunately, that's incorrect. It looks like you're struggling with <strong>"${theoryTitle}"</strong>. ${hintText ? ('<br><em>Hint:</em> ' + hintText) : ''}`.trim();
-            }
+            const template = ui.modal_smart_feedback[currentLang] || ui.modal_smart_feedback.en;
+            const hintLabel = ui.modal_hint_label[currentLang] || ui.modal_hint_label.en;
+            const hintFormatted = hintText ? (`<br><em>${hintLabel}</em> ` + hintText) : '';
+            
+            msg.innerHTML = template
+                .replace('{topic}', theoryTitle)
+                .replace('{hint}', hintFormatted)
+                .trim();
         } else {
             msg.innerText = ui.modal_incorrect_msg[currentLang];
         }
-
         if (problem.related_theory_id) {
             btn.style.display = 'inline-block';
             btn.innerText = ui.btn_goto_theory[currentLang];

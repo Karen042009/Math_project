@@ -265,9 +265,11 @@ function updateGaltonStats() {
     const settled = galtonBalls.filter(b => b.settled).length;
     const statsEl = document.getElementById('galton-stats');
     if (statsEl) {
+        const ui = window.probabilityData.ui;
+        const lang = currentLang || 'hy';
         statsEl.innerHTML = `
-            <p>Balls dropped: <span>${totalBalls}</span></p>
-            <p>Settled: <span>${settled}</span></p>
+            <p>${ui.stat_balls_dropped[lang]} <span>${totalBalls}</span></p>
+            <p>${ui.stat_settled[lang]} <span>${settled}</span></p>
         `;
     }
 }
@@ -296,7 +298,9 @@ function montyNewGame() {
     montyPlayerChoice = -1;
     montyRevealedDoor = -1;
     renderMontyDoors();
-    document.getElementById('monty-message').innerText = 'Choose a door!';
+    const ui = window.probabilityData.ui;
+    const lang = currentLang || 'hy';
+    document.getElementById('monty-message').innerText = ui.monty_choose_door[lang];
 }
 
 function montyChooseDoor(doorIndex) {
@@ -310,10 +314,14 @@ function montyChooseDoor(doorIndex) {
     montyRevealedDoor = options[Math.floor(Math.random() * options.length)];
 
     renderMontyDoors();
-    document.getElementById('monty-message').innerHTML = `
-        Door ${montyRevealedDoor + 1} has a 🐐! <br>
-        <strong>Do you want to SWITCH or STAY?</strong>
-    `;
+    const ui = window.probabilityData.ui;
+    const lang = currentLang || 'hy';
+    const msgTemplate = {
+        hy: `Դուռ ${montyRevealedDoor + 1}-ի հետևում 🐐 է։ <br><strong>Ուզո՞ւմ եք ՓՈԽԵԼ, թե՞ ՄՆԱԼ։</strong>`,
+        en: `Door ${montyRevealedDoor + 1} has a 🐐! <br><strong>Do you want to SWITCH or STAY?</strong>`,
+        ru: `За дверью ${montyRevealedDoor + 1} 🐐! <br><strong>Желаете СМЕНИТЬ или ОСТАВИТЬ?</strong>`
+    };
+    document.getElementById('monty-message').innerHTML = msgTemplate[lang];
     document.getElementById('monty-actions').style.display = 'flex';
 }
 
@@ -341,9 +349,19 @@ function montyDecision(shouldSwitch) {
     renderMontyDoors(true);
     updateMontyStats();
 
-    document.getElementById('monty-message').innerHTML = won
-        ? `🎉 <strong style="color:#4cc9f0">You WON the 🚗!</strong> (You ${shouldSwitch ? 'switched' : 'stayed'})`
-        : `😔 <strong style="color:#f72585">You got a 🐐!</strong> (You ${shouldSwitch ? 'switched' : 'stayed'})`;
+    const lang = currentLang || 'hy';
+    const winMsg = {
+        hy: `🎉 <strong style="color:#4cc9f0">Դուք ՀԱՂԹԵՑԻՔ 🚗-ն։</strong> (${shouldSwitch ? 'փոխելով' : 'մնալով'})`,
+        en: `🎉 <strong style="color:#4cc9f0">You WON the 🚗!</strong> (You ${shouldSwitch ? 'switched' : 'stayed'})`,
+        ru: `🎉 <strong style="color:#4cc9f0">Вы ВЫИГРАЛИ 🚗!</strong> (${shouldSwitch ? 'сменив' : 'оставив'})`
+    };
+    const loseMsg = {
+        hy: `😔 <strong style="color:#f72585">Դուք ստացաք 🐐:</strong> (${shouldSwitch ? 'փոխելով' : 'մնալով'})`,
+        en: `😔 <strong style="color:#f72585">You got a 🐐!</strong> (You ${shouldSwitch ? 'switched' : 'stayed'})`,
+        ru: `😔 <strong style="color:#f72585">Вы получили 🐐!</strong> (${shouldSwitch ? 'сменив' : 'оставив'})`
+    };
+
+    document.getElementById('monty-message').innerHTML = won ? winMsg[lang] : loseMsg[lang];
 
     setTimeout(montyNewGame, 2000);
 }
@@ -363,7 +381,14 @@ function montyAutoRun(count) {
         else montyStats.stayLose++;
     }
     updateMontyStats();
-    document.getElementById('monty-message').innerHTML = `<strong>Simulated ${count} games!</strong> Check the results below.`;
+    
+    const lang = currentLang || 'hy';
+    const simMsg = {
+        hy: `<strong>Սիմուլյացիա է արվել ${count} խաղ:</strong> Ստուգեք արդյունքները ստորև:`,
+        en: `<strong>Simulated ${count} games!</strong> Check the results below.`,
+        ru: `<strong>Просимулировано ${count} игр!</strong> Проверьте результаты ниже.`
+    };
+    document.getElementById('monty-message').innerHTML = simMsg[lang];
 }
 
 function renderMontyDoors(showAll) {
@@ -392,10 +417,12 @@ function updateMontyStats() {
 
     const statsEl = document.getElementById('monty-stats');
     if (statsEl) {
+        const ui = window.probabilityData.ui;
+        const lang = currentLang || 'hy';
         statsEl.innerHTML = `
-            <p>Total games: <span>${montyStats.total}</span></p>
-            <p>Switch wins: <span>${montyStats.switchWin} / ${switchTotal}</span></p>
-            <p>Stay wins: <span>${montyStats.stayWin} / ${stayTotal}</span></p>
+            <p>${ui.stat_total_games[lang]} <span>${montyStats.total}</span></p>
+            <p>${ui.stat_switch_wins[lang]} <span>${montyStats.switchWin} / ${switchTotal}</span></p>
+            <p>${ui.stat_stay_wins[lang]} <span>${montyStats.stayWin} / ${stayTotal}</span></p>
         `;
     }
 
@@ -543,12 +570,14 @@ function updateBuffonStats() {
 
     const statsEl = document.getElementById('buffon-stats');
     if (statsEl) {
+        const ui = window.probabilityData.ui;
+        const lang = currentLang || 'hy';
         statsEl.innerHTML = `
-            <p>Total needles: <span>${buffonTotal}</span></p>
-            <p>Crossing: <span>${buffonCrossing}</span></p>
-            <p>π estimate: <span style="color:#ffd60a; font-size: 1.3rem;">${piEstimate.toFixed(6)}</span></p>
-            <p>Actual π: <span style="color:#4cc9f0">${Math.PI.toFixed(6)}</span></p>
-            <p>Error: <span>${buffonTotal > 0 ? Math.abs(piEstimate - Math.PI).toFixed(6) : '—'}</span></p>
+            <p>${ui.stat_total_needles[lang]} <span>${buffonTotal}</span></p>
+            <p>${ui.stat_crossing[lang]} <span>${buffonCrossing}</span></p>
+            <p>${ui.stat_pi_estimate[lang]} <span style="color:#ffd60a; font-size: 1.3rem;">${piEstimate.toFixed(6)}</span></p>
+            <p>${ui.stat_actual_pi[lang]} <span style="color:#4cc9f0">${Math.PI.toFixed(6)}</span></p>
+            <p>${lang === 'hy' ? 'Սխալ՝' : (lang === 'ru' ? 'Ошибка:' : 'Error:')} <span>${buffonTotal > 0 ? Math.abs(piEstimate - Math.PI).toFixed(6) : '—'}</span></p>
         `;
     }
 }
