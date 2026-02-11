@@ -23,9 +23,15 @@ async function generateAIProblem() {
     btn.disabled = true;
     document.getElementById('ai-workspace').style.display = 'none';
 
-    const prompt = `Generate a unique, creative probability problem about "${topic}" at "${difficulty}" level. 
-    Return ONLY the raw text of the problem. Do not include the solution yet. 
-    Make it engaging.`;
+    const prompt = `Generate a high-quality, educational probability problem in ${lang === 'hy' ? 'Armenian' : (lang === 'ru' ? 'Russian' : 'English')}.
+    Topic: "${topic}"
+    Difficulty: "${difficulty}"
+    
+    Requirements:
+    1. Use proper mathematical terminology.
+    2. Use MathJax for all formulas (e.g., \\( P(A) \\), \\( C_n^k \\)).
+    3. Make it engaging and realistic.
+    4. Return ONLY the raw problem text. No preamble, no solution.`;
 
     try {
         const response = await fetch(API_URL, {
@@ -42,6 +48,9 @@ async function generateAIProblem() {
         // Render
         document.getElementById('ai-workspace').style.display = 'block';
         document.getElementById('ai-question-text').innerText = text;
+        // Trigger MathJax re-render for the question
+        if (window.MathJax) MathJax.typesetPromise([document.getElementById('ai-question-text')]);
+        
         currentAIProblem = text;
         
         // Reset inputs
@@ -82,8 +91,8 @@ async function checkSolutionWithAI() {
 
     // Prepare content parts
     let parts = [
-        { text: `I am a student solving this probability problem:\n"${currentAIProblem}"\n\nHere is my solution attempt:` },
-        { text: `Text Solution: ${userText}` }
+        { text: `I am a student solving this problem in ${lang}:\n"${currentAIProblem}"\n\nMy solution attempt:` },
+        { text: `Text: ${userText}` }
     ];
 
     // Handle Image if present
@@ -91,7 +100,7 @@ async function checkSolutionWithAI() {
         try {
             const base64Data = await fileToGenerativePart(userImg);
             parts.push(base64Data);
-            parts.push({ text: "[Attached Image of my handwritten solution]" });
+            parts.push({ text: "[Image attached above]" });
         } catch (e) {
             console.error(e);
             alert("Error processing image.");
@@ -102,17 +111,22 @@ async function checkSolutionWithAI() {
     }
 
     parts.push({ text: `
-    Act as a strict but helpful math tutor. Analyze my solution. Use language: ${lang}.
-    1. Is the final answer correct?
-    2. Review my steps (from text or image).
-    3. Identify any theoretical mistakes.
-    4. Provide the correct rigorous derivation if I am wrong.
+    Act as a professional and encouraging math tutor. Analyze the student's solution in ${lang}.
     
-    Output format:
-    HTML format inside a <div>.
-    Use <h4> for sections (Verdict, Analysis, Strengths, Weaknesses, correctly translated to ${lang}).
-    Use <ul><li> for points.
-    Rate my solution X/10.
+    Tasks:
+    1. Check the correctness of the final answer.
+    2. Check the logical flow and theoretical application.
+    3. Provide constructive feedback. Use MathJax for formulas.
+    4. If the solution is incomplete or wrong, provide a step-by-step rigorous derivation.
+    
+    Output Format (STRICT HTML):
+    Return a <div> containing:
+    - <h4>Verdict (Correct/Incorrect/Partial)</h4>
+    - <h4>Detailed Analysis</h4>
+    - <h4>Educational Tips</h4>
+    Rate the solution X/10 at the end of the text as "Score: X/10".
+    
+    All text must be in ${lang === 'hy' ? 'Armenian' : (lang === 'ru' ? 'Russian' : 'English')}.
     ` });
 
     try {

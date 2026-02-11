@@ -320,7 +320,9 @@
                         <button class="key op" onclick="addToCalc(',')">,</button>
                         <button class="key op" onclick="addToCalc('sqrt(')">√</button>
                         <button class="key op" onclick="addToCalc('^')">^</button>
-                        <!-- Row 7: Special actions -->
+                        <!-- Row 7: Set Operations -->
+                        <button class="key op" onclick="addToCalc('∪')" style="color:var(--accent-pink)">∪</button>
+                        <button class="key op" onclick="addToCalc('∩')" style="color:var(--accent-blue)">∩</button>
                         <button class="key action" onclick="backspaceCalc()"><i class="fas fa-backspace"></i></button>
                         <button class="key action" onclick="clearCalc()">AC</button>
                         <button class="key enter" onclick="calculateResult()" style="grid-column: span 2;">

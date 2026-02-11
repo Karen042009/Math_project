@@ -39,6 +39,7 @@ async function calculateResult() {
 
     const P = (n, r) => factorial(n) / factorial(n - r);
     const C = (n, r) => factorial(n) / (factorial(r) * factorial(n - r));
+    const U = (pa, pb, pi = 0) => pa + pb - pi; // Union of A and B given intersection pi
 
     // Pre-process expression for JS Eval
     // Replace P(n,r) -> P(n,r) (handled by wrapper)
@@ -48,8 +49,10 @@ async function calculateResult() {
     let processed = expr.replace(/(\d+)!/g, 'factorial($1)');
     // Replace special symbols
     processed = processed.replace(/×/g, '*').replace(/÷/g, '/');
-    processed = processed.replace(/∩/g, '*'); // Intersection often modeled as multiplication in independent events (heuristically)
-    processed = processed.replace(/∪/g, '+'); // Union often sum (heuristically)
+    processed = processed.replace(/∩/g, '*'); // Intersection
+    processed = processed.replace(/∪/g, '+'); // Union
+    processed = processed.replace(/−/g, '-'); // Minus symbol
+    processed = processed.replace(/√/g, 'Math.sqrt'); // Square root symbol
     // Constants
     processed = processed.replace(/π/g, 'Math.PI');
     processed = processed.replace(/sqrt\(/g, 'Math.sqrt(');

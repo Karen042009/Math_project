@@ -258,6 +258,37 @@ function drawGaltonFrame() {
     ctx.strokeStyle = 'rgba(76, 201, 240, 0.4)';
     ctx.lineWidth = 2;
     ctx.stroke();
+
+    // Draw theoretical curve
+    const settledCount = galtonBalls.filter(b => b.settled).length;
+    if (settledCount > 20) {
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(247, 37, 133, 0.5)';
+        ctx.setLineDash([5, 5]);
+        ctx.lineWidth = 3;
+
+        const binWidth = w / (galtonRows + 1);
+        const ballDiam = 9; // Approx
+        const n = galtonRows;
+        const p = 0.5;
+        const mu = n * p;
+        const sigma = Math.sqrt(n * p * (1 - p));
+
+        for (let x = 0; x <= w; x++) {
+            const binX = x / binWidth - 0.5;
+            // Normal approximation to binomial
+            const exponent = -Math.pow(binX - mu, 2) / (2 * Math.pow(sigma, 2));
+            const y_theo = (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(exponent);
+            
+            // Scale y_theo: total balls * y_theo * ball height
+            const pixelY = h - 10 - (settledCount * y_theo * ballDiam * 1.5);
+            
+            if (x === 0) ctx.moveTo(x, pixelY);
+            else ctx.lineTo(x, pixelY);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
 }
 
 function updateGaltonStats() {
@@ -436,6 +467,26 @@ function updateMontyStats() {
     if (stayBar) stayBar.style.width = stayPct + '%';
     if (switchLabel) switchLabel.textContent = switchPct + '%';
     if (stayLabel) stayLabel.textContent = stayPct + '%';
+
+    // Add comparison with theory
+    if (montyStats.total > 50) {
+        const lang = currentLang || 'hy';
+        const theoryAdvise = {
+            hy: `<p style="margin-top:15px; font-size:0.9rem; color:#aaa; font-style:italic">
+                    Տեսականորեն՝ Փոխելը հաղթում է <strong>66.7%</strong> դեպքերում, Մնալը՝ <strong>33.3%</strong>:
+                 </p>`,
+            en: `<p style="margin-top:15px; font-size:0.9rem; color:#aaa; font-style:italic">
+                    Theoretically: Switching wins <strong>66.7%</strong>, Staying wins <strong>33.3%</strong>.
+                 </p>`,
+            ru: `<p style="margin-top:15px; font-size:0.9rem; color:#aaa; font-style:italic">
+                    Теоретически: Смена дает <strong>66.7%</strong> побед, Оставляя — <strong>33.3%</strong>.
+                 </p>`
+        };
+        const statsEl = document.getElementById('monty-stats');
+        if (statsEl && !statsEl.innerHTML.includes('Theoretically')) {
+             statsEl.innerHTML += theoryAdvise[lang];
+        }
+    }
 }
 
 function resetMonty() {
@@ -578,6 +629,10 @@ function updateBuffonStats() {
             <p>${ui.stat_pi_estimate[lang]} <span style="color:#ffd60a; font-size: 1.3rem;">${piEstimate.toFixed(6)}</span></p>
             <p>${ui.stat_actual_pi[lang]} <span style="color:#4cc9f0">${Math.PI.toFixed(6)}</span></p>
             <p>${lang === 'hy' ? 'Սխալ՝' : (lang === 'ru' ? 'Ошибка:' : 'Error:')} <span>${buffonTotal > 0 ? Math.abs(piEstimate - Math.PI).toFixed(6) : '—'}</span></p>
+            <div style="margin-top:15px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1); font-size:0.85rem; color:#aaa;">
+                ${lang === 'hy' ? 'Բանաձև՝' : 'Formula:'} \\( \\pi \\approx \\frac{2lN}{dh} \\)
+            </div>
         `;
+        if (window.MathJax) MathJax.typesetPromise([statsEl]);
     }
 }
