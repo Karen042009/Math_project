@@ -380,9 +380,6 @@ function findTheoryNodeById(theoryId) {
 
 function showModal(isCorrect, problem) {
     const modal = document.getElementById('feedback-modal');
-    const title = document.getElementById('modal-title');
-    const msg = document.getElementById('modal-msg');
-    const btn = document.getElementById('modal-action-btn');
     const ui = window.probabilityData.ui;
 
     modal.style.display = 'flex';
@@ -390,7 +387,12 @@ function showModal(isCorrect, problem) {
     if (isCorrect) {
         document.getElementById('modal-title').innerText = ui.modal_correct[currentLang];
         document.getElementById('modal-title').style.color = '#4cc9f0';
-        document.getElementById('modal-msg').innerHTML = ui.modal_correct_msg[currentLang];
+        document.getElementById('modal-msg').innerHTML = `
+            <div style="text-align:center; padding:10px 0;">
+                <div style="font-size:3rem; margin-bottom:10px;">🎉</div>
+                <p style="font-size:1.1rem;">${ui.modal_correct_msg[currentLang]}</p>
+            </div>
+        `;
 
         const btn = document.getElementById('modal-action-btn');
         btn.style.display = 'inline-block';
@@ -400,46 +402,121 @@ function showModal(isCorrect, problem) {
         document.getElementById('modal-title').innerText = ui.modal_incorrect[currentLang];
         document.getElementById('modal-title').style.color = '#f72585';
 
-        // find theory
+        // Find related theory section
         let theoryTitle = null;
+        let theorySectionTitle = null;
         if (problem.related_theory_id) {
-            // We need to search effectively
             const allSections = window.probabilityData.theory || [];
             for (const sec of allSections) {
                 if (sec.subsections) {
                     const sub = sec.subsections.find(s => s.id === problem.related_theory_id);
                     if (sub) {
                         theoryTitle = sub.title[currentLang] || sub.title['en'];
+                        theorySectionTitle = sec.title[currentLang] || sec.title['en'];
                         break;
                     }
                 }
             }
         }
 
-        const template = ui.modal_smart_feedback[currentLang] || ui.modal_smart_feedback['en'];
-        let finalMsg = ui.modal_incorrect_msg[currentLang];
+        // Build rich feedback HTML
+        let feedbackHtml = '';
 
+        // Difficulty badge
+        const diffColors = { beginner: '#4cc9f0', intermediate: '#ffd60a', advanced: '#f72585', olympic: '#9d4edd' };
+        const diffLabels = { beginner: ui.filter_beginner, intermediate: ui.filter_intermediate, advanced: ui.filter_advanced, olympic: ui.filter_olympic };
+        const diffLabel = diffLabels[problem.difficulty] ? diffLabels[problem.difficulty][currentLang] : problem.difficulty;
+        const diffColor = diffColors[problem.difficulty] || '#aaa';
+
+        feedbackHtml += `<div style="margin-bottom:12px;">
+            <span style="display:inline-block; padding:3px 10px; border-radius:12px; font-size:0.75rem; font-weight:600; background:${diffColor}22; color:${diffColor}; border:1px solid ${diffColor}44;">
+                ${diffLabel}
+            </span>
+        </div>`;
+
+        // Main message with theory link
         if (theoryTitle) {
-            const hint = (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
-            const label = ui.modal_hint_label[currentLang];
-            const hintHtml = hint ? `<br><br><strong>${label}</strong> ${hint}` : "";
+            const template = ui.modal_smart_feedback[currentLang] || ui.modal_smart_feedback['en'];
 
-            finalMsg = template.replace('{topic}', theoryTitle).replace('{hint}', hintHtml);
+            // Hint box
+            const hint = (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
+            let hintHtml = '';
+            if (hint) {
+                hintHtml = `
+                    <div style="margin-top:15px; padding:12px 15px; background:rgba(157,78,221,0.1); border-left:3px solid var(--neon-purple); border-radius:0 8px 8px 0; font-family:'Fira Code',monospace; font-size:0.9rem;">
+                        <strong style="color:var(--accent-gold);">${ui.modal_hint_label[currentLang]}</strong><br>
+                        <span style="color:#e0e0e0;">${hint}</span>
+                    </div>
+                `;
+            }
+
+            feedbackHtml += `<p style="line-height:1.7;">${template.replace('{topic}', theoryTitle).replace('{hint}', '')}</p>`;
+            feedbackHtml += hintHtml;
+
+            // Correct answer display
+            feedbackHtml += `
+                <div style="margin-top:12px; padding:10px 14px; background:rgba(76,201,240,0.08); border:1px solid rgba(76,201,240,0.2); border-radius:8px; font-size:0.9rem;">
+                    <span style="color:#aaa;">${currentLang === 'hy' ? '\u0543\u056b\u0577\u057f \u057a\u0561\u057f\u0561\u057d\u056d\u0561\u0576\u055d' : currentLang === 'ru' ? '\u041f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0432\u0435\u0442:' : 'Correct answer:'}</span>
+                    <strong style="color:#4cc9f0; font-family:'Fira Code',monospace; margin-left:8px;">${problem.answer}</strong>
+                </div>
+            `;
+
+            // Theory path breadcrumb
+            if (theorySectionTitle) {
+                feedbackHtml += `
+                    <div style="margin-top:12px; font-size:0.8rem; color:#888;">
+                        <i class="fas fa-book" style="margin-right:5px;"></i>
+                        ${theorySectionTitle} → <strong style="color:#ccc;">${theoryTitle}</strong>
+                    </div>
+                `;
+            }
+        } else {
+            feedbackHtml += `<p>${ui.modal_incorrect_msg[currentLang]}</p>`;
+            feedbackHtml += `
+                <div style="margin-top:12px; padding:10px 14px; background:rgba(76,201,240,0.08); border:1px solid rgba(76,201,240,0.2); border-radius:8px;">
+                    <span style="color:#aaa;">${currentLang === 'hy' ? '\u054a\u0561\u057f\u0561\u057d\u056d\u0561\u0576\u055d' : currentLang === 'ru' ? '\u041e\u0442\u0432\u0435\u0442:' : 'Answer:'}</span>
+                    <strong style="color:#4cc9f0; font-family:'Fira Code',monospace; margin-left:8px;">${problem.answer}</strong>
+                </div>
+            `;
         }
 
-        document.getElementById('modal-msg').innerHTML = finalMsg;
+        document.getElementById('modal-msg').innerHTML = feedbackHtml;
 
+        // Theory navigation button
         const btn = document.getElementById('modal-action-btn');
         if (problem.related_theory_id) {
             btn.style.display = 'inline-block';
-            btn.innerText = ui.btn_goto_theory[currentLang];
+            btn.innerHTML = `<i class="fas fa-book-open" style="margin-right:6px;"></i>${ui.btn_goto_theory[currentLang]}`;
             btn.onclick = function () {
                 closeModal();
-                window.location.hash = problem.related_theory_id;
-                handleInitialHashRoute(); // Manual trigger
+                // Navigate to theory and auto-open the sidebar accordion
+                showPage('theory');
+                setTimeout(() => {
+                    // Find and expand the accordion containing this theory id
+                    const targetEl = document.getElementById(problem.related_theory_id);
+                    if (targetEl) {
+                        // Find parent accordion and open it
+                        const allAccordions = document.querySelectorAll('.sidebar details');
+                        allAccordions.forEach(d => {
+                            const links = d.querySelectorAll('a');
+                            links.forEach(a => {
+                                if (a.getAttribute('href') === '#' + problem.related_theory_id) {
+                                    d.setAttribute('open', '');
+                                }
+                            });
+                        });
+
+                        // Scroll to and highlight the section
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        targetEl.classList.add('theory-highlight');
+                        setTimeout(() => targetEl.classList.remove('theory-highlight'), 3000);
+                    }
+                }, 300);
             };
         } else {
-            btn.style.display = 'none';
+            btn.style.display = 'inline-block';
+            btn.innerText = ui.btn_continue[currentLang];
+            btn.onclick = closeModal;
         }
     }
 

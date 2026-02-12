@@ -338,14 +338,16 @@ window.probabilityData = {
       difficulty: "beginner",
       question: { hy: "2 մետաղադրամ նետելիս, որքա՞ն է հավանականությունը, որ երկուսն էլ «Զինանշան» կլինեն:", en: "Flip 2 coins. Prob of 2 Heads?", ru: "2 монеты. Вероятность 2-х орлов?" },
       answer: "0.25",
-      related_theory_id: "theory-conditional-prob"
+      related_theory_id: "theory-addition", // Changed from theory-conditional-prob
+      related_theory_hint: { hy: "P(A·B) = P(A)·P(B) = 0.5·0.5", en: "P(A∩B) = P(A)·P(B) = 0.5×0.5", ru: "P(A∩B) = P(A)·P(B) = 0.5×0.5" }
     },
     {
       id: 105,
       difficulty: "beginner",
       question: { hy: "Գտեք 6! (6-ի ֆակտորիալը):", en: "Calculate 6!", ru: "Вычислите 6!" },
       answer: "720",
-      related_theory_id: "theory-permutations"
+      related_theory_id: "theory-permutations",
+      related_theory_hint: { hy: "n! = 1·2·3·...·n → 6! = 720", en: "n! = 1·2·3·...·n → 6! = 720", ru: "n! = 1·2·3·...·n → 6! = 720" }
     },
 
     /* ---- Intermediate ---- */
@@ -372,7 +374,8 @@ window.probabilityData = {
       difficulty: "advanced",
       question: { hy: "X ~ N(0, 1): Գտնել P(|X| < 2) (մոտավոր, 2 նիշ):", en: "X ~ N(0,1). Find P(|X| < 2).", ru: "X ~ N(0,1). Найти P(|X| < 2)." },
       answer: "0.95",
-      related_theory_id: "theory-rv-props"
+      related_theory_id: "theory-normal", // Changed from theory-rv-props
+      related_theory_hint: { hy: "68-95-99.7 կանոն: 2σ միջակայք ≈ 95%", en: "68-95-99.7 Rule: within 2σ ≈ 95%", ru: "Правило 68-95-99.7: в пределах 2σ ≈ 95%" }
     },
     {
       id: 305,
@@ -389,7 +392,8 @@ window.probabilityData = {
       difficulty: "olympic",
       question: { hy: "Ընտրեք պատահական լար շրջանագծի վրա: Որքա՞ն է հավանականությունը, որ այն մեծ է շրջանագծին ներգծած եռանկյունու կողմից (Բերտրայի պարադոքս - տարբերակ 1):", en: "Bertrand Paradox (chord > triangle side). Solution 1.", ru: "Парадокс Бертрана (хорда > стороны)." },
       answer: "0.3333",
-      related_theory_id: "theory-geometric-prob"
+      related_theory_id: "theory-geometric-prob",
+      related_theory_hint: { hy: "Երկրաչափական մոտեցում: 1/3", en: "Equilateral inscribed triangle → chord must span > 120°, giving P = 1/3", ru: "Равносторонний вписанный → хорда > 120° → P = 1/3" }
     }
   ],
 
@@ -519,6 +523,14 @@ window.probabilityData = {
 
     if (candidates.length === 0) candidates = this.problemTemplates; // Fallback if too strict
 
+    // Hint templates per topic for dynamic problems
+    const hintMap = {
+      'theory-classical-prob': { hy: "P(A) = m/n \u2014 \u0576\u057a\u0561\u057d\u057f\u0561\u057e\u0578\u0580 / \u0562\u0578\u056c\u0578\u0580 \u0565\u056c\u0584\u0565\u0580", en: "P(A) = m/n \u2014 favorable / total outcomes", ru: "P(A) = m/n \u2014 \u0431\u043b\u0430\u0433\u043e\u043f\u0440\u0438\u044f\u0442\u043d\u044b\u0435 / \u0432\u0441\u0435 \u0438\u0441\u0445\u043e\u0434\u044b" },
+      'theory-combinations': { hy: "C(n,k) = n! / (k!(n-k)!)", en: "C(n,k) = n! / (k!(n-k)!)", ru: "C(n,k) = n! / (k!(n-k)!)" },
+      'theory-bernoulli': { hy: "P_n(k) = C(n,k) \u00b7 p^k \u00b7 q^(n-k)", en: "P_n(k) = C(n,k) \u00b7 p^k \u00b7 q^(n-k)", ru: "P_n(k) = C(n,k) \u00b7 p^k \u00b7 q^(n-k)" },
+      'theory-geometric-prob': { hy: "P = S_A / S_\u03a9 (\u0565\u0580\u056f\u0580\u0561\u0579\u0561\u0583\u0561\u056f\u0561\u0576 \u0570\u0561\u057e\u0561\u0576\u0561\u056f\u0561\u0576\u0578\u0582\u0569\u0575\u0578\u0582\u0576)", en: "P = favorable area / total area", ru: "P = S_\u0431\u043b\u0430\u0433 / S_\u043e\u0431\u0449 (\u0433\u0435\u043e\u043c. \u0432\u0435\u0440\u043e\u044f\u0442\u043d\u043e\u0441\u0442\u044c)" }
+    };
+
     const newProbs = [];
     for (let i = 0; i < count; i++) {
       const tmpl = candidates[Math.floor(Math.random() * candidates.length)];
@@ -529,6 +541,7 @@ window.probabilityData = {
         question: p.question,
         answer: p.answer,
         related_theory_id: tmpl.theoryId,
+        related_theory_hint: hintMap[tmpl.theoryId] || null,
         isDynamic: true
       });
     }
