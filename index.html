@@ -23,7 +23,7 @@
         window.MathJax = {
             tex: {
                 inlineMath: [['\\(', '\\)']],
-                displayMath: [['\\[', '\\]']]
+                displayMath: [['\\[', '\\]'], ['$$', '$$']]
             },
             options: {
                 skipHtmlTags: ['script', 'noscript', 'style', 'textarea']
@@ -145,22 +145,26 @@
                     <div class="feature-card glass-panel" onclick="showPage('theory')">
                         <div class="feature-icon"><i class="fas fa-book"></i></div>
                         <h3 data-i18n="card_theory_title">Theory Encyclopedia</h3>
-                        <p data-i18n="card_theory_desc">7 chapters covering everything from basic events to the Central Limit Theorem</p>
+                        <p data-i18n="card_theory_desc">7 chapters covering everything from basic events to the Central
+                            Limit Theorem</p>
                     </div>
                     <div class="feature-card glass-panel" onclick="showPage('practice')">
                         <div class="feature-icon"><i class="fas fa-brain"></i></div>
                         <h3 data-i18n="card_practice_title">Practice Arena</h3>
-                        <p data-i18n="card_practice_desc">20+ problems from beginner to Olympic level with smart feedback</p>
+                        <p data-i18n="card_practice_desc">20+ problems from beginner to Olympic level with smart
+                            feedback</p>
                     </div>
                     <div class="feature-card glass-panel" onclick="showPage('lab')">
                         <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
                         <h3 data-i18n="card_lab_title">Calculator & Graphs</h3>
-                        <p data-i18n="card_lab_desc">Custom keypad, distribution calculator, Venn diagrams, probability trees</p>
+                        <p data-i18n="card_lab_desc">Custom keypad, distribution calculator, Venn diagrams, probability
+                            trees</p>
                     </div>
                     <div class="feature-card glass-panel" onclick="showPage('simulations')">
                         <div class="feature-icon"><i class="fas fa-dice"></i></div>
                         <h3 data-i18n="card_sims_title">Monte Carlo Lab</h3>
-                        <p data-i18n="card_sims_desc">Galton Board, Monty Hall, and Buffon's Needle interactive simulations</p>
+                        <p data-i18n="card_sims_desc">Galton Board, Monty Hall, and Buffon's Needle interactive
+                            simulations</p>
                     </div>
                 </div>
             </div>
@@ -188,8 +192,10 @@
         <!-- ─────────────── PRACTICE PAGE ─────────────── -->
         <section id="practice" class="page-section">
             <div class="practice-header">
-                <h1><i class="fas fa-dumbbell" style="color:var(--accent-pink)"></i> <span data-i18n="section_practice">The Practice Arena</span></h1>
-                <div class="ai-badge"><i class="fas fa-brain"></i> <span data-i18n="ai_badge_text">Smart feedback system — links wrong answers to theory</span>
+                <h1><i class="fas fa-dumbbell" style="color:var(--accent-pink)"></i> <span
+                        data-i18n="section_practice">The Practice Arena</span></h1>
+                <div class="ai-badge"><i class="fas fa-brain"></i> <span data-i18n="ai_badge_text">Smart feedback system
+                        — links wrong answers to theory</span>
                 </div>
             </div>
 
@@ -222,13 +228,15 @@
             <!-- AI Section -->
             <div style="margin-top:50px; padding-top:30px; border-top:1px solid rgba(255,255,255,0.1);">
                 <h2 style="margin-bottom:20px;">
-                    <i class="fas fa-robot" style="color:var(--accent-blue)"></i> <span data-i18n="section_ai_gen">AI Problem Generator</span>
+                    <i class="fas fa-robot" style="color:var(--accent-blue)"></i> <span data-i18n="section_ai_gen">AI
+                        Problem Generator</span>
                 </h2>
                 <div class="ai-controls">
                     <select id="ai-topic" class="ai-select">
                         <option value="basic probability" data-i18n="topic_basic">Basic Probability</option>
                         <option value="combinatorics" data-i18n="topic_combinatorics">Combinatorics</option>
-                        <option value="conditional probability" data-i18n="topic_conditional">Conditional Probability</option>
+                        <option value="conditional probability" data-i18n="topic_conditional">Conditional Probability
+                        </option>
                         <option value="Bayes theorem" data-i18n="topic_bayes">Bayes' Theorem</option>
                         <option value="distributions" data-i18n="topic_distributions">Distributions</option>
                         <option value="random variables" data-i18n="topic_rv">Random Variables</option>
@@ -246,13 +254,16 @@
 
                 <div id="ai-workspace">
                     <div class="ai-problem">
-                        <h4><i class="fas fa-question-circle"></i> <span data-i18n="ai_workspace_title">Generated Problem</span></h4>
+                        <h4><i class="fas fa-question-circle"></i> <span data-i18n="ai_workspace_title">Generated
+                                Problem</span></h4>
                         <p id="ai-question-text"></p>
                     </div>
                     <div class="ai-input-area">
-                        <textarea id="ai-user-text" data-i18n="ai_placeholder_solution" placeholder="Write your solution here..."></textarea>
+                        <textarea id="ai-user-text" data-i18n="ai_placeholder_solution"
+                            placeholder="Write your solution here..."></textarea>
                         <label class="file-upload-label">
-                            <i class="fas fa-camera"></i> <span data-i18n="ai_upload_label">Upload handwritten solution</span>
+                            <i class="fas fa-camera"></i> <span data-i18n="ai_upload_label">Upload handwritten
+                                solution</span>
                             <input type="file" id="ai-user-image" accept="image/*" onchange="previewImage(this)"
                                 style="display:none">
                         </label>
@@ -265,7 +276,8 @@
                         <i class="fas fa-microchip"></i> <span data-i18n="btn_ask_ai">Ask AI to Check</span>
                     </button>
                     <div id="ai-feedback">
-                        <h3><span data-i18n="ai_score_label">Score:</span> <span id="ai-score" style="color:var(--accent-gold)"></span></h3>
+                        <h3><span data-i18n="ai_score_label">Score:</span> <span id="ai-score"
+                                style="color:var(--accent-gold)"></span></h3>
                         <div id="ai-feedback-content"></div>
                     </div>
                 </div>
@@ -284,50 +296,121 @@
                 <div class="lab-panel">
                     <h2><i class="fas fa-calculator"></i> <span data-i18n="card_tab_calc">Calculator</span></h2>
 
-                    <div class="calc-display-container">
-                        <input type="text" id="calc-input" data-i18n="calc_placeholder" placeholder="Enter expression...">
-                        <div id="calc-result"><span data-i18n="calc_result_label">Result:</span> 0</div>
+                    <!-- CALCULATOR HEADER -->
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                        <div class="calc-display-container" style="flex:1; margin-right:10px; margin-bottom:0;">
+                            <input type="text" id="calc-input" data-i18n="calc_placeholder" placeholder="...">
+                            <div id="calc-result" style="font-size:0.9rem; color:var(--accent-gold);">0</div>
+                        </div>
+                        <button id="btn-toggle-formula" class="secondary-btn small" onclick="toggleFormulaPanel()"
+                            style="height:50px; font-size:1.2rem;">
+                            <i class="fas fa-function"></i>
+                        </button>
                     </div>
 
-                    <div class="keypad">
-                        <!-- Row 1 -->
+                    <!-- TABS -->
+                    <div class="calc-tabs">
+                        <button class="calc-tab active" onclick="switchCalcTab('basic')"
+                            data-i18n="calc_group_basic">Basic</button>
+                        <button class="calc-tab" onclick="switchCalcTab('advanced')"
+                            data-i18n="calc_group_adv">Advanced</button>
+                        <button class="calc-tab" onclick="switchCalcTab('greek')"
+                            data-i18n="calc_group_greek">Greek</button>
+                    </div>
+
+                    <!-- KEYPADS (Always Available) -->
+                    <div id="calc-pad-basic" class="keypad calc-pad active">
                         <button class="key num" onclick="addToCalc('7')">7</button>
                         <button class="key num" onclick="addToCalc('8')">8</button>
                         <button class="key num" onclick="addToCalc('9')">9</button>
                         <button class="key op" onclick="addToCalc('/')">÷</button>
-                        <!-- Row 2 -->
+
                         <button class="key num" onclick="addToCalc('4')">4</button>
                         <button class="key num" onclick="addToCalc('5')">5</button>
                         <button class="key num" onclick="addToCalc('6')">6</button>
                         <button class="key op" onclick="addToCalc('*')">×</button>
-                        <!-- Row 3 -->
+
                         <button class="key num" onclick="addToCalc('1')">1</button>
                         <button class="key num" onclick="addToCalc('2')">2</button>
                         <button class="key num" onclick="addToCalc('3')">3</button>
                         <button class="key op" onclick="addToCalc('-')">−</button>
-                        <!-- Row 4 -->
+
                         <button class="key num" onclick="addToCalc('0')">0</button>
                         <button class="key num" onclick="addToCalc('.')">.</button>
+                        <button class="key action" onclick="backspaceCalc()"><i class="fas fa-backspace"></i></button>
+                        <button class="key op" onclick="addToCalc('+')">+</button>
+
+                        <button class="key action" onclick="clearCalc()">AC</button>
                         <button class="key op" onclick="addToCalc('(')">(</button>
                         <button class="key op" onclick="addToCalc(')')">)</button>
-                        <!-- Row 5: Special -->
-                        <button class="key op" onclick="addToCalc('+')">+</button>
+                        <button class="key enter" onclick="calculateResult()">=</button>
+                    </div>
+
+                    <div id="calc-pad-advanced" class="keypad calc-pad">
                         <button class="key op" onclick="addToCalc('!')">n!</button>
-                        <button class="key op" onclick="addToCalc('C(')">C(</button>
-                        <button class="key op" onclick="addToCalc('P(')">P(</button>
-                        <!-- Row 6: Probability symbols -->
-                        <button class="key op" onclick="addToCalc('π')">π</button>
-                        <button class="key op" onclick="addToCalc(',')">,</button>
+                        <button class="key op" onclick="addToCalc('C(')">C(n,k)</button>
+                        <button class="key op" onclick="addToCalc('P(')">P(n,k)</button>
                         <button class="key op" onclick="addToCalc('sqrt(')">√</button>
+
                         <button class="key op" onclick="addToCalc('^')">^</button>
-                        <!-- Row 7: Set Operations -->
+                        <button class="key op" onclick="addToCalc('log(')">log</button>
+                        <button class="key op" onclick="addToCalc('ln(')">ln</button>
+                        <button class="key op" onclick="addToCalc('abs(')">abs</button>
+
+                        <button class="key op" onclick="addToCalc('sin(')">sin</button>
+                        <button class="key op" onclick="addToCalc('cos(')">cos</button>
+                        <button class="key op" onclick="addToCalc('tan(')">tan</button>
+                        <button class="key op" onclick="addToCalc('e')">e</button>
+
                         <button class="key op" onclick="addToCalc('∪')" style="color:var(--accent-pink)">∪</button>
                         <button class="key op" onclick="addToCalc('∩')" style="color:var(--accent-blue)">∩</button>
-                        <button class="key action" onclick="backspaceCalc()"><i class="fas fa-backspace"></i></button>
+                        <button class="key op" onclick="addToCalc(',')">,</button>
+                        <button class="key enter" onclick="calculateResult()">=</button>
+                    </div>
+
+                    <div id="calc-pad-greek" class="keypad calc-pad">
+                        <button class="key op" onclick="addToCalc('α')">α</button>
+                        <button class="key op" onclick="addToCalc('β')">β</button>
+                        <button class="key op" onclick="addToCalc('γ')">γ</button>
+                        <button class="key op" onclick="addToCalc('λ')">λ</button>
+
+                        <button class="key op" onclick="addToCalc('μ')">μ</button>
+                        <button class="key op" onclick="addToCalc('σ')">σ</button>
+                        <button class="key op" onclick="addToCalc('π')">π</button>
+                        <button class="key op" onclick="addToCalc('Ω')">Ω</button>
+
+                        <button class="key op" onclick="addToCalc('ε')">ε</button>
+                        <button class="key op" onclick="addToCalc('δ')">δ</button>
+                        <button class="key op" onclick="addToCalc('θ')">θ</button>
+                        <button class="key op" onclick="addToCalc('∞')">∞</button>
+
                         <button class="key action" onclick="clearCalc()">AC</button>
-                        <button class="key enter" onclick="calculateResult()" style="grid-column: span 2;">
-                            <i class="fas fa-equals"></i> <span data-i18n="btn_calculate">Calculate</span>
-                        </button>
+                        <button class="key action" onclick="backspaceCalc()"><i class="fas fa-backspace"></i></button>
+                        <button class="key op" onclick="addToCalc(',')">,</button>
+                        <button class="key enter" onclick="calculateResult()">=</button>
+                    </div>
+
+                    <!-- FORMULA STEPS DRAWER -->
+                    <div id="calc-formula-container"
+                        style="display:none; margin-top:20px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
+                        <h3 data-i18n="calc_mode_formula"
+                            style="font-size:1rem; color:var(--accent-blue); margin-bottom:10px;">Step-by-Step Formulas
+                        </h3>
+                        <select id="formula-select" class="ai-select" style="width:100%; margin-bottom:15px;"
+                            onchange="renderFormulaInputs()">
+                            <option value="">-- Select Formula --</option>
+                            <option value="bernoulli">Bernoulli Formula</option>
+                            <option value="bayes">Bayes' Theorem</option>
+                            <option value="combinations">Combinations (C_n^k)</option>
+                            <option value="permutations">Permutations (P_n)</option>
+                            <option value="poisson">Poisson Approx</option>
+                        </select>
+                        <div id="formula-inputs" style="margin-bottom:15px;"></div>
+                        <button class="glow-btn small" onclick="solveFormulaWithSteps()" style="width:100%"><i
+                                class="fas fa-lightbulb"></i> Solve</button>
+                        <div id="formula-steps"
+                            style="margin-top:15px; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; font-family:'Fira Code', monospace; font-size:0.9rem;">
+                        </div>
                     </div>
                 </div>
 
@@ -341,8 +424,11 @@
                             <option value="venn" data-i18n="dist_venn">Venn Diagram</option>
                             <option value="tree" data-i18n="dist_tree">Probability Tree</option>
                         </select>
-                        <div id="dist-params"></div>
-                        <button class="secondary-btn" onclick="drawGraph()">
+                        <div id="dist-params-container" style="display:inline-block; margin-left:10px;">
+                            <!-- Dynamic params injected here -->
+                            <div id="dist-params"></div>
+                        </div>
+                        <button class="secondary-btn" onclick="drawGraph()" style="margin-left:auto;">
                             <i class="fas fa-play"></i> <span data-i18n="btn_draw">Draw</span>
                         </button>
                     </div>
@@ -359,7 +445,8 @@
                 <i class="fas fa-atom" style="color:var(--accent-pink)"></i>
                 <span data-i18n="section_sims">Monte Carlo Playground</span>
             </h1>
-            <p class="intro-text" data-i18n="intro_sims">Watch probability come alive through interactive simulations!</p>
+            <p class="intro-text" data-i18n="intro_sims">Watch probability come alive through interactive simulations!
+            </p>
 
             <!-- Simulation Tabs -->
             <div class="sim-tabs" style="display:flex; gap:10px; margin-bottom:30px; flex-wrap:wrap;">
@@ -521,7 +608,8 @@
                             <p><span data-i18n="stat_total_needles">Total needles:</span> <span>0</span></p>
                             <p><span data-i18n="stat_crossing">Crossing:</span> <span>0</span></p>
                             <p><span data-i18n="stat_pi_estimate">π estimate:</span> <span>—</span></p>
-                            <p><span data-i18n="stat_actual_pi">Actual π:</span> <span style="color:#4cc9f0">3.141593</span></p>
+                            <p><span data-i18n="stat_actual_pi">Actual π:</span> <span
+                                    style="color:#4cc9f0">3.141593</span></p>
                         </div>
                     </div>
                 </div>

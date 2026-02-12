@@ -24,8 +24,8 @@
 }
 
 .glow-btn.secondary {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: none;
 }
 
@@ -34,9 +34,9 @@
 }
 
 .secondary-btn {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     color: white;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: 500;
@@ -45,7 +45,7 @@
 }
 
 .secondary-btn:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
     border-color: white;
 }
 
@@ -54,8 +54,11 @@
 .modal-overlay {
     display: none;
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.85);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(5px);
     z-index: 3000;
     align-items: center;
@@ -97,15 +100,17 @@
 }
 
 .problem-card {
-    background: rgba(30, 30, 45, 0.4); /* Less solid */
-    border: 1px solid rgba(188, 19, 254, 0.2); /* Subtle purple hint */
+    background: rgba(30, 30, 45, 0.4);
+    /* Less solid */
+    border: 1px solid rgba(188, 19, 254, 0.2);
+    /* Subtle purple hint */
     padding: 25px;
     border-radius: 16px;
     position: relative;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.problem-card:hover { 
+.problem-card:hover {
     transform: translateY(-5px);
     border-color: var(--neon-purple);
     box-shadow: 0 5px 15px rgba(188, 19, 254, 0.15);
@@ -128,7 +133,7 @@
     place-items: center;
     background: rgba(76, 201, 240, 0.18);
     border: 1px solid rgba(76, 201, 240, 0.35);
-    color: rgba(255,255,255,0.9);
+    color: rgba(255, 255, 255, 0.9);
     font-weight: 900;
 }
 
@@ -149,17 +154,31 @@
     box-shadow: 0 0 10px var(--accent-blue);
 }
 
-.tag-beginner { background: #fee440; }
-.tag-intermediate { background: #4cc9f0; }
-.tag-advanced { background: #f72585; color: #fff; }
-.tag-olympic { background: #9d4edd; color: #fff; box-shadow: 0 0 10px #9d4edd; }
+.tag-beginner {
+    background: #fee440;
+}
+
+.tag-intermediate {
+    background: #4cc9f0;
+}
+
+.tag-advanced {
+    background: #f72585;
+    color: #fff;
+}
+
+.tag-olympic {
+    background: #9d4edd;
+    color: #fff;
+    box-shadow: 0 0 10px #9d4edd;
+}
 
 .problem-input {
     width: 100%;
     padding: 10px;
     margin: 15px 0;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
     border-radius: 8px;
 }
@@ -194,7 +213,7 @@
 
 .filter-btn {
     background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     color: #aaa;
     padding: 8px 16px;
     border-radius: 20px;
@@ -203,7 +222,8 @@
     transition: all 0.3s;
 }
 
-.filter-btn.active, .filter-btn:hover {
+.filter-btn.active,
+.filter-btn:hover {
     background: var(--neon-purple);
     color: #fff;
     border-color: var(--neon-purple);
@@ -212,7 +232,7 @@
 /* Accordion */
 .accordion-item {
     margin-bottom: 15px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -220,7 +240,7 @@
 .accordion-header {
     width: 100%;
     padding: 15px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     border: none;
     color: #fff;
     text-align: left;
@@ -228,12 +248,13 @@
     justify-content: space-between;
     cursor: pointer;
     font-weight: 600;
-} 
+}
 
 .accordion-body {
-    display: none; /* hidden by default */
+    display: none;
+    /* hidden by default */
     padding: 15px;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .accordion-body a {
@@ -241,7 +262,7 @@
     color: #aaa;
     text-decoration: none;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .accordion-body a:hover {
@@ -250,20 +271,29 @@
 }
 
 /* Formula Boxes */
-.formula-box, .definition-box, .theorem-box {
-    background: rgba(255,255,255,0.05);
+.formula-box,
+.definition-box,
+.theorem-box {
+    background: rgba(255, 255, 255, 0.05);
     border-left: 3px solid var(--accent-gold);
     padding: 15px;
     margin: 15px 0;
     font-style: italic;
 }
-.definition-box { border-color: var(--accent-blue); }
-.theorem-box { border-color: var(--accent-pink); background: rgba(247, 37, 133, 0.1); }
+
+.definition-box {
+    border-color: var(--accent-blue);
+}
+
+.theorem-box {
+    border-color: var(--accent-pink);
+    background: rgba(247, 37, 133, 0.1);
+}
 
 /* Theory reveal + highlight */
 .reveal {
-    opacity: 0;
-    transform: translateY(14px);
+    /* opacity: 0; */
+    /* transform: translateY(14px); */
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -282,19 +312,19 @@
 details.proof-box {
     margin-top: 12px;
     padding: 12px 14px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.25);
     border-radius: 12px;
 }
 
-details.proof-box > summary {
+details.proof-box>summary {
     cursor: pointer;
     user-select: none;
     color: var(--accent-blue);
     font-weight: 700;
 }
 
-details.proof-box[open] > summary {
+details.proof-box[open]>summary {
     margin-bottom: 10px;
 }
 
@@ -306,12 +336,13 @@ details.proof-box[open] > summary {
     display: block;
     margin: 14px 0 6px;
     border-radius: 14px;
-    background: rgba(0,0,0,0.22);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
     .fade-in-up,
     .reveal {
         animation: none !important;

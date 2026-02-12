@@ -38,7 +38,7 @@ function setLanguage(lang) {
         const key = el.getAttribute('data-i18n');
         if (window.probabilityData && window.probabilityData.ui && window.probabilityData.ui[key]) {
             const translated = window.probabilityData.ui[key][lang] || window.probabilityData.ui[key]['en'];
-            
+
             // Handle placeholders
             if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                 el.placeholder = translated;
@@ -207,7 +207,7 @@ function renderPracticeStats() {
     const box = document.getElementById('practice-stats');
     if (!box || !window.probabilityData?.problems) return;
     const prog = loadProgress();
-    const total = window.probabilityData.problems.length;
+    const total = allProblems.length || window.probabilityData.problems.length;
     const solvedCount = Object.values(prog.solved).filter(Boolean).length;
     const attemptsTotal = Object.values(prog.attempts).reduce((a, b) => a + (parseInt(b, 10) || 0), 0);
 
@@ -221,9 +221,24 @@ function renderPracticeStats() {
     `;
 }
 
+let allProblems = [];
+
 function initProblems() {
-    if (window.probabilityData && window.probabilityData.problems)
-        renderProblems(window.probabilityData.problems);
+    if (!window.probabilityData) return;
+
+    // 1. Static Problems
+    let staticProbs = window.probabilityData.problems || [];
+
+    // 2. Generate Dynamic Problems (if not already done)
+    if (!window.probabilityData.generatedProblems) {
+        // Generate 50 dynamic problems for "hundreds" feel
+        window.probabilityData.generatedProblems = window.probabilityData.generateBatch ? window.probabilityData.generateBatch(50) : [];
+    }
+
+    // Combine
+    allProblems = [...staticProbs, ...window.probabilityData.generatedProblems];
+
+    renderProblems(allProblems);
     renderPracticeStats();
 }
 
@@ -259,17 +274,27 @@ function filterProblems(level, btnEl) {
     if (btnEl) btnEl.classList.add('active');
 
     if (level === 'all') {
-        renderProblems(window.probabilityData.problems);
+        renderProblems(allProblems);
     } else {
-        const filtered = window.probabilityData.problems.filter(p => p.difficulty === level);
+        const filtered = allProblems.filter(p => p.difficulty === level);
         renderProblems(filtered);
     }
 }
 
 function checkAnswer(id) {
-    const problem = window.probabilityData.problems.find(p => p.id === id);
+    const problem = allProblems.find(p => p.id === id);
+    if (!problem) return;
+
     const userVal = document.getElementById(`input-${id}`).value.trim();
-    const isCorrect = compareAnswers(userVal, problem.answer); // smarter match
+
+    let isCorrect = false;
+    if (problem.checkFn) {
+        // Use custom checker for dynamic problems
+        isCorrect = problem.checkFn(userVal, problem.answer);
+    } else {
+        // Standard checker
+        isCorrect = compareAnswers(userVal, problem.answer);
+    }
 
     // Update progress
     const prog = loadProgress();
@@ -283,9 +308,9 @@ function checkAnswer(id) {
     const filterLevel = currentFilterBtn ? (currentFilterBtn.textContent || '').trim().toLowerCase() : 'all';
     // Best-effort: if filter label isn't in English, just re-render all
     if (['beginner', 'intermediate', 'advanced', 'olympic'].includes(filterLevel)) {
-        renderProblems(window.probabilityData.problems.filter(p => p.difficulty === filterLevel));
+        renderProblems(allProblems.filter(p => p.difficulty === filterLevel));
     } else {
-        renderProblems(window.probabilityData.problems);
+        renderProblems(allProblems);
     }
 
     showModal(isCorrect, problem);
@@ -363,46 +388,55 @@ function showModal(isCorrect, problem) {
     modal.style.display = 'flex';
 
     if (isCorrect) {
-        title.innerText = ui.modal_correct[currentLang];
-        title.style.color = '#4cc9f0';
-        msg.innerText = ui.modal_correct_msg[currentLang];
+        document.getElementById('modal-title').innerText = ui.modal_correct[currentLang];
+        document.getElementById('modal-title').style.color = '#4cc9f0';
+        document.getElementById('modal-msg').innerHTML = ui.modal_correct_msg[currentLang];
+
+        const btn = document.getElementById('modal-action-btn');
+        btn.style.display = 'inline-block';
         btn.innerText = ui.btn_continue[currentLang];
         btn.onclick = closeModal;
-        btn.style.display = 'inline-block';
     } else {
-        title.innerText = ui.modal_incorrect[currentLang];
-        title.style.color = '#f72585';
-        const node = problem.related_theory_id ? findTheoryNodeById(problem.related_theory_id) : null;
-        const theoryTitle =
-            node?.subsection?.title?.[currentLang] ||
-            node?.subsection?.title?.en ||
-            node?.section?.title?.[currentLang] ||
-            node?.section?.title?.en ||
-            null;
+        document.getElementById('modal-title').innerText = ui.modal_incorrect[currentLang];
+        document.getElementById('modal-title').style.color = '#f72585';
 
-        const hintText =
-            (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint.en)) ||
-            null;
+        // find theory
+        let theoryTitle = null;
+        if (problem.related_theory_id) {
+            // We need to search effectively
+            const allSections = window.probabilityData.theory || [];
+            for (const sec of allSections) {
+                if (sec.subsections) {
+                    const sub = sec.subsections.find(s => s.id === problem.related_theory_id);
+                    if (sub) {
+                        theoryTitle = sub.title[currentLang] || sub.title['en'];
+                        break;
+                    }
+                }
+            }
+        }
+
+        const template = ui.modal_smart_feedback[currentLang] || ui.modal_smart_feedback['en'];
+        let finalMsg = ui.modal_incorrect_msg[currentLang];
 
         if (theoryTitle) {
-            // Smart feedback that teaches (not just "wrong")
-            const template = ui.modal_smart_feedback[currentLang] || ui.modal_smart_feedback.en;
-            const hintLabel = ui.modal_hint_label[currentLang] || ui.modal_hint_label.en;
-            const hintFormatted = hintText ? (`<br><em>${hintLabel}</em> ` + hintText) : '';
-            
-            msg.innerHTML = template
-                .replace('{topic}', theoryTitle)
-                .replace('{hint}', hintFormatted)
-                .trim();
-        } else {
-            msg.innerText = ui.modal_incorrect_msg[currentLang];
+            const hint = (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
+            const label = ui.modal_hint_label[currentLang];
+            const hintHtml = hint ? `<br><br><strong>${label}</strong> ${hint}` : "";
+
+            finalMsg = template.replace('{topic}', theoryTitle).replace('{hint}', hintHtml);
         }
+
+        document.getElementById('modal-msg').innerHTML = finalMsg;
+
+        const btn = document.getElementById('modal-action-btn');
         if (problem.related_theory_id) {
             btn.style.display = 'inline-block';
             btn.innerText = ui.btn_goto_theory[currentLang];
-            btn.onclick = () => {
+            btn.onclick = function () {
                 closeModal();
-                scrollToTheory(problem.related_theory_id);
+                window.location.hash = problem.related_theory_id;
+                handleInitialHashRoute(); // Manual trigger
             };
         } else {
             btn.style.display = 'none';

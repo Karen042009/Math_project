@@ -1,6 +1,6 @@
 /*
- * DATA.JS — Probability Theory Knowledge Base (Part 1/2)
- * Contains: UI Strings, Theory Sections (1-7)
+ * DATA.JS — Probability Theory Knowledge Base (Expanded & Optimized)
+ * Contains: UI Strings, Advanced Theory Sections, and Dynamic Problem Generator
  */
 
 window.probabilityData = {
@@ -29,12 +29,12 @@ window.probabilityData = {
     modal_incorrect: { hy: "Սխալ է", en: "Incorrect", ru: "Неверно" },
     modal_incorrect_msg: { hy: "Ցավոք, պատասխանը սխալ է: Փորձեք ևս մեկ ամգամ:", en: "Unfortunately, that's incorrect. Try again.", ru: "К сожалению, неверно. Попробуйте ещё." },
     modal_smart_feedback: {
-        hy: "Ցավոք, սխալ է։ Կարծես թե Դուք դժվարանում եք <strong>«{topic}»</strong> թեմայում։ {hint}",
-        en: "Unfortunately, that's incorrect. It looks like you're struggling with <strong>\"{topic}\"</strong>. {hint}",
-        ru: "К сожалению, неверно. Похоже, вы затрудняетесь в теме <strong>«{topic}»</strong>. {hint}"
+      hy: "Ցավոք, սխալ է։ Կարծես թե Դուք դժվարանում եք <strong>«{topic}»</strong> թեմայում։ {hint}",
+      en: "Unfortunately, that's incorrect. It looks like you're struggling with <strong>\"{topic}\"</strong>. {hint}",
+      ru: "К сожалению, неверно. Похоже, вы затрудняетесь в теме <strong>«{topic}»</strong>. {hint}"
     },
     modal_hint_label: { hy: "Հուշում՝", en: "Hint:", ru: "Подсказка:" },
-    
+
     // Hero & Home
     hero_title: { hy: "ՀԱՎԱՆԱԿԱՆՈՒԹՅՈՒՆՆԵՐԻ ՏԵՍՈՒԹՅՈՒՆ", en: "PROBABILITY THEORY", ru: "ТЕОРИЯ ВЕРОЯТНОСТЕЙ" },
     hero_subtitle: { hy: "ԻՆՏԵՐԱԿՏԻՎ ՈՒՍՈՒՄՆԱԿԱՆ ՀԱՐԹԱԿ", en: "INTERACTIVE LEARNING PLATFORM", ru: "ИНТЕРАКТИВНАЯ УЧЕБНАЯ ПЛАТФОРМА" },
@@ -45,7 +45,7 @@ window.probabilityData = {
     card_theory_title: { hy: "Տեսական Շտեմարան", en: "Theory Encyclopedia", ru: "Теоретическая База" },
     card_theory_desc: { hy: "Ամբողջական դասընթաց՝ պարզ սահմանումներից մինչև բարդ թեորեմներ:", en: "Full course from simple definitions to complex theorems.", ru: "Полный курс: от простых определений до сложных теорем." },
     card_practice_title: { hy: "Խնդրագիրք", en: "Practice Arena", ru: "Задачник" },
-    card_practice_desc: { hy: "Ինտերակտիվ խնդիրներ տարբեր բարդության՝ սխալների վերլուծության համակարգով:", en: "Interactive problems of varying difficulty with error analysis.", ru: "Интерактивные задачи разной сложности с системой анализа ошибок." },
+    card_practice_desc: { hy: "Անսահմանափակ ինտերակտիվ խնդիրներ AI գեներացիայով:", en: "Unlimited interactive problems with AI generation.", ru: "Неограниченные интерактивные задачи с AI генерацией." },
     card_lab_title: { hy: "Հաշվիչ և Գրաֆիկներ", en: "Calculator & Graphs", ru: "Калькулятор и Графики" },
     card_lab_desc: { hy: "Մասնագիտացված հաշվիչ և հավանականային բաշխումների վիզուալիզացիա:", en: "Specialized calculator and visualization of probability distributions.", ru: "Специализированный калькулятор и визуализация распределений." },
     card_sims_title: { hy: "Սիմուլյացիաներ", en: "Monte Carlo Lab", ru: "Симуляции" },
@@ -57,19 +57,19 @@ window.probabilityData = {
     section_lab: { hy: "Հաշվիչ և Գրաֆիկական Վերլուծություն", en: "Calculator & Visualizer", ru: "Расчеты и Графики" },
     section_sims: { hy: "Ինտերակտիվ Սիմուլյացիաներ", en: "Monte Carlo Playground", ru: "Интерактивные Симуляции" },
 
-    // Simulation Details
+    // ... (Simulation details remain the same) ...
     sim_galton_desc: { hy: "<strong>Գալտոնի տախտակ:</strong> Ցուցադրում է, թե ինչպես է բազմաթիվ պատահական շեղումների արդյունքում ձևավորվում նորմալ բաշխումը:", en: "<strong>Galton Board:</strong> Demonstrates how a normal distribution emerges from numerous random deviations.", ru: "<strong>Доска Гальтона:</strong> Демонстрирует формирование нормального распределения из множества случайных отклонений." },
     sim_monty_desc: { hy: "<strong>Մոնտի Հոլլի պարադոքս:</strong> Հանրահայտ հավանականային խնդիր, որը ցույց է տալիս, թե ինչպես է ընտրության փոփոխությունը մեծացնում հաղթելու հնարավորությունը:", en: "<strong>Monty Hall Paradox:</strong> A famous probability puzzle showing how changing your choice increases the odds of winning.", ru: "<strong>Парадокс Монти Холла:</strong> Известная задача, показывающая, как смена выбора увеличивает шансы на успех." },
     sim_buffon_desc: { hy: "<strong>Բյուֆոնի ասեղը:</strong> Մոնտե Կառլոյի մեթոդի դասական օրինակ՝ π թվի մոտարկումը պատահական նետումների միջոցով:", en: "<strong>Buffon's Needle:</strong> A classic Monte Carlo example: approximating π through random needle tosses.", ru: "<strong>Игла Бюффона:</strong> Классический пример метода Монте-Карло: приближение числа π через случайные броски." },
 
     // Practice & AI
     ai_badge_text: { hy: "Սխալների վերլուծության համակարգ՝ կապ տեսության հետ", en: "Smart feedback system — links wrong answers to theory", ru: "Система анализа ошибок — связь с теорией" },
-    section_ai_gen: { hy: "AI Խնդիրների Գեներատոր", en: "AI Problem Generator", ru: "AI Генератор Задач" },
+    section_ai_gen: { hy: "Offline Խնդիրների Գեներատոր", en: "Offline Problem Generator", ru: "Offline Генератор Задач" },
     btn_generate_problem: { hy: "Ստեղծել խնդիր", en: "Generate Problem", ru: "Создать задачу" },
     ai_workspace_title: { hy: "Ստեղծված խնդիր", en: "Generated Problem", ru: "Сгенерированная задача" },
     ai_placeholder_solution: { hy: "Գրեք Ձեր լուծումը այստեղ...", en: "Write your solution here...", ru: "Напишите ваше решение здесь..." },
     ai_upload_label: { hy: "Վերբեռնել ձեռագիր լուծումը", en: "Upload handwritten solution", ru: "Загрузить рукописное решение" },
-    btn_ask_ai: { hy: "Հարցնել AI-ին", en: "Ask AI to Check", ru: "Спросить AI" },
+    btn_ask_ai: { hy: "Ստուգել", en: "Check Answer", ru: "Проверить" },
     ai_score_label: { hy: "Միավոր՝", en: "Score:", ru: "Баллы:" },
 
     // Lab
@@ -81,7 +81,7 @@ window.probabilityData = {
     dist_tree: { hy: "Հավանականությունների ծառ", en: "Probability Tree", ru: "Дерево вероятностей" },
     btn_draw: { hy: "Գծել", en: "Draw", ru: "Нарисовать" },
 
-    // Simulations
+    // Simulations Buttons
     intro_sims: { hy: "Դիտեք, թե ինչպես են աշխատում հավանականությունները ինտերակտիվ սիմուլյացիաների միջոցով", en: "Watch probability come alive through interactive simulations!", ru: "Наблюдайте за теорией вероятностей в действии через симуляции" },
     galton_rows_label: { hy: "Շարքերի քանակը", en: "Number of Rows", ru: "Количество рядов" },
     btn_drop_1: { hy: "Նետել 1 գնդիկ", en: "Drop 1 Ball", ru: "Бросить 1 шарик" },
@@ -109,600 +109,152 @@ window.probabilityData = {
     stat_pi_estimate: { hy: "π-ի մոտարկումը՝", en: "π estimate:", ru: "Приближение π:" },
     stat_actual_pi: { hy: "Իրական π՝", en: "Actual π:", ru: "Реальное π:" },
 
-    // Topics & Difficulty
+    // New Calculator UI
+    calc_group_basic: { hy: "Հիմնական", en: "Basic", ru: "Основные" },
+    calc_group_adv: { hy: "Բարդ", en: "Advanced", ru: "Продвинутые" },
+    calc_group_greek: { hy: "Հունական", en: "Greek", ru: "Греческие" },
+    calc_mode_std: { hy: "Ստանդարտ", en: "Standard", ru: "Стандарт" },
+    calc_mode_formula: { hy: "Քայլերով լուծում", en: "Step-by-Step", ru: "Пошагово" },
+
     topic_basic: { hy: "Հիմնական հավանականություն", en: "Basic Probability", ru: "Основы вероятности" },
     topic_combinatorics: { hy: "Կոմբինատորիկա", en: "Combinatorics", ru: "Комбинаторика" },
     topic_conditional: { hy: "Պայմանական հավանականություն", en: "Conditional Probability", ru: "Условная вероятность" },
     topic_bayes: { hy: "Բայեսի թեորեմ", en: "Bayes' Theorem", ru: "Теорема Байеса" },
     topic_distributions: { hy: "Բաշխումներ", en: "Distributions", ru: "Распределения" },
     topic_rv: { hy: "Պատահական մեծություններ", en: "Random Variables", ru: "Случайные величины" },
-
-    sim_galton_btn: { hy: "Գալտոնի տախտակ", en: "Galton Board", ru: "Доска Гальтона" },
-    sim_monty_btn: { hy: "Մոնտի Հոլլ", en: "Monty Hall", ru: "Монти Холл" },
-    sim_buffon_btn: { hy: "Բյուֆոնի ասեղը", en: "Buffon's Needle", ru: "Игла Бюффона" },
-    card_tab_calc: { hy: "Հաշվիչ", en: "Calculator", ru: "Калькулятор" },
-    stat_solved: { hy: "Լուծված", en: "Solved", ru: "Решено" },
-    stat_attempts: { hy: "Փորձեր", en: "Attempts", ru: "Попытки" },
-    stat_total: { hy: "Ընդամենը", en: "Total", ru: "Всего" },
   },
 
-  /* ===================== THEORY ===================== */
+  /* ===================== THEORY CONTENT (ENCYCLOPEDIA) ===================== */
   theory: [
-
-    /* ---- SECTION 1: Introduction ---- */
     {
-      title: { hy: "Գլուխ 1. Ներածություն (Պատահույթներ)", en: "Chapter 1. Introduction (Events, Sample Space)", ru: "Глава 1. Введение (События)" },
+      title: { hy: "1. Ներածություն և Հիմնականներ", en: "1. Basic Concepts", ru: "1. Основные понятия" },
       subsections: [
         {
           id: "theory-events",
           title: { hy: "Պատահական իրադարձություններ", en: "Random Events", ru: "Случайные события" },
           content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Սահմանում (Պատահույթ):</strong> Պատահական իրադարձությունը (կամ պատահույթը) փորձի արդյունք է, որը կարող է տեղի ունենալ կամ չունենալ:
-              </div>
-              <p>Հիմնական հասկացություններ՝</p>
-              <ul>
-                <li><strong>Տարրական ելքերի տարածություն (Ω):</strong> Փորձի բոլոր հնարավոր արդյունքների բազմությունը:</li>
-                <li><strong>Պատահույթ:</strong> Ω-ի ցանկացած ենթաբազմություն:</li>
-                <li><strong>Տարրական պատահույթ:</strong> Մեկ ելքից բաղկացած պատահույթ:</li>
-              </ul>
-              <div class="formula-box">
-                \\[ \\Omega = \\{\\omega_1, \\omega_2, \\ldots, \\omega_n\\} \\]
-              </div>
-              <p><strong>Օրինակ՝</strong> Զառի նետման դեպքում տարրական ելքերի տարածությունն է՝</p>
-              <div class="formula-box">
-                \\[ \\Omega = \\{1, 2, 3, 4, 5, 6\\} \\]
-              </div>
-              <p>«Զույգ թիվ բացվելու» պատահույթը՝ <em>A = {2, 4, 6}</em>:</p>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Definition (Random Event):</strong> A random event is an outcome or set of outcomes from a random experiment that may or may not occur.
-              </div>
-              <p>Key concepts:</p>
-              <ul>
-                <li><strong>Sample Space (Ω):</strong> The set of all possible outcomes of an experiment.</li>
-                <li><strong>Event:</strong> Any subset of Ω.</li>
-                <li><strong>Elementary Event:</strong> An event consisting of a single outcome.</li>
-              </ul>
-              <div class="formula-box">
-                \\[ \\Omega = \\{\\omega_1, \\omega_2, \\ldots, \\omega_n\\} \\]
-              </div>
-              <p><strong>Example:</strong> For a die roll, \\( \\Omega = \\{1,2,3,4,5,6\\} \\). The event "even number" is A = {2, 4, 6}.</p>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Определение:</strong> Случайное событие — это исход эксперимента, который может произойти или нет.
-              </div>
-              <p>Основные понятия:</p>
-              <ul>
-                <li><strong>Пространство элементарных исходов (Ω):</strong> Множество всех возможных исходов опыта.</li>
-                <li><strong>Событие:</strong> Любое подмножество Ω.</li>
-                <li><strong>Элементарное событие:</strong> Событие, состоящее из одного исхода.</li>
-              </ul>
-              <div class="formula-box">
-                \\[ \\Omega = \\{\\omega_1, \\omega_2, \\ldots, \\omega_n\\} \\]
-              </div>
-              <p><strong>Пример:</strong> При бросании кубика \\( \\Omega = \\{1,2,3,4,5,6\\} \\). Событие «выпало чётное» — A = {2, 4, 6}.</p>
-            `
+            hy: "<p><strong>Պատահական իրադարձություն</strong> է կոչվում այն իրադարձությունը, որը փորձի արդյունքում կարող է տեղի ունենալ կամ չունենալ:</p><p>Իրադարձությունները նշանակում են լատիներեն մեծատառերով՝ A, B, C և այլն:</p><ul><li><strong>Հավաստի իրադարձություն ($\\Omega$):</strong> Միշտ տեղի է ունենում (հավանականությունը = 1):</li><li><strong>Անհնար իրադարձություն ($\\emptyset$):</strong> Երբեք տեղի չի ունենում (հավանականությունը = 0):</li><li><strong>Տարրական ելքեր:</strong> Փորձի հնարավոր պարզագույն, իրար բացառող արդյունքները:</li></ul>",
+            en: "<p>A <strong>random event</strong> is an outcome that may or may not occur.</p><ul><li><strong>Certain Event ($\\Omega$):</strong> Prob = 1.</li><li><strong>Impossible Event ($\\emptyset$):</strong> Prob = 0.</li></ul>",
+            ru: "<p><strong>Случайное событие</strong> — исход, который может произойти или нет.</p>"
           }
         },
-        {
-          id: "theory-set-operations",
-          title: { hy: "Գործողություններ պատահույթների հետ", en: "Set Operations on Events", ru: "Операции над событиями" },
-          content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Գործողություններ:</strong>
-              </div>
-              <ul>
-                <li><strong>Գումար (A ∪ B):</strong> Տեղի է ունենում A-ն կամ B-ն (կամ երկուսը):</li>
-                <li><strong>Արտադրյալ (A ∩ B):</strong> Տեղի են ունենում և՛ A-ն, և՛ B-ն:</li>
-                <li><strong>Հակադիր (Ā):</strong> A-ն տեղի չի ունենում:</li>
-                <li><strong>Տարբերություն (A \\ B):</strong> A-ն տեղի է ունենում, իսկ B-ն՝ ոչ:</li>
-              </ul>
-              <div class="theorem-box">
-                <strong>Դե Մորգանի օրենքները՝</strong>
-                \\[ \\overline{A \\cup B} = \\bar{A} \\cap \\bar{B} \\]
-                \\[ \\overline{A \\cap B} = \\bar{A} \\cup \\bar{B} \\]
-              </div>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Operations on Events:</strong>
-              </div>
-              <ul>
-                <li><strong>Union (A ∪ B):</strong> At least one of A or B occurs.</li>
-                <li><strong>Intersection (A ∩ B):</strong> Both A and B occur simultaneously.</li>
-                <li><strong>Complement (Ā):</strong> Event A does not occur.</li>
-                <li><strong>Difference (A \\ B):</strong> A occurs but B does not.</li>
-              </ul>
-              <div class="theorem-box">
-                <strong>De Morgan's Laws:</strong>
-                \\[ \\overline{A \\cup B} = \\bar{A} \\cap \\bar{B} \\]
-                \\[ \\overline{A \\cap B} = \\bar{A} \\cup \\bar{B} \\]
-              </div>
-              <p>These laws are fundamental for simplifying complex event expressions.</p>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Операции над событиями:</strong>
-              </div>
-              <ul>
-                <li><strong>Объединение (A ∪ B):</strong> Происходит хотя бы одно из событий A или B.</li>
-                <li><strong>Пересечение (A ∩ B):</strong> Происходят оба события A и B одновременно.</li>
-                <li><strong>Дополнение (Ā):</strong> Событие A не происходит.</li>
-                <li><strong>Разность (A \\ B):</strong> A происходит, но B не происходит.</li>
-              </ul>
-              <div class="theorem-box">
-                <strong>Законы Де Моргана:</strong>
-                \\[ \\overline{A \\cup B} = \\bar{A} \\cap \\bar{B} \\]
-                \\[ \\overline{A \\cap B} = \\bar{A} \\cup \\bar{B} \\]
-              </div>
-            `
-          }
-        }
-      ]
-    },
-
-    /* ---- SECTION 2: Combinatorics ---- */
-    {
-      title: { hy: "Գլուխ 2. Կոմբինատորիկա", en: "Chapter 2. Combinatorics", ru: "Глава 2. Комбинаторика" },
-      subsections: [
-        {
-          id: "theory-permutations",
-          title: { hy: "Տեղափոխություններ", en: "Permutations", ru: "Перестановки" },
-          content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Սահմանում:</strong> n տարրերի տեղափոխություն կոչվում է այդ տարրերի ցանկացած կարգավորված հավաքածու:
-              </div>
-              <div class="formula-box">
-                \\[ P_n = n! = 1 \\cdot 2 \\cdot \\ldots \\cdot n \\]
-              </div>
-              <p><strong>Օրինակ՝</strong> 3 գիրք դարակում շարելու եղանակները՝ \\(P_3 = 3! = 6\\):</p>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Definition:</strong> A permutation of n elements is any ordered arrangement of all n elements.
-              </div>
-              <div class="formula-box">
-                \\[ P_n = n! = 1 \\cdot 2 \\cdot \\ldots \\cdot n \\]
-              </div>
-              <p><strong>Example:</strong> Arranging 3 books on a shelf: \\(P_3 = 3! = 6\\) ways.</p>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Определение:</strong> Перестановка из n элементов — любая упорядоченная последовательность всех n элементов.
-              </div>
-              <div class="formula-box">
-                \\[ P_n = n! = 1 \\cdot 2 \\cdot \\ldots \\cdot n \\]
-              </div>
-              <p><strong>Пример:</strong> Расставить 3 книги на полке: \\(P_3 = 3! = 6\\) способов.</p>
-            `
-          }
-        },
-        {
-          id: "theory-arrangements",
-          title: { hy: "Տեղադրություններ", en: "Arrangements (Placements)", ru: "Размещения" },
-          content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Սահմանում:</strong> n տարբեր տարրերից k-ական տեղադրություն կոչվում է այդ տարրերից կազմված ցանկացած կարգավորված k տարր պարունակող ենթաբազմություն:
-              </div>
-              <div class="formula-box">
-                \\[ A_n^k = \\frac{n!}{(n-k)!} \\]
-              </div>
-              <p><strong>Օրինակ:</strong> 5 գրքից 3-ը դարակում շարելու եղանակները՝ \\(A_5^3 = 5!/2! = 60\\):</p>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Definition:</strong> An arrangement (or k-permutation) of n elements is an ordered selection of k elements from n distinct elements. Order matters.
-              </div>
-              <div class="formula-box">
-                \\[ A_n^k = P(n,k) = \\frac{n!}{(n-k)!} \\]
-              </div>
-              <p><strong>Example:</strong> Selecting and arranging 3 books from 5 on a shelf: \\(A_5^3 = 60\\).</p>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Определение:</strong> Размещение из n по k — упорядоченный набор k элементов из n различных.
-              </div>
-              <div class="formula-box">
-                \\[ A_n^k = \\frac{n!}{(n-k)!} \\]
-              </div>
-            `
-          }
-        },
-        {
-          id: "theory-combinations",
-          title: { hy: "Զուգորդություններ", en: "Combinations", ru: "Сочетания" },
-          content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Սահմանում:</strong> n տարբեր տարրերից k-ական զուգորդություն կոչվում է այն ենթաբազմությունը, որը պարունակում է k տարր (կարգը էական չէ):
-              </div>
-              <div class="formula-box">
-                \\[ C_n^k = \\binom{n}{k} = \\frac{n!}{k!(n-k)!} \\]
-              </div>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Definition:</strong> A combination of k elements from n is an unordered selection (order does not matter).
-              </div>
-              <div class="formula-box">
-                \\[ C(n,k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!} \\]
-              </div>
-              <p><strong>Example:</strong> Choosing 3 from 5 people for a committee: \\(C(5,3) = 10\\).</p>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Определение:</strong> Сочетание из n по k — неупорядоченный набор k элементов из n (порядок не важен).
-              </div>
-              <div class="formula-box">
-                \\[ C_n^k = \\frac{n!}{k!(n-k)!} \\]
-              </div>
-              <p><strong>Пример:</strong> Выбрать 3 из 5 человек в комиссию: \\(C_5^3 = 10\\).</p>
-            `
-          }
-        }
-      ]
-    },
-
-    /* ---- SECTION 3: Classical & Geometric Probability ---- */
-    {
-      title: { hy: "Գլուխ 3. Հավանականության սահմանումներ", en: "Chapter 3. Probability Definitions", ru: "Глава 3. Определения вероятности" },
-      subsections: [
         {
           id: "theory-classical-prob",
-          title: { hy: "Դասական սահմանում", en: "Classical Definition", ru: "Классическое определение" },
+          title: { hy: "Հավանականության դասական սահմանում", en: "Classical Definition", ru: "Классическое определение" },
           content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Դասական սահմանում:</strong> Եթե փորձն ունի n հավասարահնարավոր ելքեր, որոնցից m-ը նպաստավոր են A պատահույթին, ապա՝
-              </div>
-              <div class="formula-box">
-                \\[ P(A) = \\frac{m}{n} \\]
-              </div>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Classical Definition:</strong> If an experiment has n equally likely outcomes, m of which are favorable to event A:
-              </div>
-              <div class="formula-box">
-                \\[ P(A) = \\frac{m}{n}, \\quad 0 \\le P(A) \\le 1 \\]
-              </div>
-              <p><strong>Example:</strong> Rolling a die, probability of getting a 6: \\(P = 1/6\\).</p>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Классическое определение:</strong> Если опыт имеет n равновозможных исходов, из которых m благоприятствуют событию A:
-              </div>
-              <div class="formula-box">
-                \\[ P(A) = \\frac{m}{n}, \\quad 0 \\le P(A) \\le 1 \\]
-              </div>
-              <p><strong>Пример:</strong> Бросок кубика, вероятность выпадения 6: \\(P = 1/6\\).</p>
-            `
+            hy: "<p>Եթե փորձի բոլոր $n$ ելքերը <strong>հավասարահնարավոր</strong> են, ապա $A$ իրադարձության հավանականությունը որոշվում է հետևյալ բանաձևով՝</p>$$P(A) = \\frac{m}{n}$$<p>որտեղ $m$-ը $A$ իրադարձությանը նպաստող ելքերի քանակն է, իսկ $n$-ը՝ բոլոր հնարավոր ելքերի քանակը:</p><p><strong>Օրինակ՝</strong> Զառը նետելիս կենտ թիվ բացվելու հավանականությունը՝ $m=3$ ({1,3,5}), $n=6$, հետևաբար $P=3/6=0.5$:</p>",
+            en: "<p>If all $n$ outcomes are equally likely, the probability of event $A$ is:</p>$$P(A) = \\frac{m}{n}$$",
+            ru: "<p>Если все $n$ исходов равновероятны, то вероятность события $A$ равна:</p>$$P(A) = \\frac{m}{n}$$"
           }
         },
         {
           id: "theory-geometric-prob",
           title: { hy: "Երկրաչափական հավանականություն", en: "Geometric Probability", ru: "Геометрическая вероятность" },
           content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Սահմանում:</strong> Եթե Ω-ն երկրաչափական պատկեր է, իսկ A-ն՝ նրա մաս, ապա հավանականությունը որոշվում է չափերի (երկարություն, մակերես, ծավալ) հարաբերությամբ:
-              </div>
-              <div class="formula-box">
-                \\[ P(A) = \\frac{\\text{mes}(A)}{\\text{mes}(\\Omega)} \\]
-              </div>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Definition:</strong> When the sample space is a geometric region, probability is the ratio of favorable area (length, volume) to total area.
-              </div>
-              <div class="formula-box">
-                \\[ P(A) = \\frac{\\text{measure}(A)}{\\text{measure}(\\Omega)} \\]
-              </div>
-              <p><strong>Example (Buffon's Needle):</strong> Dropping a needle on parallel lines — the probability of crossing relates to \\(\\pi\\). See the Simulations section!</p>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Определение:</strong> Когда пространство исходов — геометрическая область, вероятность равна отношению площади (длины, объёма) благоприятной области к общей.
-              </div>
-              <div class="formula-box">
-                \\[ P(A) = \\frac{\\text{мера}(A)}{\\text{мера}(\\Omega)} \\]
-              </div>
-              <p><strong>Пример (Игла Бюффона):</strong> Бросание иглы на параллельные линии — вероятность пересечения связана с \\(\\pi\\). Смотрите раздел Симуляций!</p>
-            `
+            hy: "<p>Երբ փորձի ելքերը անվերջ են և լրացնում են որոշակի երկրաչափական տիրույթ (հատված, մակերես, ծավալ), կիրառվում է երկրաչափական սահմանումը՝</p>$$P(A) = \\frac{\\text{mes}(A)}{\\text{mes}(\\Omega)}$$<p>որտեղ $\\text{mes}$-ը (measure) չափն է (երկարություն, մակերես կամ ծավալ):</p><p><strong>Կիրառություն՝</strong> Բյուֆոնի ասեղի խնդիրը, հանդիպման խնդիրը:</p>",
+            en: "<p>Used when outcomes form a continuous geometric region.</p>$$P(A) = \\frac{\\text{measure}(A)}{\\text{measure}(\\Omega)}$$",
+            ru: "<p>Используется, когда исходы заполняют непрерывную область.</p>"
           }
         }
       ]
     },
-
-    /* ---- SECTION 4: Conditional Probability ---- */
     {
-      title: { hy: "Գլուխ 4. Պայմանական հավանականություն", en: "Chapter 4. Conditional Probability", ru: "Глава 4. Условная вероятность" },
+      title: { hy: "2. Կոմբինատորիկայի տարրեր", en: "2. Combinatorics", ru: "2. Элементы комбинаторики" },
       subsections: [
+        {
+          id: "theory-permutations",
+          title: { hy: "Տեղափոխություններ (Permutations)", en: "Permutations", ru: "Перестановки" },
+          content: {
+            hy: "<p><strong>Տեղափոխություններ</strong> են կոչվում այն միացությունները, որոնք կազմված են $n$ տարբեր տարրերից և տարբերվում են միայն տարրերի դասավորությամբ:</p>$$P_n = n! = 1 \\cdot 2 \\cdot ... \\cdot n$$<p>Օրինակ՝ 3 տարբեր գիրք դարակում կարելի է դասավորել $3! = 6$ եղանակով:</p>",
+            en: "<p>Arrangements of $n$ distinct items where order matters.</p>$$P_n = n!$$",
+            ru: "<p>Упорядоченные наборы из $n$ элементов.</p>$$P_n = n!$$"
+          }
+        },
+        {
+          id: "theory-combinations",
+          title: { hy: "Զուգորդություններ (Combinations)", en: "Combinations", ru: "Сочетания" },
+          content: {
+            hy: "<p><strong>Զուգորդություններ</strong> են կոչվում այն միացությունները, որոնք պարունակում են $k$ տարր՝ ընտրված $n$ հնարավորից, և տարբերվում են միայն կազմով (հերթականությունը կարևոր չէ):</p>$$C_n^k = \\frac{n!}{k!(n-k)!}$$<p>Օրինակ՝ 4 հոգուց 2-ին ընտրելու եղանակները՝ $C_4^2 = \\frac{4!}{2!2!} = 6$:</p>",
+            en: "<p>Selections of $k$ items from $n$ where order doesn't matter.</p>$$C_n^k = \\frac{n!}{k!(n-k)!}$$",
+            ru: "<p>Выбор $k$ элементов из $n$ без учета порядка.</p>$$C_n^k = \\frac{n!}{k!(n-k)!}$$"
+          }
+        }
+      ]
+    },
+    {
+      title: { hy: "3. Հիմնական թեորեմներ", en: "3. Main Theorems", ru: "3. Основные теоремы" },
+      subsections: [
+        {
+          id: "theory-addition",
+          title: { hy: "Գումարման և Բազմապատկման", en: "Addition & Multiplication", ru: "Сложение и Умножение" },
+          content: {
+            hy: "<p><strong>Գումարման թեորեմ՝</strong> Եթե A և B իրադարձությունները անհամատեղելի են (չեն կարող միաժամանակ տեղի ունենալ). $$P(A+B) = P(A) + P(B)$$ Եթե համատեղելի են. $$P(A+B) = P(A) + P(B) - P(AB)$$</p><p><strong>Բազմապատկման թեորեմ՝</strong> $$P(AB) = P(A) \\cdot P(B|A)$$ որտեղ $P(B|A)$-ն B-ի պայմանական հավանականությունն է՝ A-ի տեղի ունենալու դեպքում:</p>",
+            en: "<p><strong>Addition:</strong> $$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$</p><p><strong>Multiplication:</strong> $$P(A \\cap B) = P(A) \\cdot P(B|A)$$</p>",
+            ru: "<p>Теоремы сложения и умножения вероятностей.</p>"
+          }
+        },
         {
           id: "theory-conditional-prob",
           title: { hy: "Պայմանական հավանականություն", en: "Conditional Probability", ru: "Условная вероятность" },
           content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Սահմանում:</strong> A-ի հավանականությունը՝ պայմանով, որ B-ն տեղի է ունեցել.
-              </div>
-              <div class="formula-box">
-                \\[ P(A|B) = \\frac{P(A \\cap B)}{P(B)} \\]
-              </div>
-              <div class="theorem-box">
-                <strong>Անկախություն:</strong> A և B պատահույթները անկախ են, եթե՝
-                \\[ P(A \\cap B) = P(A) \\cdot P(B) \\]
-              </div>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Definition:</strong> The probability of A given that B has occurred:
-              </div>
-              <div class="formula-box">
-                \\[ P(A|B) = \\frac{P(A \\cap B)}{P(B)} \\]
-              </div>
-              <div class="theorem-box">
-                <strong>Independence:</strong> Events A and B are independent if:
-                \\[ P(A \\cap B) = P(A) \\cdot P(B) \\]
-              </div>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Определение:</strong> Вероятность A при условии, что B произошло:
-              </div>
-              <div class="formula-box">
-                \\[ P(A|B) = \\frac{P(A \\cap B)}{P(B)} \\]
-              </div>
-              <div class="theorem-box">
-                <strong>Независимость:</strong> A и B независимы, если:
-                \\[ P(A \\cap B) = P(A) \\cdot P(B) \\]
-              </div>
-            `
-          }
-        },
-        {
-          id: "theory-total-prob",
-          title: { hy: "Լրիվ հավանականության բանաձև", en: "Law of Total Probability", ru: "Формула полной вероятности" },
-          content: {
-            hy: `
-              <div class="theorem-box">
-                Եթե \\(H_1, \\ldots, H_n\\) լրիվ խումբ են կազմում, ապա՝
-                \\[ P(A) = \\sum_{i=1}^{n} P(H_i) \\cdot P(A|H_i) \\]
-              </div>
-            `,
-            en: `
-              <div class="theorem-box">
-                If \\(H_1, \\ldots, H_n\\) form a complete group of mutually exclusive hypotheses:
-                \\[ P(A) = \\sum_{i=1}^{n} P(H_i) \\cdot P(A|H_i) \\]
-              </div>
-              <p>This decomposes a complex probability into a weighted sum over simpler conditional probabilities.</p>
-            `,
-            ru: `
-              <div class="theorem-box">
-                Если \\(H_1, \\ldots, H_n\\) образуют полную группу несовместных гипотез:
-                \\[ P(A) = \\sum_{i=1}^{n} P(H_i) \\cdot P(A|H_i) \\]
-              </div>
-              <p>Разлагает сложную вероятность на сумму условных вероятностей.</p>
-            `
+            hy: "<p>Հավանականությունը, որ տեղի կունենա A իրադարձությունը, պայմանով, որ B-ն արդեն տեղի է ունեցել:</p>$$P(A|B) = \\frac{P(AB)}{P(B)}$$",
+            en: "<p>Probability of A given B occurred.</p>$$P(A|B) = \\frac{P(AB)}{P(B)}$$",
+            ru: "<p>Вероятность события A при условии B.</p>"
           }
         },
         {
           id: "theory-bayes",
-          title: { hy: "Բայեսի բանաձև", en: "Bayes' Theorem", ru: "Теорема Байеса" },
+          title: { hy: "Լրիվ հավանականություն և Բայես", en: "Total Prob & Bayes", ru: "Полная вероятность и Байес" },
           content: {
-            hy: `
-              <div class="theorem-box">
-                Թույլ է տալիս վերահաշվարկել հիպոտեզների հավանականությունները՝ փորձի արդյունքից հետո:
-                \\[ P(H_k|A) = \\frac{P(H_k) \\cdot P(A|H_k)}{\\sum_{i} P(H_i) \\cdot P(A|H_i)} \\]
-              </div>
-            `,
-            en: `
-              <div class="theorem-box">
-                <strong>Bayes' Theorem:</strong> Allows updating the probability of a hypothesis after observing evidence:
-                \\[ P(H_k|A) = \\frac{P(H_k) \\cdot P(A|H_k)}{\\sum_{i} P(H_i) \\cdot P(A|H_i)} \\]
-              </div>
-              <p>This is the foundation of Bayesian inference — learning from data!</p>
-            `,
-            ru: `
-              <div class="theorem-box">
-                <strong>Теорема Байеса:</strong> Позволяет пересчитать вероятности гипотез после наблюдения результата:
-                \\[ P(H_k|A) = \\frac{P(H_k) \\cdot P(A|H_k)}{\\sum_{i} P(H_i) \\cdot P(A|H_i)} \\]
-              </div>
-              <p>Это основа байесовского вывода — обучение на данных!</p>
-            `
+            hy: "<p><strong>Լրիվ հավանականության բանաձև՝</strong> $$P(A) = \\sum P(H_i) \\cdot P(A|H_i)$$</p><p><strong>Բայեսի բանաձև՝</strong> թույլ է տալիս «շրջել» պայմանականությունը և գնահատել հիպոթեզները:</p>$$P(H_i|A) = \\frac{P(A|H_i)P(H_i)}{\\sum P(A|H_j)P(H_j)}$$",
+            en: "<p><strong>Bayes' Theorem</strong> updates hypothesis probability given evidence.</p>$$P(H|E) = \\frac{P(E|H)P(H)}{P(E)}$$",
+            ru: "<p>Формула полной вероятности и теорема Байеса.</p>"
           }
         }
       ]
     },
-
-    /* ---- SECTION 5: Random Variables ---- */
     {
-      title: { hy: "Գլուխ 5. Պատահական մեծություններ", en: "Chapter 5. Random Variables", ru: "Глава 5. Случайные величины" },
+      title: { hy: "4. Պատահական մեծություններ", en: "4. Random Variables", ru: "4. Случайные величины" },
       subsections: [
         {
-          id: "theory-discrete-rv",
-          title: { hy: "Դիսկրետ պատահական մեծություններ", en: "Discrete Random Variables", ru: "Дискретные СВ" },
+          id: "theory-rv-props",
+          title: { hy: "Մաթ. սպասում և Դիսպերսիա", en: "Expectation & Variance", ru: "Мат. ожидание и Дисперсия" },
           content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Մաթեմատիկական սպասում (Միջին):</strong>
-                \\[ E(X) = \\sum_{i} x_i \\cdot p_i \\]
-              </div>
-              <div class="definition-box">
-                <strong>Դիսպերսիա:</strong>
-                \\[ D(X) = E(X^2) - (E(X))^2 \\]
-              </div>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Expected Value (Mean):</strong>
-                \\[ E(X) = \\sum_{i} x_i \\cdot p_i \\]
-              </div>
-              <div class="definition-box">
-                <strong>Variance:</strong> Measures spread around the mean.
-                \\[ D(X) = E(X^2) - (E(X))^2 \\]
-              </div>
-              <p><strong>Standard Deviation:</strong> \\(\\sigma = \\sqrt{D(X)}\\)</p>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Математическое ожидание:</strong>
-                \\[ E(X) = \\sum_{i} x_i \\cdot p_i \\]
-              </div>
-              <div class="definition-box">
-                <strong>Дисперсия:</strong> Мера разброса вокруг среднего.
-                \\[ D(X) = E(X^2) - (E(X))^2 \\]
-              </div>
-              <p><strong>Среднеквадратическое отклонение:</strong> \\(\\sigma = \\sqrt{D(X)}\\)</p>
-            `
+            hy: "<p><strong>Մաթեմատիկական սպասում ($E[X]$)`</strong> Պատահական մեծության կշռված միջին արժեքը:</p>$$E[X] = \\sum x_i p_i$$<p><strong>Դիսպերսիա ($Var(X)$)`</strong> Ցույց է տալիս, թե որքանով են արժեքները ցրված միջինի շուրջը:</p>$$Var(X) = E[X^2] - (E[X])^2$$",
+            en: "<p><strong>Expected Value:</strong> Mean outcome.</p>$$E[X] = \\sum x_i p_i$$",
+            ru: "<p>Математическое ожидание и дисперсия.</p>"
           }
         },
-        {
-          id: "theory-continuous-rv",
-          title: { hy: "Անընդհատ պատահական մեծություններ", en: "Continuous Random Variables", ru: "Непрерывные СВ" },
-          content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Հավանականությունների խտության ֆունկցիա (f(x)):</strong> Այնպիսի ֆունկցիա, որի ինտեգրալը տալիս է պատահույթի հավանականությունը:
-                \\[ P(a < X < b) = \\int_{a}^{b} f(x)dx \\]
-              </div>
-              <div class="definition-box">
-                <strong>Բաշխման ֆունկցիա (F(x)):</strong>
-                \\[ F(x) = P(X < x) = \\int_{-\\infty}^{x} f(t)dt \\]
-              </div>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Probability Density Function (PDF):</strong> A function whose integral represents the probability of an interval.
-                \\[ P(a < X < b) = \\int_{a}^{b} f(x)dx \\]
-              </div>
-              <div class="definition-box">
-                <strong>Cumulative Distribution Function (CDF):</strong>
-                \\[ F(x) = P(X < x) \\]
-              </div>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Плотность вероятности (f(x)):</strong> Функция, интеграл которой дает вероятность события.
-              </div>
-              <div class="definition-box">
-                <strong>Функция распределения (F(x)):</strong>
-              </div>
-            `
-          }
-        }
-      ]
-    },
-
-    /* ---- SECTION 6: Bernoulli Scheme ---- */
-    {
-      title: { hy: "Գլուխ 6. Բեռնուլիի սխեմա", en: "Chapter 6. Bernoulli Scheme", ru: "Глава 6. Схема Бернулли" },
-      subsections: [
         {
           id: "theory-bernoulli",
-          title: { hy: "Բեռնուլիի բանաձև", en: "Bernoulli Formula", ru: "Формула Бернулли" },
+          title: { hy: "Բեռնուլիի սխեմա (Բինոմալ)", en: "Bernoulli Scheme", ru: "Схема Бернулли" },
           content: {
-            hy: `
-              <div class="definition-box">
-                <strong>Բեռնուլիի սխեմա:</strong> n անկախ փորձերից յուրաքանչյուրում A պատահույթի հանդես գալու հավանականությունը p է (չհանդես գալունը՝ q = 1-p):
-                <br>k անգամ հանդես գալու հավանականությունը՝
-                \\[ P_n(k) = C_n^k p^k q^{n-k} \\]
-              </div>
-            `,
-            en: `
-              <div class="definition-box">
-                <strong>Bernoulli Scheme:</strong> In n independent trials, each with success probability p (failure q = 1-p), the probability of exactly k successes is:
-              </div>
-              <div class="formula-box">
-                \\[ P_n(k) = C(n,k) \\cdot p^k \\cdot (1-p)^{n-k} \\]
-              </div>
-              <p><strong>Example:</strong> A coin is flipped 10 times. Probability of exactly 3 heads: \\(C(10,3) \\cdot 0.5^3 \\cdot 0.5^7 \\approx 0.117\\).</p>
-            `,
-            ru: `
-              <div class="definition-box">
-                <strong>Схема Бернулли:</strong> В n независимых испытаниях с вероятностью успеха p (неудачи q = 1-p), вероятность ровно k успехов:
-              </div>
-              <div class="formula-box">
-                \\[ P_n(k) = C_n^k \\cdot p^k \\cdot q^{n-k} \\]
-              </div>
-              <p><strong>Пример:</strong> Монету бросают 10 раз. Вероятность ровно 3 орлов: \\(C_{10}^3 \\cdot 0.5^{10} \\approx 0.117\\).</p>
-            `
+            hy: "<p>Եթե կատարվում է $n$ անկախ փորձ, և յուրաքանչյուրում հաջողության հավանականությունը $p$ է ($q=1-p$), ապա ճիշտ $k$ հաջողություն ունենալու հավանականությունը՝</p>$$P_n(k) = C_n^k p^k q^{n-k}$$",
+            en: "<p>Probability of exactly $k$ successes in $n$ trials:</p>$$P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}$$",
+            ru: "<p>Биномиальное распределение.</p>"
           }
         }
       ]
     },
-    /* ---- SECTION 7: Limit Theorems ---- */
     {
-      title: { hy: "Գլուխ 7. Սահմանային թեորեմներ", en: "Chapter 7. Limit Theorems", ru: "Глава 7. Предельные теоремы" },
+      title: { hy: "5. Սահմանային թեորեմներ", en: "5. Limit Theorems", ru: "5. Предельные теоремы" },
       subsections: [
-        {
-          id: "theory-lln",
-          title: { hy: "Մեծ թվերի օրենքը", en: "Law of Large Numbers", ru: "Закон больших чисел" },
-          content: {
-            hy: `
-              <div class="theorem-box">
-                <strong>Բեռնուլիի թեորեմը:</strong> Եթե փորձերի թիվը (n) անսահման մեծանում է, ապա հաջողության հարաբերական հաճախականությունը (k/n) ձգտում է հաջողության հավանականությանը (p):
-                \\[ \\lim_{n \\to \\infty} P\\left( \\left| \\frac{k}{n} - p \\right| < \\epsilon \\right) = 1 \\]
-              </div>
-              <p>Սա է «փորձարարական» և «տեսական» հավանականությունների կապը:</p>
-            `,
-            en: `
-              <div class="theorem-box">
-                <strong>Bernoulli's Theorem (Weak LLN):</strong> As the number of trials n grows, the relative frequency of successes (k/n) converges to the true probability p:
-                \\[ \\lim_{n \\to \\infty} P\\left( \\left| \\frac{k}{n} - p \\right| < \\epsilon \\right) = 1 \\]
-              </div>
-              <p>This is the fundamental link between "experimental" and "theoretical" probability. Try the Galton Board simulation to see it in action!</p>
-            `,
-            ru: `
-              <div class="theorem-box">
-                <strong>Теорема Бернулли (слабый ЗБЧ):</strong> При увеличении числа испытаний n, относительная частота (k/n) сходится к вероятности p:
-                \\[ \\lim_{n \\to \\infty} P\\left( \\left| \\frac{k}{n} - p \\right| < \\epsilon \\right) = 1 \\]
-              </div>
-              <p>Это фундаментальная связь между «экспериментальной» и «теоретической» вероятностью. Попробуйте симуляцию доски Гальтона!</p>
-            `
-          }
-        },
         {
           id: "theory-clt",
           title: { hy: "Կենտրոնական սահմանային թեորեմ", en: "Central Limit Theorem", ru: "ЦПТ" },
           content: {
-            hy: `
-              <div class="theorem-box">
-                <strong>ԿՍԹ:</strong> Անկախ և միատեսակ բաշխված պատահական մեծությունների գումարը ձգտում է նորմալ բաշխման:
-                \\[ \\frac{\\sum X_i - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0, 1) \\]
-              </div>
-              <p>Սա բացատրում է, թե ինչու է Գալտոնի տախտակի (տես՝ Սիմուլյացիաներ) վրա գնդիկների բաշխումը ստանում զանգակաձև տեսք:</p>
-            `,
-            en: `
-              <div class="theorem-box">
-                <strong>CLT:</strong> The sum of independent, identically distributed random variables tends towards a normal distribution:
-                \\[ \\frac{\\sum X_i - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0, 1) \\]
-              </div>
-              <p>This explains why the Galton Board (see Simulations) produces a bell-shaped curve, and why the normal distribution appears everywhere in nature.</p>
-            `,
-            ru: `
-              <div class="theorem-box">
-                <strong>ЦПТ:</strong> Сумма независимых одинаково распределённых случайных величин стремится к нормальному распределению:
-                \\[ \\frac{\\sum X_i - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0, 1) \\]
-              </div>
-              <p>Это объясняет, почему доска Гальтона (см. Симуляции) даёт колоколообразную кривую.</p>
-            `
+            hy: "<p><strong>Կենտրոնական սահմանային թեորեմը (CLT)</strong> պնդում է, որ մեծ թվով անկախ (և միանման բաշխված) պատահական մեծությունների գումարը ձգտում է <strong>նորմալ բաշխման</strong> (Գաուսյան), անկախ դրանց սկզբնական բաշխումից:</p><p>Սա բացատրում է, թե ինչու է բնության մեջ այդքան հաճախ հանդիպում «Զանգակաձև կորը» (Bell Curve): Գալտոնի տախտակը (տե՛ս Սիմուլյացիաներ էջը) դրա վառ ապացույցն է:</p>",
+            en: "<p>The sum of many independent random variables converges to a <strong>Normal Distribution</strong>.</p>",
+            ru: "<p>Сумма множества независимых величин стремится к <strong>Нормальному распределению</strong>.</p>"
           }
         }
       ]
     }
   ],
 
-  /* ===================== PROBLEMS PLACEHOLDER ===================== */
-  // Will be populated in Part 2
-  /* ===================== PROBLEMS Book ===================== */
+  /* ===================== PROBLEMS Book (Static + Dynamic System) ===================== */
+
+  // 1. Static base problems (Classical favorites)
   problems: [
     /* ---- Beginner ---- */
     {
@@ -711,197 +263,207 @@ window.probabilityData = {
       question: { hy: "Նետում ենք զառ: Ինչի՞ է հավասար կենտ թիվ բացվելու հավանականությունը:", en: "A die is rolled. What is the probability of getting an odd number?", ru: "Бросают кубик. Какова вероятность выпадения нечетного числа?" },
       answer: "0.5",
       related_theory_id: "theory-classical-prob",
-      related_theory_hint: { hy: "Օգտագործեք դասական բանաձևը՝ m/n, որտեղ n=6:", en: "Use m/n where n=6.", ru: "Используйте m/n, где n=6." }
+      related_theory_hint: { hy: "n=6, m={1,3,5}=3", en: "n=6, m=3", ru: "n=6, m=3" }
     },
     {
       id: 102,
       difficulty: "beginner",
-      question: { hy: "Արկղում կա 3 կարմիր և 7 կապույտ գնդակ: Պատահական հանում են մեկը: Ինչի՞ է հավասար կարմիր լինելու հավանականությունը:", en: "Box has 3 red and 7 blue balls. One is drawn. Probability it's red?", ru: "В урне 3 красных и 7 синих шаров. Вероятность вытащить красный?" },
-      answer: "0.3",
-      related_theory_id: "theory-classical-prob",
-      related_theory_hint: { hy: "Ընդհանուր գնդակների քանակը՝ 3+7=10:", en: "Total balls = 10.", ru: "Всего шаров = 10." }
-    },
-    {
-      id: 103,
-      difficulty: "beginner",
-      question: { hy: "Երկու մետաղադրամ նետելիս, ինչի՞ է հավասար երկուսի վրա էլ «զինանշան» ընկնելու հավանականությունը:", en: "Flipping 2 coins. Probability of 2 heads?", ru: "Бросают 2 монеты. Вероятность 2-х орлов?" },
+      question: { hy: "2 մետաղադրամ նետելիս, որքա՞ն է հավանականությունը, որ երկուսն էլ «Զինանշան» կլինեն:", en: "Flip 2 coins. Prob of 2 Heads?", ru: "2 монеты. Вероятность 2-х орлов?" },
       answer: "0.25",
-      related_theory_id: "theory-conditional-prob",
-      related_theory_hint: { hy: "Մետաղադրամները անկախ են: Բազմապատկեք հավանականությունները (0.5 * 0.5):", en: "Independent events: 0.5 * 0.5.", ru: "Независимые события: 0.5 * 0.5." }
+      related_theory_id: "theory-conditional-prob"
     },
     {
-      id: 104,
+      id: 105,
       difficulty: "beginner",
-      question: { hy: "Հաշվե՛ք 5!-ը:", en: "Calculate 5!", ru: "Вычислите 5!" },
-      answer: "120",
-      related_theory_id: "theory-permutations",
-      related_theory_hint: { hy: "5! = 1*2*3*4*5:", en: "5! = 1*2*3*4*5", ru: "5! = 1*2*3*4*5" }
+      question: { hy: "Գտեք 6! (6-ի ֆակտորիալը):", en: "Calculate 6!", ru: "Вычислите 6!" },
+      answer: "720",
+      related_theory_id: "theory-permutations"
     },
 
     /* ---- Intermediate ---- */
     {
       id: 201,
       difficulty: "intermediate",
-      question: { hy: "Քանի՞ եղանակով կարելի է 5 հոգուց ընտրել 3-հոգանոց խումբ:", en: "How many ways to choose a group of 3 from 5 people?", ru: "Сколькими способами можно выбрать группу из 3 человек из 5?" },
-      answer: "10",
+      question: { hy: "Արկղում կա 5 սպիտակ և 4 սև գնդիկ: Հանում են 2 գնդիկ: Որքա՞ն է հավանականությունը, որ երկուսն էլ սպիտակ են:", en: "Urn: 5W, 4B. Draw 2. Prob both White?", ru: "Урна: 5Б, 4Ч. Берем 2. Вероятность 2-х белых?" },
+      answer: "0.2778",
       related_theory_id: "theory-combinations",
-      related_theory_hint: { hy: "Սա զուգորդություն է (կարգը կապ չունի): Օգտագործեք C(5,3) բանաձևը:", en: "Use C(5,3).", ru: "Используйте C(5,3)." }
+      related_theory_hint: { hy: "C(5,2) / C(9,2)", en: "C(5,2) / C(9,2)", ru: "C(5,2) / C(9,2)" }
     },
     {
       id: 202,
       difficulty: "intermediate",
-      question: { hy: "Նետում ենք 2 զառ: Ինչի՞ է հավասար գումարը 10 լինելու հավանականությունը:", en: "Rolling 2 dice. Probability sum is 10?", ru: "Бросают 2 кубика. Вероятность суммы 10?" },
-      answer: "0.0833", // 3/36 = 1/12 ≈ 0.0833
-      related_theory_id: "theory-classical-prob",
-      related_theory_hint: { hy: "Հնարավոր զույգերը՝ (4,6), (5,5), (6,4): Ընդհանուր՝ 36:", en: "Pairs: (4,6), (5,5), (6,4). Total 36.", ru: "Пары: (4,6), (5,5), (6,4). Всего 36." }
-    },
-    {
-      id: 203,
-      difficulty: "intermediate",
-      question: { hy: "Թիրախին կրակելիս հիթի հավանականությունը 0.8 է: Ինչի՞ է հավասար ճիշտ 3 անգամ կպնելու հավանականությունը 5 կրակոցից:", en: "Hit prob is 0.8. Prob of exactly 3 hits in 5 shots?", ru: "Вероятность попадания 0.8. Вероятность ровно 3 попаданий из 5?" },
-      answer: "0.2048",
+      question: { hy: "3 կրակոցից (p=0.4) գոնե մեկ անգամ կպնելու հավանականությունը:", en: "3 shots (p=0.4). Prob of at least 1 hit?", ru: "3 выстрела (p=0.4). Хотя бы 1 попадание?" },
+      answer: "0.784",
       related_theory_id: "theory-bernoulli",
-      related_theory_hint: { hy: "Կիրառեք Բեռնուլիի բանաձևը՝ C(5,3) * (0.8)^3 * (0.2)^2:", en: "Use Bernoulli: C(5,3) * 0.8^3 * 0.2^2.", ru: "Формула Бернулли: C(5,3) * 0.8^3 * 0.2^2." }
-    },
-    {
-      id: 204,
-      difficulty: "intermediate",
-      question: { hy: "Խաղաթղթերի տուփից (52) հանում ենք մեկ քարտ: Ինչի՞ է հավասար «Տուզ» կամ «Սիրտ» լինելու հավանականությունը:", en: "Draw 1 card from 52. Prob of Ace OR Heart?", ru: "Вероятность вытянуть Туза ИЛИ Черви из 52 карт?" },
-      answer: "0.3077", // 16/52 = 4/13 ≈ 0.3077
-      related_theory_id: "theory-set-operations",
-      related_theory_hint: { hy: "P(A ∪ B) = P(A) + P(B) - P(A ∩ B): (4+13-1)/52:", en: "P(A or B) = P(A) + P(B) - P(A and B).", ru: "P(A ∪ B) = P(A) + P(B) - P(A ∩ B)." }
+      related_theory_hint: { hy: "1 - P(ոչ մի)", en: "1 - P(none)", ru: "1 - P(ни одного)" }
     },
 
     /* ---- Advanced ---- */
     {
       id: 301,
       difficulty: "advanced",
-      question: { hy: "Առաջին արկղում կա 2 սպիտակ, 3 սև գնդակ, երկրորդում՝ 4 սպիտակ, 1 սև: Պատահական ընտրում ենք արկղ և հանում գնդակ: Ինչի՞ է հավասար սպիտակ լինելու հավանականությունը:", en: "Urn 1: 2W,3B. Urn 2: 4W,1B. Pick urn, pick ball. Prob white?", ru: "Урна 1: 2Б,3Ч. Урна 2: 4Б,1Ч. Выбираем урну, берем шар. Вер. белого?" },
-      answer: "0.6",
-      related_theory_id: "theory-total-prob",
-      related_theory_hint: { hy: "Լրիվ հավանականություն: 0.5*(2/5) + 0.5*(4/5):", en: "Total Prob: 0.5*(2/5) + 0.5*(4/5).", ru: "Полная вероятность: 0.5*(2/5) + 0.5*(4/5)." }
+      question: { hy: "X ~ N(0, 1): Գտնել P(|X| < 2) (մոտավոր, 2 նիշ):", en: "X ~ N(0,1). Find P(|X| < 2).", ru: "X ~ N(0,1). Найти P(|X| < 2)." },
+      answer: "0.95",
+      related_theory_id: "theory-rv-props"
     },
-    {
-      id: 302,
-      difficulty: "advanced",
-      question: { hy: "Հայտնի է, որ գնդակը սպիտակ է (նախորդ խնդիրը): Ինչի՞ է հավասար հավանականությունը, որ այն 1-ին արկղից էր:", en: "Given ball is white (prev problem), prob it came from Urn 1?", ru: "Шар белый (пред. задача). Вероятность, что он из Урны 1?" },
-      answer: "0.3333", // (0.2 / 0.6) = 1/3
-      related_theory_id: "theory-bayes",
-      related_theory_hint: { hy: "Բայեսի բանաձև: (0.5*0.4) / 0.6:", en: "Bayes: (0.5*0.4) / 0.6.", ru: "Байес: (0.5*0.4) / 0.6." }
-    },
-    {
-      id: 303,
-      difficulty: "advanced",
-      question: { hy: "Ունենք 10 բանալի, որոնցից միայն մեկն է բացում դուռը: Փորձում ենք հերթով (առանց հետ վերադարձնելու): Ինչի՞ է հավասար 4-րդ փորձից բացելու հավանականությունը:", en: "10 keys, 1 works. Try without replacement. Prob success on 4th try?", ru: "10 ключей, 1 подходит. Без возврата. Вероятность успеха на 4-й раз?" },
-      answer: "0.1",
-      related_theory_id: "theory-classical-prob",
-      related_theory_hint: { hy: "Սիմետրիայի ուժը: Ցանկացած դիրքում (1-ից 10) հաջողության հավանականությունը նույնն է՝ 1/10:", en: "Symmetry: 1/10 for any position.", ru: "Симметрия: 1/10 для любой позиции." }
-    },
-    {
-      id: 304,
-      difficulty: "advanced",
-      question: { hy: "X-ը ունի նորմալ բաշխում՝ N(0, 1): Գտնել P(-1 < X < 1): (Գրել մոտարկված՝ 0.XXX):", en: "X ~ N(0,1). Find P(-1 < X < 1).", ru: "X ~ N(0,1). Найти P(-1 < X < 1)." },
-      answer: "0.6827",
-      related_theory_id: "theory-clt",
-      related_theory_hint: { hy: "Սա «3 սիգմայի» կանոնի առաջին մասն է (68-95-99.7):", en: "The 68-95-99.7 rule.", ru: "Правило 3 сигм." }
-    },
-
-    /* ---- Olympic (Logic/Tricky) ---- */
-    {
-      id: 401,
-      difficulty: "olympic",
-      question: { hy: "Ընտանիքում կա 2 երեխա: Հայտնի է, որ նրանցից գոնե մեկը աղջիկ է: Որքա՞ն է հավանականությունը, որ երկուսն էլ աղջիկ են:", en: "Family has 2 kids. At least one is a girl. Prob both are girls?", ru: "2 ребенка. Хотя бы одна - девочка. Вероятность, что обе девочки?" },
-      answer: "0.3333",
-      related_theory_id: "theory-conditional-prob",
-      related_theory_hint: { hy: "Տարածությունը՝ {BB, BG, GB, GG}: Եթե «գոնե մեկը աղջիկ է», մնում են {BG, GB, GG}: Դրանցից միայն GG-ն է նպաստավոր: 1/3:", en: "Space: {BB, BG, GB, GG}. Cond: {BG, GB, GG}. Fav: {GG}. Ans: 1/3.", ru: "Пространство: {BB, BG, GB, GG}. Усл: {BG, GB, GG}. Благ: {GG}. Отв: 1/3." }
-    },
-    {
-      id: 402,
-      difficulty: "olympic",
-      question: { hy: "Հանդիպման խնդիրը: Երկու ընկեր պայմանավորվում են հանդիպել 12:00-13:00 միջակայքում: Յուրաքանչյուրը սպասում է 15 րոպե: Որքա՞ն է հանդիպման հավանականությունը:", en: "Meeting problem. Arrive 12-1. Wait 15 min. Prob of meeting?", ru: "Задача о встрече. Приход 12-1. Ждут 15 мин. Вероятность?" },
-      answer: "0.4375",
-      related_theory_id: "theory-geometric-prob",
-      related_theory_hint: { hy: "Երկրաչափական հավանականություն: Պատկերեք քառակուսի: |x-y| <= 1/4: Մակերեսը՝ 1 - (3/4)^2 = 7/16:", en: "Geometric Prob. Area = 1 - (3/4)^2 = 7/16.", ru: "Геометрическая вер. Площадь = 1 - (3/4)^2 = 7/16." }
-    },
-    {
-      id: 403,
-      difficulty: "olympic",
-      question: { hy: "50 հոգանոց դասարանում, որքա՞ն է հավանականությունը, որ գոնե երկու հոգի ունեն նույն ծննդյան օրը: (գրել 0.9XX տեսքով)", en: "Birthday Paradox with 50 people. Prob of match?", ru: "Парадокс дней рождения (50 чел). Вероятность совпадения?" },
-      answer: "0.97",
-      related_theory_id: "theory-events",
-      related_theory_hint: { hy: "Սա ծննդյան օրերի պարադոքսն է: Հավանականությունը շատ մոտ է 1-ին:", en: "Birthday Paradox.", ru: "Парадокс дней рождения." }
-    },
-
-    /* ---- Additional Beginner ---- */
-    {
-      id: 105,
-      difficulty: "beginner",
-      question: { hy: "Ինչի՞ է հավասար P(A)-ն, եթե A-ն հավաստի պատահույթ է:", en: "What is P(A) if A is a certain event?", ru: "Чему равна P(A), если A — достоверное событие?" },
-      answer: "1",
-      related_theory_id: "theory-events",
-      related_theory_hint: { hy: "Հավաստի պատահույթը համընկնում է Ω-ի հետ:", en: "A certain event = Ω, P(Ω) = 1.", ru: "Достоверное событие = Ω, P(Ω) = 1." }
-    },
-    {
-      id: 106,
-      difficulty: "beginner",
-      question: { hy: "Քանի՞ տեղափոխություն կարելի է կազմել 4 տարրից (4!):", en: "How many permutations of 4 elements? (4!)", ru: "Сколько перестановок из 4 элементов? (4!)" },
-      answer: "24",
-      related_theory_id: "theory-permutations",
-      related_theory_hint: { hy: "4! = 1*2*3*4 = 24:", en: "4! = 1*2*3*4.", ru: "4! = 1*2*3*4." }
-    },
-    {
-      id: 107,
-      difficulty: "beginner",
-      question: { hy: "Մետաղադրամը նետում են մեկ անգամ: Որքա՞ն է «գիր» բացվելու հավանականությունը:", en: "A coin is flipped once. What is the probability of tails?", ru: "Монету бросают 1 раз. Вероятность решки?" },
-      answer: "0.5",
-      related_theory_id: "theory-classical-prob",
-      related_theory_hint: { hy: "Կա երկու հավասարահնարավոր ելք:", en: "Two equally likely outcomes.", ru: "Два равновозможных исхода." }
-    },
-
-    /* ---- Additional Intermediate ---- */
-    {
-      id: 205,
-      difficulty: "intermediate",
-      question: { hy: "Քանի՞ տեղադրություն կարելի է կազմել 7 տարրից 3-ական: A(7,3) = ?", en: "How many arrangements of 3 from 7 elements? A(7,3) = ?", ru: "Сколько размещений из 7 по 3? A(7,3) = ?" },
-      answer: "210",
-      related_theory_id: "theory-arrangements",
-      related_theory_hint: { hy: "A(7,3) = 7! / 4! = 7*6*5 = 210:", en: "A(7,3) = 7! / 4! = 7*6*5.", ru: "A(7,3) = 7! / 4! = 7*6*5." }
-    },
-    {
-      id: 206,
-      difficulty: "intermediate",
-      question: { hy: "Բեռնուլիի 6 փորձերում (p=0.5), որքա՞ն է ճիշտ 3 հաջողության հավանականությունը:", en: "In 6 Bernoulli trials with p=0.5, probability of exactly 3 successes?", ru: "В 6 испытаниях Бернулли при p=0.5, P(k=3)?" },
-      answer: "0.3125",
-      related_theory_id: "theory-bernoulli",
-      related_theory_hint: { hy: "C(6,3) * 0.5^6 = 20 * 1/64 = 0.3125:", en: "C(6,3) * 0.5^6 = 20/64.", ru: "C(6,3) * 0.5^6 = 20/64." }
-    },
-
-    /* ---- Additional Advanced ---- */
     {
       id: 305,
       difficulty: "advanced",
-      question: { hy: "Գործարանն ունի 3 հաստոց: A (50% արտադրանք, 2% խոտան), B (30%, 3%), C (20%, 4%): Պատահական հանված իրը խոտան է: Որքա՞ն է հավանականությունը, որ այն A հաստոցից է:", en: "A factory has 3 machines. Machine A (50% output, 2% defect), B (30%, 3%), C (20%, 4%). A random item is defective. Prob it came from Machine A?", ru: "Завод: A (50%, 2% брак), B (30%, 3%), C (20%, 4%). Случайное изд. бракован. Вер. из A?" },
-      answer: "0.3704",
+      question: { hy: "Բայեսի խնդիր: հիվանդության հաճախականությունը 1% է: Թեստի ճշտությունը՝ 99% (և՛ դրական, և՛ բացասական): Թեստը դրական է: Հավանականությունը, որ մարդը հիվանդ է (xxxx / 10000)?", en: "Prevalence 1%. Test acc 99%. Test Positive. Prob diseased?", ru: "Частота 1%. Тест 99%. Плюс. Болен?" },
+      answer: "0.5",
       related_theory_id: "theory-bayes",
-      related_theory_hint: { hy: "Օգտագործեք Բայեսի բանաձևը:", en: "Bayes: P(A|D) = (0.5*0.02) / (0.5*0.02 + 0.3*0.03 + 0.2*0.04) = 0.01/0.027.", ru: "Байес: P(A|D) = 0.01/0.027." }
-    },
-    {
-      id: 306,
-      difficulty: "advanced",
-      question: { hy: "Ինչի՞ է հավասար զառի նետման մաթեմատիկական սպասումը: E(X) = ?", en: "Expected value of a fair die roll E(X) = ?", ru: "Мат. ожидание броска кубика E(X) = ?" },
-      answer: "3.5",
-      related_theory_id: "theory-discrete-rv",
-      related_theory_hint: { hy: "E(X) = (1+2+3+4+5+6)/6 = 3.5:", en: "E(X) = (1+2+3+4+5+6)/6 = 3.5.", ru: "E(X) = (1+2+3+4+5+6)/6 = 3.5." }
+      related_theory_hint: { hy: "0.01*0.99 / (0.01*0.99 + 0.99*0.01) = 0.5", en: "Standard Bayes trap.", ru: "Ловушка Байеса." }
     },
 
-    /* ---- Additional Olympic ---- */
+    /* ---- Olympic ---- */
     {
-      id: 404,
+      id: 401,
       difficulty: "olympic",
-      question: { hy: "Մետաղադրամը նետում են 10 անգամ: Որքա՞ն է հավանականությունը, որ «զինանշան» կբացվի 8-ից ԱՎԵԼԻ անգամ: (Կլորացնել մինչև 4 տասնորդական):", en: "A fair coin is flipped 10 times. What is the probability of getting MORE than 8 heads? (Round to 4 decimal places)", ru: "Монету бросают 10 раз. Вероятность БОЛЕЕ 8 орлов? (4 десятичных)" },
-      answer: "0.0107",
-      related_theory_id: "theory-bernoulli",
-      related_theory_hint: { hy: "P(k>8) = P(9) + P(10) = C(10,9)*0.5^10 + C(10,10)*0.5^10:", en: "P(9)+P(10) = (10+1)/1024.", ru: "P(9)+P(10) = 11/1024." }
+      question: { hy: "Ընտրեք պատահական լար շրջանագծի վրա: Որքա՞ն է հավանականությունը, որ այն մեծ է շրջանագծին ներգծած եռանկյունու կողմից (Բերտրայի պարադոքս - տարբերակ 1):", en: "Bertrand Paradox (chord > triangle side). Solution 1.", ru: "Парадокс Бертрана (хорда > стороны)." },
+      answer: "0.3333",
+      related_theory_id: "theory-geometric-prob"
     }
-  ]
+  ],
+
+  /* 
+   * DYNAMIC PROBLEM GENERATOR
+   */
+  problemTemplates: [
+    // Template 1: Classical Probability
+    {
+      topic: "basic",
+      difficulty: "beginner",
+      theoryId: "theory-classical-prob",
+      generate: () => {
+        const red = Math.floor(Math.random() * 5) + 3;
+        const blue = Math.floor(Math.random() * 5) + 3;
+        const total = red + blue;
+        return {
+          question: {
+            hy: `Արկղում կա ${red} կարմիր և ${blue} կապույտ գնդակ: Պատահական հանում են մեկը: Որքան է կարմիր լինելու հավանականությունը (կոտորակով, օր.՝ 3/${total}):`,
+            en: `Box has ${red} red and ${blue} blue balls. Draw one. Prob of red (e.g. 3/${total})?`,
+            ru: `В урне ${red} кр. и ${blue} син. шаров. Один достали. Вероятность красного (дробь)?`
+          },
+          answer: `${red}/${total}`
+        };
+      }
+    },
+    // Template 2: Combinatorics
+    {
+      topic: "combinatorics",
+      difficulty: "intermediate",
+      theoryId: "theory-combinations",
+      generate: () => {
+        const n = Math.floor(Math.random() * 4) + 6;
+        const k = Math.floor(Math.random() * 2) + 2;
+        const fact = function f(num) { return num <= 1 ? 1 : num * f(num - 1); };
+        const ans = fact(n) / (fact(k) * fact(n - k));
+        return {
+          question: {
+            hy: `${n} աշակերտից քանի՞ եղանակով կարելի է ընտրել ${k} հերթապահ:`,
+            en: `How many ways to choose ${k} monitors from ${n} students?`,
+            ru: `Сколькими способами выбрать ${k} дежурных из ${n}?`
+          },
+          answer: String(ans)
+        };
+      }
+    },
+    // Template 3: Bernoulli
+    {
+      topic: "distributions",
+      difficulty: "intermediate",
+      theoryId: "theory-bernoulli",
+      generate: () => {
+        const n = Math.floor(Math.random() * 3) + 3;
+        const target = Math.floor(Math.random() * (n - 1)) + 1;
+        const fact = function f(num) { return num <= 1 ? 1 : num * f(num - 1); };
+        const comb = (N, K) => fact(N) / (fact(K) * fact(N - K));
+        const prob = comb(n, target) * Math.pow(0.5, n);
+
+        return {
+          question: {
+            hy: `Մետաղադրամը նետում են ${n} անգամ: Գտնել ճիշտ ${target} անգամ «Զինանշան» ընկնելու հավանականությունը (տասնորդական թիվ):`,
+            en: `Flip coin ${n} times. Prob of exactly ${target} heads (decimal)?`,
+            ru: `${n} монет. Вер. ровно ${target} орлов (число)?`
+          },
+          answer: prob.toFixed(4)
+        };
+      }
+    },
+    // Template 4: Dice Sum
+    {
+      topic: "basic",
+      difficulty: "intermediate",
+      theoryId: "theory-classical-prob",
+      generate: () => {
+        const sum = Math.floor(Math.random() * 5) + 7;
+        let fav = 0;
+        for (let i = 1; i <= 6; i++) {
+          for (let j = 1; j <= 6; j++) {
+            if (i + j === sum) fav++;
+          }
+        }
+        return {
+          question: {
+            hy: `Նետում են 2 զառ: Հավանականությունը, որ գումարը կլինի ${sum}:`,
+            en: `Roll 2 dice. Prob that sum is ${sum}:`,
+            ru: `2 кубика. Вер. суммы ${sum}:`
+          },
+          answer: `${fav}/36`
+        };
+      }
+    },
+    // Template 5: Olympic/Geometric (New)
+    {
+      topic: "distributions",
+      difficulty: "olympic",
+      theoryId: "theory-geometric-prob",
+      generate: () => {
+        const L = Math.floor(Math.random() * 5) * 10 + 10; // 10, 20...
+        const l = L / 2;
+        return {
+          question: {
+            hy: `Բյուֆոնի խնդիր: Գծերի հեռավորությունը ${L} սմ է, ասեղի երկարությունը՝ ${l} սմ: Գտնել հատման հավանականությունը (մոտարկել $\\pi \\approx 3.14$):`,
+            en: `Buffon: Line spacing ${L}, needle ${l}. Prob of crossing (use pi=3.14)?`,
+            ru: `Бюффон: Шаг ${L}, игла ${l}. Вер. пересечения (pi=3.14)?`
+          },
+          answer: ((2 * l) / (3.14159 * L)).toFixed(3)
+        };
+      }
+    }
+  ],
+
+  // Helper to generate a fresh batch of problems, FILTERED
+  generateBatch: function (count, filters = {}) {
+    // 1. Filter templates
+    let candidates = this.problemTemplates;
+
+    if (filters.topic && filters.topic !== 'all') {
+      // Simple topic matching (substring or exact)
+      if (filters.topic === 'combinatorics') candidates = candidates.filter(t => t.topic === 'combinatorics');
+      else if (filters.topic === 'basic') candidates = candidates.filter(t => t.topic === 'basic');
+      else if (filters.topic === 'distributions') candidates = candidates.filter(t => t.topic === 'distributions');
+    }
+
+    if (filters.difficulty && filters.difficulty !== 'all') {
+      candidates = candidates.filter(t => t.difficulty === filters.difficulty);
+    }
+
+    if (candidates.length === 0) candidates = this.problemTemplates; // Fallback if too strict
+
+    const newProbs = [];
+    for (let i = 0; i < count; i++) {
+      const tmpl = candidates[Math.floor(Math.random() * candidates.length)];
+      const p = tmpl.generate();
+      newProbs.push({
+        id: 1000 + i + Math.floor(Math.random() * 10000),
+        difficulty: tmpl.difficulty,
+        question: p.question,
+        answer: p.answer,
+        related_theory_id: tmpl.theoryId,
+        isDynamic: true
+      });
+    }
+    return newProbs;
+  }
 };
