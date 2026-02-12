@@ -34,8 +34,8 @@ function initCursorGlow() {
     // Smooth follow loop
     function animateGlow() {
         // Linear interpolation (lerp) for smooth lag
-        glowX += (mouseX - glowX) * 0.1;
-        glowY += (mouseY - glowY) * 0.1;
+        glowX += (mouseX - glowX) * 0.08;
+        glowY += (mouseY - glowY) * 0.08;
 
         glow.style.left = `${glowX}px`;
         glow.style.top = `${glowY}px`;
