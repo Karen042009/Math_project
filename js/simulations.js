@@ -134,13 +134,12 @@ function galtonAnimate() {
     const binAreaTop = pegAreaBottom + 20;
     const gravity = 0.15;
     
-    // Get controls
-    const speedMult = parseInt(document.getElementById('galton-speed')?.value || 3);
-    const elasticity = parseFloat(document.getElementById('galton-bounce')?.value || 0.6);
+    // Get controls (with safe defaults if elements don't exist)
+    const speedMult = parseInt(document.getElementById('galton-speed')?.value || '3');
+    const elasticity = parseFloat(document.getElementById('galton-bounce')?.value || '0.6');
     
     // Multi-step for speed
-    // If speed is 1: 1 step. If 5: 5 steps (faster execution per frame).
-    const steps = speedMult; 
+    const steps = speedMult || 3;
 
     for (let s = 0; s < steps; s++) {
         for (const ball of galtonBalls) {

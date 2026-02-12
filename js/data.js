@@ -119,6 +119,11 @@ window.probabilityData = {
     stat_game_stats: { hy: "Խաղի Վիճակագրություն", en: "Game Stats", ru: "Статистика Игры" },
     stat_realtime_analysis: { hy: "Իրական Ժամանակի Վերլուծություն", en: "Real-time Analysis", ru: "Анализ в Реальном Времени" },
 
+    // Practice Stats (CRITICAL - was missing, causing crash)
+    stat_solved: { hy: "Լուծված", en: "Solved", ru: "Решено" },
+    stat_attempts: { hy: "Փորձեր", en: "Attempts", ru: "Попытки" },
+    stat_total: { hy: "Ընդամենը", en: "Total", ru: "Всего" },
+
     // New Calculator UI
     calc_group_basic: { hy: "Հիմնական", en: "Basic", ru: "Основные" },
     calc_group_adv: { hy: "Բարդ", en: "Advanced", ru: "Продвинутые" },
@@ -126,12 +131,24 @@ window.probabilityData = {
     calc_mode_std: { hy: "Ստանդարտ", en: "Standard", ru: "Стандарт" },
     calc_mode_formula: { hy: "Քայլերով լուծում", en: "Step-by-Step", ru: "Пошагово" },
 
-    topic_basic: { hy: "Հիմնական հավանականություն", en: "Basic Probability", ru: "Основы вероятности" },
-    topic_combinatorics: { hy: "Կոմբինատորիկա", en: "Combinatorics", ru: "Комбинаторика" },
-    topic_conditional: { hy: "Պայմանական հավանականություն", en: "Conditional Probability", ru: "Условная вероятность" },
-    topic_bayes: { hy: "Բայեսի թեորեմ", en: "Bayes' Theorem", ru: "Теорема Байеса" },
-    topic_distributions: { hy: "Բաշխումներ", en: "Distributions", ru: "Распределения" },
-    topic_rv: { hy: "Պատահական մեծություններ", en: "Random Variables", ru: "Случайные величины" },
+    // Lab/Visualizer
+    card_tab_calc: { hy: "Հաշվիչ", en: "Calculator", ru: "Калькулятор" },
+    card_visualizer: { hy: "Վիզուալիզատոր", en: "Data Visualizer", ru: "Визуализатор" },
+    btn_render: { hy: "Գծել", en: "Render", ru: "Отрисовать" },
+    btn_step_solver: { hy: "Քայլերով լուծում", en: "Step-by-Step Solver", ru: "Пошаговое решение" },
+    analysis_title: { hy: "Վերլուծություն", en: "Analysis", ru: "Анализ" },
+
+    // Simulation buttons
+    sim_galton_btn: { hy: "Գալտոնի տախտակ", en: "Galton Board", ru: "Доска Гальтона" },
+    sim_monty_btn: { hy: "Մոնտի Հոլլ", en: "Monty Hall", ru: "Монти Холл" },
+    sim_buffon_btn: { hy: "Բյուֆոնի ասեղ", en: "Buffon's Needle", ru: "Игла Бюффона" },
+
+    topic_basic: { hy: "\u0540\u056b\u0574\u0576\u0561\u056f\u0561\u0576 \u0570\u0561\u057e\u0561\u0576\u0561\u056f\u0561\u0576\u0578\u0582\u0569\u0575\u0578\u0582\u0576", en: "Basic Probability", ru: "\u041e\u0441\u043d\u043e\u0432\u044b \u0432\u0435\u0440\u043e\u044f\u0442\u043d\u043e\u0441\u0442\u0438" },
+    topic_combinatorics: { hy: "\u053f\u0578\u0574\u0562\u056b\u0576\u0561\u057f\u0578\u0580\u056b\u056f\u0561", en: "Combinatorics", ru: "\u041a\u043e\u043c\u0431\u0438\u043d\u0430\u0442\u043e\u0440\u0438\u043a\u0430" },
+    topic_conditional: { hy: "\u054a\u0561\u0575\u0574\u0561\u0576\u0561\u056f\u0561\u0576 \u0570\u0561\u057e\u0561\u0576\u0561\u056f\u0561\u0576\u0578\u0582\u0569\u0575\u0578\u0582\u0576", en: "Conditional Probability", ru: "\u0423\u0441\u043b\u043e\u0432\u043d\u0430\u044f \u0432\u0435\u0440\u043e\u044f\u0442\u053d\u043e\u0441\u0442\u044c" },
+    topic_bayes: { hy: "\u0532\u0561\u0575\u0565\u057d\u056b \u0569\u0565\u0578\u0580\u0565\u0574", en: "Bayes' Theorem", ru: "\u0422\u0435\u043e\u0440\u0435\u043c\u0430 \u0411\u0430\u0439\u0435\u0441\u0430" },
+    topic_distributions: { hy: "\u0532\u0561\u0577\u056d\u0578\u0582\u0574\u0576\u0565\u0580", en: "Distributions", ru: "\u0420\u0430\u0441\u043f\u0440\u0435\u0434\u0435\u043b\u0435\u043d\u0438\u044f" },
+    topic_rv: { hy: "\u054a\u0561\u057f\u0561\u0570\u0561\u056f\u0561\u0576 \u0574\u0565\u056e\u0578\u0582\u0569\u0575\u0578\u0582\u0576\u0576\u0565\u0580", en: "Random Variables", ru: "\u0421\u043b\u0443\u0447\u0430\u0439\u043d\u044b\u0435 \u0432\u0435\u043b\u0438\u0447\u0438\u043d\u044b" },
   },
 
   /* ===================== THEORY CONTENT (ENCYCLOPEDIA) ===================== */
@@ -247,14 +264,55 @@ window.probabilityData = {
       ]
     },
     {
-      title: { hy: "5. Սահմանային թեորեմներ", en: "5. Limit Theorems", ru: "5. Предельные теоремы" },
+      title: { hy: "5. Բաշխման օրենքներ", en: "5. Distribution Laws", ru: "5. Заկоны распределения" },
       subsections: [
+        {
+          id: "theory-poisson",
+          title: { hy: "Պուասոնի բաշխում", en: "Poisson Distribution", ru: "Распределение Пуассона" },
+          content: {
+            hy: "<p><strong>Պուասոնի բաշխումը</strong> կիրառվում է հազվադեպ իրադարձությունների համար, երբ ն մեծ է, p փոքր է, իսկ $\\lambda = np$ սահմանաֆակված է:</p>$$P(X=k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}$$<p><strong>Կիրառություններ՝</strong> Հեռախոսազանգերի քանակը, սարքավորումների քանակը որոշակի ժամանակահատվածում:</p>",
+            en: "<p><strong>Poisson Distribution</strong> is used when n is large and p is small. \\(\\lambda = np\\).</p>$$P(X=k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}$$",
+            ru: "<p><strong>Распределение Пуассона</strong> — при большом n и малом p.</p>$$P(X=k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}$$"
+          }
+        },
+        {
+          id: "theory-normal",
+          title: { hy: "Նորմալ (Գաուսի) բաշխում", en: "Normal (Gaussian) Distribution", ru: "Нормальное распределение" },
+          content: {
+            hy: "<p><strong>Նորմալ բաշխումը</strong> (Զանգակաձև կոր) ամենակարևորն է հավանականությունների տեսության մեջ:</p>$$f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}$$<p>Որտեղ $\\mu$ միջինն է, $\\sigma$ ստանդարտ շեղումը:</p><p><strong>Կանոններ՝</strong></p><ul><li>68% տվյալների մեջ \\([\\mu - \\sigma, \\mu + \\sigma]\\) միջակայքում</li><li>95% տվյալների մեջ \\([\\mu - 2\\sigma, \\mu + 2\\sigma]\\) միջակայքում</li><li>99.7% տվյալների մեջ \\([\\mu - 3\\sigma, \\mu + 3\\sigma]\\) միջակայքում</li></ul>",
+            en: "<p><strong>Normal Distribution</strong> (Bell Curve) is foundational in probability theory.</p>$$f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}$$<p><strong>68-95-99.7 Rule:</strong></p><ul><li>68% within 1σ</li><li>95% within 2σ</li><li>99.7% within 3σ</li></ul>",
+            ru: "<p><strong>Нормальное распределение</strong> (Колоколообразная кривая).</p>$$f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}$$"
+          }
+        },
+        {
+          id: "theory-exponential",
+          title: { hy: "Էքսպոնենցիալ բաշխում", en: "Exponential Distribution", ru: "Экспоненциальное распр." },
+          content: {
+            hy: "<p><strong>Էքսպոնենցիալ բաշխումը</strong> նկարագրում է իրադարձությունների միջև անցած ժամանակը:</p>$$f(x) = \\lambda e^{-\\lambda x}, \\quad x \\geq 0$$<p>$E[X] = 1/\\lambda$, $Var(X) = 1/\\lambda^2$</p>",
+            en: "<p><strong>Exponential Distribution</strong> models time between events.</p>$$f(x) = \\lambda e^{-\\lambda x}, \\quad x \\geq 0$$",
+            ru: "<p><strong>Экспоненциальное</strong> — моделирует время между событиями.</p>"
+          }
+        }
+      ]
+    },
+    {
+      title: { hy: "6. Սահմանային թեորեմներ", en: "6. Limit Theorems", ru: "6. Предельные теоремы" },
+      subsections: [
+        {
+          id: "theory-lln",
+          title: { hy: "Մեծ թվերի օրենքը", en: "Law of Large Numbers", ru: "Закон больших чисел" },
+          content: {
+            hy: "<p><strong>Մեծ թվերի օրենքը</strong> պնդում է, որ փորձերի քանակի մեծանալով հարաբերական հաճախականությունը մոտենում է տեսական հավանականությանը:</p>$$\\bar{X}_n \\xrightarrow{P} \\mu \\quad \\text{as } n \\to \\infty$$<p>Սա նշանակում է, որ եթե ծաղկոձը նետենք 1000 անգամ, զինանշանի հարաբերական հաճախականությունը կմոտենա 0.5-ին:</p>",
+            en: "<p><strong>Law of Large Numbers:</strong> As the number of trials increases, the relative frequency converges to the true probability.</p>$$\\bar{X}_n \\xrightarrow{P} \\mu \\quad \\text{as } n \\to \\infty$$",
+            ru: "<p><strong>Закон больших чисел:</strong> С увеличением числа испытаний частота стремится к вероятности.</p>"
+          }
+        },
         {
           id: "theory-clt",
           title: { hy: "Կենտրոնական սահմանային թեորեմ", en: "Central Limit Theorem", ru: "ЦПТ" },
           content: {
-            hy: "<p><strong>Կենտրոնական սահմանային թեորեմը (CLT)</strong> պնդում է, որ մեծ թվով անկախ (և միանման բաշխված) պատահական մեծությունների գումարը ձգտում է <strong>նորմալ բաշխման</strong> (Գաուսյան), անկախ դրանց սկզբնական բաշխումից:</p><p>Սա բացատրում է, թե ինչու է բնության մեջ այդքան հաճախ հանդիպում «Զանգակաձև կորը» (Bell Curve): Գալտոնի տախտակը (տե՛ս Սիմուլյացիաներ էջը) դրա վառ ապացույցն է:</p>",
-            en: "<p>The sum of many independent random variables converges to a <strong>Normal Distribution</strong>.</p>",
+            hy: "<p><strong>Կենտրոնական սահմանային թեորեմը (CLT)</strong> պնդում է, որ մեծ թվով անկախ (և միանման բաշխված) պատահական մեծությունների գումարը ձգտում է <strong>նորմալ բաշխման</strong> (Գաուսյան), անկախ դրանց սկզբնական բաշխումից:</p><p>Սա բացատրում է, թե ինչու է բնության մեջ այդքան հաճախ հանդիպում «Զանգակաձև կորը» (Bell Curve): Գալտոնի տախտակը (տե՝ս Սիմուլյացիաներ էջը) դրա վառ ապացույցն է:</p>",
+            en: "<p>The sum of many independent random variables converges to a <strong>Normal Distribution</strong>.</p><p>This is why the 'Bell Curve' appears frequently in nature. The Galton Board (see Simulations page) is a vivid demonstration.</p>",
             ru: "<p>Сумма множества независимых величин стремится к <strong>Нормальному распределению</strong>.</p>"
           }
         }
