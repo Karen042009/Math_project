@@ -403,6 +403,7 @@
                             <option value="bayes">Bayes' Theorem</option>
                             <option value="combinations">Combinations (C_n^k)</option>
                             <option value="permutations">Permutations (P_n)</option>
+                            <option value="normal_calc">Normal Dist (Z-Table)</option>
                             <option value="poisson">Poisson Approx</option>
                         </select>
                         <div id="formula-inputs" style="margin-bottom:15px;"></div>
@@ -477,6 +478,14 @@
                         <div class="control-group">
                             <label data-i18n="galton_rows_label">Number of Rows</label>
                             <input type="number" id="galton-rows" value="12" min="4" max="20">
+                        </div>
+                        <div class="control-group">
+                            <label>Speed</label>
+                            <input type="range" id="galton-speed" min="1" max="5" step="1" value="3" style="width:100%">
+                        </div>
+                        <div class="control-group">
+                            <label>Elasticity</label>
+                            <input type="range" id="galton-bounce" min="0.1" max="0.9" step="0.1" value="0.6" style="width:100%">
                         </div>
                         <button class="glow-btn" onclick="dropGaltonBalls(1)">
                             <i class="fas fa-circle"></i> <span data-i18n="btn_drop_1">Drop 1 Ball</span>
@@ -634,6 +643,6 @@
     <script src="js/calculator.js"></script>
     <script src="js/simulations.js"></script>
     <script src="js/ai.js"></script>
+    <script src="js/animations.js"></script>
 </body>
 
-</html>

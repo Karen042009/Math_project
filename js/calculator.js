@@ -178,6 +178,14 @@ function renderFormulaInputs() {
                 <label>k (Events): <input type="number" id="f-k" class="ai-select" value="2"></label>
             </div>
         `;
+    } else if (type === 'normal_calc') {
+        container.innerHTML = `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <label>μ (Mean): <input type="number" id="f-mu" class="ai-select" value="100"></label>
+                <label>σ (StdDev): <input type="number" id="f-sigma" class="ai-select" value="15"></label>
+                <label>x (Value): <input type="number" id="f-x" class="ai-select" value="115"></label>
+            </div>
+        `;
     }
 }
 
@@ -192,6 +200,16 @@ function solveFormulaWithSteps() {
         return r;
     };
     const C = (n, k) => factorial(n) / (factorial(k) * factorial(n - k));
+    // Standard Normal CDF approximation
+    const phi = (z) => {
+        const p = 0.3275911;
+        const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429;
+        const sign = z < 0 ? -1 : 1; 
+        const mag = Math.abs(z);
+        const t = 1.0 / (1.0 + p * mag);
+        const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-mag * mag);
+        return 0.5 * (1 + sign * y);
+    }
 
     let html = '';
 
@@ -233,6 +251,21 @@ function solveFormulaWithSteps() {
         const k = parseInt(document.getElementById('f-k').value);
         const res = C(n, k);
         html = `<p>${n}! / (${k}!(${n}-${k})!) = <strong>${res}</strong></p>`;
+    } else if (type === 'normal_calc') {
+         const mu = parseFloat(document.getElementById('f-mu').value);
+         const s = parseFloat(document.getElementById('f-sigma').value);
+         const x = parseFloat(document.getElementById('f-x').value);
+         const z = (x - mu) / s;
+         const p = phi(z);
+         
+         html = `
+            <p><strong>Task:</strong> Find P(X < ${x})</p>
+            <p>1. Calculate Z-score: Z = (x - μ) / σ</p>
+            <p>Z = (${x} - ${mu}) / ${s} = <strong>${z.toFixed(4)}</strong></p>
+            <p>2. Lookup Z-table (or approx): Φ(${z.toFixed(2)})</p>
+            <p style="color:var(--accent-gold); margin-top:10px;">Result: P(X < ${x}) ≈ ${p.toFixed(5)}</p>
+            <p style="font-size:0.8rem; color:#888;">(This means ${ (p*100).toFixed(2) }% of data is below ${x})</p>
+         `;
     }
 
     out.innerHTML = html;
@@ -497,8 +530,67 @@ function drawVenn(ctx, w, h) {
 }
 
 function drawTree(ctx, w, h) {
-    // Simple placeholder for tree to avoid re-implementing full logic in this pass if user focus on Venn
-    ctx.fillText("Tree Feature: See previous version checks", w / 2, h / 2);
+    const steps = parseInt(document.getElementById('tree-steps')?.value || 3);
+    const p = parseFloat(document.getElementById('tree-p')?.value || 0.5);
+    const q = 1 - p;
+
+    ctx.font = '12px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+
+    const startX = 50;
+    const startY = h / 2;
+    const layerWidth = (w - 100) / steps;
+
+    function drawBranch(x, y, level, probSoFar) {
+        if (level === steps) {
+            // Leaf node: Probability
+            ctx.fillStyle = '#ffd60a';
+            ctx.fillText(probSoFar.toFixed(4), x + 20, y);
+            return;
+        }
+
+        const nextX = x + layerWidth;
+        const offset = (h / 2) / Math.pow(2, level + 1);
+        
+        // Up branch (Success/P)
+        const yUp = y - offset;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(nextX, yUp);
+        ctx.strokeStyle = 'rgba(76, 201, 240, 0.6)'; // Blue
+        ctx.stroke();
+
+        // Label P
+        ctx.fillStyle = '#4cc9f0';
+        ctx.fillText(p, (x + nextX) / 2, (y + yUp) / 2 - 10);
+        
+        drawBranch(nextX, yUp, level + 1, probSoFar * p);
+
+        // Down branch (Failure/Q)
+        const yDown = y + offset;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(nextX, yDown);
+        ctx.strokeStyle = 'rgba(247, 37, 133, 0.6)'; // Pink
+        ctx.stroke();
+
+        // Label Q
+        ctx.fillStyle = '#f72585';
+        ctx.fillText(q.toFixed(2), (x + nextX) / 2, (y + yDown) / 2 + 10);
+
+        drawBranch(nextX, yDown, level + 1, probSoFar * q);
+    }
+
+    // Root
+    ctx.beginPath();
+    ctx.arc(startX, startY, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+
+    drawBranch(startX, startY, 0, 1);
 }
 
 // Initial mode
