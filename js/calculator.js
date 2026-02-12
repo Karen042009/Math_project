@@ -7,16 +7,17 @@
    1. CALCULATOR MODES & TABS
    ---------------------------------------------------- */
 // Unified mode: Standard is default. "Step-by-Step" is triggered via the Formula Dropdown below.
+// Unified mode: Standard is default. "Step-by-Step" is triggered via the Formula Dropdown below.
 function toggleFormulaPanel() {
     const panel = document.getElementById('calc-formula-container');
-    const btn = document.getElementById('btn-toggle-formula');
+    const btn = document.getElementById('btn-formula-drawer'); // Updated ID
 
     if (panel.style.display === 'none') {
         panel.style.display = 'block';
-        btn.classList.add('active');
+        if(btn) btn.classList.add('active');
     } else {
         panel.style.display = 'none';
-        btn.classList.remove('active');
+        if(btn) btn.classList.remove('active');
     }
 }
 
@@ -278,29 +279,46 @@ function solveFormulaWithSteps() {
 function updateVisualizer() {
     const type = document.getElementById('dist-select').value;
     const paramsDiv = document.getElementById('dist-params');
-    const lang = currentLang || 'hy';
+    const analysisPanel = document.getElementById('dist-analysis');
+    
+    // Hide analysis initially when switching modes
+    if(analysisPanel) analysisPanel.style.display = 'none';
+    if(paramsDiv) paramsDiv.innerHTML = '';
 
     if (type === 'normal') {
         paramsDiv.innerHTML = `
-            <label>μ: <input type="number" id="param-mu" value="0" style="width:40px"></label>
-            <label>σ: <input type="number" id="param-sigma" value="1" style="width:40px"></label>
-            <label>Range [a,b]: <input type="number" id="param-a" value="-1" style="width:40px"> <input type="number" id="param-b" value="1" style="width:40px"></label>
+            <div class="param-group">
+                <label>μ</label> <input type="number" id="param-mu" value="0" style="width:40px">
+            </div>
+            <div class="param-group">
+                <label>σ</label> <input type="number" id="param-sigma" value="1" step="0.1" style="width:40px">
+            </div>
+            <div class="param-group">
+                <label>Min</label> <input type="number" id="param-a" value="-1" style="width:40px">
+            </div>
+            <div class="param-group">
+                <label>Max</label> <input type="number" id="param-b" value="1" style="width:40px">
+            </div>
         `;
     } else if (type === 'venn') {
         paramsDiv.innerHTML = `
-            <label>Sets: 
-            <select id="venn-sets" onchange="renderVennInputs()" class="ai-select" style="padding:2px; height:30px;">
-                <option value="2">2 Sets (A, B)</option>
-                <option value="3">3 Sets (A, B, C)</option>
-            </select>
-            </label>
-            <div id="venn-vals" style="margin-top:5px; display:flex; gap:5px; flex-wrap:wrap;"></div>
+            <div class="param-group" style="padding:0; background:none; border:none;">
+                <select id="venn-sets" onchange="renderVennInputs()" class="modern-select">
+                    <option value="2">2 Sets (A, B)</option>
+                    <option value="3">3 Sets (A, B, C)</option>
+                </select>
+            </div>
+            <div id="venn-vals" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
         `;
         renderVennInputs();
     } else if (type === 'tree') {
         paramsDiv.innerHTML = `
-            <label>Steps: <input type="number" id="tree-steps" value="3" min="1" max="5" style="width:40px"></label>
-            <label>p: <input type="number" id="tree-p" value="0.5" step="0.1" style="width:50px"></label>
+            <div class="param-group">
+                <label>Steps</label> <input type="number" id="tree-steps" value="3" min="1" max="5" style="width:40px">
+            </div>
+            <div class="param-group">
+                <label>p</label> <input type="number" id="tree-p" value="0.5" step="0.1" style="width:50px">
+            </div>
         `;
     }
 }
@@ -308,24 +326,26 @@ function updateVisualizer() {
 function renderVennInputs() {
     const count = document.getElementById('venn-sets').value;
     const div = document.getElementById('venn-vals');
+    if (!div) return;
+
     if (count === '2') {
         div.innerHTML = `
-            <div style="display:flex; flex-direction:column; gap:5px;">
-                <label>|A|: <input type="number" id="v-a" value="10" style="width:60px"></label>
-                <label>|B|: <input type="number" id="v-b" value="15" style="width:60px"></label>
-                <label>|A∩B|: <input type="number" id="v-ab" value="5" style="width:60px"></label>
-            </div>
+            <div class="param-group"><label>|A|</label> <input type="number" id="v-a" value="50"></div>
+            <div class="param-group"><label>|B|</label> <input type="number" id="v-b" value="40"></div>
+            <div class="param-group"><label>|A∩B|</label> <input type="number" id="v-ab" value="10"></div>
+            <div class="param-group"><label>Total</label> <input type="number" id="v-total" value="100"></div>
         `;
     } else {
         div.innerHTML = `
              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; font-size:0.8rem;">
-                <label>|A|: <input type="number" id="v-a" value="20" style="width:40px"></label>
-                <label>|B|: <input type="number" id="v-b" value="20" style="width:40px"></label>
-                <label>|C|: <input type="number" id="v-c" value="20" style="width:40px"></label>
-                <label>|AB|: <input type="number" id="v-ab" value="5" style="width:40px"></label>
-                <label>|AC|: <input type="number" id="v-ac" value="5" style="width:40px"></label>
-                <label>|BC|: <input type="number" id="v-bc" value="5" style="width:40px"></label>
-                <label>|ABC|: <input type="number" id="v-abc" value="2" style="width:40px"></label>
+                <div class="param-group"><label>|A|</label> <input type="number" id="v-a" value="30"></div>
+                <div class="param-group"><label>|B|</label> <input type="number" id="v-b" value="30"></div>
+                <div class="param-group"><label>|C|</label> <input type="number" id="v-c" value="30"></div>
+                <div class="param-group"><label>|AB|</label> <input type="number" id="v-ab" value="10"></div>
+                <div class="param-group"><label>|AC|</label> <input type="number" id="v-ac" value="10"></div>
+                <div class="param-group"><label>|BC|</label> <input type="number" id="v-bc" value="10"></div>
+                <div class="param-group"><label>|ABC|</label> <input type="number" id="v-abc" value="5"></div>
+                <div class="param-group"><label>Total</label> <input type="number" id="v-total" value="100"></div>
             </div>
         `;
     }
@@ -349,6 +369,10 @@ function drawGraph() {
 
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = '#fff';
+
+    // Show Analysis
+    const analysisPanel = document.getElementById('dist-analysis');
+    if(analysisPanel) analysisPanel.style.display = 'block';
 
     if (type === 'normal') {
         drawNormal(ctx, w, h);
@@ -445,87 +469,104 @@ function drawNormal(ctx, w, h) {
 
 function drawVenn(ctx, w, h) {
     const sets = document.getElementById('venn-sets').value;
+    const out = document.getElementById('dist-output');
+    
     ctx.lineWidth = 2;
-    ctx.font = '14px Arial';
+    ctx.font = '14px Inter, sans-serif';
     ctx.textAlign = 'center';
 
-    if (sets === '2') {
-        const nA = parseInt(document.getElementById('v-a').value);
-        const nB = parseInt(document.getElementById('v-b').value);
-        const nAB = parseInt(document.getElementById('v-ab').value);
+    const cx = w / 2, cy = h / 2;
 
+    if (sets === '2') {
+        const nA = parseInt(document.getElementById('v-a').value) || 0;
+        const nB = parseInt(document.getElementById('v-b').value) || 0;
+        const nAB = parseInt(document.getElementById('v-ab').value) || 0;
+        const total = parseInt(document.getElementById('v-total').value) || 100;
+
+        // Calculations
         const onlyA = nA - nAB;
         const onlyB = nB - nAB;
+        const union = nA + nB - nAB;
+        const none = total - union;
 
-        const cx = w / 2, cy = h / 2;
+        // Draw Circles (Fixed size for illustration)
         const r = 100;
-
+        
         // Circle A
-        ctx.beginPath(); ctx.arc(cx - 60, cy, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(255, 0, 100, 0.3)'; ctx.fill();
-        ctx.strokeStyle = '#fff'; ctx.stroke();
+        ctx.beginPath(); 
+        ctx.arc(cx - 60, cy, r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(247, 37, 133, 0.4)'; // Pink
+        ctx.fill();
+        ctx.strokeStyle = '#fff'; 
+        ctx.stroke();
 
         // Circle B
-        ctx.beginPath(); ctx.arc(cx + 60, cy, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(0, 100, 255, 0.3)'; ctx.fill();
+        ctx.beginPath(); 
+        ctx.arc(cx + 60, cy, r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(76, 201, 240, 0.4)'; // Blue
+        ctx.fill();
         ctx.stroke();
 
         // Labels
         ctx.fillStyle = '#fff';
         ctx.fillText(`A only: ${onlyA}`, cx - 90, cy);
         ctx.fillText(`B only: ${onlyB}`, cx + 90, cy);
-        ctx.fillText(`∩: ${nAB}`, cx, cy);
+        ctx.fillText(`Both: ${nAB}`, cx, cy);
+
+        // Analysis
+        out.innerHTML = `
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div>P(A) = ${nA}/${total} = <strong>${(nA/total).toFixed(3)}</strong></div>
+                <div>P(B) = ${nB}/${total} = <strong>${(nB/total).toFixed(3)}</strong></div>
+                <div>P(A ∪ B) = ${union}/${total} = <strong>${(union/total).toFixed(3)}</strong></div>
+                <div>P(A ∩ B) = ${nAB}/${total} = <strong>${(nAB/total).toFixed(3)}</strong></div>
+                <div>P(A|B) = ${nAB}/${nB} = <strong>${(nB>0 ? nAB/nB : 0).toFixed(3)}</strong></div>
+                <div>P(Only A) = ${onlyA}/${total} = <strong>${(onlyA/total).toFixed(3)}</strong></div>
+            </div>
+        `;
 
     } else {
-        // 3 Sets
-        const nA = parseInt(document.getElementById('v-a').value || 0);
-        const nB = parseInt(document.getElementById('v-b').value || 0);
-        const nC = parseInt(document.getElementById('v-c').value || 0);
-        const nAB = parseInt(document.getElementById('v-ab').value || 0);
-        const nAC = parseInt(document.getElementById('v-ac').value || 0);
-        const nBC = parseInt(document.getElementById('v-bc').value || 0);
-        const nABC = parseInt(document.getElementById('v-abc').value || 0);
+        // 3 Sets logic
+        const nA = parseInt(document.getElementById('v-a').value) || 0;
+        const nB = parseInt(document.getElementById('v-b').value) || 0;
+        const nC = parseInt(document.getElementById('v-c').value) || 0;
+        const nAB = parseInt(document.getElementById('v-ab').value) || 0;
+        const nAC = parseInt(document.getElementById('v-ac').value) || 0;
+        const nBC = parseInt(document.getElementById('v-bc').value) || 0;
+        const nABC = parseInt(document.getElementById('v-abc').value) || 0;
+        const total = parseInt(document.getElementById('v-total').value) || 100;
 
-        // Validations for regions
-        const onlyABC = nABC;
-        const onlyAB = nAB - nABC;
-        const onlyAC = nAC - nABC;
-        const onlyBC = nBC - nABC;
-        const onlyA = nA - onlyAB - onlyAC - onlyABC;
-        const onlyB = nB - onlyAB - onlyBC - onlyABC;
-        const onlyC = nC - onlyAC - onlyBC - onlyABC;
-
-        const cx = w / 2, cy = h / 2 + 20;
+        // Visual Layout
         const r = 90;
-
-        // Positions (approx)
-        const ax = cx, ay = cy - 60;
+        const ax = cx, ay = cy - 50;
         const bx = cx - 55, by = cy + 40;
-        const cx_c = cx + 55, cy_c = cy + 40; // c pos
+        const ccx = cx + 55, ccy = cy + 40;
 
         // Draw A
         ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.2)'; ctx.fill(); ctx.stroke();
+        ctx.fillStyle = 'rgba(247, 37, 133, 0.3)'; ctx.fill(); ctx.stroke();
+        ctx.fillStyle='#fff'; ctx.fillText('A', ax, ay - 40);
 
         // Draw B
         ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(0, 255, 0, 0.2)'; ctx.fill(); ctx.stroke();
+        ctx.fillStyle = 'rgba(76, 201, 240, 0.3)'; ctx.fill(); ctx.stroke();
+        ctx.fillStyle='#fff'; ctx.fillText('B', bx - 50, by);
 
         // Draw C
-        ctx.beginPath(); ctx.arc(cx_c, cy_c, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(0, 0, 255, 0.2)'; ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255, 214, 10, 0.3)'; ctx.fill(); ctx.stroke();
+        ctx.fillStyle='#fff'; ctx.fillText('C', ccx + 50, ccy);
 
-        // Labels
-        ctx.fillStyle = '#fff';
-        ctx.fillText(`${onlyA}`, ax, ay - 40); // Top A
-        ctx.fillText(`${onlyB}`, bx - 50, by + 20); // Left B
-        ctx.fillText(`${onlyC}`, cx_c + 50, cy_c + 20); // Right C
-
-        ctx.fillText(`${onlyABC}`, cx, cy); // Center
-
-        ctx.fillText(`${onlyAB}`, (ax + bx) / 2 - 10, (ay + by) / 2);
-        ctx.fillText(`${onlyAC}`, (ax + cx_c) / 2 + 10, (ay + cy_c) / 2);
-        ctx.fillText(`${onlyBC}`, (bx + cx_c) / 2, (by + cy_c) / 2 + 10);
+        // Simplified Analysis for 3 sets
+        out.innerHTML = `
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                 <div>P(A) = ${(nA/total).toFixed(3)}</div>
+                 <div>P(B) = ${(nB/total).toFixed(3)}</div>
+                 <div>P(C) = ${(nC/total).toFixed(3)}</div>
+                 <div>P(A∩B∩C) = ${(nABC/total).toFixed(3)}</div>
+                 <div>P(A∪B∪C) = ${( (nA+nB+nC - nAB - nAC - nBC + nABC)/total ).toFixed(3)}</div>
+            </div>
+        `;
     }
 }
 

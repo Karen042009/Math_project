@@ -291,3 +291,117 @@
 .calc-pad.active {
     display: grid;
 }
+
+/* Calculator Drawer Toggle */
+.drawer-toggle-btn {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    color: var(--accent-blue);
+    padding: 12px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    border-radius: 0 0 12px 12px;
+}
+
+.drawer-toggle-btn:hover {
+    background: rgba(76, 201, 240, 0.1);
+    color: #fff;
+}
+
+.drawer-toggle-btn i {
+    transition: transform 0.3s;
+}
+
+.drawer-toggle-btn.active i {
+    transform: rotate(180deg);
+}
+
+/* Advanced Visualizer Controls */
+.vis-controls-advanced {
+    background: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.vis-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.modern-select {
+    background: #000;
+    color: #fff;
+    border: 1px solid var(--accent-purple);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.dist-params-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.param-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.05);
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.param-group label {
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+.param-group input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Analysis Panel */
+.analysis-panel {
+    margin-top: 20px;
+    background: rgba(76, 201, 240, 0.05);
+    border-left: 3px solid var(--accent-blue);
+    padding: 15px;
+    border-radius: 0 8px 8px 0;
+}
+
+.analysis-panel h4 {
+    margin-bottom: 10px;
+    color: var(--accent-blue);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dist-output-content {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    color: #ddd;
+    line-height: 1.5;
+}

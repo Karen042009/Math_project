@@ -298,14 +298,10 @@
 
                     <!-- CALCULATOR HEADER -->
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                        <div class="calc-display-container" style="flex:1; margin-right:10px; margin-bottom:0;">
+                        <div class="calc-display-container" style="flex:1; margin-bottom:0;">
                             <input type="text" id="calc-input" data-i18n="calc_placeholder" placeholder="...">
                             <div id="calc-result" style="font-size:0.9rem; color:var(--accent-gold);">0</div>
                         </div>
-                        <button id="btn-toggle-formula" class="secondary-btn small" onclick="toggleFormulaPanel()"
-                            style="height:50px; font-size:1.2rem;">
-                            <i class="fas fa-function"></i>
-                        </button>
                     </div>
 
                     <!-- TABS -->
@@ -390,6 +386,11 @@
                         <button class="key enter" onclick="calculateResult()">=</button>
                     </div>
 
+                    <!-- Step-by-Step Toggle Bar -->
+                    <button id="btn-formula-drawer" class="drawer-toggle-btn" onclick="toggleFormulaPanel()">
+                        <i class="fas fa-chevron-down"></i> <span data-i18n="btn_step_solver">Step-by-Step Solver</span>
+                    </button>
+
                     <!-- FORMULA STEPS DRAWER -->
                     <div id="calc-formula-container"
                         style="display:none; margin-top:20px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
@@ -417,25 +418,33 @@
 
                 <!-- RIGHT: Visualizer -->
                 <div class="lab-panel">
-                    <h2><i class="fas fa-chart-area"></i> <span data-i18n="card_lab_title">Visualizer</span></h2>
+                    <h2><i class="fas fa-chart-pie"></i> <span data-i18n="card_visualizer">Data Visualizer</span></h2>
 
-                    <div class="vis-controls">
-                        <select id="dist-select" onchange="updateVisualizer()">
-                            <option value="normal" data-i18n="dist_normal">Normal Distribution</option>
-                            <option value="venn" data-i18n="dist_venn">Venn Diagram</option>
-                            <option value="tree" data-i18n="dist_tree">Probability Tree</option>
-                        </select>
-                        <div id="dist-params-container" style="display:inline-block; margin-left:10px;">
-                            <!-- Dynamic params injected here -->
-                            <div id="dist-params"></div>
+                    <div class="vis-controls-advanced">
+                        <div class="vis-header">
+                            <select id="dist-select" onchange="updateVisualizer()" class="modern-select">
+                                <option value="normal" data-i18n="dist_normal">Normal Distribution</option>
+                                <option value="venn" data-i18n="dist_venn">Venn Diagram</option>
+                                <option value="tree" data-i18n="dist_tree">Probability Tree</option>
+                            </select>
+                            <button class="glow-btn small" onclick="drawGraph()">
+                                <i class="fas fa-sync-alt"></i> <span data-i18n="btn_render">Render</span>
+                            </button>
                         </div>
-                        <button class="secondary-btn" onclick="drawGraph()" style="margin-left:auto;">
-                            <i class="fas fa-play"></i> <span data-i18n="btn_draw">Draw</span>
-                        </button>
+                        
+                        <!-- Dynamic Parameters Area -->
+                        <div id="dist-params" class="dist-params-panel"></div>
                     </div>
 
-                    <canvas id="lab-canvas" width="600" height="400"></canvas>
-                    <div id="dist-output" class="dist-output" style="margin-top:15px;"></div>
+                    <div class="canvas-container">
+                        <canvas id="lab-canvas" width="600" height="400"></canvas>
+                    </div>
+                    
+                    <!-- Analysis/Output Panel -->
+                    <div id="dist-analysis" class="analysis-panel" style="display:none">
+                        <h4 data-i18n="analysis_title">Analysis</h4>
+                        <div id="dist-output" class="dist-output-content"></div>
+                    </div>
                 </div>
             </div>
         </section>
