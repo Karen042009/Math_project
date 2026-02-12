@@ -326,6 +326,28 @@
 }
 
 /* Advanced Visualizer Controls */
+.op-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.op-btn:hover {
+    background: var(--accent-blue);
+    color: #000;
+}
+
+.highlight-text {
+    color: var(--accent-gold);
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 214, 10, 0.5);
+}
+
 .vis-controls-advanced {
     background: rgba(0,0,0,0.2);
     padding: 15px;

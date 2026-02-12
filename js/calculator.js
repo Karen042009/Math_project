@@ -7,7 +7,6 @@
    1. CALCULATOR MODES & TABS
    ---------------------------------------------------- */
 // Unified mode: Standard is default. "Step-by-Step" is triggered via the Formula Dropdown below.
-// Unified mode: Standard is default. "Step-by-Step" is triggered via the Formula Dropdown below.
 function toggleFormulaPanel() {
     const panel = document.getElementById('calc-formula-container');
     const btn = document.getElementById('btn-formula-drawer'); // Updated ID
@@ -309,6 +308,18 @@ function updateVisualizer() {
                 </select>
             </div>
             <div id="venn-vals" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
+            
+            <!-- Set Operations Highlights -->
+            <div style="width:100%; margin-top:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
+                <label style="color:#aaa; font-size:0.8rem; display:block; margin-bottom:5px;">Highlight Operations:</label>
+                <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                    <button class="op-btn" onclick="drawGraph('union')">A ∪ B</button>
+                    <button class="op-btn" onclick="drawGraph('intersection')">A ∩ B</button>
+                    <button class="op-btn" onclick="drawGraph('onlyA')">A \\ B</button>
+                    <button class="op-btn" onclick="drawGraph('onlyB')">B \\ A</button>
+                    <button class="op-btn" onclick="drawGraph('complement')">(A ∪ B)'</button>
+                </div>
+            </div>
         `;
         renderVennInputs();
     } else if (type === 'tree') {
@@ -351,7 +362,7 @@ function renderVennInputs() {
     }
 }
 
-function drawGraph() {
+function drawGraph(highlightMode = null) {
     const type = document.getElementById('dist-select').value;
     const canvas = document.getElementById('lab-canvas');
     if (!canvas) return;
@@ -377,7 +388,7 @@ function drawGraph() {
     if (type === 'normal') {
         drawNormal(ctx, w, h);
     } else if (type === 'venn') {
-        drawVenn(ctx, w, h);
+        drawVenn(ctx, w, h, highlightMode);
     } else if (type === 'tree') {
         drawTree(ctx, w, h);
     }
@@ -467,7 +478,7 @@ function drawNormal(ctx, w, h) {
     }
 }
 
-function drawVenn(ctx, w, h) {
+function drawVenn(ctx, w, h, highlight = null) {
     const sets = document.getElementById('venn-sets').value;
     const out = document.getElementById('dist-output');
     
@@ -476,6 +487,12 @@ function drawVenn(ctx, w, h) {
     ctx.textAlign = 'center';
 
     const cx = w / 2, cy = h / 2;
+    
+    // Colors
+    const colBase = 'rgba(255, 255, 255, 0.05)';
+    const colA = 'rgba(247, 37, 133, 0.6)';
+    const colB = 'rgba(76, 201, 240, 0.6)';
+    const colMix = 'rgba(157, 78, 221, 0.6)';
 
     if (sets === '2') {
         const nA = parseInt(document.getElementById('v-a').value) || 0;
@@ -489,45 +506,110 @@ function drawVenn(ctx, w, h) {
         const union = nA + nB - nAB;
         const none = total - union;
 
-        // Draw Circles (Fixed size for illustration)
         const r = 100;
-        
-        // Circle A
+        const c1x = cx - 60;
+        const c2x = cx + 60;
+
+        // Determine highlights
+        const isUnion = highlight === 'union';
+        const isInter = highlight === 'intersection';
+        const isOnlyA = highlight === 'onlyA';
+        const isOnlyB = highlight === 'onlyB';
+        const isComp = highlight === 'complement';
+
+        // Draw Universe
+        ctx.strokeStyle = '#555';
+        ctx.strokeRect(cx - 250, cy - 180, 500, 360);
+        ctx.fillStyle = '#aaa';
+        ctx.fillText(`U = ${total}`, cx - 230, cy - 160);
+
+        if (isComp) {
+             ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+             ctx.fillRect(cx - 250, cy - 180, 500, 360);
+        }
+
+        // Draw Base Circles
+        // Left
         ctx.beginPath(); 
-        ctx.arc(cx - 60, cy, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(247, 37, 133, 0.4)'; // Pink
+        ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
+        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(247, 37, 133, 0.1)';
         ctx.fill();
         ctx.strokeStyle = '#fff'; 
         ctx.stroke();
 
-        // Circle B
+        // Right
         ctx.beginPath(); 
-        ctx.arc(cx + 60, cy, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(76, 201, 240, 0.4)'; // Blue
+        ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
+        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(76, 201, 240, 0.1)';
         ctx.fill();
         ctx.stroke();
 
+        // Highlights - Simple Overlays
+        if (isUnion || isOnlyA) {
+            ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colA; ctx.fill(); 
+        }
+
+        if (isUnion || isOnlyB) {
+            ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colB; ctx.fill();
+        }
+        
+        // Correct Overlaps
+        // If Only A: Erase B part
+        if (isOnlyA) {
+             ctx.save();
+             ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
+             ctx.globalCompositeOperation = 'destination-out';
+             ctx.fill();
+             ctx.restore();
+        }
+        // If Only B: Erase A part
+        if (isOnlyB) {
+             ctx.save();
+             ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
+             ctx.globalCompositeOperation = 'destination-out';
+             ctx.fill();
+             ctx.restore();
+        }
+        
+        // Intersection (Draw on top if needed)
+        if (isInter) {
+            ctx.save();
+            ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colMix; 
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // Re-Stroke
+        ctx.strokeStyle = '#fff';
+        ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI); ctx.stroke();
+
         // Labels
         ctx.fillStyle = '#fff';
-        ctx.fillText(`A only: ${onlyA}`, cx - 90, cy);
-        ctx.fillText(`B only: ${onlyB}`, cx + 90, cy);
+        ctx.fillText(`A only: ${onlyA}`, c1x - 30, cy);
+        ctx.fillText(`B only: ${onlyB}`, c2x + 30, cy);
         ctx.fillText(`Both: ${nAB}`, cx, cy);
 
         // Analysis
         out.innerHTML = `
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <div>P(A) = ${nA}/${total} = <strong>${(nA/total).toFixed(3)}</strong></div>
-                <div>P(B) = ${nB}/${total} = <strong>${(nB/total).toFixed(3)}</strong></div>
-                <div>P(A ∪ B) = ${union}/${total} = <strong>${(union/total).toFixed(3)}</strong></div>
-                <div>P(A ∩ B) = ${nAB}/${total} = <strong>${(nAB/total).toFixed(3)}</strong></div>
-                <div>P(A|B) = ${nAB}/${nB} = <strong>${(nB>0 ? nAB/nB : 0).toFixed(3)}</strong></div>
+                <div class="${isOnlyA?'highlight-text':''}">P(A) = ${(nA/total).toFixed(3)}</div>
+                <div class="${isOnlyB?'highlight-text':''}">P(B) = ${(nB/total).toFixed(3)}</div>
+                <div class="${isUnion?'highlight-text':''}">P(A ∪ B) = ${(union/total).toFixed(3)}</div>
+                <div class="${isInter?'highlight-text':''}">P(A ∩ B) = ${(nAB/total).toFixed(3)}</div>
+                <div>P(A|B) = ${(nB>0 ? nAB/nB : 0).toFixed(3)}</div>
                 <div>P(Only A) = ${onlyA}/${total} = <strong>${(onlyA/total).toFixed(3)}</strong></div>
             </div>
         `;
 
     } else {
-        // 3 Sets logic
-        const nA = parseInt(document.getElementById('v-a').value) || 0;
+        // Fallback for 3 sets
+         const nA = parseInt(document.getElementById('v-a').value) || 0;
         const nB = parseInt(document.getElementById('v-b').value) || 0;
         const nC = parseInt(document.getElementById('v-c').value) || 0;
         const nAB = parseInt(document.getElementById('v-ab').value) || 0;

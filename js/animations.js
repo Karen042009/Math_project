@@ -46,31 +46,22 @@ function initCursorGlow() {
 }
 
 /* ----------------------------------------------------
-   HERO PARALLAX
+   HERO FLASHLIGHT AFFECT
    ---------------------------------------------------- */
 function initParallax() {
     const hero = document.querySelector('.hero-section');
-    const content = document.querySelector('.hero-content');
-    const particles = document.querySelectorAll('.particle');
+    const title = document.querySelector('.hero-title');
     
-    if (!hero || !content) return;
+    if (!hero || !title) return;
 
     hero.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 2; // -1 to 1
-        const y = (e.clientY / window.innerHeight - 0.5) * 2;
+        // Calculate mouse position relative to the title element for precise gradient control
+        const rect = title.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-        // Move Content slightly opposite to mouse
-        content.style.transform = `translate(${x * -20}px, ${y * -20}px)`;
-
-        // Move Particles at different speeds
-        particles.forEach((p, i) => {
-            const speed = (i + 1) * 10;
-            p.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
-        });
-    });
-
-    hero.addEventListener('mouseleave', () => {
-        content.style.transform = 'translate(0,0)';
-        particles.forEach(p => p.style.transform = 'translate(0,0)');
+        // Update CSS variables for the gradient center
+        title.style.setProperty('--cursor-x', `${x}px`);
+        title.style.setProperty('--cursor-y', `${y}px`);
     });
 }
