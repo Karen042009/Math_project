@@ -329,15 +329,36 @@ function drawGaltonFrame() {
 
 function updateGaltonStats() {
     const totalBalls = galtonBalls.length;
-    const settled = galtonBalls.filter(b => b.settled).length;
+    const settledBalls = galtonBalls.filter(b => b.settled);
+    const settledCount = settledBalls.length;
+
+    // Advanced Stats Calculation
+    let mean = 0, stdDev = 0;
+    if (settledCount > 0) {
+        // Calculate Mean (Average Bin Index)
+        const sum = settledBalls.reduce((acc, b) => acc + b.bin, 0);
+        mean = sum / settledCount;
+
+        // Calculate StdDev
+        const variance = settledBalls.reduce((acc, b) => acc + Math.pow(b.bin - mean, 2), 0) / settledCount;
+        stdDev = Math.sqrt(variance);
+    }
+
+    // Update UI
+    const totalEl = document.getElementById('galton-total-balls');
+    const finishedEl = document.getElementById('galton-finished-balls');
+    const meanEl = document.getElementById('galton-mean');
+    const stdEl = document.getElementById('galton-std');
+
+    if (totalEl) totalEl.innerText = totalBalls;
+    if (finishedEl) finishedEl.innerText = settledCount;
+    if (meanEl) meanEl.innerText = mean.toFixed(2);
+    if (stdEl) stdEl.innerText = stdDev.toFixed(2);
+
+    // Legacy support (if old container exists)
     const statsEl = document.getElementById('galton-stats');
     if (statsEl) {
-        const ui = window.probabilityData.ui;
-        const lang = currentLang || 'hy';
-        statsEl.innerHTML = `
-            <p>${ui.stat_balls_dropped[lang]} <span>${totalBalls}</span></p>
-            <p>${ui.stat_settled[lang]} <span>${settled}</span></p>
-        `;
+        statsEl.style.display = 'none'; // Hide legacy
     }
 }
 
@@ -535,7 +556,9 @@ function resetMonty() {
  * 3. BUFFON'S NEEDLE
  * ============================================================ */
 let buffonCanvas, buffonCtx;
+let buffonGraphCanvas, buffonGraphCtx;
 let buffonNeedles = [];
+let buffonHistory = []; // Stores {n, pi} for graph
 let buffonCrossing = 0;
 let buffonTotal = 0;
 let buffonLineSpacing = 60;
@@ -549,22 +572,42 @@ function initBuffon() {
     buffonCanvas.width = buffonCanvas.offsetWidth || 600;
     buffonCanvas.height = buffonCanvas.offsetHeight || 400;
 
+    buffonGraphCanvas = document.getElementById('buffon-graph');
+    if (buffonGraphCanvas) {
+        buffonGraphCtx = buffonGraphCanvas.getContext('2d');
+        buffonGraphCanvas.width = buffonGraphCanvas.offsetWidth;
+        buffonGraphCanvas.height = buffonGraphCanvas.offsetHeight;
+    }
+
     resetBuffon();
 }
 
 function resetBuffon() {
     buffonNeedles = [];
+    buffonHistory = [];
     buffonCrossing = 0;
     buffonTotal = 0;
-    buffonNeedleLength = parseInt(document.getElementById('buffon-length')?.value) || 40;
-    buffonLineSpacing = parseInt(document.getElementById('buffon-spacing')?.value) || 60;
+    // Read from inputs
+    const lInput = document.getElementById('buffon-length');
+    const dInput = document.getElementById('buffon-spacing');
+    if (lInput) buffonNeedleLength = parseInt(lInput.value) || 40;
+    if (dInput) buffonLineSpacing = parseInt(dInput.value) || 60;
+    
     drawBuffonFrame();
     updateBuffonStats();
+    drawBuffonGraph(); // Clear graph
 }
 
 function dropNeedles(count) {
     const w = buffonCanvas.width;
     const h = buffonCanvas.height;
+    
+    // Ensure params are fresh
+    const lInput = document.getElementById('buffon-length');
+    const dInput = document.getElementById('buffon-spacing');
+    if (lInput) buffonNeedleLength = parseInt(lInput.value) || 40;
+    if (dInput) buffonLineSpacing = parseInt(dInput.value) || 60;
+
     const d = buffonLineSpacing;
     const l = buffonNeedleLength;
 
@@ -660,15 +703,74 @@ function updateBuffonStats() {
         const ui = window.probabilityData.ui;
         const lang = currentLang || 'hy';
         statsEl.innerHTML = `
-            <p>${ui.stat_total_needles[lang]} <span>${buffonTotal}</span></p>
-            <p>${ui.stat_crossing[lang]} <span>${buffonCrossing}</span></p>
-            <p>${ui.stat_pi_estimate[lang]} <span style="color:#ffd60a; font-size: 1.3rem;">${piEstimate.toFixed(6)}</span></p>
-            <p>${ui.stat_actual_pi[lang]} <span style="color:#4cc9f0">${Math.PI.toFixed(6)}</span></p>
-            <p>${lang === 'hy' ? 'Սխալ՝' : (lang === 'ru' ? 'Ошибка:' : 'Error:')} <span>${buffonTotal > 0 ? Math.abs(piEstimate - Math.PI).toFixed(6) : '—'}</span></p>
-            <div style="margin-top:15px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1); font-size:0.85rem; color:#aaa;">
-                ${lang === 'hy' ? 'Բանաձև՝' : 'Formula:'} \\( \\pi \\approx \\frac{2lN}{dh} \\)
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; font-size:0.9rem;">
+                <div>${ui.stat_total_needles[lang]}: <span style="color:#fff">${buffonTotal}</span></div>
+                <div>${ui.stat_crossing[lang]}: <span style="color:#fff">${buffonCrossing}</span></div>
+                <div style="grid-column:span 2; font-size:1.1rem; margin-top:5px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.1);">
+                    π ≈ <span style="color:#ffd60a; font-weight:bold;">${piEstimate.toFixed(6)}</span>
+                </div>
+                <div style="grid-column:span 2; font-size:0.8rem; color:#aaa;">
+                    Error: <span style="color:${Math.abs(piEstimate - Math.PI) < 0.01 ? '#4cc9f0' : '#f72585'}">
+                        ${buffonTotal > 0 ? Math.abs(piEstimate - Math.PI).toFixed(6) : '—'}
+                    </span>
+                </div>
             </div>
         `;
-        if (window.MathJax) MathJax.typesetPromise([statsEl]);
     }
+    
+    // Add to history for graph (limit points to avoid slow down)
+    if (buffonTotal > 0 && (buffonHistory.length === 0 || buffonTotal % 10 === 0 || buffonTotal < 100)) {
+        buffonHistory.push({ n: buffonTotal, pi: piEstimate });
+        if (buffonHistory.length > 200) buffonHistory.shift(); // Keep window
+    }
+    drawBuffonGraph();
+}
+
+function drawBuffonGraph() {
+    if (!buffonGraphCtx || !buffonGraphCanvas) return;
+    const ctx = buffonGraphCtx;
+    const w = buffonGraphCanvas.width;
+    const h = buffonGraphCanvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Target Line (Pi)
+    const piY = h / 2; // Center Pi at middle roughly? No, let's scale it.
+    // Allow range [2, 4] for Y
+    const minY = 2.0;
+    const maxY = 4.5;
+    const rangeY = maxY - minY;
+    
+    const getY = (val) => h - ((val - minY) / rangeY) * h;
+
+    // Draw Pi Line
+    ctx.beginPath();
+    ctx.moveTo(0, getY(Math.PI));
+    ctx.lineTo(w, getY(Math.PI));
+    ctx.strokeStyle = '#4cc9f0';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#4cc9f0';
+    ctx.fillText('π', 5, getY(Math.PI) - 2);
+
+    if (buffonHistory.length < 2) return;
+
+    // Plot History
+    ctx.beginPath();
+    ctx.strokeStyle = '#ffd60a';
+    ctx.lineWidth = 2;
+
+    const maxN = buffonHistory[buffonHistory.length - 1].n;
+    const minN = buffonHistory[0].n;
+    const rangeN = maxN - minN || 1;
+
+    buffonHistory.forEach((pt, i) => {
+        const x = ((pt.n - minN) / rangeN) * w;
+        const y = getY(pt.pi);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
 }

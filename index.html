@@ -472,166 +472,161 @@
             </div>
 
             <!-- ──── GALTON BOARD ──── -->
-            <div id="sim-galton" class="sim-panel" style="display:block;">
-                <div class="sim-description" data-i18n="sim_galton_desc">
-                    <strong>Galton Board (Bean Machine):</strong>
-                    Balls fall through pegs, bouncing left or right at each level. The result beautifully demonstrates
-                    the <strong>Central Limit Theorem</strong> — independent random bounces produce a <em>Normal
-                        Distribution</em>.
+            <!-- ──── GALTON BOARD ──── -->
+            <div id="sim-galton" class="sim-panel glass-panel" style="display:block; padding:20px;">
+                <div class="sim-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <div>
+                        <h2 style="margin:0; background:linear-gradient(45deg, #4cc9f0, #4361ee); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Galton Board</h2>
+                        <p style="color:#aaa; font-size:0.9rem; margin-top:5px;" data-i18n="sim_galton_desc_short">Demonstrating Central Limit Theorem via Normal Distribution</p>
+                    </div>
                 </div>
-                <div class="sim-container" style="display:flex;">
-                    <div style="flex:2; min-width:300px;">
+
+                <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
+                    <div class="canvas-wrapper" style="flex:2; min-width:300px; background:rgba(0,0,0,0.3); border-radius:12px; padding:10px;">
                         <canvas id="galton-canvas" style="width:100%; height:500px;"></canvas>
                     </div>
-                    <div class="controls">
-                        <div class="control-group">
-                            <label data-i18n="galton_rows_label">Number of Rows</label>
-                            <input type="number" id="galton-rows" value="12" min="4" max="20">
+                    
+                    <div class="controls-wrapper" style="flex:1; min-width:250px; display:flex; flex-direction:column; gap:15px;">
+                        <!-- Stats Card -->
+                        <div class="stats-card" id="galton-stats-advanced" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; border:1px solid rgba(255,255,255,0.1);">
+                            <h4 style="margin:0 0 10px; color:#ffd60a; font-size:0.9rem; text-transform:uppercase;" data-i18n="stat_realtime_analysis">Real-time Analysis</h4>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:0.85rem;">
+                                <div><span data-i18n="stat_mean">Mean (μ):</span> <span id="galton-mean" style="color:#fff">0.00</span></div>
+                                <div><span data-i18n="stat_stddev">StdDev (σ):</span> <span id="galton-std" style="color:#fff">0.00</span></div>
+                                <div style="grid-column:span 2; height:1px; background:rgba(255,255,255,0.1); margin:5px 0;"></div>
+                                <div><span data-i18n="stat_dropped">Dropped:</span> <span id="galton-total-balls">0</span></div>
+                                <div><span data-i18n="stat_finished">Finished:</span> <span id="galton-finished-balls">0</span></div>
+                            </div>
                         </div>
+
+                        <!-- Controls -->
                         <div class="control-group">
-                            <label>Speed</label>
-                            <input type="range" id="galton-speed" min="1" max="5" step="1" value="3" style="width:100%">
+                            <label>Rows (Bin Count)</label>
+                            <input type="range" id="galton-rows" min="8" max="16" value="12" step="1" oninput="document.getElementById('row-val').innerText=this.value; setTimeout(initGalton, 100);">
+                            <div style="text-align:right; font-size:0.8rem; color:#aaa;"><span id="row-val">12</span> Rows</div>
                         </div>
-                        <div class="control-group">
-                            <label>Elasticity</label>
-                            <input type="range" id="galton-bounce" min="0.1" max="0.9" step="0.1" value="0.6" style="width:100%">
-                        </div>
-                        <button class="glow-btn" onclick="dropGaltonBalls(1)">
-                            <i class="fas fa-circle"></i> <span data-i18n="btn_drop_1">Drop 1 Ball</span>
-                        </button>
-                        <button class="glow-btn" onclick="dropGaltonBalls(50)">
-                            <i class="fas fa-shower"></i> <span data-i18n="btn_drop_50">Drop 50</span>
-                        </button>
-                        <button class="glow-btn" onclick="dropGaltonBalls(500)">
-                            <i class="fas fa-meteor"></i> <span data-i18n="btn_drop_500">Drop 500</span>
-                        </button>
-                        <button class="glow-btn secondary" onclick="resetGalton()">
-                            <i class="fas fa-redo"></i> <span data-i18n="btn_reset">Reset</span>
-                        </button>
-                        <div class="stats-panel" id="galton-stats">
-                            <p><span data-i18n="stat_balls_dropped">Balls dropped:</span> <span>0</span></p>
-                            <p><span data-i18n="stat_settled">Settled:</span> <span>0</span></p>
+                        
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                             <button class="glow-btn small" onclick="dropGaltonBalls(1)">+1 Ball</button>
+                             <button class="glow-btn small" onclick="dropGaltonBalls(50)">+50 Balls</button>
+                             <button class="glow-btn small" onclick="dropGaltonBalls(500)">+500 Balls</button>
+                             <button class="glow-btn small secondary" onclick="resetGalton()">Reset</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- ──── MONTY HALL ──── -->
-            <div id="sim-monty" class="sim-panel" style="display:none;">
-                <div class="sim-description" data-i18n="sim_monty_desc">
-                    <strong>Monty Hall Problem:</strong>
-                    Behind one of three doors is a 🚗 car, behind the others are 🐐 goats.
-                    You pick a door, the host reveals a goat, and you decide: <strong>switch or stay?</strong>
-                    Statistics show that <em>switching wins ~66.7% of the time!</em>
+            <div id="sim-monty" class="sim-panel glass-panel" style="display:none; padding:20px;">
+                <div class="sim-header" style="margin-bottom:15px;">
+                     <h2 style="margin:0; background:linear-gradient(45deg, #f72585, #7209b7); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Monty Hall Problem</h2>
+                     <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_monty_desc_short">A probability puzzle based on a game show</p>
                 </div>
-                <div class="sim-container" style="display:flex; flex-direction:column; align-items:center;">
-                    <p id="monty-message"
-                        style="font-size:1.3rem; text-align:center; min-height:50px; margin-bottom:10px;">
-                        Choose a door!
-                    </p>
-                    <div id="monty-doors" class="door-container">
-                        <div class="door" onclick="montyChooseDoor(0)">
-                            <span class="door-number">1</span><span class="door-content">🚪</span>
-                        </div>
-                        <div class="door" onclick="montyChooseDoor(1)">
-                            <span class="door-number">2</span><span class="door-content">🚪</span>
-                        </div>
-                        <div class="door" onclick="montyChooseDoor(2)">
-                            <span class="door-number">3</span><span class="door-content">🚪</span>
-                        </div>
-                    </div>
-                    <div id="monty-actions" style="display:none; gap:15px; margin:20px 0; justify-content:center;">
-                        <button class="glow-btn" onclick="montyDecision(true)">
-                            <i class="fas fa-exchange-alt"></i> <span data-i18n="btn_switch">Switch!</span>
-                        </button>
-                        <button class="glow-btn secondary" onclick="montyDecision(false)">
-                            <i class="fas fa-hand-paper"></i> <span data-i18n="btn_stay">Stay</span>
-                        </button>
-                    </div>
 
-                    <div style="display:flex; gap:15px; margin:20px 0; flex-wrap:wrap; justify-content:center;">
-                        <button class="glow-btn secondary" onclick="montyAutoRun(100)">
-                            <i class="fas fa-forward"></i> <span data-i18n="btn_sim_100">Simulate 100</span>
-                        </button>
-                        <button class="glow-btn secondary" onclick="montyAutoRun(1000)">
-                            <i class="fas fa-fast-forward"></i> <span data-i18n="btn_sim_1000">Simulate 1000</span>
-                        </button>
-                        <button class="glow-btn secondary" onclick="resetMonty()">
-                            <i class="fas fa-redo"></i> <span data-i18n="btn_reset">Reset</span>
-                        </button>
-                    </div>
-
-                    <div class="monty-results">
-                        <div class="result-row">
-                            <span style="width:80px;" data-i18n="btn_switch">Switch</span>
-                            <div class="bar-bg">
-                                <div class="bar-fill" id="monty-switch-bar"></div>
+                <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
+                    <div style="flex:2; min-width:300px; display:flex; flex-direction:column; align-items:center;">
+                         <p id="monty-message"
+                            style="font-size:1.5rem; text-align:center; min-height:60px; margin-bottom:20px; color:#fff; font-weight:bold;">
+                            Choose a door!
+                        </p>
+                        <div id="monty-doors" class="door-container" style="gap:20px;">
+                            <div class="door" onclick="montyChooseDoor(0)">
+                                <span class="door-number">1</span><span class="door-content">🚪</span>
                             </div>
-                            <span id="monty-switch-pct" style="width:55px;text-align:right;">0.0%</span>
-                        </div>
-                        <div class="result-row">
-                            <span style="width:80px;" data-i18n="btn_stay">Stay</span>
-                            <div class="bar-bg">
-                                <div class="bar-fill gold" id="monty-stay-bar"></div>
+                            <div class="door" onclick="montyChooseDoor(1)">
+                                <span class="door-number">2</span><span class="door-content">🚪</span>
                             </div>
-                            <span id="monty-stay-pct" style="width:55px;text-align:right;">0.0%</span>
+                            <div class="door" onclick="montyChooseDoor(2)">
+                                <span class="door-number">3</span><span class="door-content">🚪</span>
+                            </div>
+                        </div>
+
+                        <div id="monty-actions" style="display:none; gap:15px; margin:20px 0;">
+                            <button class="glow-btn large" style="min-width:150px;" onclick="montyDecision(true)">
+                                <i class="fas fa-exchange-alt"></i> <span data-i18n="btn_switch">Switch!</span>
+                            </button>
+                            <button class="glow-btn secondary large" style="min-width:150px;" onclick="montyDecision(false)">
+                                <i class="fas fa-hand-paper"></i> <span data-i18n="btn_stay">Stay</span>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="stats-panel" id="monty-stats" style="margin-top:20px; width:100%; max-width:400px;">
-                        <p><span data-i18n="stat_total_games">Total games:</span> <span>0</span></p>
-                        <p><span data-i18n="stat_switch_wins">Switch wins:</span> <span>0 / 0</span></p>
-                        <p><span data-i18n="stat_stay_wins">Stay wins:</span> <span>0 / 0</span></p>
+                    <div class="controls-wrapper" style="flex:1; min-width:250px; display:flex; flex-direction:column; gap:15px;">
+                        <div class="stats-card" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px;">
+                             <h4 style="margin:0 0 10px; color:#f72585;" data-i18n="stat_game_stats">Game Stats</h4>
+                             <div class="monty-results">
+                                <div class="result-row">
+                                    <span style="width:60px;" data-i18n="btn_switch">Switch</span>
+                                    <div class="bar-bg"><div class="bar-fill" id="monty-switch-bar"></div></div>
+                                    <span id="monty-switch-pct" style="width:45px;text-align:right;">0%</span>
+                                </div>
+                                <div class="result-row">
+                                    <span style="width:60px;" data-i18n="btn_stay">Stay</span>
+                                    <div class="bar-bg"><div class="bar-fill gold" id="monty-stay-bar"></div></div>
+                                    <span id="monty-stay-pct" style="width:45px;text-align:right;">0%</span>
+                                </div>
+                             </div>
+                             <div id="monty-stats" style="margin-top:10px; font-size:0.85rem; color:#ccc;"></div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>Auto-Simulate</label>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
+                                <button class="glow-btn small secondary" onclick="montyAutoRun(100)">Sim 100</button>
+                                <button class="glow-btn small secondary" onclick="montyAutoRun(1000)">Sim 1000</button>
+                            </div>
+                        </div>
+                        <button class="glow-btn secondary" onclick="resetMonty()">Reset Game</button>
                     </div>
                 </div>
             </div>
 
             <!-- ──── BUFFON'S NEEDLE ──── -->
-            <div id="sim-buffon" class="sim-panel" style="display:none;">
-                <div class="sim-description" data-i18n="sim_buffon_desc">
-                    <strong>Buffon's Needle:</strong>
-                    Drop needles randomly on parallel lines. The ratio of crossing needles to total needles
-                    converges to <strong>2l / (πd)</strong>, allowing us to estimate <strong>π</strong>!
-                    The more needles you drop, the closer the estimate gets to 3.14159…
+            <div id="sim-buffon" class="sim-panel glass-panel" style="display:none; padding:20px;">
+                <div class="sim-header" style="margin-bottom:15px;">
+                     <h2 style="margin:0; background:linear-gradient(45deg, #ff00cc, #333399); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Buffon's Needle</h2>
+                     <p style="color:#aaa; font-size:0.9rem;">Estimating Pi (π) by dropping needles</p>
                 </div>
-                <div class="sim-container" style="display:flex;">
+
+                <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
                     <div style="flex:2; min-width:300px;">
-                        <canvas id="buffon-canvas" style="width:100%; height:400px;"></canvas>
+                        <canvas id="buffon-canvas" style="width:100%; height:400px; background:rgba(0,0,0,0.3); border-radius:12px; border:1px solid #333;"></canvas>
+                        <!-- Convergence Graph (New) -->
+                        <div style="margin-top:10px; height:150px; background:rgba(0,0,0,0.2); border-radius:8px; border:1px solid #444; position:relative;">
+                             <canvas id="buffon-graph" style="width:100%; height:100%;"></canvas>
+                        </div>
                     </div>
-                    <div class="controls">
+                    
+                    <div class="controls-wrapper" style="flex:1; min-width:250px; display:flex; flex-direction:column; gap:15px;">
+                         <div class="stats-card" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px;">
+                            <h4 style="margin:0 0 10px; color:#4cc9f0;" data-i18n="stat_approx_results">Approximation Results</h4>
+                            <div id="buffon-stats"></div>
+                        </div>
+
+                        <!-- Config Controls -->
                         <div class="control-group">
                             <label data-i18n="buffon_length_label">Needle Length (l)</label>
-                            <input type="number" id="buffon-length" value="40" min="10" max="100">
+                            <input type="number" id="buffon-length" value="40" min="10" max="100" style="width:100%;">
                         </div>
-                        <div class="control-group">
+                         <div class="control-group">
                             <label data-i18n="buffon_spacing_label">Line Spacing (d)</label>
-                            <input type="number" id="buffon-spacing" value="60" min="20" max="150">
+                            <input type="number" id="buffon-spacing" value="60" min="20" max="150" style="width:100%;">
                         </div>
-                        <button class="glow-btn" onclick="animateBuffonDrop(10)">
-                            <i class="fas fa-plus"></i> <span data-i18n="btn_drop_10">Drop 10</span>
-                        </button>
-                        <button class="glow-btn" onclick="animateBuffonDrop(100)">
-                            <i class="fas fa-shower"></i> <span data-i18n="btn_drop_100">Drop 100</span>
-                        </button>
-                        <button class="glow-btn" onclick="animateBuffonDrop(1000)">
-                            <i class="fas fa-meteor"></i> <span data-i18n="btn_drop_1000">Drop 1000</span>
-                        </button>
-                        <button class="glow-btn" onclick="animateBuffonDrop(10000)">
-                            <i class="fas fa-rocket"></i> <span data-i18n="btn_drop_10000">Drop 10,000</span>
-                        </button>
-                        <button class="glow-btn secondary" onclick="resetBuffon()">
-                            <i class="fas fa-redo"></i> <span data-i18n="btn_reset">Reset</span>
-                        </button>
-                        <div class="stats-panel" id="buffon-stats">
-                            <p><span data-i18n="stat_total_needles">Total needles:</span> <span>0</span></p>
-                            <p><span data-i18n="stat_crossing">Crossing:</span> <span>0</span></p>
-                            <p><span data-i18n="stat_pi_estimate">π estimate:</span> <span>—</span></p>
-                            <p><span data-i18n="stat_actual_pi">Actual π:</span> <span
-                                    style="color:#4cc9f0">3.141593</span></p>
+
+                        <div class="control-group">
+                            <label>Drop Needles</label>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
+                                <button class="glow-btn small" onclick="dropNeedles(10)">+10</button>
+                                <button class="glow-btn small" onclick="dropNeedles(100)">+100</button>
+                                <button class="glow-btn small" onclick="animateBuffonDrop(1000)">+1k</button>
+                                <button class="glow-btn small" onclick="animateBuffonDrop(10000)">+10k</button>
+                            </div>
                         </div>
+                        <button class="glow-btn secondary" onclick="resetBuffon()">Reset Simulation</button>
                     </div>
                 </div>
             </div>
+        </section>
         </section>
 
     </div>

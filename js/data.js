@@ -59,8 +59,10 @@ window.probabilityData = {
 
     // ... (Simulation details remain the same) ...
     sim_galton_desc: { hy: "<strong>Գալտոնի տախտակ:</strong> Ցուցադրում է, թե ինչպես է բազմաթիվ պատահական շեղումների արդյունքում ձևավորվում նորմալ բաշխումը:", en: "<strong>Galton Board:</strong> Demonstrates how a normal distribution emerges from numerous random deviations.", ru: "<strong>Доска Гальтона:</strong> Демонстрирует формирование нормального распределения из множества случайных отклонений." },
+    sim_galton_desc_short: { hy: "Ցուցադրում է Կենտրոնական Սահմանային Թեորեմը", en: "Demonstrating Central Limit Theorem via Normal Distribution", ru: "Демонстрация Центральной Предельной Теоремы" },
     sim_monty_desc: { hy: "<strong>Մոնտի Հոլլի պարադոքս:</strong> Հանրահայտ հավանականային խնդիր, որը ցույց է տալիս, թե ինչպես է ընտրության փոփոխությունը մեծացնում հաղթելու հնարավորությունը:", en: "<strong>Monty Hall Paradox:</strong> A famous probability puzzle showing how changing your choice increases the odds of winning.", ru: "<strong>Парадокс Монти Холла:</strong> Известная задача, показывающая, как смена выбора увеличивает шансы на успех." },
-    sim_buffon_desc: { hy: "<strong>Բյուֆոնի ասեղը:</strong> Մոնտե Կառլոյի մեթոդի դասական օրինակ՝ π թվի մոտարկումը պատահական նետումների միջոցով:", en: "<strong>Buffon's Needle:</strong> A classic Monte Carlo example: approximating π through random needle tosses.", ru: "<strong>Игла Бюффона:</strong> Классический пример метода Монте-Карло: приближение числа π через случайные броски." },
+    sim_monty_desc_short: { hy: "Հավանականային գլուխկոտրուկ հեռուստախաղի հիման վրա", en: "A probability puzzle based on a game show", ru: "Вероятностная головоломка по мотивам телешоу" },
+    sim_buffon_desc: { hy: "<strong>Բյուֆոնի ասեղը:</strong> Մոնտի Կառլոյի մեթոդի դասական օրինակ՝ π թվի մոտարկումը պատահական նետումների միջոցով:", en: "<strong>Buffon's Needle:</strong> A classic Monte Carlo example: approximating π through random needle tosses.", ru: "<strong>Игла Бюффона:</strong> Классический пример метода Монте-Карло: приближение числа π через случайные броски." },
 
     // Practice & AI
     ai_badge_text: { hy: "Սխալների վերլուծության համակարգ՝ կապ տեսության հետ", en: "Smart feedback system — links wrong answers to theory", ru: "Система анализа ошибок — связь с теорией" },
@@ -107,7 +109,15 @@ window.probabilityData = {
     stat_total_needles: { hy: "Ընդամենը ասեղներ՝", en: "Total needles:", ru: "Всего игл:" },
     stat_crossing: { hy: "Հատումներ՝", en: "Crossing:", ru: "Пересечений:" },
     stat_pi_estimate: { hy: "π-ի մոտարկումը՝", en: "π estimate:", ru: "Приближение π:" },
+    stat_pi_estimate: { hy: "π-ի մոտարկումը՝", en: "π estimate:", ru: "Приближение π:" },
     stat_actual_pi: { hy: "Իրական π՝", en: "Actual π:", ru: "Реальное π:" },
+    stat_mean: { hy: "Միջին (μ):", en: "Mean (μ):", ru: "Среднее (μ):" },
+    stat_stddev: { hy: "Շեղում (σ):", en: "StdDev (σ):", ru: "Отклон. (σ):" },
+    stat_dropped: { hy: "Նետված:", en: "Dropped:", ru: "Сброшено:" },
+    stat_finished: { hy: "Ավարտված:", en: "Finished:", ru: "Завершено:" },
+    stat_approx_results: { hy: "Մոտարկման Արդյունքներ", en: "Approximation Results", ru: "Результаты Приближения" },
+    stat_game_stats: { hy: "Խաղի Վիճակագրություն", en: "Game Stats", ru: "Статистика Игры" },
+    stat_realtime_analysis: { hy: "Իրական Ժամանակի Վերլուծություն", en: "Real-time Analysis", ru: "Анализ в Реальном Времени" },
 
     // New Calculator UI
     calc_group_basic: { hy: "Հիմնական", en: "Basic", ru: "Основные" },
