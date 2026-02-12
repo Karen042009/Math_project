@@ -142,8 +142,8 @@ function galtonAnimate() {
     const steps = speedMult || 3;
 
     for (let s = 0; s < steps; s++) {
-        for (const ball of galtonBalls) {
-            if (ball.settled) continue;
+        for (let i = galtonBalls.length - 1; i >= 0; i--) {
+            const ball = galtonBalls[i];
 
             ball.vy += gravity;
             ball.x += ball.vx;
@@ -154,23 +154,16 @@ function galtonAnimate() {
                 const dx = ball.x - peg.x;
                 const dy = ball.y - peg.y;
                 const distSq = dx*dx + dy*dy;
-                const minDist = ball.r + peg.r + 1; // Tolerance
+                const minDist = ball.r + peg.r + 1;
 
                 if (distSq < minDist * minDist) {
-                    // Normalize collision vector
                     const dist = Math.sqrt(distSq);
                     const nx = dx / dist;
                     const ny = dy / dist;
-
-                    // Reflect velocity
-                    // Simple logic: bounce away + randomness
-                    // Bias randomness to left/right to ensure distribution
                     const randX = (Math.random() - 0.5) * 2.0; 
                     
                     ball.vx = nx * 2.0 * elasticity + randX;
-                    ball.vy = ny * 2.0 * elasticity + 0.5; // slight downward push or dampening
-
-                    // Correction to prevent sticking
+                    ball.vy = ny * 2.0 * elasticity + 0.5;
                     const overlap = minDist - dist;
                     ball.x += nx * overlap;
                     ball.y += ny * overlap;
@@ -180,37 +173,21 @@ function galtonAnimate() {
             // Wall bounds
             if (ball.x < ball.r) { 
                 ball.x = ball.r; 
-                ball.vx *= -0.6; // Wall damping
+                ball.vx *= -0.6; 
             }
             if (ball.x > w - ball.r) { 
                 ball.x = w - ball.r; 
                 ball.vx *= -0.6; 
             }
 
-            // Settle in bin
-            if (ball.y >= binAreaTop) {
-                // Determine bin
+            // Settle in bin (Count and remove)
+            if (ball.y >= h - ball.r - 2) {
                 const binWidth = w / (galtonRows + 1);
                 let binIdx = Math.floor(ball.x / binWidth);
                 binIdx = Math.max(0, Math.min(galtonRows, binIdx));
-
-                const binX = binIdx * binWidth + binWidth / 2;
-                const binCount = galtonBins[binIdx];
-                const ballDiam = ball.r * 2; 
                 
-                // Stack height target
-                const targetY = h - 2 - (binCount * ballDiam) - ball.r;
-
-                // Only settle if we are close to the target Y (or passed it)
-                if (ball.y >= targetY) {
-                    ball.y = targetY;
-                    ball.x = binX + (Math.random() - 0.5) * 2; // Jitter to look natural
-                    ball.vx = 0;
-                    ball.vy = 0;
-                    ball.settled = true;
-                    ball.bin = binIdx;
-                    galtonBins[binIdx]++;
-                }
+                galtonBins[binIdx]++;
+                galtonBalls.splice(i, 1);
             }
         }
     }
@@ -219,7 +196,7 @@ function galtonAnimate() {
     updateGaltonStats();
 
     // Continue animation if needed
-    const stillActive = galtonBalls.some(b => !b.settled) || galtonBallsToAdd > 0;
+    const stillActive = galtonBalls.length > 0 || galtonBallsToAdd > 0;
     if (stillActive) {
         galtonAnimId = requestAnimationFrame(galtonAnimate);
     } else {
@@ -275,12 +252,14 @@ function drawGaltonFrame() {
     }
 
     // Draw bin counts
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.font = '11px Inter, sans-serif';
+    // Draw bin counts
+    ctx.fillStyle = '#4cc9f0';
+    ctx.font = 'bold 16px Inter, sans-serif'; // Larger, bolder font
     ctx.textAlign = 'center';
     for (let i = 0; i <= galtonRows; i++) {
         if (galtonBins[i] > 0) {
-            ctx.fillText(galtonBins[i], i * binWidth + binWidth / 2, h - 2);
+            // Draw count inside the bin area, slightly up from bottom
+            ctx.fillText(galtonBins[i], i * binWidth + binWidth / 2, h - 8);
         }
     }
 
@@ -295,7 +274,7 @@ function drawGaltonFrame() {
     ctx.stroke();
 
     // Draw theoretical curve
-    const settledCount = galtonBalls.filter(b => b.settled).length;
+    const settledCount = galtonBins.reduce((a, b) => a + b, 0);
     if (settledCount > 20) {
         ctx.beginPath();
         ctx.strokeStyle = 'rgba(247, 37, 133, 0.5)';
@@ -327,19 +306,18 @@ function drawGaltonFrame() {
 }
 
 function updateGaltonStats() {
-    const totalBalls = galtonBalls.length;
-    const settledBalls = galtonBalls.filter(b => b.settled);
-    const settledCount = settledBalls.length;
+    const settledCount = galtonBins.reduce((a, b) => a + b, 0);
+    const totalBalls = galtonBalls.length + settledCount; // Active + Settled
 
     // Advanced Stats Calculation
     let mean = 0, stdDev = 0;
     if (settledCount > 0) {
         // Calculate Mean (Average Bin Index)
-        const sum = settledBalls.reduce((acc, b) => acc + b.bin, 0);
+        const sum = galtonBins.reduce((acc, count, idx) => acc + (idx * count), 0);
         mean = sum / settledCount;
 
         // Calculate StdDev
-        const variance = settledBalls.reduce((acc, b) => acc + Math.pow(b.bin - mean, 2), 0) / settledCount;
+        const variance = galtonBins.reduce((acc, count, idx) => acc + (count * Math.pow(idx - mean, 2)), 0) / settledCount;
         stdDev = Math.sqrt(variance);
     }
 

@@ -204,19 +204,19 @@
             </div>
 
             <div class="filters">
-                <button class="filter-btn active" onclick="filterProblems('all', this)">
+                <button class="filter-btn active" data-filter="all" onclick="filterProblems('all', this)">
                     <i class="fas fa-th"></i> <span data-i18n="filter_all">All</span>
                 </button>
-                <button class="filter-btn" onclick="filterProblems('beginner', this)">
+                <button class="filter-btn" data-filter="beginner" onclick="filterProblems('beginner', this)">
                     <i class="fas fa-seedling"></i> <span data-i18n="filter_beginner">Beginner</span>
                 </button>
-                <button class="filter-btn" onclick="filterProblems('intermediate', this)">
+                <button class="filter-btn" data-filter="intermediate" onclick="filterProblems('intermediate', this)">
                     <i class="fas fa-fire"></i> <span data-i18n="filter_intermediate">Intermediate</span>
                 </button>
-                <button class="filter-btn" onclick="filterProblems('advanced', this)">
+                <button class="filter-btn" data-filter="advanced" onclick="filterProblems('advanced', this)">
                     <i class="fas fa-bolt"></i> <span data-i18n="filter_advanced">Advanced</span>
                 </button>
-                <button class="filter-btn" onclick="filterProblems('olympic', this)">
+                <button class="filter-btn" data-filter="olympic" onclick="filterProblems('olympic', this)">
                     <i class="fas fa-trophy"></i> <span data-i18n="filter_olympic">Olympic</span>
                 </button>
             </div>

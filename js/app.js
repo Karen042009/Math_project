@@ -305,9 +305,9 @@ function checkAnswer(id) {
     renderPracticeStats();
     // Re-render current grid state so solved problems lock
     const currentFilterBtn = document.querySelector('.filter-btn.active');
-    const filterLevel = currentFilterBtn ? (currentFilterBtn.textContent || '').trim().toLowerCase() : 'all';
-    // Best-effort: if filter label isn't in English, just re-render all
-    if (['beginner', 'intermediate', 'advanced', 'olympic'].includes(filterLevel)) {
+    const filterLevel = currentFilterBtn ? currentFilterBtn.getAttribute('data-filter') : 'all';
+
+    if (filterLevel && filterLevel !== 'all') {
         renderProblems(allProblems.filter(p => p.difficulty === filterLevel));
     } else {
         renderProblems(allProblems);
