@@ -310,16 +310,7 @@ function updateVisualizer() {
             <div id="venn-vals" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
             
             <!-- Set Operations Highlights -->
-            <div style="width:100%; margin-top:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
-                <label style="color:#aaa; font-size:0.8rem; display:block; margin-bottom:5px;">Highlight Operations:</label>
-                <div style="display:flex; gap:5px; flex-wrap:wrap;">
-                    <button class="op-btn" onclick="drawGraph('union')">A ∪ B</button>
-                    <button class="op-btn" onclick="drawGraph('intersection')">A ∩ B</button>
-                    <button class="op-btn" onclick="drawGraph('onlyA')">A \\ B</button>
-                    <button class="op-btn" onclick="drawGraph('onlyB')">B \\ A</button>
-                    <button class="op-btn" onclick="drawGraph('complement')">(A ∪ B)'</button>
-                </div>
-            </div>
+            <div id="venn-ops-container" style="width:100%; margin-top:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;"></div>
         `;
         renderVennInputs();
     } else if (type === 'tree') {
@@ -328,7 +319,7 @@ function updateVisualizer() {
                 <div style="display:flex; gap:15px; align-items:center;">
                     <div class="param-group">
                         <label>Steps (Max 3)</label> 
-                        <input type="number" id="tree-steps" value="2" min="1" max="3" onchange="renderTreeCustomInputs()" style="width:50px">
+                        <input type="number" id="tree-steps" value="2" min="1" max="3" onchange="renderTreeCustomInputs(); setTimeout(drawGraph, 100);" style="width:50px">
                     </div>
                 </div>
                 <!-- Custom Probabilities Container -->
@@ -336,6 +327,8 @@ function updateVisualizer() {
             </div>
         `;
         renderTreeCustomInputs();
+        // Force initial draw
+        setTimeout(drawGraph, 100);
     }
 }
 
@@ -349,39 +342,45 @@ function renderTreeCustomInputs() {
     const container = document.getElementById('tree-custom-container');
     container.innerHTML = '';
     
-    // Level 1 (Root)
-    let html = `
-    <div style="border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">
-        <span style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">Stage 1 (Start)</span>
-        <div style="display:flex; gap:10px; margin-top:5px;">
-             <label style="font-size:0.85rem;">P(Up): <input type="number" id="p-0-0" value="0.5" step="0.1" style="width:50px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
+    // Helper to create input row
+    const createRow = (label, idPrefix, defName1, defName2) => `
+        <div style="border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">
+            <span style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">${label}</span>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:5px;">
+                <div style="display:flex; flex-direction:column; gap:2px;">
+                     <input type="text" id="${idPrefix}-name1" value="${defName1}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:rgba(255,255,255,0.05); border:none; color:#4cc9f0; padding:2px 5px; font-size:0.8rem;">
+                     <div style="display:flex; gap:5px; align-items:center;">
+                        <span style="font-size:0.75rem; color:#888;">P:</span>
+                        <input type="number" id="${idPrefix}-p" value="0.5" step="0.1" oninput="drawGraph()" style="width:100%; background:rgba(255,255,255,0.1); border:none; color:#fff; padding:2px 5px;">
+                     </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:2px;">
+                     <input type="text" id="${idPrefix}-name2" value="${defName2}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:rgba(255,255,255,0.05); border:none; color:#f72585; padding:2px 5px; font-size:0.8rem;">
+                     <div style="display:flex; gap:5px; align-items:center;">
+                        <span style="font-size:0.75rem; color:#888;">1-P</span>
+                     </div>
+                </div>
+            </div>
         </div>
-    </div>`;
+    `;
+
+    // Level 1: Root
+    let html = createRow("Start Node (Stage 1)", "node-0-0", "A", "B");
     
     // Level 2
     if (steps >= 2) {
-        html += `
-        <div style="border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">
-            <span style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">Stage 2 (Conditional)</span>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
-                 <label style="font-size:0.85rem;">P(U|U): <input type="number" id="p-1-0" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
-                 <label style="font-size:0.85rem;">P(U|D): <input type="number" id="p-1-1" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
-            </div>
-        </div>`;
+        html += `<div style="margin-top:5px; color:#aaa; font-size:0.8rem;">Stage 2 (Conditionals)</div>`;
+        html += createRow("If A happened:", "node-1-0", "A1", "B1");
+        html += createRow("If B happened:", "node-1-1", "A2", "B2");
     }
     
     // Level 3
     if (steps >= 3) {
-        html += `
-        <div>
-            <span style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">Stage 3</span>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
-                 <label style="font-size:0.85rem;">P(U|UU): <input type="number" id="p-2-0" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
-                 <label style="font-size:0.85rem;">P(U|UD): <input type="number" id="p-2-1" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
-                 <label style="font-size:0.85rem;">P(U|DU): <input type="number" id="p-2-2" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
-                 <label style="font-size:0.85rem;">P(U|DD): <input type="number" id="p-2-3" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
-            </div>
-        </div>`;
+        html += `<div style="margin-top:5px; color:#aaa; font-size:0.8rem;">Stage 3</div>`;
+        html += createRow("If A1:", "node-2-0", "A1-1", "A1-2");
+        html += createRow("If B1:", "node-2-1", "B1-1", "B1-2");
+        html += createRow("If A2:", "node-2-2", "A2-1", "A2-2");
+        html += createRow("If B2:", "node-2-3", "B2-1", "B2-2");
     }
     
     container.innerHTML = html;
@@ -413,6 +412,38 @@ function renderVennInputs() {
             </div>
         `;
     }
+    
+    // Call buttons renderer
+    if(typeof renderVennOps === 'function') renderVennOps();
+}
+
+function renderVennOps() {
+    const count = document.getElementById('venn-sets').value;
+    const container = document.getElementById('venn-ops-container');
+    if (!container) return;
+
+    let html = '<label style="color:#aaa; font-size:0.8rem; display:block; margin-bottom:5px;">Highlight Operations:</label><div style="display:flex; gap:5px; flex-wrap:wrap;">';
+    
+    if (count === '2') {
+        html += `
+            <button class="op-btn" onclick="drawGraph('union')">A ∪ B</button>
+            <button class="op-btn" onclick="drawGraph('intersection')">A ∩ B</button>
+            <button class="op-btn" onclick="drawGraph('onlyA')">A \\ B</button>
+            <button class="op-btn" onclick="drawGraph('onlyB')">B \\ A</button>
+            <button class="op-btn" onclick="drawGraph('complement')">(A ∪ B)'</button>
+        `;
+    } else {
+        html += `
+            <button class="op-btn" onclick="drawGraph('union')">A ∪ B ∪ C</button>
+            <button class="op-btn" onclick="drawGraph('intersection')">A ∩ B ∩ C</button>
+            <button class="op-btn" onclick="drawGraph('onlyA')">A Only</button>
+            <button class="op-btn" onclick="drawGraph('onlyB')">B Only</button>
+            <button class="op-btn" onclick="drawGraph('onlyC')">C Only</button>
+            <button class="op-btn" onclick="drawGraph('complement')">Outside</button>
+        `;
+    }
+    html += '</div>';
+    container.innerHTML = html;
 }
 
 function drawGraph(highlightMode = null) {
@@ -545,8 +576,8 @@ function drawVenn(ctx, w, h, highlight = null) {
     const colBase = 'rgba(255, 255, 255, 0.05)';
     const colA = 'rgba(247, 37, 133, 0.6)';
     const colB = 'rgba(76, 201, 240, 0.6)';
-    const colMix = 'rgba(157, 78, 221, 0.6)';
-
+    const colC = 'rgba(255, 214, 10, 0.6)';
+    
     if (sets === '2') {
         const nA = parseInt(document.getElementById('v-a').value) || 0;
         const nB = parseInt(document.getElementById('v-b').value) || 0;
@@ -626,13 +657,13 @@ function drawVenn(ctx, w, h, highlight = null) {
              ctx.restore();
         }
         
-        // Intersection (Draw on top if needed)
+        // Intersection
         if (isInter) {
             ctx.save();
             ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
             ctx.clip();
             ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
-            ctx.fillStyle = colMix; 
+            ctx.fillStyle = 'rgba(157, 78, 221, 0.6)'; 
             ctx.fill();
             ctx.restore();
         }
@@ -661,7 +692,7 @@ function drawVenn(ctx, w, h, highlight = null) {
         `;
 
     } else {
-        // Fallback for 3 sets
+        // 3 Sets
          const nA = parseInt(document.getElementById('v-a').value) || 0;
         const nB = parseInt(document.getElementById('v-b').value) || 0;
         const nC = parseInt(document.getElementById('v-c').value) || 0;
@@ -676,30 +707,122 @@ function drawVenn(ctx, w, h, highlight = null) {
         const ax = cx, ay = cy - 50;
         const bx = cx - 55, by = cy + 40;
         const ccx = cx + 55, ccy = cy + 40;
+        
+        // Calculations
+        const onlyAB = nAB - nABC;
+        const onlyAC = nAC - nABC;
+        const onlyBC = nBC - nABC;
+        const onlyA = nA - (nAB + nAC - nABC);
+        const onlyB = nB - (nAB + nBC - nABC);
+        const onlyC = nC - (nAC + nBC - nABC);
+        const union = onlyA + onlyB + onlyC + onlyAB + onlyAC + onlyBC + nABC;
 
-        // Draw A
-        ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(247, 37, 133, 0.3)'; ctx.fill(); ctx.stroke();
-        ctx.fillStyle='#fff'; ctx.fillText('A', ax, ay - 40);
+        // Highlights
+        const isUnion = highlight === 'union';
+        const isInter = highlight === 'intersection';
+        const isOnlyA = highlight === 'onlyA';
+        const isOnlyB = highlight === 'onlyB';
+        const isOnlyC = highlight === 'onlyC';
+        const isComp = highlight === 'complement';
 
-        // Draw B
-        ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(76, 201, 240, 0.3)'; ctx.fill(); ctx.stroke();
-        ctx.fillStyle='#fff'; ctx.fillText('B', bx - 50, by);
+        // Draw Universe
+        ctx.strokeStyle = '#555';
+        ctx.strokeRect(cx - 250, cy - 180, 500, 360);
+        ctx.fillStyle = '#aaa';
+        ctx.fillText(`U = ${total}`, cx - 230, cy - 160);
 
-        // Draw C
-        ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(255, 214, 10, 0.3)'; ctx.fill(); ctx.stroke();
-        ctx.fillStyle='#fff'; ctx.fillText('C', ccx + 50, ccy);
+        if (isComp) {
+             ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+             ctx.fillRect(cx - 250, cy - 180, 500, 360);
+        }
 
-        // Simplified Analysis for 3 sets
+        // Draw Circles Base (dim)
+        const drawCircle = (x, y, col) => {
+             ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI);
+             ctx.fillStyle = col; ctx.fill(); 
+             ctx.strokeStyle = '#fff'; ctx.stroke();
+        };
+
+        // Base
+        drawCircle(ax, ay, (highlight && !isComp) ? colBase : 'rgba(247, 37, 133, 0.1)');
+        drawCircle(bx, by, (highlight && !isComp) ? colBase : 'rgba(76, 201, 240, 0.1)');
+        drawCircle(ccx, ccy, (highlight && !isComp) ? colBase : 'rgba(255, 214, 10, 0.1)');
+
+        // Highlights
+        if (isUnion) {
+            // Just fill all 3
+            drawCircle(ax, ay, colA);
+            drawCircle(bx, by, colB);
+            drawCircle(ccx, ccy, colC);
+        }
+
+        if (isOnlyA) {
+             // Fill A, cut B, cut C
+             ctx.save();
+             ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
+             ctx.fillStyle = colA; ctx.fill();
+             // Cut B
+             ctx.globalCompositeOperation = 'destination-out';
+             ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.fill();
+             // Cut C
+             ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.fill();
+             ctx.restore();
+        }
+        
+        if (isOnlyB) {
+             ctx.save();
+             ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
+             ctx.fillStyle = colB; ctx.fill();
+             ctx.globalCompositeOperation = 'destination-out';
+             ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.fill();
+             ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.fill();
+             ctx.restore();
+        }
+
+        if (isOnlyC) {
+             ctx.save();
+             ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
+             ctx.fillStyle = colC; ctx.fill();
+             ctx.globalCompositeOperation = 'destination-out';
+             ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.fill();
+             ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.fill();
+             ctx.restore();
+        }
+
+        if (isInter) {
+             // Intersect A, B, C
+             ctx.save();
+             ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
+             ctx.clip();
+             ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
+             ctx.clip();
+             ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
+             ctx.fillStyle = '#fff'; 
+             ctx.fill();
+             ctx.restore();
+        }
+
+        // Restroke outlines
+        ctx.strokeStyle = '#fff';
+        ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.stroke();
+        
+        // Labels
+        ctx.fillStyle='#fff'; 
+        ctx.fillText('A', ax, ay - 40);
+        ctx.fillText('B', bx - 50, by);
+        ctx.fillText('C', ccx + 50, ccy);
+
+        // Analysis
         out.innerHTML = `
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                 <div>P(A) = ${(nA/total).toFixed(3)}</div>
-                 <div>P(B) = ${(nB/total).toFixed(3)}</div>
-                 <div>P(C) = ${(nC/total).toFixed(3)}</div>
-                 <div>P(A∩B∩C) = ${(nABC/total).toFixed(3)}</div>
-                 <div>P(A∪B∪C) = ${( (nA+nB+nC - nAB - nAC - nBC + nABC)/total ).toFixed(3)}</div>
+                 <div class="${isOnlyA?'highlight-text':''}">P(A only) = ${(onlyA/total).toFixed(3)}</div>
+                 <div class="${isOnlyB?'highlight-text':''}">P(B only) = ${(onlyB/total).toFixed(3)}</div>
+                 <div class="${isOnlyC?'highlight-text':''}">P(C only) = ${(onlyC/total).toFixed(3)}</div>
+                 <div class="${isInter?'highlight-text':''}">P(A∩B∩C) = ${(nABC/total).toFixed(3)}</div>
+                 <div class="${isUnion?'highlight-text':''}">P(A∪B∪C) = ${(union/total).toFixed(3)}</div>
+                 <div>P(Total) = 1.000</div>
             </div>
         `;
     }
@@ -714,76 +837,119 @@ function drawTree(ctx, w, h) {
     ctx.font = '12px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.strokeStyle = '#fff';
     ctx.lineWidth = 2;
 
     const startX = 60;
     const startY = h / 2;
     const layerWidth = (w - 120) / steps;
+    const results = [];
 
-    // Helper to read custom P
-    function getP(level, idx) {
-        const el = document.getElementById(`p-${level}-${idx}`);
-        return el ? parseFloat(el.value) : 0.5;
+    // Helper to read custom values
+    function getNodeData(level, idx) {
+        const name1 = document.getElementById(`node-${level}-${idx}-name1`)?.value || 'A';
+        const name2 = document.getElementById(`node-${level}-${idx}-name2`)?.value || 'B';
+        const pInput = document.getElementById(`node-${level}-${idx}-p`);
+        const p = pInput ? parseFloat(pInput.value) : 0.5;
+        return { name1, name2, p };
     }
 
-    function drawBranch(x, y, level, nodeIndex, probSoFar) {
+    function drawBranch(x, y, level, nodeIndex, probSoFar, pathStr) {
+        // Draw Node Circle
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+
         if (level === steps) {
             // Leaf node: Final Probability
             ctx.fillStyle = '#ffd60a';
             ctx.font = 'bold 13px Inter';
-            ctx.fillText(probSoFar.toFixed(3), x + 30, y);
+            ctx.fillText((probSoFar*100).toFixed(1) + '%', x + 35, y);
+            
+            // Collect result
+            results.push({ path: pathStr, p: probSoFar });
             return;
         }
 
         const nextX = x + layerWidth;
         const offset = (h / 2.2) / Math.pow(2, level + 1);
         
-        // Fetch P for this specific node
-        const p = getP(level, nodeIndex);
+        // Fetch Data for this split
+        const { name1, name2, p } = getNodeData(level, nodeIndex);
         const q = 1 - p;
 
-        // --- UP BRANCH (Success) ---
+        // --- UP BRANCH (Success/Name1) ---
         const yUp = y - offset;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(nextX, yUp);
-        ctx.strokeStyle = 'rgba(76, 201, 240, 0.6)'; // Blue
-        ctx.stroke();
-
-        // Label P
-        ctx.fillStyle = '#4cc9f0';
-        ctx.font = '11px Inter';
-        ctx.fillText(p, (x + nextX) / 2, (y + yUp) / 2 - 8);
         
-        // Recurse Up (level+1, index*2)
-        drawBranch(nextX, yUp, level + 1, nodeIndex * 2, probSoFar * p);
-
-        // --- DOWN BRANCH (Failure) ---
-        const yDown = y + offset;
+        // Bezier Curve
         ctx.beginPath();
         ctx.moveTo(x, y);
-        ctx.lineTo(nextX, yDown);
-        ctx.strokeStyle = 'rgba(247, 37, 133, 0.6)'; // Pink
+        ctx.bezierCurveTo(x + layerWidth/2, y, x + layerWidth/2, yUp, nextX, yUp);
+        ctx.strokeStyle = 'rgba(76, 201, 240, 0.8)'; // Blue
         ctx.stroke();
 
-        // Label Q
-        ctx.fillStyle = '#f72585';
-        ctx.fillText(q.toFixed(2), (x + nextX) / 2, (y + yDown) / 2 + 12);
+        // Label 1 (Pill background)
+        const midX = (x + nextX) / 2;
+        const midY = (y + yUp) / 2; // Approximate mid for bezier
+        // Actually bezier mid point is complex, simple mid is okay for curve
+        
+        ctx.font = '11px Inter';
+        
+        // Draw Name
+        ctx.fillStyle = '#4cc9f0';
+        ctx.fillText(name1, midX, midY - 15);
+        ctx.fillStyle = '#fff';
+        ctx.fillText(p.toFixed(2), midX, midY); // Prob
+        
+        // Recurse Up
+        drawBranch(nextX, yUp, level + 1, nodeIndex * 2, probSoFar * p, pathStr + (pathStr ? " → " : "") + name1);
 
-        // Recurse Down (level+1, index*2 + 1)
-        drawBranch(nextX, yDown, level + 1, nodeIndex * 2 + 1, probSoFar * q);
+        // --- DOWN BRANCH (Failure/Name2) ---
+        const yDown = y + offset;
+        
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.bezierCurveTo(x + layerWidth/2, y, x + layerWidth/2, yDown, nextX, yDown);
+        ctx.strokeStyle = 'rgba(247, 37, 133, 0.8)'; // Pink
+        ctx.stroke();
+
+        const midYX = (y + yDown) / 2;
+
+        // Label 2
+        ctx.fillStyle = '#f72585';
+        ctx.fillText(name2, midX, midYX + 15);
+        ctx.fillStyle = '#fff';
+        ctx.fillText(q.toFixed(2), midX, midYX);
+
+        // Recurse Down
+        drawBranch(nextX, yDown, level + 1, nodeIndex * 2 + 1, probSoFar * q, pathStr + (pathStr ? " → " : "") + name2);
     }
 
-    // Root Circle
-    ctx.beginPath();
-    ctx.arc(startX, startY, 5, 0, Math.PI * 2);
-    ctx.fillStyle = '#fff';
-    ctx.fill();
-
     // Start
-    drawBranch(startX, startY, 0, 0, 1);
+    drawBranch(startX, startY, 0, 0, 1, "");
+    
+    // Output Tree Analysis
+    const out = document.getElementById('dist-output');
+    if (out && results.length > 0) {
+        let table = `<div style="max-height:100px; overflow-y:auto; margin-top:10px;">
+        <table style="width:100%; text-align:left; font-size:0.8rem; border-collapse:collapse;">
+            <tr style="border-bottom:1px solid #444; color:#aaa;">
+                <th style="padding:4px;">Outcome</th>
+                <th style="padding:4px;">Prob</th>
+                <th style="padding:4px;">%</th>
+            </tr>`;
+        results.forEach(r => {
+            table += `<tr>
+                <td style="padding:4px; color:#fff;">${r.path}</td>
+                <td style="padding:4px; color:#aaa;">${r.p.toFixed(4)}</td>
+                <td style="padding:4px; color:#ffd60a;">${(r.p*100).toFixed(1)}%</td>
+            </tr>`;
+        });
+        table += `</table></div>`;
+        out.innerHTML = table;
+    }
 }
-
-// Initial mode
-setCalcMode('std');
+// Initial mode (must be last)
+if (typeof setCalcMode === 'function') {
+    setCalcMode('std');
+}
