@@ -129,54 +129,90 @@ function galtonAnimate() {
     }
 
     // Physics step
+    // Physics step
     const pegAreaBottom = h * 0.6;
     const binAreaTop = pegAreaBottom + 20;
-    const pegSpacingX = (w - 80) / galtonRows;
     const gravity = 0.15;
-    const damping = 0.7;
+    
+    // Get controls
+    const speedMult = parseInt(document.getElementById('galton-speed')?.value || 3);
+    const elasticity = parseFloat(document.getElementById('galton-bounce')?.value || 0.6);
+    
+    // Multi-step for speed
+    // If speed is 1: 1 step. If 5: 5 steps (faster execution per frame).
+    const steps = speedMult; 
 
-    for (const ball of galtonBalls) {
-        if (ball.settled) continue;
+    for (let s = 0; s < steps; s++) {
+        for (const ball of galtonBalls) {
+            if (ball.settled) continue;
 
-        ball.vy += gravity;
-        ball.x += ball.vx;
-        ball.y += ball.vy;
+            ball.vy += gravity;
+            ball.x += ball.vx;
+            ball.y += ball.vy;
 
-        // Peg collision
-        for (const peg of galtonPegs) {
-            const dx = ball.x - peg.x;
-            const dy = ball.y - peg.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < ball.r + peg.r + 2) {
-                // Bounce off
-                const dir = dx > 0 ? 1 : -1;
-                ball.vx = dir * (1.5 + Math.random() * 1.0);
-                ball.vy = -Math.abs(ball.vy) * 0.3;
-                ball.y = peg.y - peg.r - ball.r - 3;
+            // Peg collision
+            for (const peg of galtonPegs) {
+                const dx = ball.x - peg.x;
+                const dy = ball.y - peg.y;
+                const distSq = dx*dx + dy*dy;
+                const minDist = ball.r + peg.r + 1; // Tolerance
+
+                if (distSq < minDist * minDist) {
+                    // Normalize collision vector
+                    const dist = Math.sqrt(distSq);
+                    const nx = dx / dist;
+                    const ny = dy / dist;
+
+                    // Reflect velocity
+                    // Simple logic: bounce away + randomness
+                    // Bias randomness to left/right to ensure distribution
+                    const randX = (Math.random() - 0.5) * 2.0; 
+                    
+                    ball.vx = nx * 2.0 * elasticity + randX;
+                    ball.vy = ny * 2.0 * elasticity + 0.5; // slight downward push or dampening
+
+                    // Correction to prevent sticking
+                    const overlap = minDist - dist;
+                    ball.x += nx * overlap;
+                    ball.y += ny * overlap;
+                }
             }
-        }
 
-        // Wall bounds
-        if (ball.x < ball.r) { ball.x = ball.r; ball.vx = Math.abs(ball.vx) * damping; }
-        if (ball.x > w - ball.r) { ball.x = w - ball.r; ball.vx = -Math.abs(ball.vx) * damping; }
+            // Wall bounds
+            if (ball.x < ball.r) { 
+                ball.x = ball.r; 
+                ball.vx *= -0.6; // Wall damping
+            }
+            if (ball.x > w - ball.r) { 
+                ball.x = w - ball.r; 
+                ball.vx *= -0.6; 
+            }
 
-        // Settle in bin
-        if (ball.y >= binAreaTop) {
-            // Determine bin
-            const binWidth = w / (galtonRows + 1);
-            let binIdx = Math.floor(ball.x / binWidth);
-            binIdx = Math.max(0, Math.min(galtonRows, binIdx));
+            // Settle in bin
+            if (ball.y >= binAreaTop) {
+                // Determine bin
+                const binWidth = w / (galtonRows + 1);
+                let binIdx = Math.floor(ball.x / binWidth);
+                binIdx = Math.max(0, Math.min(galtonRows, binIdx));
 
-            const binX = binIdx * binWidth + binWidth / 2;
-            const binCount = galtonBins[binIdx];
-            const ballDiam = ball.r * 2 + 1;
-            const targetY = h - 10 - binCount * ballDiam;
+                const binX = binIdx * binWidth + binWidth / 2;
+                const binCount = galtonBins[binIdx];
+                const ballDiam = ball.r * 2; 
+                
+                // Stack height target
+                const targetY = h - 2 - (binCount * ballDiam) - ball.r;
 
-            ball.x = binX + (Math.random() - 0.5) * 2;
-            ball.y = Math.max(targetY, binAreaTop);
-            ball.settled = true;
-            ball.bin = binIdx;
-            galtonBins[binIdx]++;
+                // Only settle if we are close to the target Y (or passed it)
+                if (ball.y >= targetY) {
+                    ball.y = targetY;
+                    ball.x = binX + (Math.random() - 0.5) * 2; // Jitter to look natural
+                    ball.vx = 0;
+                    ball.vy = 0;
+                    ball.settled = true;
+                    ball.bin = binIdx;
+                    galtonBins[binIdx]++;
+                }
+            }
         }
     }
 
