@@ -1,6 +1,6 @@
 /* 
  * CALCULATOR.JS
- * Enhanced with Formula Solver and Advanced Visualizer (Venn 2/3 sets)
+ * Enhanced with Formula Solver and Advanced Visualizer (Venn 2/3 sets & Custom Tree)
  */
 
 /* ----------------------------------------------------
@@ -273,7 +273,7 @@ function solveFormulaWithSteps() {
 }
 
 /* ----------------------------------------------------
-   4. VISUALIZER LOGIC (Updated VENN)
+   4. VISUALIZER LOGIC (Updated VENN & TREE)
    ---------------------------------------------------- */
 function updateVisualizer() {
     const type = document.getElementById('dist-select').value;
@@ -324,14 +324,67 @@ function updateVisualizer() {
         renderVennInputs();
     } else if (type === 'tree') {
         paramsDiv.innerHTML = `
-            <div class="param-group">
-                <label>Steps</label> <input type="number" id="tree-steps" value="3" min="1" max="5" style="width:40px">
-            </div>
-            <div class="param-group">
-                <label>p</label> <input type="number" id="tree-p" value="0.5" step="0.1" style="width:50px">
+            <div style="width:100%; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <div class="param-group">
+                        <label>Steps (Max 3)</label> 
+                        <input type="number" id="tree-steps" value="2" min="1" max="3" onchange="renderTreeCustomInputs()" style="width:50px">
+                    </div>
+                </div>
+                <!-- Custom Probabilities Container -->
+                <div id="tree-custom-container" style="display:grid; gap:10px; padding:10px; background:rgba(0,0,0,0.2); border-radius:8px;"></div>
             </div>
         `;
+        renderTreeCustomInputs();
     }
+}
+
+function renderTreeCustomInputs() {
+    // Limit steps to 3 for UI sanity (4 levels = 15 inputs)
+    const stepInput = document.getElementById('tree-steps');
+    let steps = parseInt(stepInput.value);
+    if (steps > 3) { stepInput.value = 3; steps = 3; }
+    if (steps < 1) { stepInput.value = 1; steps = 1; }
+
+    const container = document.getElementById('tree-custom-container');
+    container.innerHTML = '';
+    
+    // Level 1 (Root)
+    let html = `
+    <div style="border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">
+        <span style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">Stage 1 (Start)</span>
+        <div style="display:flex; gap:10px; margin-top:5px;">
+             <label style="font-size:0.85rem;">P(Up): <input type="number" id="p-0-0" value="0.5" step="0.1" style="width:50px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
+        </div>
+    </div>`;
+    
+    // Level 2
+    if (steps >= 2) {
+        html += `
+        <div style="border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">
+            <span style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">Stage 2 (Conditional)</span>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
+                 <label style="font-size:0.85rem;">P(U|U): <input type="number" id="p-1-0" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
+                 <label style="font-size:0.85rem;">P(U|D): <input type="number" id="p-1-1" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
+            </div>
+        </div>`;
+    }
+    
+    // Level 3
+    if (steps >= 3) {
+        html += `
+        <div>
+            <span style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">Stage 3</span>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
+                 <label style="font-size:0.85rem;">P(U|UU): <input type="number" id="p-2-0" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
+                 <label style="font-size:0.85rem;">P(U|UD): <input type="number" id="p-2-1" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
+                 <label style="font-size:0.85rem;">P(U|DU): <input type="number" id="p-2-2" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
+                 <label style="font-size:0.85rem;">P(U|DD): <input type="number" id="p-2-3" value="0.5" step="0.1" style="width:45px; background:rgba(255,255,255,0.1); border:none; color:#fff; text-align:center;"></label>
+            </div>
+        </div>`;
+    }
+    
+    container.innerHTML = html;
 }
 
 function renderVennInputs() {
@@ -653,9 +706,10 @@ function drawVenn(ctx, w, h, highlight = null) {
 }
 
 function drawTree(ctx, w, h) {
-    const steps = parseInt(document.getElementById('tree-steps')?.value || 3);
-    const p = parseFloat(document.getElementById('tree-p')?.value || 0.5);
-    const q = 1 - p;
+    let steps = parseInt(document.getElementById('tree-steps')?.value || 2);
+    // Clamp steps
+    if(steps > 3) steps = 3;
+    if(steps < 1) steps = 1;
 
     ctx.font = '12px Inter, sans-serif';
     ctx.textAlign = 'center';
@@ -663,22 +717,33 @@ function drawTree(ctx, w, h) {
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 2;
 
-    const startX = 50;
+    const startX = 60;
     const startY = h / 2;
-    const layerWidth = (w - 100) / steps;
+    const layerWidth = (w - 120) / steps;
 
-    function drawBranch(x, y, level, probSoFar) {
+    // Helper to read custom P
+    function getP(level, idx) {
+        const el = document.getElementById(`p-${level}-${idx}`);
+        return el ? parseFloat(el.value) : 0.5;
+    }
+
+    function drawBranch(x, y, level, nodeIndex, probSoFar) {
         if (level === steps) {
-            // Leaf node: Probability
+            // Leaf node: Final Probability
             ctx.fillStyle = '#ffd60a';
-            ctx.fillText(probSoFar.toFixed(4), x + 20, y);
+            ctx.font = 'bold 13px Inter';
+            ctx.fillText(probSoFar.toFixed(3), x + 30, y);
             return;
         }
 
         const nextX = x + layerWidth;
-        const offset = (h / 2) / Math.pow(2, level + 1);
+        const offset = (h / 2.2) / Math.pow(2, level + 1);
         
-        // Up branch (Success/P)
+        // Fetch P for this specific node
+        const p = getP(level, nodeIndex);
+        const q = 1 - p;
+
+        // --- UP BRANCH (Success) ---
         const yUp = y - offset;
         ctx.beginPath();
         ctx.moveTo(x, y);
@@ -688,11 +753,13 @@ function drawTree(ctx, w, h) {
 
         // Label P
         ctx.fillStyle = '#4cc9f0';
-        ctx.fillText(p, (x + nextX) / 2, (y + yUp) / 2 - 10);
+        ctx.font = '11px Inter';
+        ctx.fillText(p, (x + nextX) / 2, (y + yUp) / 2 - 8);
         
-        drawBranch(nextX, yUp, level + 1, probSoFar * p);
+        // Recurse Up (level+1, index*2)
+        drawBranch(nextX, yUp, level + 1, nodeIndex * 2, probSoFar * p);
 
-        // Down branch (Failure/Q)
+        // --- DOWN BRANCH (Failure) ---
         const yDown = y + offset;
         ctx.beginPath();
         ctx.moveTo(x, y);
@@ -702,18 +769,20 @@ function drawTree(ctx, w, h) {
 
         // Label Q
         ctx.fillStyle = '#f72585';
-        ctx.fillText(q.toFixed(2), (x + nextX) / 2, (y + yDown) / 2 + 10);
+        ctx.fillText(q.toFixed(2), (x + nextX) / 2, (y + yDown) / 2 + 12);
 
-        drawBranch(nextX, yDown, level + 1, probSoFar * q);
+        // Recurse Down (level+1, index*2 + 1)
+        drawBranch(nextX, yDown, level + 1, nodeIndex * 2 + 1, probSoFar * q);
     }
 
-    // Root
+    // Root Circle
     ctx.beginPath();
     ctx.arc(startX, startY, 5, 0, Math.PI * 2);
     ctx.fillStyle = '#fff';
     ctx.fill();
 
-    drawBranch(startX, startY, 0, 1);
+    // Start
+    drawBranch(startX, startY, 0, 0, 1);
 }
 
 // Initial mode
