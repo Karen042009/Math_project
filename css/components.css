@@ -1,204 +1,288 @@
-/* 
- * 3. COMPONENTS
- */
+/* ═══════════════════════════════════════════════════════════
+   COMPONENTS.CSS — Buttons, Cards, Modals, Filters, Accordions
+   ProbSpace — Enhanced UI/UX 2.0
+   ═══════════════════════════════════════════════════════════ */
 
-/* Buttons */
+/* ═══════════ GLOW BUTTONS ═══════════ */
 .glow-btn {
-    background: linear-gradient(45deg, #9d4edd, #f72585);
+    background: linear-gradient(135deg, var(--neon-purple), var(--accent-pink));
     color: white;
-    padding: 15px 30px;
-    font-size: 1.2rem;
+    padding: 14px 28px;
+    font-size: 1.05rem;
     font-weight: 700;
     border: none;
-    border-radius: 50px;
+    border-radius: 14px;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(157, 78, 221, 0.4);
-    transition: all 0.3s;
+    box-shadow:
+        0 4px 18px rgba(168, 85, 247, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.35s var(--transition-smooth);
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.glow-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .glow-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 0 40px rgba(157, 78, 221, 0.7);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow:
+        0 8px 30px rgba(168, 85, 247, 0.45),
+        0 0 40px rgba(168, 85, 247, 0.15);
+}
+
+.glow-btn:hover::before {
+    opacity: 1;
+}
+
+.glow-btn:active {
+    transform: translateY(-1px) scale(1.01);
+    transition-duration: 0.1s;
 }
 
 .glow-btn.secondary {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: none;
+    backdrop-filter: blur(10px);
 }
 
 .glow-btn.secondary:hover {
-    box-shadow: 0 0 18px rgba(76, 201, 240, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
+}
+
+.glow-btn.small {
+    padding: 10px 18px;
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+    border-radius: 10px;
+}
+
+.glow-btn.large {
+    padding: 16px 36px;
+    font-size: 1.15rem;
 }
 
 .secondary-btn {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     padding: 10px 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s var(--transition-smooth);
 }
 
 .secondary-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: white;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
 }
 
-/* Modals */
+/* ═══════════ MODALS ═══════════ */
 .modal,
 .modal-overlay {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(5px);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
     z-index: 3000;
     align-items: center;
     justify-content: center;
 }
 
 .modal-content {
-    background: var(--bg-panel);
-    border: 1px solid var(--neon-purple);
+    background: linear-gradient(145deg, var(--bg-panel), rgba(6, 1, 13, 0.95));
+    border: 1px solid rgba(168, 85, 247, 0.25);
     width: 90%;
-    max-width: 500px;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 50px rgba(157, 78, 221, 0.3);
+    max-width: 480px;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(168, 85, 247, 0.12);
     text-align: center;
     position: relative;
-    animation: fadeInUp 0.3s ease-out;
+    animation: scaleIn 0.35s var(--transition-smooth);
+    backdrop-filter: blur(20px);
 }
 
 .close-modal {
     position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 1.5rem;
+    top: 14px;
+    right: 18px;
+    font-size: 1.4rem;
     cursor: pointer;
-    color: #888;
+    color: rgba(255, 255, 255, 0.35);
+    transition: all 0.2s ease;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
 }
 
-/* Cards (Problems, Theory Blocks) */
-/* Glass Effect */
+.close-modal:hover {
+    color: #fff;
+    background: rgba(236, 72, 153, 0.15);
+}
+
+/* ═══════════ GLASS PANEL ═══════════ */
 .glass-panel {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
     border-radius: 20px;
-    padding: 30px;
+    padding: 28px;
+    transition: all 0.35s var(--transition-smooth);
 }
 
+.glass-panel:hover {
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(168, 85, 247, 0.05);
+}
+
+/* ═══════════ PROBLEM CARDS ═══════════ */
 .problem-card {
-    background: rgba(30, 30, 45, 0.4);
-    /* Less solid */
-    border: 1px solid rgba(188, 19, 254, 0.2);
-    /* Subtle purple hint */
-    padding: 25px;
+    background: var(--bg-card);
+    border: 1px solid rgba(168, 85, 247, 0.12);
+    padding: 24px;
     border-radius: 16px;
     position: relative;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.35s var(--transition-smooth);
+    backdrop-filter: blur(10px);
 }
 
 .problem-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--neon-purple);
-    box-shadow: 0 5px 15px rgba(188, 19, 254, 0.15);
+    transform: translateY(-4px);
+    border-color: rgba(168, 85, 247, 0.35);
+    box-shadow:
+        0 12px 35px rgba(168, 85, 247, 0.12),
+        0 0 15px rgba(168, 85, 247, 0.05);
 }
 
 .problem-card.problem-solved {
-    border-color: rgba(76, 201, 240, 0.35);
-    box-shadow: 0 0 20px rgba(76, 201, 240, 0.08);
+    border-color: rgba(56, 189, 248, 0.25);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.06);
 }
 
 .problem-card.problem-solved::after {
     content: "✓";
     position: absolute;
-    left: 16px;
-    top: 12px;
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
+    left: 14px;
+    top: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
     display: grid;
     place-items: center;
-    background: rgba(76, 201, 240, 0.18);
-    border: 1px solid rgba(76, 201, 240, 0.35);
-    color: rgba(255, 255, 255, 0.9);
+    background: rgba(52, 211, 153, 0.15);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: var(--accent-emerald);
     font-weight: 900;
+    font-size: 0.8rem;
 }
 
 .problem-card.problem-solved .problem-input {
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
+/* ═══════════ PROBLEM TAGS ═══════════ */
 .problem-tag {
-    background: var(--accent-blue);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 800;
-    color: #000;
     padding: 4px 12px;
-    border-radius: 50px;
+    border-radius: 8px;
     position: absolute;
-    top: -10px;
-    right: 15px;
-    box-shadow: 0 0 10px var(--accent-blue);
+    top: -8px;
+    right: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .tag-beginner {
-    background: #fee440;
+    background: rgba(250, 204, 21, 0.15);
+    color: var(--accent-gold);
+    border: 1px solid rgba(250, 204, 21, 0.25);
 }
 
 .tag-intermediate {
-    background: #4cc9f0;
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--accent-blue);
+    border: 1px solid rgba(56, 189, 248, 0.25);
 }
 
 .tag-advanced {
-    background: #f72585;
-    color: #fff;
+    background: rgba(236, 72, 153, 0.12);
+    color: var(--accent-pink);
+    border: 1px solid rgba(236, 72, 153, 0.25);
 }
 
 .tag-olympic {
-    background: #9d4edd;
-    color: #fff;
-    box-shadow: 0 0 10px #9d4edd;
+    background: rgba(168, 85, 247, 0.15);
+    color: var(--neon-purple);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.15);
 }
 
+/* ═══════════ FORM ELEMENTS ═══════════ */
 .problem-input {
     width: 100%;
-    padding: 10px;
-    margin: 15px 0;
+    padding: 10px 14px;
+    margin: 14px 0;
     background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.problem-input:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12);
 }
 
 .check-btn {
     width: 100%;
     padding: 10px;
-    background: var(--neon-purple);
+    background: linear-gradient(135deg, var(--neon-purple), rgba(168, 85, 247, 0.7));
     border: none;
     color: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s var(--transition-smooth);
 }
 
-/* Filter Buttons Group */
+.check-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3);
+}
+
+/* ═══════════ FILTER BUTTONS ═══════════ */
 .filter-group {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 30px;
     flex-wrap: wrap;
 }
@@ -206,79 +290,106 @@
 .filters {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin: 20px 0 30px;
+    gap: 8px;
+    margin: 20px 0 28px;
     flex-wrap: wrap;
 }
 
 .filter-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #aaa;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.3s;
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-    background: var(--neon-purple);
-    color: #fff;
-    border-color: var(--neon-purple);
-}
-
-/* Accordion */
-.accordion-item {
-    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    color: var(--text-muted);
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s var(--transition-smooth);
+}
+
+.filter-btn:hover {
+    background: rgba(168, 85, 247, 0.1);
+    color: #fff;
+    border-color: rgba(168, 85, 247, 0.25);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, var(--neon-purple), rgba(168, 85, 247, 0.7));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+}
+
+/* ═══════════ ACCORDION ═══════════ */
+.accordion-item {
+    margin-bottom: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.accordion-item:hover {
+    border-color: rgba(168, 85, 247, 0.15);
 }
 
 .accordion-header {
     width: 100%;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 13px 16px;
+    background: rgba(255, 255, 255, 0.03);
     border: none;
     color: #fff;
     text-align: left;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     cursor: pointer;
     font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.25s ease;
+}
+
+.accordion-header:hover {
+    background: rgba(168, 85, 247, 0.08);
+}
+
+.accordion-header i {
+    transition: transform 0.3s ease;
+    font-size: 0.75rem;
+    color: var(--text-muted);
 }
 
 .accordion-body {
     display: none;
-    /* hidden by default */
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.3);
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .accordion-body a {
     display: block;
-    color: #aaa;
+    color: var(--text-muted);
     text-decoration: none;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    font-size: 0.88rem;
+    transition: all 0.2s ease;
 }
 
 .accordion-body a:hover {
     color: var(--accent-blue);
-    padding-left: 5px;
+    padding-left: 6px;
 }
 
-/* Formula Boxes */
+/* ═══════════ FORMULA / DEFINITION / THEOREM BOXES ═══════════ */
 .formula-box,
 .definition-box,
 .theorem-box {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     border-left: 3px solid var(--accent-gold);
-    padding: 15px;
-    margin: 15px 0;
+    padding: 16px;
+    margin: 16px 0;
     font-style: italic;
+    border-radius: 0 10px 10px 0;
 }
 
 .definition-box {
@@ -287,13 +398,11 @@
 
 .theorem-box {
     border-color: var(--accent-pink);
-    background: rgba(247, 37, 133, 0.1);
+    background: rgba(236, 72, 153, 0.06);
 }
 
-/* Theory reveal + highlight */
+/* ═══════════ SCROLL REVEAL ═══════════ */
 .reveal {
-    /* opacity: 0; */
-    /* transform: translateY(14px); */
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -302,26 +411,33 @@
     transform: translateY(0);
 }
 
+/* ═══════════ THEORY HIGHLIGHT ═══════════ */
 .theory-highlight {
-    background: rgba(157, 78, 221, 0.18);
-    outline: 2px solid rgba(157, 78, 221, 0.6);
-    box-shadow: 0 0 0 6px rgba(157, 78, 221, 0.12), 0 0 30px rgba(157, 78, 221, 0.15);
-    border-radius: 12px;
+    background: rgba(168, 85, 247, 0.12);
+    outline: 2px solid rgba(168, 85, 247, 0.5);
+    box-shadow: 0 0 0 6px rgba(168, 85, 247, 0.08), 0 0 30px rgba(168, 85, 247, 0.1);
+    border-radius: 14px;
     animation: highlightPulse 0.6s ease-in-out 3;
     transition: all 0.4s ease;
 }
 
 @keyframes highlightPulse {
-    0%, 100% { box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.08); }
-    50% { box-shadow: 0 0 0 8px rgba(157, 78, 221, 0.2), 0 0 40px rgba(157, 78, 221, 0.25); }
+    0%, 100% { box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.06); }
+    50% { box-shadow: 0 0 0 8px rgba(168, 85, 247, 0.15), 0 0 40px rgba(168, 85, 247, 0.2); }
 }
 
+/* ═══════════ PROOF BOX ═══════════ */
 details.proof-box {
     margin-top: 12px;
-    padding: 12px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(0, 0, 0, 0.25);
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+details.proof-box:hover {
+    border-color: rgba(56, 189, 248, 0.15);
 }
 
 details.proof-box>summary {
@@ -329,13 +445,14 @@ details.proof-box>summary {
     user-select: none;
     color: var(--accent-blue);
     font-weight: 700;
+    font-size: 0.9rem;
 }
 
 details.proof-box[open]>summary {
     margin-bottom: 10px;
 }
 
-/* Small inline distribution sketches */
+/* ═══════════ MINI SVG ═══════════ */
 .mini-svg {
     width: 100%;
     max-width: 520px;
@@ -343,18 +460,59 @@ details.proof-box[open]>summary {
     display: block;
     margin: 14px 0 6px;
     border-radius: 14px;
-    background: rgba(0, 0, 0, 0.22);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Reduced motion */
+/* ═══════════ REDUCED MOTION ═══════════ */
 @media (prefers-reduced-motion: reduce) {
-
     .fade-in-up,
-    .reveal {
+    .reveal,
+    .page-enter,
+    .feature-card,
+    .glow-btn,
+    .problem-card {
         animation: none !important;
         transition: none !important;
         transform: none !important;
         opacity: 1 !important;
+    }
+}
+
+/* ═══════════ RESPONSIVE COMPONENTS ═══════════ */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 94%;
+        padding: 24px 20px;
+    }
+
+    .glow-btn {
+        padding: 12px 22px;
+        font-size: 0.92rem;
+    }
+
+    .glass-panel {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .filter-btn {
+        padding: 7px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .filters {
+        gap: 6px;
+    }
+
+    .filter-btn {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+
+    .problem-card {
+        padding: 18px 16px;
     }
 }

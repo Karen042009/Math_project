@@ -1,269 +1,377 @@
-/* 
- * 5. LAB & CALCULATOR 
- */
+/* ═══════════════════════════════════════════════════════════
+   LAB.CSS — Calculator, Visualizer, AI Panel
+   ProbSpace — Enhanced UI/UX 2.0
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══════════ LAB GRID ═══════════ */
 .lab-grid {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
-    gap: 30px;
-    height: auto;
+    gap: 28px;
     min-height: 60vh;
 }
 
-@media (max-width: 900px) {
-    .lab-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
+/* ═══════════ LAB PANEL ═══════════ */
 .lab-panel {
-    background: linear-gradient(145deg, rgba(20, 10, 30, 0.9), rgba(10, 5, 20, 0.95));
-    border: 1px solid rgba(157, 78, 221, 0.3);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
     border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    padding: 28px;
+    box-shadow: var(--glass-shadow);
     display: flex;
     flex-direction: column;
+    transition: all 0.35s var(--transition-smooth);
+}
+
+.lab-panel:hover {
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.45),
+        0 0 30px rgba(168, 85, 247, 0.05);
 }
 
 .lab-panel h2 {
     color: #fff;
     margin-bottom: 20px;
-    font-size: 1.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 10px;
+    font-size: 1.45rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 12px;
 }
 
-/* Calculator Specifics */
+/* ═══════════ CALCULATOR DISPLAY ═══════════ */
 .calc-display-container {
-    background: #000;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 25px;
-    border: 1px solid rgba(157, 78, 221, 0.5);
-    box-shadow: inset 0 0 20px rgba(157, 78, 221, 0.1);
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 22px;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    box-shadow: inset 0 0 25px rgba(168, 85, 247, 0.06);
     text-align: right;
-    min-height: 80px;
+    min-height: 85px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transition: border-color 0.3s ease;
+}
+
+.calc-display-container:focus-within {
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow: inset 0 0 30px rgba(168, 85, 247, 0.1), 0 0 15px rgba(168, 85, 247, 0.1);
 }
 
 #calc-input {
     font-family: 'Fira Code', monospace;
-    font-size: 2.2rem; /* Larger text */
-    color: #ffffff !important; /* Force bright white */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Glow effect */
+    font-size: 2.1rem;
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
     background: transparent;
     border: none;
     width: 100%;
     text-align: right;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     outline: none;
+    caret-color: var(--neon-purple);
 }
 
 #calc-input::placeholder {
-    color: rgba(255,255,255,0.2);
-    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.18);
+    font-size: 1.4rem;
 }
 
 #calc-result {
     color: var(--accent-gold);
     font-family: 'Fira Code', monospace;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: bold;
     min-height: 2rem;
-    text-shadow: 0 0 10px rgba(255, 214, 10, 0.3);
+    text-shadow: 0 0 12px rgba(250, 204, 21, 0.25);
 }
 
+/* ═══════════ KEYPAD ═══════════ */
 .keypad {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+    gap: 10px;
 }
 
 .key {
-    padding: 15px;
-    font-size: 1.2rem;
+    padding: 14px;
+    font-size: 1.15rem;
     border-radius: 12px;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.06);
     cursor: pointer;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.04);
     color: #fff;
-    transition: all 0.2s;
+    transition: all 0.2s var(--transition-smooth);
     font-family: 'Fira Code', monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.key::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.12), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 .key:hover {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.key.op { color: var(--accent-blue); }
-.key.num { font-weight: bold; font-size: 1.4rem; }
-.key.action { color: var(--accent-pink); }
+.key:active::after {
+    opacity: 1;
+}
+
+.key:active {
+    transform: translateY(0);
+    transition-duration: 0.05s;
+}
+
+.key.op {
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+.key.num {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.key.action {
+    color: var(--accent-pink);
+    font-weight: 600;
+}
+
 .key.enter {
-    background: var(--neon-purple);
+    background: linear-gradient(135deg, var(--neon-purple), rgba(168, 85, 247, 0.7));
     color: white;
-    box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
-}
-.key.enter:hover {
-    background: #b066ff;
-    box-shadow: 0 0 25px rgba(157, 78, 221, 0.6);
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3);
+    border: none;
 }
 
-/* Visualizer Controls */
+.key.enter:hover {
+    box-shadow: 0 6px 22px rgba(168, 85, 247, 0.45);
+    background: linear-gradient(135deg, #b066ff, var(--neon-purple));
+}
+
+/* ═══════════ VISUALIZER CONTROLS ═══════════ */
 .vis-controls {
     display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 18px;
     align-items: center;
     flex-wrap: wrap;
 }
 
-#dist-select {
-    background: rgba(0,0,0,0.5);
+#dist-select,
+.modern-select {
+    background: rgba(0, 0, 0, 0.4);
     color: #fff;
-    border: 1px solid var(--neon-purple);
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 1rem;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
     outline: none;
     cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#dist-select:hover,
+.modern-select:hover {
+    border-color: var(--neon-purple);
+}
+
+#dist-select:focus,
+.modern-select:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
 }
 
 #dist-params {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 #dist-params input {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: white;
     width: 60px;
-    padding: 5px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-/* Output area under visualizer params */
-.dist-output {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(0,0,0,0.25);
-    color: #eaeaea;
-    font-size: 0.95rem;
-}
-
-#venn-op {
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.25);
-    padding: 8px 10px;
+    padding: 8px;
     border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
     outline: none;
 }
 
-/* Canvas in Lab */
-#lab-canvas {
-    background: #000;
-    border-radius: 12px;
-    width: 100%;
-    height: 400px; /* Fixed height for consistency */
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+#dist-params input:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
 }
 
-/* AI Panel */
+.dist-output {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-primary);
+    font-size: 0.92rem;
+}
+
+#venn-op {
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 8px 12px;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#venn-op:focus {
+    border-color: var(--neon-purple);
+}
+
+/* ═══════════ LAB CANVAS ═══════════ */
+#lab-canvas {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 14px;
+    width: 100%;
+    height: 400px;
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.3s ease;
+}
+
+#lab-canvas:hover {
+    border-color: rgba(168, 85, 247, 0.3);
+}
+
+/* ═══════════ AI WORKSPACE ═══════════ */
 #ai-workspace {
     display: none;
-    margin-top: 30px;
+    margin-top: 28px;
     padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    animation: fadeInUp 0.5s ease-out;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    animation: fadeInUp 0.4s var(--transition-smooth);
 }
 
 .ai-problem {
-    background: rgba(76, 201, 240, 0.1);
-    border-left: 4px solid var(--accent-blue);
+    background: rgba(56, 189, 248, 0.06);
+    border-left: 3px solid var(--accent-blue);
     padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 0 12px 12px 0;
+    margin-bottom: 18px;
+    border-radius: 0 14px 14px 0;
+    backdrop-filter: blur(10px);
 }
 
 .ai-controls {
     display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 18px;
     flex-wrap: wrap;
 }
 
 .ai-select {
-    padding: 10px;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     color: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.ai-select:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
 }
 
 .ai-input-area textarea {
     width: 100%;
     min-height: 100px;
-    padding: 15px;
-    background: rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.2);
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
-    border-radius: 12px;
+    border-radius: 14px;
     resize: vertical;
-    margin-bottom: 15px;
+    margin-bottom: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.ai-input-area textarea:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
 }
 
 .file-upload-label {
-    display: inline-block;
-    padding: 10px 20px;
-    background: rgba(255,255,255,0.1);
-    border: 1px dashed rgba(255,255,255,0.3);
-    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
+    color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
 .file-upload-label:hover {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.08);
     border-color: var(--accent-blue);
+    color: #fff;
 }
 
 #ai-feedback {
     display: none;
-    margin-top: 30px;
-    padding: 25px;
-    background: rgba(0,0,0,0.6);
-    border-radius: 15px;
-    border: 1px solid var(--accent-gold);
+    margin-top: 24px;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 16px;
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    backdrop-filter: blur(10px);
 }
 
-/* Calculator Tabs */
+/* ═══════════ CALCULATOR TABS ═══════════ */
 .calc-tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    gap: 6px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding-bottom: 10px;
 }
 
 .calc-tab {
     background: transparent;
     border: none;
-    color: #888;
+    color: rgba(255, 255, 255, 0.4);
     padding: 8px 16px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.95rem;
     position: relative;
-    transition: all 0.3s;
+    transition: all 0.3s var(--transition-smooth);
+    border-radius: 8px 8px 0 0;
+}
+
+.calc-tab:hover {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .calc-tab.active {
@@ -279,104 +387,97 @@
     height: 2px;
     background: var(--neon-purple);
     box-shadow: 0 0 10px var(--neon-purple);
+    border-radius: 2px;
 }
 
 .calc-pad {
-    display: none; /* Hidden by default */
+    display: none;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    animation: fadeIn 0.3s ease;
+    gap: 10px;
+    animation: fadeIn 0.25s ease;
 }
 
 .calc-pad.active {
     display: grid;
 }
 
-/* Calculator Drawer Toggle */
+/* ═══════════ DRAWER TOGGLE ═══════════ */
 .drawer-toggle-btn {
     width: 100%;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.03);
     border: none;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
     color: var(--accent-blue);
     padding: 12px;
-    margin-top: 15px;
+    margin-top: 14px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    transition: all 0.3s;
-    border-radius: 0 0 12px 12px;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border-radius: 0 0 14px 14px;
 }
 
 .drawer-toggle-btn:hover {
-    background: rgba(76, 201, 240, 0.1);
+    background: rgba(56, 189, 248, 0.06);
     color: #fff;
 }
 
 .drawer-toggle-btn i {
-    transition: transform 0.3s;
+    transition: transform 0.3s var(--transition-smooth);
 }
 
 .drawer-toggle-btn.active i {
     transform: rotate(180deg);
 }
 
-/* Advanced Visualizer Controls */
+/* ═══════════ ADVANCED VIS CONTROLS ═══════════ */
 .op-btn {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 6px 12px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 0.8rem;
-    transition: 0.2s;
+    transition: all 0.25s ease;
 }
 
 .op-btn:hover {
     background: var(--accent-blue);
     color: #000;
+    border-color: var(--accent-blue);
 }
 
 .highlight-text {
     color: var(--accent-gold);
     font-weight: bold;
-    text-shadow: 0 0 5px rgba(255, 214, 10, 0.5);
+    text-shadow: 0 0 5px rgba(250, 204, 21, 0.3);
 }
 
 .vis-controls-advanced {
-    background: rgba(0,0,0,0.2);
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .vis-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-.modern-select {
-    background: #000;
-    color: #fff;
-    border: 1px solid var(--accent-purple);
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    cursor: pointer;
-    outline: none;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .dist-params-panel {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
 }
 
@@ -384,46 +485,93 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255,255,255,0.05);
-    padding: 5px 10px;
-    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .param-group label {
     font-size: 0.85rem;
-    color: #aaa;
+    color: var(--text-muted);
 }
 
 .param-group input {
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(255,255,255,0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
     width: 50px;
     text-align: center;
     font-weight: bold;
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
-/* Analysis Panel */
+.param-group input:focus {
+    border-color: var(--neon-purple);
+}
+
+/* ═══════════ ANALYSIS PANEL ═══════════ */
 .analysis-panel {
-    margin-top: 20px;
-    background: rgba(76, 201, 240, 0.05);
+    margin-top: 18px;
+    background: rgba(56, 189, 248, 0.04);
     border-left: 3px solid var(--accent-blue);
-    padding: 15px;
-    border-radius: 0 8px 8px 0;
+    padding: 16px;
+    border-radius: 0 12px 12px 0;
+    backdrop-filter: blur(5px);
 }
 
 .analysis-panel h4 {
     margin-bottom: 10px;
     color: var(--accent-blue);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
 }
 
 .dist-output-content {
     font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-    color: #ddd;
-    line-height: 1.5;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media (max-width: 900px) {
+    .lab-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #lab-canvas {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lab-panel {
+        padding: 18px;
+    }
+
+    #calc-input {
+        font-size: 1.6rem;
+    }
+
+    #calc-result {
+        font-size: 1.2rem;
+    }
+
+    .key {
+        padding: 12px 8px;
+        font-size: 1rem;
+    }
+
+    .keypad,
+    .calc-pad {
+        gap: 6px;
+    }
+
+    .key.num {
+        font-size: 1.1rem;
+    }
 }

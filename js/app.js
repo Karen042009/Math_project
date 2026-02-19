@@ -25,6 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hash routing / deep-linking
     handleInitialHashRoute();
     window.addEventListener('hashchange', handleInitialHashRoute);
+
+    // Nav scroll effect — add 'scrolled' class when page is scrolled
+    const nav = document.getElementById('main-nav');
+    if (nav) {
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 30);
+        }, { passive: true });
+    }
 });
 
 /* --- I18N & ROUTING --- */
@@ -87,23 +95,32 @@ function setLanguage(lang) {
 function showPage(pageId) {
     document.querySelectorAll('.page-section').forEach(section => {
         section.style.display = 'none';
-        section.classList.remove('active-section');
+        section.classList.remove('active-section', 'page-enter');
     });
 
     const target = document.getElementById(pageId);
     if (target) {
         target.style.display = 'block';
-        target.classList.add('active-section', 'fade-in-up');
-        setTimeout(() => target.classList.remove('fade-in-up'), 600);
+        target.classList.add('active-section', 'page-enter');
+        setTimeout(() => target.classList.remove('page-enter'), 500);
     }
 
+    // Scroll to top on page switch
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Update nav button active states
     document.querySelectorAll('.nav-btn, .mobile-nav-btn').forEach(btn => {
         btn.classList.remove('active');
-        // Simple check
         if (btn.getAttribute('data-target') === pageId || btn.onclick.toString().includes(pageId)) {
             btn.classList.add('active');
         }
     });
+
+    // Close mobile menu if open
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu && mobileMenu.style.display === 'flex') {
+        mobileMenu.style.display = 'none';
+    }
 
     // Re-initialize page-specific content when navigating
     if (pageId === 'simulations') {
