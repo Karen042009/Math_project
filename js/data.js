@@ -36,7 +36,7 @@ window.probabilityData = {
     modal_hint_label: { hy: "Հուշում՝", en: "Hint:", ru: "Подсказка:" },
 
     // Hero & Home
-    hero_title: { hy: "ՀԱՎԱՆԱԿԱՆՈՒԹՅՈՒՆՆԵՐԻ ՏԵՍՈՒԹՅՈՒՆ", en: "PROBABILITY THEORY", ru: "ТЕОРИЯ ВЕРОЯТНОСТЕЙ" },
+    hero_title: { hy: "ProbSpace", en: "ProbSpace", ru: "ProbSpace" },
     hero_subtitle: { hy: "ԻՆՏԵՐԱԿՏԻՎ ՈՒՍՈՒՄՆԱԿԱՆ ՀԱՐԹԱԿ", en: "INTERACTIVE LEARNING PLATFORM", ru: "ИНТЕРАКТИВНАЯ УЧЕБНАЯ ПЛАТФОРМА" },
     hero_desc: { hy: "Բարդ մաթեմատիկական հասկացությունները դառնում են հասանելի, տեսանելի և կիրառելի: Տեսնել, փորձարկել, հասկանալ:", en: "Complex mathematical concepts become accessible, visual, and applicable. See, experiment, understand.", ru: "Сложные математические концепции становятся доступными и наглядными. Смотрите, пробуйте, понимайте." },
     btn_start: { hy: "Սկսել ուսուցումը", en: "Start Learning", ru: "Начать обучение" },

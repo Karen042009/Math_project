@@ -4,11 +4,11 @@
 
 let currentLang = 'hy'; // Default to Armenian as requested
 let revealObserver;
-const PROGRESS_KEY = 'probProProgressV1';
+const PROGRESS_KEY = 'probSpaceProgressV1';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Check if user set lang before
-    const savedLang = localStorage.getItem('probProLang');
+    const savedLang = localStorage.getItem('probSpaceLang');
     if (savedLang) currentLang = savedLang;
 
     setLanguage(currentLang);
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* --- I18N & ROUTING --- */
 function setLanguage(lang) {
     currentLang = lang;
-    localStorage.setItem('probProLang', lang);
+    localStorage.setItem('probSpaceLang', lang);
 
     // Update language buttons
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));

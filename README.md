@@ -1,4 +1,4 @@
-# Probability Pro
+# ProbSpace
 
 A comprehensive, interactive educational platform for Probability Theory and Statistics.
 
