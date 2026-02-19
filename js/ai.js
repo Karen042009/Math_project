@@ -50,7 +50,7 @@ async function generateAIProblem() {
             currentGeneratedProblem = batch[0];
 
             // Get language
-            const lang = currentLang || 'hy';
+            const lang = currentLang || 'en';
             const q = currentGeneratedProblem.question[lang] || currentGeneratedProblem.question['en'] || currentGeneratedProblem.question;
 
             outputText.innerText = typeof q === 'string' ? q : q[lang];

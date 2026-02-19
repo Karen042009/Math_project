@@ -2,7 +2,7 @@
  * MAIN APPLICATION LOGIC 
  */
 
-let currentLang = 'hy'; // Default to Armenian as requested
+let currentLang = 'en'; // Default to English
 let revealObserver;
 const PROGRESS_KEY = 'probSpaceProgressV1';
 
@@ -14,10 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setLanguage(currentLang);
 
     // Init Visualizer default
-    updateVisualizer();
-    drawGraph();
+    if (typeof updateVisualizer === 'function') updateVisualizer();
+    if (typeof drawGraph === 'function') drawGraph();
 
+    // Init ALL simulations so they're ready when the user navigates to them
     if (typeof initGalton === 'function') initGalton();
+    if (typeof initMonty === 'function') initMonty();
+    if (typeof initBuffon === 'function') initBuffon();
 
     // Hash routing / deep-linking
     handleInitialHashRoute();
@@ -28,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('probSpaceLang', lang);
+    document.documentElement.lang = lang;
 
     // Update language buttons
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
@@ -60,9 +64,18 @@ function setLanguage(lang) {
     // Re-init scroll reveal for newly rendered theory DOM
     initTheoryScrollReveal();
 
-    // Update simulation descriptions
+    // Update simulation descriptions & stats
     if (typeof updateSimDescriptions === 'function') {
         updateSimDescriptions();
+    }
+    if (typeof updateMontyStats === 'function') {
+        updateMontyStats();
+    }
+    if (typeof updateGaltonStats === 'function') {
+        updateGaltonStats();
+    }
+    if (typeof updateBuffonStats === 'function') {
+        updateBuffonStats();
     }
 
     // Re-render MathJax
@@ -91,6 +104,22 @@ function showPage(pageId) {
             btn.classList.add('active');
         }
     });
+
+    // Re-initialize page-specific content when navigating
+    if (pageId === 'simulations') {
+        if (typeof initGalton === 'function') initGalton();
+        if (typeof initMonty === 'function') initMonty();
+        if (typeof initBuffon === 'function') initBuffon();
+    }
+    if (pageId === 'lab') {
+        if (typeof updateVisualizer === 'function') updateVisualizer();
+        if (typeof drawGraph === 'function') drawGraph();
+    }
+    if (pageId === 'practice') {
+        // Re-render problems in current language if needed
+        if (allProblems.length) renderProblems(allProblems);
+        renderPracticeStats();
+    }
 }
 
 function toggleMobileMenu() {
@@ -212,7 +241,7 @@ function renderPracticeStats() {
     const attemptsTotal = Object.values(prog.attempts).reduce((a, b) => a + (parseInt(b, 10) || 0), 0);
 
     const ui = window.probabilityData.ui;
-    const lang = currentLang || 'hy';
+    const lang = currentLang || 'en';
 
     box.innerHTML = `
       <div class="stat"><div class="label">${ui.stat_solved[lang]}</div><div class="value">${solvedCount}/${total}</div></div>

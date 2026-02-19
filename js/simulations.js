@@ -364,7 +364,7 @@ function montyNewGame() {
     montyRevealedDoor = -1;
     renderMontyDoors();
     const ui = window.probabilityData.ui;
-    const lang = currentLang || 'hy';
+    const lang = currentLang || 'en';
     document.getElementById('monty-message').innerText = ui.monty_choose_door[lang];
 }
 
@@ -380,7 +380,7 @@ function montyChooseDoor(doorIndex) {
 
     renderMontyDoors();
     const ui = window.probabilityData.ui;
-    const lang = currentLang || 'hy';
+    const lang = currentLang || 'en';
     const msgTemplate = {
         hy: `Դուռ ${montyRevealedDoor + 1}-ի հետևում 🐐 է։ <br><strong>Ուզո՞ւմ եք ՓՈԽԵԼ, թե՞ ՄՆԱԼ։</strong>`,
         en: `Door ${montyRevealedDoor + 1} has a 🐐! <br><strong>Do you want to SWITCH or STAY?</strong>`,
@@ -414,7 +414,7 @@ function montyDecision(shouldSwitch) {
     renderMontyDoors(true);
     updateMontyStats();
 
-    const lang = currentLang || 'hy';
+    const lang = currentLang || 'en';
     const winMsg = {
         hy: `🎉 <strong style="color:#4cc9f0">Դուք ՀԱՂԹԵՑԻՔ 🚗-ն։</strong> (${shouldSwitch ? 'փոխելով' : 'մնալով'})`,
         en: `🎉 <strong style="color:#4cc9f0">You WON the 🚗!</strong> (You ${shouldSwitch ? 'switched' : 'stayed'})`,
@@ -447,7 +447,7 @@ function montyAutoRun(count) {
     }
     updateMontyStats();
     
-    const lang = currentLang || 'hy';
+    const lang = currentLang || 'en';
     const simMsg = {
         hy: `<strong>Սիմուլյացիա է արվել ${count} խաղ:</strong> Ստուգեք արդյունքները ստորև:`,
         en: `<strong>Simulated ${count} games!</strong> Check the results below.`,
@@ -483,7 +483,7 @@ function updateMontyStats() {
     const statsEl = document.getElementById('monty-stats');
     if (statsEl) {
         const ui = window.probabilityData.ui;
-        const lang = currentLang || 'hy';
+        const lang = currentLang || 'en';
         statsEl.innerHTML = `
             <p>${ui.stat_total_games[lang]} <span>${montyStats.total}</span></p>
             <p>${ui.stat_switch_wins[lang]} <span>${montyStats.switchWin} / ${switchTotal}</span></p>
@@ -504,7 +504,7 @@ function updateMontyStats() {
 
     // Add comparison with theory
     if (montyStats.total > 50) {
-        const lang = currentLang || 'hy';
+        const lang = currentLang || 'en';
         const theoryAdvise = {
             hy: `<p style="margin-top:15px; font-size:0.9rem; color:#aaa; font-style:italic">
                     Տեսականորեն՝ Փոխելը հաղթում է <strong>66.7%</strong> դեպքերում, Մնալը՝ <strong>33.3%</strong>:
@@ -678,7 +678,7 @@ function updateBuffonStats() {
     const statsEl = document.getElementById('buffon-stats');
     if (statsEl) {
         const ui = window.probabilityData.ui;
-        const lang = currentLang || 'hy';
+        const lang = currentLang || 'en';
         statsEl.innerHTML = `
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; font-size:0.9rem;">
                 <div>${ui.stat_total_needles[lang]}: <span style="color:#fff">${buffonTotal}</span></div>

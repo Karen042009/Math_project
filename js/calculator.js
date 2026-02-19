@@ -54,7 +54,7 @@ function addToCalc(val) {
 function clearCalc() {
     document.getElementById('calc-input').value = '';
     const ui = window.probabilityData?.ui || { calc_result_label: { hy: 'Արդյունք՝' } };
-    const lang = currentLang || 'hy';
+    const lang = currentLang || 'en';
     const label = ui.calc_result_label[lang] || 'Result:';
     document.getElementById('calc-result').innerText = `${label} 0`;
 }
@@ -123,7 +123,7 @@ async function calculateResult() {
         const res = safeEval(P, C, factorial, Math);
 
         if (isNaN(res) || res === undefined) throw new Error("NaN");
-        const lang = currentLang || 'hy';
+        const lang = currentLang || 'en';
         const label = window.probabilityData?.ui?.calc_result_label[lang] || 'Result:';
         resultDisplay.innerText = `${label} ${parseFloat(res.toFixed(6))}`;
         resultDisplay.style.color = 'var(--accent-gold)';
