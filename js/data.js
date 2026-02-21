@@ -480,7 +480,16 @@ window.probabilityData = {
       question: { hy: "Նետում ենք զառ: Ինչի՞ է հավասար կենտ թիվ բացվելու հավանականությունը:", en: "A die is rolled. What is the probability of getting an odd number?", ru: "Бросают кубик. Какова вероятность выпадения нечетного числа?" },
       answer: "0.5",
       related_theory_id: "theory-classical-prob",
-      related_theory_hint: { hy: "n=6, m={1,3,5}=3", en: "n=6, m=3", ru: "n=6, m=3" }
+      related_theory_hint: { 
+        hy: "Հիշեք հավանականության դասական բանաձևը՝ P = (Բարենպաստ ելքեր) / (Ընդհանուր ելքեր)։ Զառն ունի 6 նիստ, որոնցից քանի՞սն են կենտ:", 
+        en: "Recall P = m/n. A die has 6 faces in total. How many of them are odd numbers?", 
+        ru: "Вспомните формулу P = m/n. У кубика 6 граней. Сколько из них нечетные?" 
+      },
+      related_theory_solution: {
+        hy: "Զառը նետելիս հնարավոր են 6 հավասարահնարավոր ելքեր՝ {1, 2, 3, 4, 5, 6}, այսինքն n=6։ Կենտ թվերն են 1, 3, 5, հետևաբար բարենպաստ ելքերի քանակը m=3։ Տեղադրելով դասական բանաձևի մեջ՝ P = m / n = 3 / 6 = 1/2 = 0.5։",
+        en: "There are n=6 total possible outcomes. The odd numbers are 1, 3, and 5, so m=3. P = m/n = 3/6 = 0.5.",
+        ru: "Всего 6 исходов (n=6). Нечетные это 1, 3, 5, их 3 (m=3). Следовательно, P = 3/6 = 0.5."
+      }
     },
     {
       id: 102,
@@ -488,7 +497,16 @@ window.probabilityData = {
       question: { hy: "2 մետաղադրամ նետելիս, որքա՞ն է հավանականությունը, որ երկուսն էլ «Զինանշան» կլինեն:", en: "Flip 2 coins. Prob of 2 Heads?", ru: "2 монеты. Вероятность 2-х орлов?" },
       answer: "0.25",
       related_theory_id: "theory-multiplication",
-      related_theory_hint: { hy: "P(A·B) = P(A)·P(B) = 0.5·0.5", en: "P(A∩B) = P(A)·P(B) = 0.5×0.5", ru: "P(A∩B) = P(A)·P(B) = 0.5×0.5" }
+      related_theory_hint: { 
+        hy: "Մետաղադրամները իրարից անկախ են: Կիրառեք բազմապատկման թեորեմը կամ հաշվեք բոլոր հնարավոր 4 ելքերը:", 
+        en: "The coin flips are independent. Use the multiplication theorem P(A∩B)=P(A)×P(B).", 
+        ru: "Броски независимы. Используйте теорему умножения P(A∩B)=P(A)×P(B)." 
+      },
+      related_theory_solution: {
+        hy: "Քանի որ մետաղադրամների նետումները անկախ են իրարից, յուրաքանչյուրի «Զինանշան» (Գերբ) ընկնելու հավանականությունը 1/2 է։ Երկուսի միաժամանակ զինանշան ընկնելու համար բազմապատկում ենք դրանք՝ 1/2 × 1/2 = 1/4 = 0.25։ Այլ կերպ՝ ընդհանուր ելքերն են ԳԳ, ԳԹ, ԹԳ, ԹԹ (4 ելք), մեզ պետք է 1-ը (ԳԳ), հավանականությունը՝ = 1/4:",
+        en: "Probability of Heads on one coin is 1/2. Since events are independent, 1/2 × 1/2 = 1/4 = 0.25.",
+        ru: "Вероятность орла на одной монете 1/2. События независимы, поэтому умножаем: 1/2 × 1/2 = 1/4 = 0.25."
+      }
     },
     {
       id: 103,
@@ -496,7 +514,16 @@ window.probabilityData = {
       question: { hy: "Քանի՞ եղանակով կարելի է դասավորել 5 տարբեր գիրք դարակում:", en: "How many ways to arrange 5 different books on a shelf?", ru: "Сколькими способами можно расставить 5 книг?" },
       answer: "120",
       related_theory_id: "theory-permutations",
-      related_theory_hint: { hy: "5!", en: "5!", ru: "5!" }
+      related_theory_hint: { 
+        hy: "Անհրաժեշտ է գտնել բոլոր առարկաների տեղափոխությունների քանակը։ Կիրառեք N-ի ֆակտորիալ բանաձևը (n!):", 
+        en: "You need to find the number of permutations of 5 items. Use factorial (n!).", 
+        ru: "Это задача на перестановки 5 элементов. Используйте факториал (n!)." 
+      },
+      related_theory_solution: {
+        hy: "5 տարբեր գրքեր դարակում շարելու եղանակների քանակը որոշվում է տեղափոխությունների բանաձևով՝ 5! (ֆակտորիալ)։<br>5! = 1 × 2 × 3 × 4 × 5 = 120։",
+        en: "The number of ways to arrange n distinct objects is n!. Here, 5! = 5 × 4 × 3 × 2 × 1 = 120.",
+        ru: "Количество перестановок из n элементов равно n!. Здесь 5! = 5 × 4 × 3 × 2 × 1 = 120."
+      }
     },
     {
       id: 104,
@@ -504,7 +531,16 @@ window.probabilityData = {
       question: { hy: "P(A)=0.7: Գտնել լրացուցիչ պատահույթի հավանականությունը:", en: "P(A)=0.7. Find probability of the complement.", ru: "P(A)=0.7. Найти вер. противоположного события." },
       answer: "0.3",
       related_theory_id: "theory-axioms",
-      related_theory_hint: { hy: "1 - P(A)", en: "1 - P(A)", ru: "1 - P(A)" }
+      related_theory_hint: { 
+        hy: "Իրադարձության և նրա միակ լրացուցիչ (հակադիր) իրադարձության հավանականությունների գումարը միշտ հավասար է 1-ի:", 
+        en: "The sum of probabilities of an event and its complement always equals 1.", 
+        ru: "Сумма вероятностей события и его дополнения всегда равна 1." 
+      },
+      related_theory_solution: {
+        hy: "Անդրեյ Կոլմոգորովի աքսիոմներից բխում է, որ լրացուցիչ իրադարձության հավանականությունը հավասար է 1 - P(A):<br>P(A-ի լրացուցիչ) = 1 - 0.7 = 0.3:",
+        en: "The complement formula is P(not A) = 1 - P(A). Thus, 1 - 0.7 = 0.3.",
+        ru: "Формула противоположного события: 1 - P(A). Следовательно, 1 - 0.7 = 0.3."
+      }
     },
 
     /* ---- Intermediate ---- */
@@ -514,7 +550,16 @@ window.probabilityData = {
       question: { hy: "Արկղում կա 5 սպիտակ և 4 սև գնդիկ: Հանում են 2 գնդիկ: Որքա՞ն է հավանականությունը, որ երկուսն էլ սպիտակ են:", en: "Urn: 5W, 4B. Draw 2. Prob both White?", ru: "Урна: 5Б, 4Ч. Берем 2. Вероятность 2-х белых?" },
       answer: "0.2778",
       related_theory_id: "theory-combinations",
-      related_theory_hint: { hy: "C(5,2) / C(9,2)", en: "C(5,2) / C(9,2)", ru: "C(5,2) / C(9,2)" }
+      related_theory_hint: { 
+        hy: "Կարող եք լուծել 2 եղանակով. կամ բազմապատկելով հավանականությունները առանց վերադարձի (5/9 * 4/8), կամ զուգորդությունների (Combinations) միջոցով:", 
+        en: "Solve by multiplying probabilities without replacement (5/9 * 4/8) or using Combinations C(5,2)/C(9,2).", 
+        ru: "Можно решить умножением вероятностей без возвращения (5/9 * 4/8) или через сочетания C(5,2)/C(9,2)." 
+      },
+      related_theory_solution: {
+        hy: "Եղանակ 1 (պայմանական)՝ առաջինը սպիտակ լինելու հավանականությունը 5/9 է։ Երկրորդինը (երբ 1 սպիտակ արդեն հանվել է)՝ 4/8։ Բազմապատկում ենք՝ 5/9 × 4/8 = 20/72 = 5/18 ≈ 0.2778։<br>Եղանակ 2 (զուգորդություններ)՝ C(5,2) / C(9,2) = 10 / 36 = 5/18։",
+        en: "Method 1: (5/9) × (4/8) = 20/72 = 0.2778. Method 2: C(5,2) / C(9,2) = 10 / 36 = 5/18.",
+        ru: "Метод 1: (5/9) × (4/8) = 20/72 = 0.2778. Метод 2: C(5,2) / C(9,2) = 10 / 36 = 5/18."
+      }
     },
     {
       id: 202,
@@ -522,7 +567,16 @@ window.probabilityData = {
       question: { hy: "3 կրակոցից (p=0.4) գոնե մեկ անգամ կպնելու հավանականությունը:", en: "3 shots (p=0.4). Prob of at least 1 hit?", ru: "3 выстрела (p=0.4). Хотя бы 1 попадание?" },
       answer: "0.784",
       related_theory_id: "theory-binomial",
-      related_theory_hint: { hy: "1 - P(ոչ մի)", en: "1 - P(none)", ru: "1 - P(ни одного)" }
+      related_theory_hint: { 
+        hy: "«Գոնե մեկ» գտնելու ամենահեշտ ճանապարհը հակադիր իրադարձության միջոցով հաշվելն է. 1 - P(ոչ մի անգամ):", 
+        en: "The easiest way to find 'at least one' is using the complement: 1 - P(none).", 
+        ru: "Проще всего найти 'хотя бы одно' через противоположное событие: 1 - P(ни одного)." 
+      },
+      related_theory_solution: {
+        hy: "Գոնե մեկ անգամ դիպչելու լրացուցիչ իրադարձությունն այն է, որ որսորդը ԲՈԼՈՐ 3 կրակոցների դեպքում վրիպի։ Վրիպելու հավանականությունը q = 1 - 0.4 = 0.6 է։ Երեք անգամ անընդմեջ վրիպելը՝ 0.6³ = 0.216։ Ուստի գոնե մեկ դիպչելը կլինի 1 - 0.216 = 0.784։",
+        en: "Miss probability is 1 - 0.4 = 0.6. Missing 3 times in a row is 0.6³ = 0.216. P(at least 1 hit) = 1 - 0.216 = 0.784.",
+        ru: "Вероятность промаха 1 - 0.4 = 0.6. Три промаха: 0.6³ = 0.216. В(хотя бы 1 попадание) = 1 - 0.216 = 0.784."
+      }
     },
     {
       id: 203,
@@ -530,7 +584,16 @@ window.probabilityData = {
       question: { hy: "Զառը նետում ենք 2 անգամ: Որքա՞ն է հավանականությունը, որ գումարը 10 է:", en: "Roll a die twice. Prob that sum is 10?", ru: "Два броска кубика. Вероятность суммы 10?" },
       answer: "0.0833",
       related_theory_id: "theory-classical-prob",
-      related_theory_hint: { hy: "m={(4,6),(5,5),(6,4)}=3, n=36. 3/36 = 1/12", en: "m=3, n=36. 3/36 = 1/12", ru: "m=3, n=36. 3/36 = 1/12" }
+      related_theory_hint: { 
+        hy: "Երկու զառի համար ընդհանուր ելքերի քանակը 36 է։ Քանի՞ զույգ կարող է տալ 10 գումար։", 
+        en: "Total outcomes for 2 dice is 36. List the pairs that sum up to 10.", 
+        ru: "У двух кубиков 36 исходов. Выпишите все пары, дающие сумму 10." 
+      },
+      related_theory_solution: {
+        hy: "Երկու զառ նետելիս հնարավոր ելքերի ընդհանուր քանակը 6 × 6 = 36 է։ Այն ելքերը, որոնց գումարը 10 է, հետևյալն են՝ (4,6), (5,5), և (6,4)։ Բարենպաստ ելքերի քանակը 3 է։ P = 3 / 36 = 1 / 12 ≈ 0.0833։",
+        en: "Total outcomes = 36. Favorable outcomes for sum of 10 are (4,6), (5,5), (6,4), which is 3. P = 3/36 = 1/12 ≈ 0.0833.",
+        ru: "Всего исходов 36. Благоприятных (сумма 10) три: (4,6), (5,5), (6,4). P = 3/36 = 1/12 ≈ 0.0833."
+      }
     },
 
     /* ---- Advanced ---- */
@@ -540,7 +603,16 @@ window.probabilityData = {
       question: { hy: "X ~ N(0, 1): Գտնել P(|X| < 2) (մոտավոր, 2 նիշ):", en: "X ~ N(0,1). Find P(|X| < 2).", ru: "X ~ N(0,1). Найти P(|X| < 2)." },
       answer: "0.95",
       related_theory_id: "theory-normal",
-      related_theory_hint: { hy: "68-95-99.7 կանոն: 2σ միջակայք ≈ 95%", en: "68-95-99.7 Rule: within 2σ ≈ 95%", ru: "Правило 68-95-99.7: в пределах 2σ ≈ 95%" }
+      related_theory_hint: { 
+        hy: "Կիրառեք նորմալ բաշխման 68-95-99.7 էմպիրիկ կանոնը (երեք սիգմայի կանոն): Ի՞նչ է նշանակում |X| < 2:", 
+        en: "Use the 68-95-99.7 empirical rule for Normal distribution. What does |X| < 2 mean?", 
+        ru: "Используйте эмпирическое правило 68-95-99.7 (правило трех сигм). Что значит |X| < 2?" 
+      },
+      related_theory_solution: {
+        hy: "Քանի որ X-ը ստանդարտ նորմալ բաշխում ունի (μ=0, σ=1), |X| < 2 նշանակում է X-ը գտնվում է միջինից 2σ հեռավորության վրա ([-2, 2] միջակայքում)։ Ըստ 68-95-99.7 կանոնի, տվյալների մոտ 95%-ը ընկնում է 2σ սահմաններում: P(|X| < 2) ≈ 0.95։",
+        en: "For a standard normal distribution (mean 0, std dev 1), the 68-95-99.7 rule states that ~95% of data falls within 2 standard deviations. So P(-2 < X < 2) ≈ 0.95.",
+        ru: "Для стандартного нормального распределения правило трех сигм гласит, что ~95% данных попадает в интервал 2σ. Значит, P(-2 < X < 2) ≈ 0.95."
+      }
     },
     {
       id: 302,
@@ -548,7 +620,16 @@ window.probabilityData = {
       question: { hy: "Հեռախոսակայան ստացվում է միջինում 2 զանգ րոպեում (Պուասոն)։ Գտեք 0 զանգ ստանալու հավանականությունը մեկ րոպեում:", en: "Avg 2 calls/min (Poisson). Prob of 0 calls in a minute?", ru: "В среднем 2 звонка в мин (Пуассон). Вер. 0 звонков?" },
       answer: "0.1353",
       related_theory_id: "theory-poisson",
-      related_theory_hint: { hy: "e^-2", en: "e^-2", ru: "e^-2" }
+      related_theory_hint: { 
+        hy: "Կիրառեք Պուասոնի բանաձևը՝ P(k) = (λ^k * e^-λ) / k! որտեղ λ-ն միջին արժեքն է, իսկ k-ն՝ զանգերի քանակը։", 
+        en: "Use Poisson formula: P(k) = (λ^k * e^-λ) / k!. Here λ=2 and k=0.", 
+        ru: "Формула Пуассона: P(k) = (λ^k * e^-λ) / k!. Здесь λ=2, k=0." 
+      },
+      related_theory_solution: {
+        hy: "Այստեղ միջինը (λ) = 2, իսկ մեզ հետաքրքրող քանակը (k) = 0։ Տեղադրելով Պուասոնի բանաձևի մեջ. P(0) = (2⁰ × e⁻²) / 0! = 1 × e⁻² / 1 = e⁻²։ Քանի որ e ≈ 2.718, e⁻² ≈ 0.1353:",
+        en: "Given λ = 2 events/min, we want k = 0 events. P(0) = (2^0 × e^-2) / 0! = e^-2 ≈ 0.1353.",
+        ru: "Дано λ = 2. Ищем P(0) = (2^0 × e^-2) / 0! = e^-2 ≈ 0.1353."
+      }
     },
     {
       id: 305,
@@ -556,7 +637,16 @@ window.probabilityData = {
       question: { hy: "Բայեսի խնդիր: հիվանդության հաճախականությունը 1% է: Թեստի ճշտությունը՝ 99%: Թեստը դրական է: Հավանականությունը, որ մարդը հիվանդ է?", en: "Prevalence 1%. Test acc 99%. Test Positive. Prob diseased?", ru: "Частота 1%. Тест 99%. Плюс. Болен?" },
       answer: "0.5",
       related_theory_id: "theory-bayes",
-      related_theory_hint: { hy: "0.01*0.99 / (0.01*0.99 + 0.99*0.01) = 0.5", en: "Standard Bayes trap.", ru: "Ловушка Байеса." }
+      related_theory_hint: { 
+        hy: "Զգուշացեք հայտնի տրամաբանական ծուղակից։ Թեստի արդյունքը և իրական հիվանդությունը նույնը չեն: Կիրառեք Բայեսի թեորեմը կամ Լրիվ հավանականության բանաձևը հայտարարում:", 
+        en: "Watch out for the base rate fallacy! Apply Bayes' Theorem properly.", 
+        ru: "Не попадитесь в ловушку базового процента! Примените теорему Байеса." 
+      },
+      related_theory_solution: {
+        hy: "Դիցուք P(D)-ն հիվանդ լինելն է՝ 0.01։ P(+|D)-ն (դրական, երբ հիվանդ է) 0.99 է։ Առողջի (չհիվանդի) դեպքում P(H) = 0.99, իսկ թեստի սխալմամբ դրական ցույց տալու հավանականությունը (կեղծ դրական) P(+|H) = 0.01 է։<br>Բայեսով՝ P(D|+) = [0.01 × 0.99] / [0.01 × 0.99 + 0.99 × 0.01] = 0.0099 / 0.0198 = 0.5 (կամ 50%):<br>Ահա թե ինչու միայն մեկ թեստը բավարար չէ հազվադեպ հիվանդությունների համար:",
+        en: "P(Disease) = 0.01. P(Positive | Disease) = 0.99. P(Healthy) = 0.99. P(Positive | Healthy) = 0.01.<br>Bayes: (0.01 × 0.99) / (0.01 × 0.99 + 0.99 × 0.01) = 0.5.",
+        ru: "P(Болен) = 0.01. P(Тест+ | Болен) = 0.99. P(Здоров) = 0.99. P(Тест+ | Здоров) = 0.01.<br>Байес: (0.01 × 0.99) / (0.01 × 0.99 + 0.99 × 0.01) = 0.5."
+      }
     },
 
     /* ---- Olympic ---- */
@@ -566,7 +656,16 @@ window.probabilityData = {
       question: { hy: "Բերտրանի պարադոքս․ Եթե պատահական լարը ընտրվում է ըստ միջնակետի դիրքի, որքա՞ն է հավանականությունը, որ այն երկար է ներգծած եռանկյունու կողմից:", en: "Bertrand Paradox (midpoint method). Prob chord > triangle side?", ru: "Парадокс Бертрана (метод середины)." },
       answer: "0.25",
       related_theory_id: "theory-rv-pdf",
-      related_theory_hint: { hy: "Մակերեսների հարաբերություն (ներգծած շրջանագիծ)", en: "Area ratio (incircle/outer circle)", ru: "Отношение площадей" }
+      related_theory_hint: { 
+        hy: "Մտածեք «միջնակետի մեթոդի» մասին։ Որտե՞ղ պետք է գտնվի լարի միջնակետը, որպեսզի լարն ավելի երկար լինի, քան կանոնավոր եռանկյան կողմը: Դիտարկեք մակերեսների հարաբերությունը:", 
+        en: "Consider the 'midpoint method'. Where must the chord's midpoint lie? Think about the ratio of areas.", 
+        ru: "Подумайте о 'методе середины'. Где должна лежать середина хорды? Рассмотрите отношение площадей." 
+      },
+      related_theory_solution: {
+        hy: "Եթե պատահականորեն ընտրում ենք կետ որպես լարի միջնակետ նախնական շրջանի ներսում, ապա լարը մեծ կլինի եռանկյան կողմից, եթե այդ միջնակետը գտնվի եռանկյանը ներգծած շրջանագծի ներսում։ Ներգծած շրջանագծի շառավիղը մեծ շրջանագծի շառավղի կեսն է (r = R/2)։ Մակերեսների հարաբերությունը՝ π(R/2)² / πR² = 1/4 = 0.25։",
+        en: "The midpoint must lie within the incircle of the triangle. The incircle has half the radius of the outer circle, so its area is 1/4th. Thus, P = 0.25.",
+        ru: "Середина хорды должна находиться внутри вписанной окружности. Радиус вписанной окружности вдвое меньше, поэтому её площадь составляет 1/4. P = 0.25."
+      }
     },
     {
       id: 402,
@@ -574,7 +673,16 @@ window.probabilityData = {
       question: { hy: "E(X)=10: Չեբիշևով գտեք P(X > 20) վերին սահմանը, եթե Var(X)=5 (օգտագործեք միակողմանի տարբերակը կամ ստանդարտը):", en: "E(X)=10, Var(X)=5. Chebyshev upper bound for P(X > 20)?", ru: "E(X)=10, Var(X)=5. Граница Чебышёва для P(X > 20)?" },
       answer: "0.05",
       related_theory_id: "theory-chebyshev",
-      related_theory_hint: { hy: "Var(X)/10^2", en: "Var(X)/10^2", ru: "Var(X)/10^2" }
+      related_theory_hint: { 
+        hy: "Կիրառեք Չեբիշևի անհավասարությունը՝ P(|X - μ| ≥ k) ≤ Var(X) / k²։ Ուշադրություն դարձրեք, որ կամայական բաշխման համար P(X - μ ≥ k) ≤ Var(X) / k² կարող է նաև օգտագործվել միակողմանի: Ստանդարտ մոտեցմամբ հաշվեք P(|X-10| ≥ 10)-ի արժեքը։", 
+        en: "Use Chebyshev's inequality P(|X - μ| ≥ k) ≤ Var(X) / k². Here μ=10, k=10.", 
+        ru: "Используйте неравенство Чебышёва P(|X - μ| ≥ k) ≤ Var(X) / k². Здесь μ=10, k=10." 
+      },
+      related_theory_solution: {
+        hy: "Ըստ Չեբիշևի անհավասարության. P(|X - μ| ≥ k) ≤ Var(X) / k²։ Մեզ տրված է E(X) = μ = 10, Var(X) = 5։ Որպեսզի X > 20, պետք է շեղումը միջինից լինի գոնե k = 10։<br>P(|X - 10| ≥ 10) ≤ 5 / 10² = 5 / 100 = 0.05։",
+        en: "Chebyshev states P(|X - μ| ≥ k) ≤ Var(X)/k². With μ=10, Var(X)=5, and k=10: P(|X-10|>10) ≤ 5/100 = 0.05.",
+        ru: "Неравенство Чебышёва: P(|X - μ| ≥ k) ≤ Var(X)/k². При μ=10, Var(X)=5, и k=10: P(|X-10|>10) ≤ 5/100 = 0.05."
+      }
     },
     {
       id: 110,
@@ -582,7 +690,16 @@ window.probabilityData = {
       question: { hy: "Տրված են P(A)=0.3, P(B)=0.2 և P(A∩B)=0.1: Գտնել P(A∪B):", en: "Given P(A)=0.3, P(B)=0.2 and P(A∩B)=0.1. Find P(A∪B).", ru: "Дано P(A)=0.3, P(B)=0.2 и P(A∩B)=0.1. Найти P(A∪B)." },
       answer: "0.4",
       related_theory_id: "theory-addition",
-      related_theory_hint: { hy: "P(A∪B) = P(A) + P(B) - P(A∩B)", en: "P(A∪B) = P(A) + P(B) - P(A∩B)", ru: "P(A∪B) = P(A) + P(B) - P(A∩B)" }
+      related_theory_hint: { 
+        hy: "Կիրառեք հավանականությունների գումարման թեորեմը համատեղելի պատահույթների համար։ P(A∪B) = P(A) + P(B) - ?", 
+        en: "Use the Addition Rule for non-mutually exclusive events: P(A∪B) = P(A) + P(B) - P(A∩B).", 
+        ru: "Используйте теорему сложения для совместных событий: P(A∪B) = P(A) + P(B) - P(A∩B)." 
+      },
+      related_theory_solution: {
+        hy: "Համատեղելի իրադարձությունների գումարման բանաձևն է՝ P(A∪B) = P(A) + P(B) - P(A∩B)։ Տեղադրելով թվերը կստանանք՝ 0.3 + 0.2 - 0.1 = 0.4։",
+        en: "Using the inclusion-exclusion principle for probabilities: P(A∪B) = P(A) + P(B) - P(A∩B) = 0.3 + 0.2 - 0.1 = 0.4.",
+        ru: "Принцип включения-исключения: P(A∪B) = P(A) + P(B) - P(A∩B) = 0.3 + 0.2 - 0.1 = 0.4."
+      }
     },
     {
       id: 111,
@@ -590,7 +707,16 @@ window.probabilityData = {
       question: { hy: "52 թղթախաղից ընտրում ենք մեկ քարտ: Որքա՞ն է հավանականությունը, որ այն կլինի կարմիր կամ թագավոր:", en: "Draw one card from a 52-card deck. What is the probability it's either red or a king?", ru: "Из колоды в 52 карты вынимают одну. Какова вероятность, что это красная карта или король?" },
       answer: "0.5385",
       related_theory_id: "theory-addition",
-      related_theory_hint: { hy: "(26/52 + 4/52) - 2/52 = 28/52", en: "(26/52 + 4/52) - 2/52 = 28/52", ru: "(26/52 + 4/52) - 2/52 = 28/52" }
+      related_theory_hint: { 
+        hy: "Քանի՞ կարմիր քարտ կա: Քանի՞ թագավոր կա: Ուշադրություն դարձրեք, որ կան կարմիր թագավորներ՝ մի հաշվեք դրանք կրկնակի:", 
+        en: "How many red cards? How many kings? Don't double-count the red kings!", 
+        ru: "Сколько красных карт? Сколько королей? Не считайте красных королей дважды!" 
+      },
+      related_theory_solution: {
+        hy: "Կա 26 կարմիր քարտ և 4 թագավոր։ Նրանցից 2-ը համ կարմիր են, համ թագավոր (կարմիր թագավորներ)։ Ըստ գումարման բանաձևի՝ 26/52 + 4/52 - 2/52 = 28/52 ≈ 0.5385։",
+        en: "There are 26 red cards and 4 kings. 2 of those kings are red. P(Red U King) = 26/52 + 4/52 - 2/52 = 28/52 = 7/13 ≈ 0.5385.",
+        ru: "26 красных карт и 4 короля. Из них 2 — красные короли. P(Кр U Король) = 26/52 + 4/52 - 2/52 = 28/52 ≈ 0.5385."
+      }
     },
     {
       id: 210,
@@ -598,7 +724,16 @@ window.probabilityData = {
       question: { hy: "Նետում ենք երկու կանոնավոր քառանիստ զառ (նիստերը՝ 1,2,3,4): Որքա՞ն է հավանականությունը, որ բացված թվերի գումարը կլինի 5:", en: "Roll two regular tetrahedral dice (faces 1,2,3,4). What is the probability the sum is 5?", ru: "Бросают два правильных тетраэдрических кубика (грани 1,2,3,4). Какова вероятность, что сумма выпавших очков равна 5?" },
       answer: "0.25",
       related_theory_id: "theory-classical-prob",
-      related_theory_hint: { hy: "n=16, m={(1,4),(2,3),(3,2),(4,1)}", en: "n=16, m=4", ru: "n=16, m=4" }
+      related_theory_hint: { 
+        hy: "Հաշվեք բոլոր հնարավոր ելքերի քանակը (համարեք, որ զառերը 4 նիստանի են), որից հետո գտեք այն զույգերը, որոնց գումարը 5 է:", 
+        en: "Find the total number of outcomes for two 4-sided dice. Then find how many pairs sum to 5.", 
+        ru: "Найдите общее число исходов для двух 4-гранных кубиков. Затем найдите пары, дающие в сумме 5." 
+      },
+      related_theory_solution: {
+        hy: "Քառանիստ զառի նետման դեպքում յուրաքանչյուր զառ ունի 4 հնարավոր ելք։ Երկու զառերի համար՝ 4 × 4 = 16 ընդհանուր ելք: 5 գումար տվող զույգերն են՝ (1,4), (2,3), (3,2), (4,1)՝ ընդամենը 4 բարենպաստ ելք։ P = 4 / 16 = 1/4 = 0.25։",
+        en: "Total outcomes for two 4-sided dice = 4 × 4 = 16. Favorable outcomes: (1,4), (2,3), (3,2), (4,1) -> 4 pairs. P = 4/16 = 0.25.",
+        ru: "Всего исходов: 4 × 4 = 16. Благоприятные: (1,4), (2,3), (3,2), (4,1) — 4 пары. P = 4/16 = 0.25."
+      }
     },
     {
       id: 211,
@@ -606,7 +741,16 @@ window.probabilityData = {
       question: { hy: "Պարկում կա 3 կարմիր և 4 կանաչ գնդակ: Հանում ենք 2 գնդակ: Գտնել հանված կարմիր գնդակների քանակի մաթեմատիկական սպասումը:", en: "A bag has 3 red and 4 green balls. Draw 2. Find the expected number of red balls drawn.", ru: "В сумке 3 красных и 4 зеленых шара. Вынимают 2. Найти мат. ожидание числа красных шаров." },
       answer: "0.8571",
       related_theory_id: "theory-rv-props",
-      related_theory_hint: { hy: "E(X) = n * (M/N) = 2 * (3/7)", en: "E(X) = n * (M/N) = 2 * (3/7)", ru: "E(X) = n * (M/N) = 2 * (3/7)" }
+      related_theory_hint: { 
+        hy: "Մաթեմատիկական սպասումը գծային է՝ անկախ նրանից գնդակները հանում ենք վերադարձով, թե առանց վերադարձի: E(X) = n * p, որտեղ p-ն մեկ գնդակի կարմիր լինելու հավանականությունն է:", 
+        en: "Expectation is linear: E(X) = n * p, even without replacement. What is p for a single draw?", 
+        ru: "Математическое ожидание линейно: E(X) = n * p, даже без возвращения. Чему равно p для одного шара?" 
+      },
+      related_theory_solution: {
+        hy: "1 գնդակի պարագայում կարմիր դուրս գալու հավանականությունը p = 3/7 է։ Քանի որ մաթեմատիկական սպասումը գծային հատկություն ունի (E(X+Y) = E(X) + E(Y)), ընկերություն չունի, որ գնդակները հանվում են առանց վերադարձի։ Երկու գնդակի (n=2) համար E(X) = 2 × (3/7) = 6/7 ≈ 0.8571։",
+        en: "By linearity of expectation, E(X) = n * P(Red on single draw) = 2 * (3/7) = 6/7 ≈ 0.8571.",
+        ru: "В силу линейности мат. ожидания, E(X) = n * P(красный при 1 извлечении) = 2 * (3/7) = 6/7 ≈ 0.8571."
+      }
     },
     {
       id: 310,
@@ -614,7 +758,16 @@ window.probabilityData = {
       question: { hy: "Արդյունաբերական թափոնների 69%-ը հանքային են, 28%-ը՝ ոչ հանքային, 3%-ը՝ վտանգավոր։ Վերամշակվում է հանքայինի 73%-ը, ոչ հանքացինի 49%-ը և վտանգավորի 35%-ը։ Գտեք պատահական ընտրված թափոնի վերամշակվելու հավանականությունը:", en: "69% minerals (73% recycle), 28% non-minerals (49% recycle), 3% dangerous (35% recycle). Find total recycling probability.", ru: "69% минералы (73% переработка), 28% неминералы (49% переработка), 3% опасные (35% переработка). Найти общую вер. переработки." },
       answer: "0.6514",
       related_theory_id: "theory-bayes",
-      related_theory_hint: { hy: "0.69*0.73 + 0.28*0.49 + 0.03*0.35", en: "Law of Total Probability.", ru: "Формула полной вероятности." }
+      related_theory_hint: { 
+        hy: "Կիրառեք Լրիվ հավանականության բանաձևը։ Գումարեք յուրաքանչյուր խմբի հանդիպելու հավանականության և այդ խմբի վերամշակման հավանականության արտադրյալները:", 
+        en: "Use the Law of Total Probability to find the weighted average of recycling rates.", 
+        ru: "Используйте формулу полной вероятности (взвешенное среднее вероятностей)." 
+      },
+      related_theory_solution: {
+        hy: "Ըստ լրիվ հավանականության բանաձևի՝ P = P(H)*P(V|H) + P(Ո)*P(V|Ո) + P(Վտ)*P(V|Վտ) = 0.69 × 0.73  +  0.28 × 0.49  +  0.03 × 0.35 = 0.5037 + 0.1372 + 0.0105 = 0.6514։",
+        en: "Law of Total Probability: P = (0.69 × 0.73) + (0.28 × 0.49) + (0.03 × 0.35) = 0.5037 + 0.1372 + 0.0105 = 0.6514.",
+        ru: "Формула полной вероятности: P = (0.69 × 0.73) + (0.28 × 0.49) + (0.03 × 0.35) = 0.5037 + 0.1372 + 0.0105 = 0.6514."
+      }
     },
     {
       id: 410,
@@ -622,7 +775,16 @@ window.probabilityData = {
       question: { hy: "Պատահական մեծության E(X)=100, Var(X)=25: Չեբիշևի անհավասարության օգնությամբ հաշվեք P(|X-100| ≥ 15) վերին սահմանը:", en: "E(X)=100, Var(X)=25. Use Chebyshev to find upper bound for P(|X-100| ≥ 15).", ru: "E(X)=100, Var(X)=25. Верхняя граница P(|X-100| ≥ 15) по Чебышёву?" },
       answer: "0.1111",
       related_theory_id: "theory-chebyshev",
-      related_theory_hint: { hy: "Var(X)/ε² = 25 / 15² = 25/225 = 1/9", en: "Var(X)/ε² = 25/225 = 1/9", ru: "Var(X)/ε² = 25/225 = 1/9" }
+      related_theory_hint: { 
+        hy: "Կիրառեք Չեբիշևի անհավասարությունը՝ P(|X - μ| ≥ k) ≤ Var(X) / k²։ Ուշադրություն դարձրեք, որ k = 15:", 
+        en: "Apply Chebyshev's inequality P(|X - μ| ≥ k) ≤ Var(X) / k² with k=15.", 
+        ru: "Примените неравенство Чебышёва P(|X - μ| ≥ k) ≤ Var(X) / k² при k=15." 
+      },
+      related_theory_solution: {
+        hy: "Ըստ Չեբիշևի անհավասարության. P(|X - μ| ≥ k) ≤ Var(X) / k²։ Այստեղ E(X) = μ = 100, իսկ շեղումը k = 15 է։<br>P(|X - 100| ≥ 15) ≤ 25 / 15² = 25 / 225 = 1 / 9 ≈ 0.1111։",
+        en: "Chebyshev's inequality: P(|X - μ| ≥ k) ≤ Var(X) / k². Here k = 15. So 25 / (15^2) = 25 / 225 = 1/9 ≈ 0.1111.",
+        ru: "Неравенство Чебышёва: P(|X - μ| ≥ k) ≤ Var(X) / k². Здесь k = 15. 25 / (15^2) = 25 / 225 = 1/9 ≈ 0.1111."
+      }
     }
   ],
 
@@ -645,7 +807,18 @@ window.probabilityData = {
             en: `Box has ${red} red and ${blue} blue balls. Draw one. Prob of red (e.g. 3/${total})?`,
             ru: `В урне ${red} кр. и ${blue} син. шаров. Один достали. Вероятность красного (дробь)?`
           },
-          answer: `${red}/${total}`
+          answer: `${red}/${total}`,
+          related_theory_id: "theory-classical-prob",
+          related_theory_hint: {
+            hy: `Ընդհանուր գնդակների քանակը ${total} է։ Որքա՞ն է կարմիրների քանակը։`,
+            en: `Total balls = ${total}. How many are red?`,
+            ru: `Всего шаров ${total}. Сколько из них красные?`
+          },
+          related_theory_solution: {
+            hy: `Դասական հավանականության բանաձևով m/n: Ընդհանուր՝ n = ${red} + ${blue} = ${total}։ Կարմիր՝ m = ${red}։ Այսպիսով՝ P = ${red}/${total}։`,
+            en: `Total n = ${total}, red m = ${red}. P = m/n = ${red}/${total}.`,
+            ru: `Всего n = ${total}, красных m = ${red}. P = m/n = ${red}/${total}.`
+          }
         };
       }
     },
@@ -665,7 +838,18 @@ window.probabilityData = {
             en: `How many ways to choose ${k} monitors from ${n} students?`,
             ru: `Сколькими способами выбрать ${k} дежурных из ${n}?`
           },
-          answer: String(ans)
+          answer: String(ans),
+          related_theory_id: "theory-combinations",
+          related_theory_hint: {
+            hy: `Հերթապահների հերթականությունը էական չէ։ Օգտագործեք զուգորդությունների (Combinations) C(${n}, ${k}) բանաձևը։`,
+            en: `Order does not matter. Use combinations C(${n}, ${k}).`,
+            ru: `Порядок не важен. Используйте сочетания C(${n}, ${k}).`
+          },
+          related_theory_solution: {
+            hy: `Քանի որ կարգը կարևոր չէ, հաշվում ենք զուգորդություն: C(${n}, ${k}) = ${n}! / (${k}! × (${n}-${k})!) = ${ans}։`,
+            en: `Calculate C(${n}, ${k}) = ${n}! / (${k}! × (${n}-${k})!) = ${ans}.`,
+            ru: `Вычислите C(${n}, ${k}) = ${n}! / (${k}! × (${n}-${k})!) = ${ans}.`
+          }
         };
       }
     },
@@ -687,7 +871,18 @@ window.probabilityData = {
             en: `Flip coin ${n} times. Prob of exactly ${target} heads (decimal)?`,
             ru: `${n} монет. Вер. ровно ${target} орлов (число)?`
           },
-          answer: prob.toFixed(4)
+          answer: prob.toFixed(4),
+          related_theory_id: "theory-bernoulli",
+          related_theory_hint: {
+            hy: `Կիրառեք Բեռնուլիի բանաձևը. P(k) = C(${n}, k) × p^k × q^(${n}-k): Այստեղ p=0.5, q=0.5:`,
+            en: `Use Bernoulli's formula: P(k) = C(n,k) p^k q^(n-k).`,
+            ru: `Используйте формулу Бернулли: P(k) = C(n,k) p^k q^(n-k).`
+          },
+          related_theory_solution: {
+            hy: `Բեռնուլիի բանաձևով P(${target}) = C(${n}, ${target}) × (0.5)^${target} × (0.5)^${n - target} = C(${n}, ${target}) × 0.5^${n} ≈ ${prob.toFixed(4)}։`,
+            en: `P(${target}) = C(${n}, ${target}) × (0.5)^${n} ≈ ${prob.toFixed(4)}.`,
+            ru: `P(${target}) = C(${n}, ${target}) × (0.5)^${n} ≈ ${prob.toFixed(4)}.`
+          }
         };
       }
     },
@@ -710,7 +905,18 @@ window.probabilityData = {
             en: `Roll 2 dice. Prob that sum is ${sum}:`,
             ru: `2 кубика. Вер. суммы ${sum}:`
           },
-          answer: `${fav}/36`
+          answer: `${fav}/36`,
+          related_theory_id: "theory-classical-prob",
+          related_theory_hint: {
+            hy: `2 զառի արդյունքների ընդհանուր քանակը քանի՞սն է։ Թվարկեք այն զույգերը, որոնց գումարը տալիս է ${sum}:`,
+            en: `Total outcomes is 36. List the pairs that sum up to ${sum}.`,
+            ru: `Всего исходов 36. Выпишите все пары, дающие сумму ${sum}.`
+          },
+          related_theory_solution: {
+            hy: `Ընդհանուր ելքերի քանակը՝ 6 × 6 = 36։ Ելքերը, որոնք տալիս են ${sum} գումար պետք է հաշվել ձեռքով։ Դրանց քանակն է՝ ${fav}։ Հավանականությունը՝ P = ${fav} / 36։`,
+            en: `Total outcomes = 36. Number of favorable pairs = ${fav}. P = ${fav}/36.`,
+            ru: `Всего исходов 36. Благоприятных: ${fav}. P = ${fav}/36.`
+          }
         };
       }
     },
@@ -728,7 +934,18 @@ window.probabilityData = {
             en: `Buffon: Line spacing ${L}, needle ${l}. Prob of crossing (use pi=3.14)?`,
             ru: `Бюффон: Шаг ${L}, игла ${l}. Вер. пересечения (pi=3.14)?`
           },
-          answer: ((2 * l) / (3.14159 * L)).toFixed(3)
+          answer: ((2 * l) / (3.14159 * L)).toFixed(3),
+          related_theory_id: "theory-geometric-prob",
+          related_theory_hint: {
+            hy: `Հիշեք Բյուֆոնի ասեղի դասական բանաձևը. P = (2 × l) / (π × L)։Տեղադրեք արժեքները:`,
+            en: `Formula is P = (2 × l) / (π × L).`,
+            ru: `Формула P = (2 × l) / (π × L).`
+          },
+          related_theory_solution: {
+            hy: `Բանաձևն է՝ (2 × l) / (π × L) = (2 × ${l}) / (3.14159 × ${L}) = ${2*l} / ${(3.14159*L).toFixed(2)} ≈ ${((2 * l) / (3.14159 * L)).toFixed(3)}։`,
+            en: `(2 × ${l}) / (3.14159 × ${L}) ≈ ${((2 * l) / (3.14159 * L)).toFixed(3)}.`,
+            ru: `(2 × ${l}) / (3.14159 × ${L}) ≈ ${((2 * l) / (3.14159 * L)).toFixed(3)}.`
+          }
         };
       }
     }

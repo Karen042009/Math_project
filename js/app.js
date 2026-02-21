@@ -139,8 +139,14 @@ function showPage(pageId) {
         if (typeof drawGraph === 'function') drawGraph();
     }
     if (pageId === 'practice') {
-        // Re-render problems in current language if needed
-        if (allProblems.length) renderProblems(allProblems); else initProblems();
+        // Re-render problems in current language preserving filter
+        if (allProblems.length) {
+            const currentFilterBtn = document.querySelector('.filter-btn.active');
+            const filterLevel = currentFilterBtn ? currentFilterBtn.getAttribute('data-filter') : 'all';
+            filterProblems(filterLevel, currentFilterBtn);
+        } else {
+            initProblems();
+        }
         renderPracticeStats();
     }
 }
@@ -498,7 +504,7 @@ function showModal(isCorrect, problem, attempts = 0) {
             document.getElementById('modal-title').innerText = titlePrefix + " (" + attempts + ")";
             document.getElementById('modal-title').style.color = '#ffd60a';
 
-            let hint = (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
+            let hint = (problem.related_theory_solution && (problem.related_theory_solution[currentLang] || problem.related_theory_solution['en'])) || (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
             
             feedbackHtml += `<p style="line-height:1.7;">${currentLang === 'hy' ? 'Քանի որ սա ձեր 3-րդ անհաջող փորձն էր, տրամադրում ենք խնդրի գրագետ լուծումը․' : (currentLang === 'ru' ? 'Так как это ваша третья неудачная попытка, мы предоставляем правильное решение.' : 'Since this is your 3rd incorrect attempt, here is the correct solution.')}</p>`;
             
@@ -522,8 +528,8 @@ function showModal(isCorrect, problem, attempts = 0) {
                     </div>
                 `;
             }
-        } else {
-            // Normal hint view
+        } else if (attempts === 2) {
+            // Normal hint view (Attempt 2)
             if (theoryTitle) {
                 const template = ui.modal_smart_feedback[currentLang] || ui.modal_smart_feedback['en'];
 
@@ -554,13 +560,18 @@ function showModal(isCorrect, problem, attempts = 0) {
             } else {
                 feedbackHtml += `<p>${ui.modal_incorrect_msg[currentLang]}</p>`;
             }
+        } else {
+            // First attempt
+            feedbackHtml += `<p>${ui.modal_incorrect_msg[currentLang]}</p>`;
+            let tryAgainMsg = currentLang === 'hy' ? 'Տրամաբանեք և փորձեք ևս մեկ անգամ։' : (currentLang === 'ru' ? 'Подумайте и попробуйте еще раз.' : 'Think about it and try again.');
+            feedbackHtml += `<p style="font-size:0.95rem; color:#aaa; margin-top:10px;"><i class="fas fa-lightbulb" style="color:#ffd60a"></i> ${tryAgainMsg}</p>`;
         }
 
         document.getElementById('modal-msg').innerHTML = feedbackHtml;
 
         // Theory navigation button
         const btn = document.getElementById('modal-action-btn');
-        if (problem.related_theory_id) {
+        if (attempts >= 2 && problem.related_theory_id) {
             btn.style.display = 'inline-block';
             btn.innerHTML = `<i class="fas fa-book-open" style="margin-right:6px;"></i>${ui.btn_goto_theory[currentLang]}`;
             btn.onclick = function () {
