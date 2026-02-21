@@ -109,7 +109,6 @@ window.probabilityData = {
     stat_total_needles: { hy: "Ընդամենը ասեղներ՝", en: "Total needles:", ru: "Всего игл:" },
     stat_crossing: { hy: "Հատումներ՝", en: "Crossing:", ru: "Пересечений:" },
     stat_pi_estimate: { hy: "π-ի մոտարկումը՝", en: "π estimate:", ru: "Приближение π:" },
-    stat_pi_estimate: { hy: "π-ի մոտարկումը՝", en: "π estimate:", ru: "Приближение π:" },
     stat_actual_pi: { hy: "Իրական π՝", en: "Actual π:", ru: "Реальное π:" },
     stat_mean: { hy: "Միջին (μ):", en: "Mean (μ):", ru: "Среднее (μ):" },
     stat_stddev: { hy: "Շեղում (σ):", en: "StdDev (σ):", ru: "Отклон. (σ):" },
