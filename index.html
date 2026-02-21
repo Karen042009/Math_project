@@ -653,20 +653,95 @@
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
                     <div style="flex:2; min-width:300px; display:flex; flex-direction:column; background:rgba(0,0,0,0.3); border-radius:12px; border:1px solid #333; padding:15px; position:relative;">
-                        <!-- Huge 3D Coin -->
+                        <!-- Huge 3D Coin (Bimetallic 500 Dram) -->
                         <div style="flex:1; display:flex; justify-content:center; align-items:center; min-height:250px;">
-                            <div class="coin-wrapper" style="perspective: 1000px; width: 160px; height: 160px;">
+                            <div class="coin-wrapper" style="perspective: 1000px; width: 180px; height: 180px;">
                                 <div id="coin-element" style="width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1); transform: rotateX(0deg);">
-                                    <!-- Heads (Front - Coat of Arms) -->
-                                    <div class="coin-side coin-heads" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; background: radial-gradient(circle, #ffe066 0%, #e8b01c 60%, #c48a07 100%); border: 8px solid #a87200; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.5);">
-                                        <i class="fas fa-chess-rook" style="font-size: 2.8rem; color: #7a5401; text-shadow: 1px 1px 0 rgba(255,255,255,0.4), -1px -1px 0 rgba(0,0,0,0.2); margin-bottom: 8px;"></i>
-                                        <div style="font-size: 0.65rem; font-weight: 800; text-align: center; color: #7a5401; line-height: 1.1; text-shadow: 1px 1px 0 rgba(255,255,255,0.4); text-transform:uppercase;">Հայաստանի<br>Հանրապետություն</div>
+                                    
+                                    <!-- HEADS (Coat of Arms) -->
+                                    <div class="coin-side coin-heads" style="position: absolute; width:100%; height:100%; border-radius: 50%; backface-visibility: hidden;">
+                                        <svg viewBox="0 0 200 200" width="100%" height="100%" style="filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));">
+                                            <defs>
+                                                <radialGradient id="gold" cx="30%" cy="30%" r="70%">
+                                                    <stop offset="0%" stop-color="#fff0a8"/>
+                                                    <stop offset="40%" stop-color="#d4af37"/>
+                                                    <stop offset="100%" stop-color="#8a7322"/>
+                                                </radialGradient>
+                                                <radialGradient id="silver" cx="30%" cy="30%" r="70%">
+                                                    <stop offset="0%" stop-color="#ffffff"/>
+                                                    <stop offset="40%" stop-color="#cccccc"/>
+                                                    <stop offset="100%" stop-color="#777777"/>
+                                                </radialGradient>
+                                                <filter id="emboss" x="-20%" y="-20%" width="140%" height="140%">
+                                                    <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#ffffff" flood-opacity="0.8"/>
+                                                    <feDropShadow dx="-1" dy="-1" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.5"/>
+                                                </filter>
+                                                <path id="text-path-top" d="M 25,100 A 75,75 0 0,1 175,100" />
+                                                <path id="text-path-bot" d="M 175,100 A 75,75 0 0,1 25,100" />
+                                            </defs>
+                                            
+                                            <!-- Outer Gold Ring -->
+                                            <circle cx="100" cy="100" r="98" fill="url(#gold)" />
+                                            <circle cx="100" cy="100" r="94" fill="none" stroke="#a38526" stroke-width="2"/>
+                                            <circle cx="100" cy="100" r="88" fill="none" stroke="#a38526" stroke-width="5" stroke-dasharray="2 6"/>
+                                            
+                                            <!-- Inner Silver Circle -->
+                                            <circle cx="100" cy="100" r="66" fill="url(#silver)" stroke="#999" stroke-width="1"/>
+                                            <circle cx="100" cy="100" r="64" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+                                            
+                                            <!-- Coat of Arms (Mount Ararat inside Shield) -->
+                                            <g filter="url(#emboss)" fill="#666">
+                                                <path d="M 100,55 C 125,55 135,75 130,110 C 125,130 110,145 100,150 C 90,145 75,130 70,110 C 65,75 75,55 100,55 Z" fill="none" stroke="#666" stroke-width="3"/>
+                                                <!-- Sis and Masis peaks -->
+                                                <path d="M 73,110 L 87,80 L 102,110 Z" fill="#666"/>
+                                                <path d="M 94,110 L 118,65 L 129,110 Z" fill="#666"/>
+                                                <rect x="70" y="112" width="60" height="4" fill="#666"/>
+                                            </g>
+                                            
+                                            <!-- Golden Ring Text -->
+                                            <text font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#6b5300" filter="url(#emboss)" letter-spacing="1">
+                                                <textPath href="#text-path-top" startOffset="50%" text-anchor="middle">ՀԱՅԱՍՏԱՆԻ</textPath>
+                                            </text>
+                                            <text font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#6b5300" filter="url(#emboss)" letter-spacing="1">
+                                                <textPath href="#text-path-bot" startOffset="50%" text-anchor="middle">ՀԱՆՐԱՊԵՏՈՒԹՅՈՒՆ</textPath>
+                                            </text>
+                                        </svg>
                                     </div>
-                                    <!-- Tails (Back - 500 Dram) -->
-                                    <div class="coin-side coin-tails" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; background: radial-gradient(circle, #ffe066 0%, #e8b01c 60%, #c48a07 100%); border: 8px solid #a87200; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.5); transform: rotateX(180deg);">
-                                        <span style="font-size: 3.5rem; font-weight: 900; color: #7a5401; text-shadow: 1px 1px 0 rgba(255,255,255,0.4), -1px -1px 0 rgba(0,0,0,0.2); line-height:1;">500</span>
-                                        <span style="font-size: 1.2rem; font-weight: 800; color: #7a5401; text-shadow: 1px 1px 0 rgba(255,255,255,0.4);">ԴՐԱՄ</span>
+                                    
+                                    <!-- TAILS (500 Dram Value) -->
+                                    <div class="coin-side coin-tails" style="position: absolute; width:100%; height:100%; border-radius: 50%; backface-visibility: hidden; transform: rotateX(180deg);">
+                                        <svg viewBox="0 0 200 200" width="100%" height="100%" style="filter: drop-shadow(0 -15px 25px rgba(0,0,0,0.6));">
+                                            <defs>
+                                                <radialGradient id="gold2" cx="30%" cy="70%" r="70%">
+                                                    <stop offset="0%" stop-color="#fff0a8"/>
+                                                    <stop offset="40%" stop-color="#d4af37"/>
+                                                    <stop offset="100%" stop-color="#8a7322"/>
+                                                </radialGradient>
+                                                <radialGradient id="silver2" cx="30%" cy="70%" r="70%">
+                                                    <stop offset="0%" stop-color="#ffffff"/>
+                                                    <stop offset="40%" stop-color="#cccccc"/>
+                                                    <stop offset="100%" stop-color="#777777"/>
+                                                </radialGradient>
+                                            </defs>
+                                            
+                                            <!-- Outer Gold Ring -->
+                                            <circle cx="100" cy="100" r="98" fill="url(#gold2)" />
+                                            <circle cx="100" cy="100" r="94" fill="none" stroke="#a38526" stroke-width="2"/>
+                                            <circle cx="100" cy="100" r="88" fill="none" stroke="#a38526" stroke-width="4" stroke-dasharray="8 8"/>
+                                            <circle cx="100" cy="100" r="72" fill="none" stroke="#a38526" stroke-width="2" opacity="0.4"/>
+                                            
+                                            <!-- Inner Silver Circle -->
+                                            <circle cx="100" cy="100" r="66" fill="url(#silver2)" stroke="#999" stroke-width="1"/>
+                                            <circle cx="100" cy="100" r="64" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+                                            
+                                            <!-- Value Text -->
+                                            <text x="100" y="112" font-family="'Inter', sans-serif" font-weight="900" font-size="70" text-anchor="middle" fill="#555" filter="url(#emboss)">500</text>
+                                            <text x="100" y="145" font-family="'Inter', sans-serif" font-weight="900" font-size="20" letter-spacing="2" text-anchor="middle" fill="#555" filter="url(#emboss)">ԴՐԱՄ</text>
+                                            
+                                            <path d="M 45,100 L 55,100 M 145,100 L 155,100" stroke="#777" stroke-width="3" filter="url(#emboss)"/>
+                                        </svg>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
