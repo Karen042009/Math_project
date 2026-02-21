@@ -284,7 +284,7 @@ body {
 
 .hero-subtitle {
     font-size: clamp(0.95rem, 2vw, 1.3rem);
-    color: var(--accent-blue);
+    color: var(--neon-purple);
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -346,7 +346,7 @@ body {
         105deg,
         transparent 30%,
         rgba(168, 85, 247, 0.08) 40%,
-        rgba(56, 189, 248, 0.2) 50%,
+        rgba(168, 85, 247, 0.2) 50%,
         rgba(168, 85, 247, 0.08) 60%,
         transparent 70%
     );
@@ -369,10 +369,10 @@ body {
 
 .feature-card:hover {
     transform: translateY(-10px) scale(1.03);
-    border-color: rgba(56, 189, 248, 0.4);
+    border-color: rgba(168, 85, 247, 0.4);
     box-shadow:
         0 20px 50px rgba(168, 85, 247, 0.15),
-        0 0 30px rgba(56, 189, 248, 0.12),
+        0 0 30px rgba(168, 85, 247, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     background: rgba(18, 10, 30, 0.8);
 }
@@ -388,15 +388,15 @@ body {
     font-size: 1.6rem;
     background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(236, 72, 153, 0.08));
     border: 1px solid rgba(168, 85, 247, 0.25);
-    color: var(--accent-blue);
+    color: var(--neon-purple);
     transition: all 0.4s var(--transition-smooth);
 }
 
 .feature-card:hover .feature-icon {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.2));
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(236, 72, 153, 0.2));
     transform: scale(1.15) rotate(-5deg);
-    box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
-    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+    border-color: rgba(168, 85, 247, 0.6);
     color: #fff;
 }
 
@@ -409,7 +409,7 @@ body {
 }
 
 .feature-card:hover h3 {
-    background: linear-gradient(90deg, #fff, var(--accent-blue));
+    background: linear-gradient(90deg, #fff, var(--neon-purple));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

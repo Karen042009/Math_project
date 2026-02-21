@@ -7,6 +7,12 @@ let revealObserver;
 const PROGRESS_KEY = 'probSpaceProgressV1';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Force English as default once for users who had it stuck on another language
+    if (!localStorage.getItem('langResetEnV2')) {
+        localStorage.setItem('probSpaceLang', 'en');
+        localStorage.setItem('langResetEnV2', 'true');
+    }
+
     // Check if user set lang before
     const savedLang = localStorage.getItem('probSpaceLang');
     if (savedLang) currentLang = savedLang;
@@ -87,7 +93,7 @@ function setLanguage(lang) {
     }
 
     // Re-render MathJax
-    if (window.MathJax) {
+    if (window.MathJax && window.MathJax.typesetPromise) {
         MathJax.typesetPromise();
     }
 }
@@ -201,7 +207,7 @@ function initTheory() {
     if (contentContainer) {
         contentContainer.innerHTML = contentHTML;
         // Re-render MathJax specifically for theory content
-        if (window.MathJax) {
+        if (window.MathJax && window.MathJax.typesetPromise) {
             MathJax.typesetPromise([contentContainer]);
         }
     }
@@ -312,7 +318,7 @@ function renderProblems(problems) {
         `
     }).join('');
 
-    if (window.MathJax) MathJax.typesetPromise([grid]);
+    if (window.MathJax && window.MathJax.typesetPromise) MathJax.typesetPromise([grid]);
 }
 
 function filterProblems(level, btnEl) {
@@ -567,7 +573,7 @@ function showModal(isCorrect, problem) {
     }
 
     // Re-render MathJax inside modal if needed
-    if (window.MathJax) {
+    if (window.MathJax && window.MathJax.typesetPromise) {
         MathJax.typesetPromise([modal]);
     }
 }

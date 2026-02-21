@@ -52,7 +52,7 @@ canvas:hover {
 }
 
 .sim-description strong {
-    color: var(--accent-blue);
+    color: var(--neon-purple);
 }
 
 /* ═══════════ SIMULATION CONTROLS SIDEBAR ═══════════ */
@@ -196,7 +196,7 @@ canvas:hover {
     box-shadow:
         0 15px 30px rgba(0, 0, 0, 0.4),
         0 0 20px rgba(56, 189, 248, 0.1);
-    border-color: var(--accent-blue);
+    border-color: var(--neon-purple);
 }
 
 .door-box.selected,

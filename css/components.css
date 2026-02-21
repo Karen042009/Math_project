@@ -167,7 +167,6 @@
     position: relative;
     transition: all 0.35s var(--transition-smooth);
     backdrop-filter: blur(10px);
-    overflow: hidden;
 }
 
 .problem-card:hover {
@@ -191,7 +190,7 @@
 
 .problem-card.problem-solved {
     border-color: rgba(16, 185, 129, 0.4);
-    box-shadow: 0 0 25px rgba(16, 185, 129, 0.12);
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
     transform: translateY(-2px);
 }
 
@@ -199,10 +198,10 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(105deg, transparent 40%, rgba(16, 185, 129, 0.04) 45%, rgba(16, 185, 129, 0.08) 50%, rgba(16, 185, 129, 0.04) 55%, transparent 60%);
+    background: linear-gradient(105deg, transparent 40%, rgba(16, 185, 129, 0.05) 45%, rgba(16, 185, 129, 0.1) 50%, rgba(16, 185, 129, 0.05) 55%, transparent 60%);
     background-size: 200% 100%;
     animation: solvedShimmer 2.5s infinite linear;
-    border-radius: 16px;
+    border-radius: inherit;
     pointer-events: none;
     z-index: 1;
 }
@@ -411,7 +410,7 @@
 }
 
 .accordion-body a:hover {
-    color: var(--accent-blue);
+    color: var(--neon-purple);
     padding-left: 6px;
 }
 
@@ -428,7 +427,7 @@
 }
 
 .definition-box {
-    border-color: var(--accent-blue);
+    border-color: var(--neon-purple);
 }
 
 .theorem-box {
@@ -478,7 +477,7 @@ details.proof-box:hover {
 details.proof-box>summary {
     cursor: pointer;
     user-select: none;
-    color: var(--accent-blue);
+    color: var(--neon-purple);
     font-weight: 700;
     font-size: 0.9rem;
 }

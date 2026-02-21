@@ -269,7 +269,7 @@ function solveFormulaWithSteps() {
     }
 
     out.innerHTML = html;
-    if (window.MathJax) MathJax.typesetPromise([out]);
+    if (window.MathJax && window.MathJax.typesetPromise) MathJax.typesetPromise([out]);
 }
 
 /* ----------------------------------------------------
