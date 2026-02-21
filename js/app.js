@@ -290,7 +290,9 @@ function initProblems() {
     // Combine
     allProblems = [...staticProbs, ...window.probabilityData.generatedProblems];
 
-    renderProblems(allProblems);
+    // Initialize with 'all' filter and handle solved tab logic
+    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+    filterProblems('all', allBtn);
     renderPracticeStats();
 }
 
@@ -325,10 +327,16 @@ function filterProblems(level, btnEl) {
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
     if (btnEl) btnEl.classList.add('active');
 
+    const prog = loadProgress();
+
     if (level === 'all') {
-        renderProblems(allProblems);
+        const unsolved = allProblems.filter(p => !prog.solved[String(p.id)]);
+        renderProblems(unsolved);
+    } else if (level === 'solved') {
+        const solvedOnly = allProblems.filter(p => prog.solved[String(p.id)]);
+        renderProblems(solvedOnly);
     } else {
-        const filtered = allProblems.filter(p => p.difficulty === level);
+        const filtered = allProblems.filter(p => p.difficulty === level && !prog.solved[String(p.id)]);
         renderProblems(filtered);
     }
 }
@@ -354,18 +362,16 @@ function checkAnswer(id) {
     prog.attempts[key] = (parseInt(prog.attempts[key], 10) || 0) + 1;
     if (isCorrect) prog.solved[key] = true;
     saveProgress(prog);
+
     renderPracticeStats();
-    // Re-render current grid state so solved problems lock
+    
+    // Re-render current grid state so solved problems are moved to "Solved" tab
     const currentFilterBtn = document.querySelector('.filter-btn.active');
     const filterLevel = currentFilterBtn ? currentFilterBtn.getAttribute('data-filter') : 'all';
+    filterProblems(filterLevel, currentFilterBtn);
 
-    if (filterLevel && filterLevel !== 'all') {
-        renderProblems(allProblems.filter(p => p.difficulty === filterLevel));
-    } else {
-        renderProblems(allProblems);
-    }
-
-    showModal(isCorrect, problem);
+    const attemptsCount = prog.attempts[key];
+    showModal(isCorrect, problem, attemptsCount);
 }
 
 function normalizeAnswerString(s) {
@@ -430,7 +436,7 @@ function findTheoryNodeById(theoryId) {
     return null;
 }
 
-function showModal(isCorrect, problem) {
+function showModal(isCorrect, problem, attempts = 0) {
     const modal = document.getElementById('feedback-modal');
     const ui = window.probabilityData.ui;
 
@@ -486,50 +492,68 @@ function showModal(isCorrect, problem) {
             </span>
         </div>`;
 
-        // Main message with theory link
-        if (theoryTitle) {
-            const template = ui.modal_smart_feedback[currentLang] || ui.modal_smart_feedback['en'];
+        if (attempts >= 3) {
+            // Show full solution on 3rd+ failed attempt
+            let titlePrefix = currentLang === 'hy' ? "Խնդրի ճիշտ և գրագետ լուծումը" : (currentLang === 'ru' ? "Правильное решение" : "Correct Solution");
+            document.getElementById('modal-title').innerText = titlePrefix + " (" + attempts + ")";
+            document.getElementById('modal-title').style.color = '#ffd60a';
 
-            // Hint box
-            const hint = (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
-            let hintHtml = '';
-            if (hint) {
-                hintHtml = `
-                    <div style="margin-top:15px; padding:12px 15px; background:rgba(157,78,221,0.1); border-left:3px solid var(--neon-purple); border-radius:0 8px 8px 0; font-family:'Fira Code',monospace; font-size:0.9rem;">
-                        <strong style="color:var(--accent-gold);">${ui.modal_hint_label[currentLang]}</strong><br>
-                        <span style="color:#e0e0e0;">${hint}</span>
-                    </div>
-                `;
-            }
-
-            feedbackHtml += `<p style="line-height:1.7;">${template.replace('{topic}', theoryTitle).replace('{hint}', '')}</p>`;
-            feedbackHtml += hintHtml;
-
-            // Correct answer display
+            let hint = (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
+            
+            feedbackHtml += `<p style="line-height:1.7;">${currentLang === 'hy' ? 'Քանի որ սա ձեր 3-րդ անհաջող փորձն էր, տրամադրում ենք խնդրի գրագետ լուծումը․' : (currentLang === 'ru' ? 'Так как это ваша третья неудачная попытка, мы предоставляем правильное решение.' : 'Since this is your 3rd incorrect attempt, here is the correct solution.')}</p>`;
+            
             feedbackHtml += `
-                <div style="margin-top:12px; padding:10px 14px; background:rgba(76,201,240,0.08); border:1px solid rgba(76,201,240,0.2); border-radius:8px; font-size:0.9rem;">
-                    <span style="color:#aaa;">${currentLang === 'hy' ? '\u0543\u056b\u0577\u057f \u057a\u0561\u057f\u0561\u057d\u056d\u0561\u0576\u055d' : currentLang === 'ru' ? '\u041f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0432\u0435\u0442:' : 'Correct answer:'}</span>
-                    <strong style="color:#a855f7; font-family:'Fira Code',monospace; margin-left:8px;">${problem.answer}</strong>
+                 <div style="margin-top:15px; padding:15px; background:rgba(6,214,160,0.1); border-left:4px solid #06d6a0; border-radius:0 8px 8px 0; font-size:1rem;">
+                    <div style="color:var(--accent-gold); font-weight:bold; margin-bottom:8px;">
+                        <i class="fas fa-lightbulb"></i> ${currentLang === 'hy' ? 'Ամբողջական ցուցում և լուծում․' : (currentLang === 'ru' ? 'Полное указание и решение:' : 'Full Solution:')}
+                    </div>
+                    ${hint ? `<span style="display:block; margin-bottom:12px; color:#e0e0e0; font-style:italic; line-height: 1.5;">"${hint}"</span>` : ''}
+                    <div style="display:inline-block; padding:8px 12px; background:rgba(0,0,0,0.3); border-radius:6px; font-family:'Fira Code',monospace; font-size:1.1rem; border:1px solid #4cc9f0;">
+                       <span style="color:#aaa;">${currentLang === 'hy' ? 'Պատասխան՝' : (currentLang === 'ru' ? 'Ответ:' : 'Answer:')}</span> <strong style="color:#a855f7; margin-left:5px;">${problem.answer}</strong>
+                    </div>
                 </div>
             `;
 
-            // Theory path breadcrumb
             if (theorySectionTitle) {
                 feedbackHtml += `
-                    <div style="margin-top:12px; font-size:0.8rem; color:#888;">
+                    <div style="margin-top:15px; font-size:0.85rem; color:#888;">
                         <i class="fas fa-book" style="margin-right:5px;"></i>
                         ${theorySectionTitle} → <strong style="color:#ccc;">${theoryTitle}</strong>
                     </div>
                 `;
             }
         } else {
-            feedbackHtml += `<p>${ui.modal_incorrect_msg[currentLang]}</p>`;
-            feedbackHtml += `
-                <div style="margin-top:12px; padding:10px 14px; background:rgba(76,201,240,0.08); border:1px solid rgba(76,201,240,0.2); border-radius:8px;">
-                    <span style="color:#aaa;">${currentLang === 'hy' ? '\u054a\u0561\u057f\u0561\u057d\u056d\u0561\u0576\u055d' : currentLang === 'ru' ? '\u041e\u0442\u0432\u0435\u0442:' : 'Answer:'}</span>
-                    <strong style="color:#a855f7; font-family:'Fira Code',monospace; margin-left:8px;">${problem.answer}</strong>
-                </div>
-            `;
+            // Normal hint view
+            if (theoryTitle) {
+                const template = ui.modal_smart_feedback[currentLang] || ui.modal_smart_feedback['en'];
+
+                // Hint box
+                const hint = (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
+                let hintHtml = '';
+                if (hint) {
+                    hintHtml = `
+                        <div style="margin-top:15px; padding:12px 15px; background:rgba(157,78,221,0.1); border-left:3px solid var(--neon-purple); border-radius:0 8px 8px 0; font-family:'Fira Code',monospace; font-size:0.9rem;">
+                            <strong style="color:var(--accent-gold);">${ui.modal_hint_label[currentLang]}</strong><br>
+                            <span style="color:#e0e0e0;">${hint}</span>
+                        </div>
+                    `;
+                }
+
+                feedbackHtml += `<p style="line-height:1.7;">${template.replace('{topic}', theoryTitle).replace('{hint}', '')}</p>`;
+                feedbackHtml += hintHtml;
+
+                // Theory path breadcrumb
+                if (theorySectionTitle) {
+                    feedbackHtml += `
+                        <div style="margin-top:12px; font-size:0.8rem; color:#888;">
+                            <i class="fas fa-book" style="margin-right:5px;"></i>
+                            ${theorySectionTitle} → <strong style="color:#ccc;">${theoryTitle}</strong>
+                        </div>
+                    `;
+                }
+            } else {
+                feedbackHtml += `<p>${ui.modal_incorrect_msg[currentLang]}</p>`;
+            }
         }
 
         document.getElementById('modal-msg').innerHTML = feedbackHtml;

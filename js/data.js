@@ -19,11 +19,11 @@ window.probabilityData = {
     filter_intermediate: { hy: "Միջին", en: "Intermediate", ru: "Средний" },
     filter_advanced: { hy: "Բարդ", en: "Advanced", ru: "Продвинутый" },
     filter_olympic: { hy: "Օլիմպիական", en: "Olympic", ru: "Олимпийский" },
+    filter_solved: { hy: "Լուծվածներ", en: "Solved", ru: "Решенные" },
 
     btn_check: { hy: "Ստուգել", en: "Check", ru: "Проверить" },
     btn_goto_theory: { hy: "Կարդալ տեսությունը", en: "Go to Theory", ru: "Перейти к теории" },
     btn_continue: { hy: "Շարունակել", en: "Continue", ru: "Продолжить" },
-
     modal_correct: { hy: "Ճիշտ է!", en: "Correct!", ru: "Правильно!" },
     modal_correct_msg: { hy: "Հրաշալի աշխատանք: Դուք ճիշտ լուծեցիք խնդիրը:", en: "Great job! You solved it correctly.", ru: "Отлично! Вы решили правильно." },
     modal_incorrect: { hy: "Սխալ է", en: "Incorrect", ru: "Неверно" },
