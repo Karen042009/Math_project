@@ -324,15 +324,17 @@ body {
     z-index: 1;
 }
 
-/* ═══════════ FEATURE CARDS ═══════════ */
 .feature-card {
     cursor: pointer;
     text-align: center;
     padding: 36px 22px;
     transition: all 0.4s var(--transition-smooth);
-    animation: fadeInUp 0.7s var(--transition-smooth) both;
+    animation: fadeInUp 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
     position: relative;
     overflow: hidden;
+    /* Prevent shimmer overflow */
+    border-radius: 20px; 
+    border: 1px solid rgba(168, 85, 247, 0.12);
 }
 
 /* Subtle shimmer on hover */
@@ -342,20 +344,22 @@ body {
     inset: 0;
     background: linear-gradient(
         105deg,
-        transparent 40%,
-        rgba(168, 85, 247, 0.06) 45%,
-        rgba(168, 85, 247, 0.12) 50%,
-        rgba(168, 85, 247, 0.06) 55%,
-        transparent 60%
+        transparent 30%,
+        rgba(168, 85, 247, 0.08) 40%,
+        rgba(56, 189, 248, 0.2) 50%,
+        rgba(168, 85, 247, 0.08) 60%,
+        transparent 70%
     );
     background-size: 200% 100%;
     opacity: 0;
     transition: opacity 0.4s ease;
+    border-radius: inherit;
+    pointer-events: none;
 }
 
 .feature-card:hover::after {
     opacity: 1;
-    animation: shimmer 1.2s ease-in-out;
+    animation: shimmer 1.5s ease-in-out forwards;
 }
 
 .feature-card:nth-child(1) { animation-delay: 0.1s; }
@@ -364,12 +368,13 @@ body {
 .feature-card:nth-child(4) { animation-delay: 0.4s; }
 
 .feature-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    border-color: rgba(168, 85, 247, 0.5);
+    transform: translateY(-10px) scale(1.03);
+    border-color: rgba(56, 189, 248, 0.4);
     box-shadow:
         0 20px 50px rgba(168, 85, 247, 0.15),
-        0 0 30px rgba(168, 85, 247, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        0 0 30px rgba(56, 189, 248, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    background: rgba(18, 10, 30, 0.8);
 }
 
 .feature-icon {
@@ -388,16 +393,17 @@ body {
 }
 
 .feature-card:hover .feature-icon {
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(236, 72, 153, 0.2));
-    transform: scale(1.12) rotate(-3deg);
-    box-shadow: 0 0 24px rgba(168, 85, 247, 0.3);
-    border-color: rgba(168, 85, 247, 0.5);
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.2));
+    transform: scale(1.15) rotate(-5deg);
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+    border-color: rgba(56, 189, 248, 0.6);
+    color: #fff;
 }
 
 .feature-card h3 {
-    font-size: 1.12rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     color: #fff;
     transition: color 0.3s;
 }
