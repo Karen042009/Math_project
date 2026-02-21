@@ -254,7 +254,7 @@ body {
 }
 
 .hero-title {
-    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 16px;
@@ -264,6 +264,7 @@ body {
     gap: 20px;
     flex-wrap: wrap;
     letter-spacing: -0.02em;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
 }
 
 .hero-math-icon {
@@ -282,18 +283,18 @@ body {
 }
 
 .hero-subtitle {
-    font-size: clamp(1rem, 2.5vw, 1.4rem);
-    color: var(--text-muted);
-    font-weight: 400;
-    letter-spacing: 5px;
+    font-size: clamp(0.95rem, 2vw, 1.3rem);
+    color: var(--accent-blue);
+    font-weight: 600;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, var(--neon-purple), var(--accent-pink), var(--accent-blue), var(--neon-purple));
-    background-size: 300% 100%;
+    margin-bottom: 24px;
+    background: linear-gradient(90deg, #4cc9f0, #a855f7, #ec4899);
+    background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: gradientShift 5s ease infinite;
+    animation: gradientShift 6s linear infinite;
 }
 
 .hero-desc {
