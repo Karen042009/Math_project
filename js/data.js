@@ -378,7 +378,39 @@ window.probabilityData = {
       ]
     },
     {
-      title: { hy: "4. Պատահական մեծություններ", en: "4. Random Variables", ru: "4. Случайные величины" },
+      title: { hy: "4. Անկախ և Կախյալ պատահույթներ (Իրադարձությունների կապը)", en: "4. Independent and Dependent Events", ru: "4. Независимые и Зависимые события" },
+      subsections: [
+        {
+          id: "theory-independent-events",
+          title: { hy: "Անկախ պատահույթներ (Տիեզերքը հիշողություն չունի)", en: "Independent Events (The Universe Has No Memory)", ru: "Независимые события (У Вселенной нет памяти)" },
+          content: {
+            hy: "<p>Երկու պատահույթներ կոչվում են <strong>անկախ</strong>, եթե նրանցից մեկի տեղի ունենալը (կամ չունենալը) որևէ կերպ չի ազդում մյուսի հավանականության վրա: Դրանք գոյություն ունեն իրարից լրիվ անջատ:</p><p>Մաթեմատիկորեն դա նշանակում է. A և B պատահույթների միաժամանակ տեղի ունենալու հավանականությունը հավասար է նրանց առանձին հավանականությունների արտադրյալին: <br>Բանաձևը՝ $$P(A \\cap B) = P(A) \\cdot P(B)$$</p><p><strong>Օրինակ կյանքից (Խանութ և մետաղադրամ)։</strong> Պատկերացրեք՝ դուք խանութում հաց եք գնում, իսկ ձեր ընկերը դրսում մետաղադրամ է նետում։ Ձեր՝ հաց գնելու փաստը ոչ մի կերպ չի կարող ստիպել, որ մետաղադրամի վրա «Զինանշան» ընկնի։ Այս երկու իրադարձությունները լիովին անկախ են։</p><p><strong>Օրինակ խաղերից (Զառի նետում)։</strong> Եթե զառը նետեք և ընկնի «6», ապա երկրորդ անգամ նետելիս «6» ընկնելու հավանականությունը նորից նույնն է ($1/6$): Զառը չունի հիշողություն, նա չգիտի, որ նախորդ անգամ արդեն «6» էր ընկել:</p>",
+            en: "<p>Two events are considered <strong>independent</strong> if the occurrence (or non-occurrence) of one does not affect the probability of the other in any way. They exist completely separate from each other.</p><p>Mathematically, this means the probability of both events A and B occurring is the product of their individual probabilities: $$P(A \\cap B) = P(A) \\cdot P(B)$$</p><p><strong>Real-life Example (Store & Coin):</strong> Imagine you are buying bread in a store, and your friend tosses a coin outside. You buying bread cannot make the coin land on 'Heads'. These events are completely independent.</p><p><strong>Game Example (Rolling a Die):</strong> If you roll a '6', the probability of rolling a '6' on the next roll remains $1/6$. The die has no memory; it doesn't know it just rolled a '6'.</p>",
+            ru: "<p>Два события называются <strong>независимыми</strong>, если наступление (или ненаступление) одного из них никак не влияет на вероятность другого. Они существуют совершенно раздельно.</p><p>Математически это означает, что вероятность одновременного наступления событий А и В равна произведению их отдельных вероятностей: $$P(A \\cap B) = P(A) \\cdot P(B)$$</p><p><strong>Пример из жизни (Магазин и Монета):</strong> Представьте, что вы покупаете хлеб в магазине, а ваш друг бросает монету на улице. Ваша покупка хлеба никак не может заставить монету выпасть 'орлом'. Эти события полностью независимы.</p><p><strong>Пример из игр (Бросок кубика):</strong> Если вы бросили кубик и выпала '6', то вероятность получить '6' при следующем броске снова $1/6$. У кубика нет памяти, он не знает, что в прошлый раз выпала '6'.</p>"
+          }
+        },
+        {
+          id: "theory-dependent-events",
+          title: { hy: "Կախյալ պատահույթներ (Պայմանների փոփոխություն)", en: "Dependent Events (Changing Conditions)", ru: "Зависимые события (Изменение условий)" },
+          content: {
+            hy: "<p>Երկու պատահույթներ կոչվում են <strong>կախյալ</strong>, եթե մեկի տեղի ունենալը փոխում է պայմանները՝ մեծացնելով կամ փոքրացնելով մյուսի հավանականությունը: Այստեղ մենք գործ ունենք պայմանական հավանականության հետ։</p><p>Մաթեմատիկորեն դա նշանակում է. B-ի հավանականությունը հաշվելիս պետք է հաշվի առնել, որ A-ն արդեն տեղի է ունեցել (նշանակվում է $P(B|A)$): <br>Բանաձևը՝ $$P(A \\cap B) = P(A) \\cdot P(B|A)$$</p><p><strong>Օրինակ կյանքից (Անձրև և հովանոց)։</strong> «Դրսում անձրև է գալիս» և «Դուք տնից հովանոց եք վերցրել» իրադարձությունները խիստ կախյալ են։ Անձրևոտ եղանակը տեսնելը (Առաջին իրադարձություն) կտրուկ մեծացնում է հովանոց վերցնելու (Երկրորդ իրադարձություն) հավանականությունը։</p><p><strong>Օրինակ խաղաքարտերով (Առանց վերադարձի)։</strong> Պատկերացրեք՝ 52 քարտանոց կապուկից մեկ քարտ եք հանում: Դա «Տուզ» լինելու հավանականությունը $4/52$ է։ Եթե դուք այդ Տուզը գրպանը դնեք (չվերադարձնեք կապուկի մեջ), ապա հաջորդ քաշած քարտի «Տուզ» լինելու հավանականությունը կփոխվի՝ դառնալով $3/51$։ Առաջին քայլը անմիջապես ազդեց երկրորդի վրա:</p>",
+            en: "<p>Two events are considered <strong>dependent</strong> if the occurrence of one changes the conditions, increasing or decreasing the probability of the other. Here we deal with conditional probability.</p><p>Mathematically: when calculating the probability of B, we must account for A having occurred: $$P(A \\cap B) = P(A) \\cdot P(B|A)$$</p><p><strong>Real-life Example (Rain & Umbrella):</strong> 'It is raining outside' and 'You took an umbrella from home' are highly dependent. Seeing rainy weather drastically increases the likelihood of taking an umbrella.</p><p><strong>Card Example (Without Replacement):</strong> Imagine drawing one card from a 52-card deck. The probability of it being an 'Ace' is $4/52$. If you pocket that Ace (don't return it), the probability that the next card is an 'Ace' changes to $3/51$. The first action directly affected the second.</p>",
+            ru: "<p>Два события называются <strong>зависимыми</strong>, если наступление одного изменяет условия, увеличивая или уменьшая вероятность другого. Здесь мы имеем дело с условной вероятностью.</p><p>Математически это означает: при расчете вероятности B необходимо учесть, что A уже произошло: $$P(A \\cap B) = P(A) \\cdot P(B|A)$$</p><p><strong>Пример из жизни (Дождь и зонт):</strong> События 'На улице идет дождь' и 'Вы взяли из дома зонт' сильно зависимы. Вид дождливой погоды резко повышает вероятность того, что вы возьмете зонт.</p><p><strong>Пример с картами (Без возврата):</strong> Представьте, что вы извлекаете одну карту из колоды в 52 листа. Вероятность того, что это 'Туз', равна $4/52$. Если вы положите этого Туза в карман (не вернете в колоду), то вероятность извлечь 'Туза' в следующий раз изменится и станет $3/51$. Первый шаг напрямую повлиял на второй.</p>"
+          }
+        },
+        {
+          id: "theory-indep-vs-dep",
+          title: { hy: "Ինչո՞վ են դրանք տարբերվում գործնականում (Խաղատան գաղտնիքը)", en: "How They Differ in Practice (The Casino Secret)", ru: "В чем разница на практике (Секрет казино)" },
+          content: {
+            hy: "<p><strong>Հիմնական տարբերությունը ինֆորմացիայի և հիշողության մեջ է:</strong></p><ul><li><strong>Անկախի դեպքում</strong> մի իրադարձության արդյունքն իմանալը ձեզ ոչ մի օգուտ չի տալիս հաջորդը գուշակելու համար։</li><li><strong>Կախյալի դեպքում</strong> նախորդ իրադարձությունը ձեզ հուշում կամ առավելություն է տալիս։</li></ul><p><strong>Ամենավառ ապացույցը՝ Ռուլետկա ընդդեմ Բլեքջեքի.</strong><br>Շատ խաղացողներ ռուլետկա խաղալիս մտածում են. <em>«Արդեն 10 անգամ անընդմեջ Սև է ընկել, ուրեմն հաջորդը հաստատ Կարմիր կլինի»</em>: Սա մեծագույն խաբկանք է (հայտնի է որպես Խաղացողի սխալանք), քանի որ պտուտակը հիշողություն չունի, ամեն պտույտ անկախ պատահույթ է, և Կարմիրի շանսը միշտ մնում է ~50%։ Իսկ ահա Բլեքջեքում քարտերի հաշվարկն աշխատում է հենց այն պատճառով, որ քարտերը չեն վերադարձվում խաղի ժամանակ (կախյալ իրադարձություններ են)։</p>",
+            en: "<p><strong>The main difference lies in information and memory:</strong></p><ul><li><strong>For independent events</strong>, knowing the outcome of one gives you zero advantage in guessing the next.</li><li><strong>For dependent events</strong>, the prior event gives you a hint or an advantage.</li></ul><p><strong>The clearest proof: Roulette vs. Blackjack.</strong><br>Many roulette players think: <em>'Black has landed 10 times in a row, so the next one will definitely be Red'</em>. This is a massive illusion (known as the Gambler's Fallacy) because the wheel has no memory; every spin is an independent event, and Red's chance is always ~50%. However, in Blackjack, card counting works precisely because cards are not returned to the deck during the shoe's play (they are dependent events).</p>",
+            ru: "<p><strong>Главное отличие заключается в информации и памяти:</strong></p><ul><li><strong>Для независимых событий</strong> знание исхода одного не дает вам никакой пользы в угадывании следующего.</li><li><strong>Для зависимых событий</strong> предыдущее событие дает вам подсказку или преимущество.</li></ul><p><strong>Самое яркое доказательство: Рулетка против Блэкджека.</strong><br>Многие игроки в рулетку думают: <em>«Уже 10 раз подряд выпало Черное, значит следующее точно будет Красным»</em>. Это величайшее заблуждение (известное как Ошибка игрока), поскольку колесо не имеет памяти, каждое вращение — это независимое событие, и шанс Красного всегда остается ~50%. А вот в блэкджеке подсчет карт работает именно потому, что карты не возвращаются в колоду во время игры (это зависимые события).</p>"
+          }
+        }
+      ]
+    },
+    {
+      title: { hy: "5. Պատահական մեծություններ", en: "5. Random Variables", ru: "5. Случайные величины" },
       subsections: [
         {
           id: "theory-rv-basics",
@@ -391,7 +423,7 @@ window.probabilityData = {
         },
         {
           id: "theory-rv-pdf",
-          title: { hy: "Բաշխման խտություն (PDF)", en: "Probability Density (PDF)", ru: "Плотность вероятности" },
+          title: { hy: "Բաշխման խտություն", en: "Probability Density", ru: "Плотность вероятности" },
           content: {
             hy: "<p>Անընդհատ պատահական մեծությունների համար հավանականությունը կետում զրո է․ $P(X=x) = 0$։ Դրա փոխարեն օգտագործվում է <strong>խտության ֆունկցիան $f(x)$</strong>․</p>$$F(x) = \\int_{-\\infty}^x f(t)dt$$<p>Հատկություն․ $\\int_{-\\infty}^{\\infty} f(x)dx = 1$ (մակերեսը կորի տակ միշտ 1 է)։</p>",
             en: "<p>For a <strong>continuous</strong> random variable, the probability at any single point is zero: $P(X = x) = 0$. Instead, we use the <strong>Probability Density Function (PDF)</strong> $f(x)$:</p>$$F(x) = \\int_{-\\infty}^x f(t)\\,dt \\quad \\Rightarrow \\quad P(a \\leq X \\leq b) = \\int_a^b f(x)\\,dx$$<p>Properties of $f(x)$: <br>1. $f(x) \\geq 0$ for all $x$ <br>2. $\\int_{-\\infty}^{+\\infty} f(x)\\,dx = 1$ (total area under the curve = 1)</p><p>The PDF is sometimes called the <em>density</em> — it tells us how concentrated the probability is near a point, not the probability itself.</p>",
@@ -410,7 +442,7 @@ window.probabilityData = {
       ]
     },
     {
-      title: { hy: "5. Բաշխման օրենքներ", en: "5. Distribution Laws", ru: "5. Законы распределения" },
+      title: { hy: "6. Բաշխման օրենքներ", en: "6. Distribution Laws", ru: "6. Законы распределения" },
       subsections: [
         {
           id: "theory-binomial",

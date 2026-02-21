@@ -32,7 +32,7 @@ function showSimulation(simId, btnEl) {
 
 function updateSimDescriptions() {
     const ui = window.probabilityData.ui;
-    const lang = window.currentLang || 'en';
+    const lang = currentLang || 'en';
     
     // Update Monty Hall dynamic texts based on state
     const msgEl = document.getElementById('monty-message');
@@ -860,8 +860,15 @@ function flipCoins(count) {
         coinEl.style.transform = `rotateX(${coinRotation}deg)`;
     }
 
-    updateCoinStats();
-    drawCoinGraph();
+    if (count === 1) {
+        setTimeout(() => {
+            updateCoinStats();
+            drawCoinGraph();
+        }, 2000);
+    } else {
+        updateCoinStats();
+        drawCoinGraph();
+    }
 }
 
 function animateCoinFlips(count) {
@@ -879,7 +886,7 @@ function updateCoinStats() {
     if (!statsEl) return;
     
     const ui = window.probabilityData.ui;
-    const lang = window.currentLang || 'en';
+    const lang = currentLang || 'en';
     
     const hPct = coinTotal > 0 ? (coinHeads / coinTotal * 100).toFixed(1) : '0.0';
     const tPct = coinTotal > 0 ? (coinTails / coinTotal * 100).toFixed(1) : '0.0';
