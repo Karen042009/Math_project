@@ -484,6 +484,9 @@
                 <button class="glow-btn secondary sim-tab-btn" onclick="showSimulation('buffon', this)">
                     <i class="fas fa-ruler"></i> <span data-i18n="sim_buffon_btn">Buffon's Needle</span>
                 </button>
+                <button class="glow-btn secondary sim-tab-btn" onclick="showSimulation('coin', this)">
+                    <i class="fas fa-coins"></i> <span data-i18n="sim_coin_btn">Coin Flip</span>
+                </button>
             </div>
 
             <!-- ──── GALTON BOARD ──── -->
@@ -638,6 +641,57 @@
                             </div>
                         </div>
                         <button class="glow-btn secondary" onclick="resetBuffon()" data-i18n="btn_reset">Reset Simulation</button>
+                    </div>
+                </div>
+            </div>
+        <!-- ──── COIN FLIP ──── -->
+            <div id="sim-coin" class="sim-panel glass-panel" style="display:none; padding:20px;">
+                <div class="sim-header" style="margin-bottom:15px;">
+                     <h2 style="margin:0; background:linear-gradient(45deg, #ffd60a, #ff7b00); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_coin_title">Coin Flip</h2>
+                     <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_coin_desc">Explore the Law of Large Numbers through coin flips (Heads or Tails).</p>
+                </div>
+
+                <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
+                    <div style="flex:2; min-width:300px; display:flex; flex-direction:column; background:rgba(0,0,0,0.3); border-radius:12px; border:1px solid #333; padding:15px; position:relative;">
+                        <!-- Huge 3D Coin -->
+                        <div style="flex:1; display:flex; justify-content:center; align-items:center; min-height:250px;">
+                            <div class="coin-wrapper" style="perspective: 1000px; width: 160px; height: 160px;">
+                                <div id="coin-element" style="width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1); transform: rotateX(0deg);">
+                                    <!-- Heads (Front - Coat of Arms) -->
+                                    <div class="coin-side coin-heads" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; background: radial-gradient(circle, #ffe066 0%, #e8b01c 60%, #c48a07 100%); border: 8px solid #a87200; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.5);">
+                                        <i class="fas fa-chess-rook" style="font-size: 2.8rem; color: #7a5401; text-shadow: 1px 1px 0 rgba(255,255,255,0.4), -1px -1px 0 rgba(0,0,0,0.2); margin-bottom: 8px;"></i>
+                                        <div style="font-size: 0.65rem; font-weight: 800; text-align: center; color: #7a5401; line-height: 1.1; text-shadow: 1px 1px 0 rgba(255,255,255,0.4); text-transform:uppercase;">Հայաստանի<br>Հանրապետություն</div>
+                                    </div>
+                                    <!-- Tails (Back - 500 Dram) -->
+                                    <div class="coin-side coin-tails" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; background: radial-gradient(circle, #ffe066 0%, #e8b01c 60%, #c48a07 100%); border: 8px solid #a87200; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.5); transform: rotateX(180deg);">
+                                        <span style="font-size: 3.5rem; font-weight: 900; color: #7a5401; text-shadow: 1px 1px 0 rgba(255,255,255,0.4), -1px -1px 0 rgba(0,0,0,0.2); line-height:1;">500</span>
+                                        <span style="font-size: 1.2rem; font-weight: 800; color: #7a5401; text-shadow: 1px 1px 0 rgba(255,255,255,0.4);">ԴՐԱՄ</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Convergence Graph (New) -->
+                        <div style="height:150px; background:rgba(0,0,0,0.2); border-radius:8px; border:1px solid #444; position:relative; margin-top:20px;">
+                             <canvas id="coin-graph" style="width:100%; height:100%;"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="controls-wrapper" style="flex:1; min-width:250px; display:flex; flex-direction:column; gap:15px;">
+                         <div class="stats-card" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px;">
+                            <h4 style="margin:0 0 10px; color:#ffd60a;" data-i18n="stat_game_stats">Game Stats</h4>
+                            <div id="coin-stats"></div>
+                        </div>
+
+                        <div class="control-group">
+                            <label data-i18n="sim_coin_drop_lbl">Drop Coins</label>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
+                                <button class="glow-btn small" onclick="flipCoins(1)" data-i18n="btn_flip_1">Flip 1</button>
+                                <button class="glow-btn small" onclick="flipCoins(10)" data-i18n="btn_flip_10">Flip 10</button>
+                                <button class="glow-btn small" onclick="animateCoinFlips(100)" data-i18n="btn_flip_100">Flip 100</button>
+                                <button class="glow-btn small" onclick="animateCoinFlips(1000)" data-i18n="btn_flip_1000">Flip 1k</button>
+                            </div>
+                        </div>
+                        <button class="glow-btn secondary" onclick="resetCoin()" data-i18n="btn_reset">Reset Simulation</button>
                     </div>
                 </div>
             </div>

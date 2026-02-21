@@ -27,6 +27,7 @@ function showSimulation(simId, btnEl) {
 
     if (simId === 'galton') initGalton();
     if (simId === 'buffon') initBuffon();
+    if (simId === 'coin') initCoin();
 }
 
 function updateSimDescriptions() {
@@ -55,6 +56,7 @@ function updateSimDescriptions() {
     updateMontyStats();
     updateGaltonStats();
     updateBuffonStats();
+    if (typeof updateCoinStats === 'function') updateCoinStats();
 }
 
 
@@ -770,6 +772,172 @@ function drawBuffonGraph() {
     buffonHistory.forEach((pt, i) => {
         const x = ((pt.n - minN) / rangeN) * w;
         const y = getY(pt.pi);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+}
+
+/* ============================================================
+ * 4. COIN FLIP
+ * ============================================================ */
+let coinGraphCanvas, coinGraphCtx;
+let coinHistory = [];
+let coinTotal = 0;
+let coinHeads = 0;
+let coinTails = 0;
+let coinRotation = 0;
+
+function initCoin() {
+    coinGraphCanvas = document.getElementById('coin-graph');
+    if (coinGraphCanvas) {
+        coinGraphCtx = coinGraphCanvas.getContext('2d');
+        coinGraphCanvas.width = coinGraphCanvas.offsetWidth;
+        coinGraphCanvas.height = coinGraphCanvas.offsetHeight;
+    }
+    resetCoin();
+}
+
+function resetCoin() {
+    coinTotal = 0;
+    coinHeads = 0;
+    coinTails = 0;
+    coinHistory = [];
+    coinRotation = 0;
+    
+    const coinEl = document.getElementById('coin-element');
+    if (coinEl) {
+        coinEl.style.transition = 'none';
+        coinEl.style.transform = `rotateX(0deg)`;
+        setTimeout(() => coinEl.style.transition = 'transform 2s cubic-bezier(0.2, 0.8, 0.2, 1)', 50);
+    }
+    
+    updateCoinStats();
+    drawCoinGraph(); // Clear graph
+}
+
+function flipCoins(count) {
+    let lastFlipHeads = true;
+
+    // Calculate outcomes
+    for (let i = 0; i < count; i++) {
+        lastFlipHeads = Math.random() < 0.5;
+        if (lastFlipHeads) coinHeads++;
+        else coinTails++;
+        coinTotal++;
+        
+        // Add to history
+        if (coinTotal === 1 || coinTotal % 10 === 0 || coinTotal < 100 || count > 10) {
+            coinHistory.push({ n: coinTotal, headsPct: coinHeads / coinTotal });
+            if (coinHistory.length > 200) coinHistory.shift(); 
+        }
+    }
+
+    // Animate the big CSS coin
+    const coinEl = document.getElementById('coin-element');
+    if (coinEl) {
+        // Add multiple spins plus final face
+        // Each full spin is 360deg. Let's do 5 spins (1800deg) overhead.
+        // Heads is 0, 360, 720... Tails is 180, 540, 900...
+        const spins = 5 * 360; 
+        const targetFace = lastFlipHeads ? 0 : 180;
+        
+        // Add the spins to the current rotation so it always goes forward
+        coinRotation += spins;
+        
+        // Adjust final rotation to land on the correct face
+        // We ensure the final rotation modulo 360 equals targetFace
+        const currentMod = coinRotation % 360;
+        let correction = targetFace - currentMod;
+        
+        if (correction < 0) correction += 360;
+        
+        coinRotation += correction;
+        
+        // If it's a huge batch, maybe we spin even more just for show
+        if (count > 10) coinRotation += 360 * 3;
+        
+        coinEl.style.transform = `rotateX(${coinRotation}deg)`;
+    }
+
+    updateCoinStats();
+    drawCoinGraph();
+}
+
+function animateCoinFlips(count) {
+    if (count > 10) {
+        // Just do it in one big batch for performance and visual simplicity
+        flipCoins(count);
+    } else {
+        flipCoins(count);
+    }
+}
+
+
+function updateCoinStats() {
+    const statsEl = document.getElementById('coin-stats');
+    if (!statsEl) return;
+    
+    const ui = window.probabilityData.ui;
+    const lang = window.currentLang || 'en';
+    
+    const hPct = coinTotal > 0 ? (coinHeads / coinTotal * 100).toFixed(1) : '0.0';
+    const tPct = coinTotal > 0 ? (coinTails / coinTotal * 100).toFixed(1) : '0.0';
+
+    statsEl.innerHTML = `
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; font-size:0.95rem;">
+            <div>${ui.stat_total[lang]}: <span style="color:#fff">${coinTotal}</span></div>
+            <div></div> <!-- empty col padding -->
+            <div><span style="color:#ffd60a">${ui.stat_heads[lang]}:</span> <span style="color:#fff">${coinHeads}</span> 
+                 <span style="color:#aaa">(${hPct}%)</span></div>
+            <div><span style="color:#ff7b00">${ui.stat_tails[lang]}:</span> <span style="color:#fff">${coinTails}</span> 
+                 <span style="color:#aaa">(${tPct}%)</span></div>
+        </div>
+    `;
+}
+
+function drawCoinGraph() {
+    if (!coinGraphCtx || !coinGraphCanvas) return;
+    const ctx = coinGraphCtx;
+    const w = coinGraphCanvas.width;
+    const h = coinGraphCanvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Target Line (0.5)
+    const targetY = h / 2;
+    const minY = 0.0;
+    const maxY = 1.0;
+    const rangeY = maxY - minY;
+    
+    const getY = (val) => h - ((val - minY) / rangeY) * h;
+
+    // Draw 0.5 Line
+    ctx.beginPath();
+    ctx.moveTo(0, getY(0.5));
+    ctx.lineTo(w, getY(0.5));
+    ctx.strokeStyle = '#4cc9f0';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#4cc9f0';
+    ctx.fillText('50%', 5, getY(0.5) - 2);
+
+    if (coinHistory.length < 2) return;
+
+    // Plot History
+    ctx.beginPath();
+    ctx.strokeStyle = '#ffd60a';
+    ctx.lineWidth = 2;
+
+    const maxN = coinHistory[coinHistory.length - 1].n;
+    const minN = coinHistory[0].n;
+    const rangeN = maxN - minN || 1;
+
+    coinHistory.forEach((pt, i) => {
+        const x = ((pt.n - minN) / rangeN) * w;
+        const y = getY(pt.headsPct);
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
     });
