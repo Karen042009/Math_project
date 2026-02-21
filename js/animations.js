@@ -63,5 +63,22 @@ function initParallax() {
         // Update CSS variables for the gradient center
         title.style.setProperty('--cursor-x', `${x}px`);
         title.style.setProperty('--cursor-y', `${y}px`);
+
+        // Parallax effect for background particles
+        const particles = document.querySelectorAll('.bg-particle');
+        const moveX = (e.clientX - window.innerWidth / 2) * 0.05;
+        const moveY = (e.clientY - window.innerHeight / 2) * 0.05;
+
+        particles.forEach((p, i) => {
+            const factor = (i + 1) * 0.2;
+            p.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+        });
+
+        // Background glow tracking
+        const glow = document.getElementById('bg-glow');
+        if (glow) {
+            glow.style.left = `${e.clientX}px`;
+            glow.style.top = `${e.clientY}px`;
+        }
     });
 }

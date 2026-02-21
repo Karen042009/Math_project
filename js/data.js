@@ -205,6 +205,15 @@ window.probabilityData = {
             en: "<p>Selections of $k$ items from $n$ where order doesn't matter.</p>$$C_n^k = \\frac{n!}{k!(n-k)!}$$",
             ru: "<p>Выбор $k$ элементов из $n$ без учета порядка.</p>$$C_n^k = \\frac{n!}{k!(n-k)!}$$"
           }
+        },
+        {
+          id: "theory-arrangements",
+          title: { hy: "Կարգավորություններ (Arrangements)", en: "Arrangements", ru: "Размещения" },
+          content: {
+            hy: "<p><strong>Կարգավորություններ</strong> են կոչվում այն միացությունները, որոնք պարունակում են $k$ տարր՝ ընտրված $n$-ից, և տարբերվում են ինչպես կազմով, այնպես էել տարրերի հերթականությամբ:</p>$$A_n^k = \\frac{n!}{(n-k)!}$$<p>Օրինակ՝ 10 հոգուց նախագահ և փոխնախագահ ընտրելու եղանակները՝ $A_{10}^2 = 10 \\cdot 9 = 90$:</p>",
+            en: "<p>Selections of $k$ items from $n$ where order matters.</p>$$A_n^k = \\frac{n!}{(n-k)!}$$",
+            ru: "<p>Выбор $k$ элементов из $n$ с учетом порядка.</p>$$A_n^k = \\frac{n!}{(n-k)!}$$"
+          }
         }
       ]
     },
@@ -292,6 +301,15 @@ window.probabilityData = {
             en: "<p><strong>Exponential Distribution</strong> models time between events.</p>$$f(x) = \\lambda e^{-\\lambda x}, \\quad x \\geq 0$$",
             ru: "<p><strong>Экспоненциальное</strong> — моделирует время между событиями.</p>"
           }
+        },
+        {
+          id: "theory-uniform",
+          title: { hy: "Հավասարաչափ բաշխում", en: "Uniform Distribution", ru: "Равномерное распределение" },
+          content: {
+            hy: "<p><strong>Հավասարաչափ բաշխում:</strong> Սա այն դեպքն է, երբ բոլոր հնարավոր արժեքներն ունեն նույն հավանականությունը կամ խտությունը:</p><p>Անընդհատ դեպքում [a, b] հատվածի վրա խտության ֆունկցիան է՝</p>$$f(x) = \\begin{cases} \\frac{1}{b-a}, & a \\leq x \\leq b \\\\ 0, & x < a \\text{ կամ } x > b \\end{cases}$$",
+            en: "<p><strong>Uniform Distribution:</strong> All outcomes are equally likely.</p>$$f(x) = \\frac{1}{b-a}, \\quad a \\leq x \\leq b$$",
+            ru: "<p><strong>Равномерное распределение:</strong> Все исходы равновероятны.</p>"
+          }
         }
       ]
     },
@@ -314,6 +332,15 @@ window.probabilityData = {
             hy: "<p><strong>Կենտրոնական սահմանային թեորեմը (CLT)</strong> պնդում է, որ մեծ թվով անկախ (և միանման բաշխված) պատահական մեծությունների գումարը ձգտում է <strong>նորմալ բաշխման</strong> (Գաուսյան), անկախ դրանց սկզբնական բաշխումից:</p><p>Սա բացատրում է, թե ինչու է բնության մեջ այդքան հաճախ հանդիպում «Զանգակաձև կորը» (Bell Curve): Գալտոնի տախտակը (տե՝ս Սիմուլյացիաներ էջը) դրա վառ ապացույցն է:</p>",
             en: "<p>The sum of many independent random variables converges to a <strong>Normal Distribution</strong>.</p><p>This is why the 'Bell Curve' appears frequently in nature. The Galton Board (see Simulations page) is a vivid demonstration.</p>",
             ru: "<p>Сумма множества независимых величин стремится к <strong>Нормальному распределению</strong>.</p>"
+          }
+        },
+        {
+          id: "theory-chebyshev",
+          title: { hy: "Չեբիշևի անհավասարություն", en: "Chebyshev's Inequality", ru: "Неравенство Чебышёва" },
+          content: {
+            hy: "<p><strong>Չեբիշևի անհավասարությունը</strong> թույլ է տալիս գնահատել պատահական մեծության շեղումը իր սպասումից, նույնիսկ եթե բաշխման օրենքը հայտնի չէ:</p>$$P(|X - E[X]| \\geq \\epsilon) \\leq \\frac{Var(X)}{\\epsilon^2}$$",
+            en: "<p><strong>Chebyshev's Inequality</strong> limits the probability that a random variable deviates from its mean.</p>$$P(|X - E[X]| \\geq \\epsilon) \\leq \\frac{Var(X)}{\\epsilon^2}$$",
+            ru: "<p><strong>Неравенство Чебышёва</strong> оценивает вероятность отклонения случайной величины от мат. ожидания.</p>"
           }
         }
       ]

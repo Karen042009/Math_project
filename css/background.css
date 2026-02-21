@@ -1,0 +1,82 @@
+/* ═══════════════════════════════════════════════════════════
+   ANIMATED BACKGROUND — Interactive Colorful Particles
+   ═══════════════════════════════════════════════════════════ */
+
+.bg-animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--bg-dark);
+}
+
+.bg-particle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.35;
+    will-change: transform, left, top;
+    transition: transform 0.1s linear;
+}
+
+@keyframes bgFloat {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(100px, 50px) rotate(120deg); }
+    66% { transform: translate(-50px, 150px) rotate(240deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+/* Specific particles with different colors and sizes */
+.particle-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--neon-purple), transparent 70%);
+    top: -100px;
+    left: -100px;
+    animation: bgFloat 25s infinite alternate ease-in-out;
+}
+
+.particle-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--accent-pink), transparent 70%);
+    bottom: -150px;
+    right: -100px;
+    animation: bgFloat 30s infinite alternate-reverse ease-in-out;
+}
+
+.particle-3 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, var(--accent-gold), transparent 70%);
+    top: 40%;
+    left: 60%;
+    animation: bgFloat 20s infinite alternate ease-in-out;
+    opacity: 0.2;
+}
+
+.particle-4 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, #4361ee, transparent 70%);
+    bottom: 20%;
+    left: 10%;
+    animation: bgFloat 35s infinite alternate-reverse ease-in-out;
+    opacity: 0.25;
+}
+
+/* Mouse reactive glow */
+.interactive-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.05), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+    will-change: transform;
+}
