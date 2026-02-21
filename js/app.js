@@ -140,7 +140,7 @@ function showPage(pageId) {
     }
     if (pageId === 'practice') {
         // Re-render problems in current language if needed
-        if (allProblems.length) renderProblems(allProblems);
+        if (allProblems.length) renderProblems(allProblems); else initProblems();
         renderPracticeStats();
     }
 }
@@ -509,7 +509,7 @@ function showModal(isCorrect, problem) {
             feedbackHtml += `
                 <div style="margin-top:12px; padding:10px 14px; background:rgba(76,201,240,0.08); border:1px solid rgba(76,201,240,0.2); border-radius:8px; font-size:0.9rem;">
                     <span style="color:#aaa;">${currentLang === 'hy' ? '\u0543\u056b\u0577\u057f \u057a\u0561\u057f\u0561\u057d\u056d\u0561\u0576\u055d' : currentLang === 'ru' ? '\u041f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0432\u0435\u0442:' : 'Correct answer:'}</span>
-                    <strong style="color:#4cc9f0; font-family:'Fira Code',monospace; margin-left:8px;">${problem.answer}</strong>
+                    <strong style="color:#a855f7; font-family:'Fira Code',monospace; margin-left:8px;">${problem.answer}</strong>
                 </div>
             `;
 
@@ -527,7 +527,7 @@ function showModal(isCorrect, problem) {
             feedbackHtml += `
                 <div style="margin-top:12px; padding:10px 14px; background:rgba(76,201,240,0.08); border:1px solid rgba(76,201,240,0.2); border-radius:8px;">
                     <span style="color:#aaa;">${currentLang === 'hy' ? '\u054a\u0561\u057f\u0561\u057d\u056d\u0561\u0576\u055d' : currentLang === 'ru' ? '\u041e\u0442\u0432\u0435\u0442:' : 'Answer:'}</span>
-                    <strong style="color:#4cc9f0; font-family:'Fira Code',monospace; margin-left:8px;">${problem.answer}</strong>
+                    <strong style="color:#a855f7; font-family:'Fira Code',monospace; margin-left:8px;">${problem.answer}</strong>
                 </div>
             `;
         }

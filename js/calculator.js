@@ -348,7 +348,7 @@ function renderTreeCustomInputs() {
             <span style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">${label}</span>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:5px;">
                 <div style="display:flex; flex-direction:column; gap:2px;">
-                     <input type="text" id="${idPrefix}-name1" value="${defName1}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:rgba(255,255,255,0.05); border:none; color:#4cc9f0; padding:2px 5px; font-size:0.8rem;">
+                     <input type="text" id="${idPrefix}-name1" value="${defName1}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:rgba(255,255,255,0.05); border:none; color:#a855f7; padding:2px 5px; font-size:0.8rem;">
                      <div style="display:flex; gap:5px; align-items:center;">
                         <span style="font-size:0.75rem; color:#888;">P:</span>
                         <input type="number" id="${idPrefix}-p" value="0.5" step="0.1" oninput="drawGraph()" style="width:100%; background:rgba(255,255,255,0.1); border:none; color:#fff; padding:2px 5px;">
@@ -575,7 +575,7 @@ function drawVenn(ctx, w, h, highlight = null) {
     // Colors
     const colBase = 'rgba(255, 255, 255, 0.05)';
     const colA = 'rgba(247, 37, 133, 0.6)';
-    const colB = 'rgba(76, 201, 240, 0.6)';
+    const colB = 'rgba(168, 85, 247, 0.6)';
     const colC = 'rgba(255, 214, 10, 0.6)';
     
     if (sets === '2') {
@@ -624,7 +624,7 @@ function drawVenn(ctx, w, h, highlight = null) {
         // Right
         ctx.beginPath(); 
         ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
-        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(76, 201, 240, 0.1)';
+        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(168, 85, 247, 0.1)';
         ctx.fill();
         ctx.stroke();
 
@@ -745,7 +745,7 @@ function drawVenn(ctx, w, h, highlight = null) {
 
         // Base
         drawCircle(ax, ay, (highlight && !isComp) ? colBase : 'rgba(247, 37, 133, 0.1)');
-        drawCircle(bx, by, (highlight && !isComp) ? colBase : 'rgba(76, 201, 240, 0.1)');
+        drawCircle(bx, by, (highlight && !isComp) ? colBase : 'rgba(168, 85, 247, 0.1)');
         drawCircle(ccx, ccy, (highlight && !isComp) ? colBase : 'rgba(255, 214, 10, 0.1)');
 
         // Highlights
@@ -885,7 +885,7 @@ function drawTree(ctx, w, h) {
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.bezierCurveTo(x + layerWidth/2, y, x + layerWidth/2, yUp, nextX, yUp);
-        ctx.strokeStyle = 'rgba(76, 201, 240, 0.8)'; // Blue
+        ctx.strokeStyle = 'rgba(168, 85, 247, 0.8)'; // Blue
         ctx.stroke();
 
         // Label 1 (Pill background)

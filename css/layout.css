@@ -46,7 +46,7 @@
 }
 
 .logo .highlight {
-    background: linear-gradient(135deg, var(--accent-pink), var(--accent-blue));
+    background: linear-gradient(135deg, var(--accent-pink), var(--neon-purple));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

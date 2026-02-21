@@ -195,7 +195,7 @@ canvas:hover {
     transform: translateY(-6px) scale(1.03);
     box-shadow:
         0 15px 30px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(56, 189, 248, 0.1);
+        0 0 20px rgba(168, 85, 247, 0.1);
     border-color: var(--neon-purple);
 }
 
@@ -266,8 +266,8 @@ canvas:hover {
 .bar-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, rgba(56, 189, 248, 0.85), rgba(56, 189, 248, 0.6));
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    background: linear-gradient(90deg, rgba(168, 85, 247, 0.85), rgba(168, 85, 247, 0.6));
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
     border-radius: 999px;
     transition: width 0.4s var(--transition-smooth);
 }

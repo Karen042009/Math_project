@@ -104,7 +104,7 @@ function checkSolutionWithAI() {
     if (isCorrect) {
         scoreSpan.innerText = "100/100";
         scoreSpan.style.color = "#4cc9f0";
-        contentDiv.innerHTML = `<p style="color:#4cc9f0">${currentLang === 'hy' ? 'Ճիշտ է:' : 'Correct!'} ${correctAns}</p>`;
+        contentDiv.innerHTML = `<p style="color:#a855f7">${currentLang === 'hy' ? 'Ճիշտ է:' : 'Correct!'} ${correctAns}</p>`;
     } else {
         scoreSpan.innerText = "0/100";
         scoreSpan.style.color = "#f72585";

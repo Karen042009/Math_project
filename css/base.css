@@ -13,7 +13,7 @@
     --neon-purple: #a855f7;
     --neon-purple-dim: rgba(168, 85, 247, 0.15);
     --accent-pink: #ec4899;
-    --accent-blue: #38bdf8;
+    --accent-blue: #a855f7;
     --accent-gold: #facc15;
     --accent-emerald: #34d399;
     --glass-bg: rgba(255, 255, 255, 0.04);
@@ -46,7 +46,7 @@ body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background-image:
         radial-gradient(ellipse 80% 60% at 10% 15%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 80% at 85% 80%, rgba(56, 189, 248, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 80% at 85% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
         radial-gradient(ellipse 50% 50% at 50% 50%, rgba(236, 72, 153, 0.04) 0%, transparent 60%);
     min-height: 100vh;
 }
@@ -186,7 +186,7 @@ body {
     background:
         radial-gradient(circle 600px at 20% 30%, rgba(168, 85, 247, 0.1), transparent),
         radial-gradient(circle 500px at 80% 70%, rgba(236, 72, 153, 0.08), transparent),
-        radial-gradient(circle 400px at 50% 50%, rgba(56, 189, 248, 0.05), transparent);
+        radial-gradient(circle 400px at 50% 50%, rgba(168, 85, 247, 0.05), transparent);
     pointer-events: none;
     z-index: 0;
 }
@@ -228,8 +228,8 @@ body {
     left: 55%;
     animation-delay: 4s;
     animation-duration: 16s;
-    background: var(--accent-blue);
-    color: var(--accent-blue);
+    background: var(--neon-purple);
+    color: var(--neon-purple);
     width: 5px; height: 5px;
 }
 
@@ -289,7 +289,7 @@ body {
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 24px;
-    background: linear-gradient(90deg, #4cc9f0, #a855f7, #ec4899);
+    background: linear-gradient(90deg, #a855f7, #a855f7, #ec4899);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
@@ -503,7 +503,7 @@ body {
     border-radius: 50%;
     background: radial-gradient(circle at 50% 50%,
         rgba(255, 255, 255, 0.06) 0%,
-        rgba(56, 189, 248, 0.04) 20%,
+        rgba(168, 85, 247, 0.04) 20%,
         rgba(168, 85, 247, 0.03) 40%,
         transparent 70%);
     pointer-events: none;

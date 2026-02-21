@@ -269,7 +269,7 @@ function drawGaltonFrame() {
     ctx.lineTo(w / 2 - 8, 45);
     ctx.lineTo(w / 2 + 8, 45);
     ctx.lineTo(w / 2 + 40, 0);
-    ctx.strokeStyle = 'rgba(76, 201, 240, 0.4)';
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.4)';
     ctx.lineWidth = 2;
     ctx.stroke();
 
@@ -416,9 +416,9 @@ function montyDecision(shouldSwitch) {
 
     const lang = currentLang || 'en';
     const winMsg = {
-        hy: `🎉 <strong style="color:#4cc9f0">Դուք ՀԱՂԹԵՑԻՔ 🚗-ն։</strong> (${shouldSwitch ? 'փոխելով' : 'մնալով'})`,
-        en: `🎉 <strong style="color:#4cc9f0">You WON the 🚗!</strong> (You ${shouldSwitch ? 'switched' : 'stayed'})`,
-        ru: `🎉 <strong style="color:#4cc9f0">Вы ВЫИГРАЛИ 🚗!</strong> (${shouldSwitch ? 'сменив' : 'оставив'})`
+        hy: `🎉 <strong style="color:#a855f7">Դուք ՀԱՂԹԵՑԻՔ 🚗-ն։</strong> (${shouldSwitch ? 'փոխելով' : 'մնալով'})`,
+        en: `🎉 <strong style="color:#a855f7">You WON the 🚗!</strong> (You ${shouldSwitch ? 'switched' : 'stayed'})`,
+        ru: `🎉 <strong style="color:#a855f7">Вы ВЫИГРАЛИ 🚗!</strong> (${shouldSwitch ? 'сменив' : 'оставив'})`
     };
     const loseMsg = {
         hy: `😔 <strong style="color:#f72585">Դուք ստացաք 🐐:</strong> (${shouldSwitch ? 'փոխելով' : 'մնալով'})`,
@@ -646,7 +646,7 @@ function drawBuffonFrame() {
     ctx.fillRect(0, 0, w, h);
 
     // Parallel lines
-    ctx.strokeStyle = 'rgba(76, 201, 240, 0.3)';
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.3)';
     ctx.lineWidth = 1;
     for (let y = 0; y < h; y += d) {
         ctx.beginPath();

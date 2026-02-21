@@ -268,7 +268,7 @@
 }
 
 .ai-problem {
-    background: rgba(56, 189, 248, 0.06);
+    background: rgba(168, 85, 247, 0.06);
     border-left: 3px solid var(--neon-purple);
     padding: 20px;
     margin-bottom: 18px;
@@ -422,7 +422,7 @@
 }
 
 .drawer-toggle-btn:hover {
-    background: rgba(56, 189, 248, 0.06);
+    background: rgba(168, 85, 247, 0.06);
     color: #fff;
 }
 
@@ -515,7 +515,7 @@
 /* ═══════════ ANALYSIS PANEL ═══════════ */
 .analysis-panel {
     margin-top: 18px;
-    background: rgba(56, 189, 248, 0.04);
+    background: rgba(168, 85, 247, 0.04);
     border-left: 3px solid var(--neon-purple);
     padding: 16px;
     border-radius: 0 12px 12px 0;
