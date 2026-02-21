@@ -469,7 +469,8 @@
                 <i class="fas fa-atom" style="color:var(--accent-pink)"></i>
                 <span data-i18n="section_sims">Monte Carlo Playground</span>
             </h1>
-            <p class="intro-text" data-i18n="intro_sims">Watch probability come alive through interactive simulations!
+            <p class="intro-text" data-i18n="intro_sims_extended" style="font-size:1.05rem; line-height:1.7; color:#ddd; margin:10px auto 30px; text-align:left; background:rgba(0,0,0,0.3); padding:15px 20px; border-left:4px solid var(--neon-purple); border-radius:8px;">
+                Here, the laws of probability theory are visually demonstrated in practice using the Monte Carlo method. The purpose of this section is to teach you complex mathematical concepts—such as the normal distribution, decision-making under uncertainty, and geometric probability—through interactive simulations and the analysis of thousands of random events.
             </p>
 
             <!-- Simulation Tabs -->
@@ -490,7 +491,7 @@
             <div id="sim-galton" class="sim-panel glass-panel" style="display:block; padding:20px;">
                 <div class="sim-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                     <div>
-                        <h2 style="margin:0; background:linear-gradient(45deg, #a855f7, #4361ee); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">Galton Board</h2>
+                        <h2 style="margin:0; background:linear-gradient(45deg, #a855f7, #4361ee); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_galton_title">Galton Board</h2>
                         <p style="color:#aaa; font-size:0.9rem; margin-top:5px;" data-i18n="sim_galton_desc_short">Demonstrating Central Limit Theorem via Normal Distribution</p>
                     </div>
                 </div>
@@ -515,16 +516,16 @@
 
                         <!-- Controls -->
                         <div class="control-group">
-                            <label>Rows (Bin Count)</label>
+                            <label data-i18n="sim_galton_rows_lbl">Rows (Bin Count)</label>
                             <input type="range" id="galton-rows" min="8" max="16" value="12" step="1" oninput="document.getElementById('row-val').innerText=this.value; setTimeout(initGalton, 100);">
                             <div style="text-align:right; font-size:0.8rem; color:#aaa;"><span id="row-val">12</span> Rows</div>
                         </div>
                         
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                             <button class="glow-btn small" onclick="dropGaltonBalls(1)">+1 Ball</button>
-                             <button class="glow-btn small" onclick="dropGaltonBalls(50)">+50 Balls</button>
-                             <button class="glow-btn small" onclick="dropGaltonBalls(500)">+500 Balls</button>
-                             <button class="glow-btn small secondary" onclick="resetGalton()">Reset</button>
+                             <button class="glow-btn small" onclick="dropGaltonBalls(1)" data-i18n="btn_drop_1">+1 Ball</button>
+                             <button class="glow-btn small" onclick="dropGaltonBalls(50)" data-i18n="btn_drop_50">+50 Balls</button>
+                             <button class="glow-btn small" onclick="dropGaltonBalls(500)" data-i18n="btn_drop_500">+500 Balls</button>
+                             <button class="glow-btn small secondary" onclick="resetGalton()" data-i18n="btn_reset">Reset</button>
                         </div>
                     </div>
                 </div>
@@ -533,8 +534,8 @@
             <!-- ──── MONTY HALL ──── -->
             <div id="sim-monty" class="sim-panel glass-panel" style="display:none; padding:20px;">
                 <div class="sim-header" style="margin-bottom:15px;">
-                     <h2 style="margin:0; background:linear-gradient(45deg, #f72585, #7209b7); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">Monty Hall Problem</h2>
-                     <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_monty_desc_short">A probability puzzle based on a game show</p>
+                     <h2 style="margin:0; background:linear-gradient(45deg, #f72585, #7209b7); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_monty_title">Monty Hall Problem</h2>
+                     <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_monty_desc">A probability puzzle based on a game show</p>
                 </div>
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
@@ -584,13 +585,13 @@
                         </div>
 
                         <div class="control-group">
-                            <label>Auto-Simulate</label>
+                            <label data-i18n="sim_monty_autosim">Auto-Simulate</label>
                             <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
-                                <button class="glow-btn small secondary" onclick="montyAutoRun(100)">Sim 100</button>
-                                <button class="glow-btn small secondary" onclick="montyAutoRun(1000)">Sim 1000</button>
+                                <button class="glow-btn small secondary" onclick="montyAutoRun(100)" data-i18n="btn_sim_100">Sim 100</button>
+                                <button class="glow-btn small secondary" onclick="montyAutoRun(1000)" data-i18n="btn_sim_1000">Sim 1000</button>
                             </div>
                         </div>
-                        <button class="glow-btn secondary" onclick="resetMonty()">Reset Game</button>
+                        <button class="glow-btn secondary" onclick="resetMonty()" data-i18n="btn_reset">Reset Game</button>
                     </div>
                 </div>
             </div>
@@ -598,8 +599,8 @@
             <!-- ──── BUFFON'S NEEDLE ──── -->
             <div id="sim-buffon" class="sim-panel glass-panel" style="display:none; padding:20px;">
                 <div class="sim-header" style="margin-bottom:15px;">
-                     <h2 style="margin:0; background:linear-gradient(45deg, #ff00cc, #333399); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">Buffon's Needle</h2>
-                     <p style="color:#aaa; font-size:0.9rem;">Estimating Pi (π) by dropping needles</p>
+                     <h2 style="margin:0; background:linear-gradient(45deg, #ff00cc, #333399); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_buffon_title">Buffon's Needle</h2>
+                     <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_buffon_desc">Estimating Pi (π) by dropping needles</p>
                 </div>
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
@@ -628,15 +629,15 @@
                         </div>
 
                         <div class="control-group">
-                            <label>Drop Needles</label>
+                            <label data-i18n="sim_buffon_drop_lbl">Drop Needles</label>
                             <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
-                                <button class="glow-btn small" onclick="dropNeedles(10)">+10</button>
-                                <button class="glow-btn small" onclick="dropNeedles(100)">+100</button>
-                                <button class="glow-btn small" onclick="animateBuffonDrop(1000)">+1k</button>
-                                <button class="glow-btn small" onclick="animateBuffonDrop(10000)">+10k</button>
+                                <button class="glow-btn small" onclick="dropNeedles(10)" data-i18n="btn_drop_10">+10</button>
+                                <button class="glow-btn small" onclick="dropNeedles(100)" data-i18n="btn_drop_100">+100</button>
+                                <button class="glow-btn small" onclick="animateBuffonDrop(1000)" data-i18n="btn_drop_1000">+1k</button>
+                                <button class="glow-btn small" onclick="animateBuffonDrop(10000)" data-i18n="btn_drop_10000">+10k</button>
                             </div>
                         </div>
-                        <button class="glow-btn secondary" onclick="resetBuffon()">Reset Simulation</button>
+                        <button class="glow-btn secondary" onclick="resetBuffon()" data-i18n="btn_reset">Reset Simulation</button>
                     </div>
                 </div>
             </div>

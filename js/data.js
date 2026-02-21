@@ -85,6 +85,11 @@ window.probabilityData = {
 
     // Simulations Buttons
     intro_sims: { hy: "Դիտեք, թե ինչպես են աշխատում հավանականությունները ինտերակտիվ սիմուլյացիաների միջոցով", en: "Watch probability come alive through interactive simulations!", ru: "Наблюдайте за теорией вероятностей в действии через симуляции" },
+    intro_sims_extended: {
+        hy: "Այստեղ վիզուալ կերպով ցուցադրվում է հավանականությունների տեսության օրենքների կիրառությունը գործնականում՝ Մոնտե Կառլոյի մեթոդով։ Այս բաժնի նպատակն է ինտերակտիվ սիմուլյացիաների և հազարավոր անգամ կրկնվող պատահական երևույթների վերլուծության միջոցով ձեզ սովորեցնել բարդ մաթեմատիկական հասկացություններ՝ ինչպիսիք են նորմալ բաշխումը, անորոշության պայմաններում ճշգրիտ ընտրության կայացումը և երկրաչափական հավանականությունը։",
+        en: "Here, the laws of probability theory are visually demonstrated in practice using the Monte Carlo method. The purpose of this section is to teach you complex mathematical concepts—such as the normal distribution, decision-making under uncertainty, and geometric probability—through interactive simulations and the analysis of thousands of random events.",
+        ru: "Здесь визуально демонстрируется применение законов теории вероятностей на практике с помощью метода Монте-Карло. Цель этого раздела — через интерактивные симуляции и анализ тысяч случайных событий помочь вам освоить такие сложные математические концепции, как нормальное распределение, парадоксы выбора и геометрическая вероятность."
+    },
     galton_rows_label: { hy: "Շարքերի քանակը", en: "Number of Rows", ru: "Количество рядов" },
     btn_drop_1: { hy: "Նետել 1 գնդիկ", en: "Drop 1 Ball", ru: "Бросить 1 шарик" },
     btn_drop_50: { hy: "Նետել 50", en: "Drop 50", ru: "Бросить 50" },
@@ -139,6 +144,14 @@ window.probabilityData = {
 
     // Simulation buttons
     sim_galton_btn: { hy: "Գալտոնի տախտակ", en: "Galton Board", ru: "Доска Гальтона" },
+    sim_galton_title: { hy: "Գալտոնի Տախտակ", en: "Galton Board", ru: "Доска Гальтона" },
+    sim_galton_rows_lbl: { hy: "Տողեր (Զամբյուղներ)", en: "Rows (Bin Count)", ru: "Ряды (Корзины)" },
+    sim_monty_title: { hy: "Մոնտի Հոլլի Խնդիր", en: "Monty Hall Problem", ru: "Парадокс Монти Холла" },
+    sim_monty_desc: { hy: "Հավանականությունների խնդիր հեռուստախաղի հիման վրա", en: "A probability puzzle based on a game show", ru: "Вероятностная головоломка на основе телешоу" },
+    sim_monty_autosim: { hy: "Ավտոմատ Սիմուլյացիա", en: "Auto-Simulate", ru: "Авто-Симуляция" },
+    sim_buffon_title: { hy: "Բյուֆոնի Ասեղ", en: "Buffon's Needle", ru: "Игла Бюффона" },
+    sim_buffon_desc: { hy: "π-ի մոտարկումը ասեղներ նետելով", en: "Estimating Pi (π) by dropping needles", ru: "Оценка числа Пи (π) бросанием игл" },
+    sim_buffon_drop_lbl: { hy: "Նետել Ասեղներ", en: "Drop Needles", ru: "Бросать Иглы" },
     sim_monty_btn: { hy: "Մոնտի Հոլլ", en: "Monty Hall", ru: "Монти Холл" },
     sim_buffon_btn: { hy: "Բյուֆոնի ասեղ", en: "Buffon's Needle", ru: "Игла Бюффона" },
 

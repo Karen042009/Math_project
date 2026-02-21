@@ -30,7 +30,31 @@ function showSimulation(simId, btnEl) {
 }
 
 function updateSimDescriptions() {
-    // Placeholder for language updates
+    const ui = window.probabilityData.ui;
+    const lang = window.currentLang || 'en';
+    
+    // Update Monty Hall dynamic texts based on state
+    const msgEl = document.getElementById('monty-message');
+    if (msgEl) {
+        if (montyState === 'choose') {
+            msgEl.innerText = ui.monty_choose_door[lang];
+        } else if (montyState === 'revealed') {
+            const msgTemplate = {
+                hy: `Դուռ ${montyRevealedDoor + 1}-ի հետևում 🐐 է։ <br><strong>Ուզո՞ւմ եք ՓՈԽԵԼ, թե՞ ՄՆԱԼ։</strong>`,
+                en: `Door ${montyRevealedDoor + 1} has a 🐐! <br><strong>Do you want to SWITCH or STAY?</strong>`,
+                ru: `За дверью ${montyRevealedDoor + 1} 🐐! <br><strong>Желаете СМЕНИТЬ или ОСТАВИТЬ?</strong>`
+            };
+            msgEl.innerHTML = msgTemplate[lang];
+        } else {
+             // Leave result texts alone as they auto-reset after 2 seconds anyway, or write out previous if needed.
+             // Auto runs and results have their own msg, we can rely on new game reset.
+        }
+    }
+
+    // Refresh dynamic stats
+    updateMontyStats();
+    updateGaltonStats();
+    updateBuffonStats();
 }
 
 
