@@ -178,17 +178,26 @@ body {
     user-select: none;
 }
 
-/* Subtle mesh gradient overlay */
+/* Dynamic morphing background animation */
+@keyframes meshMove {
+    0% { background-position: 0% 50%, 100% 50%, 50% 50%; }
+    50% { background-position: 100% 50%, 0% 50%, 50% 100%; }
+    100% { background-position: 0% 50%, 100% 50%, 50% 50%; }
+}
+
 .hero-section::before {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: -100px;
     background:
-        radial-gradient(circle 600px at 20% 30%, rgba(168, 85, 247, 0.1), transparent),
-        radial-gradient(circle 500px at 80% 70%, rgba(236, 72, 153, 0.08), transparent),
-        radial-gradient(circle 400px at 50% 50%, rgba(168, 85, 247, 0.05), transparent);
+        radial-gradient(circle 600px at 20% 30%, rgba(168, 85, 247, 0.12), transparent 70%),
+        radial-gradient(circle 500px at 80% 70%, rgba(236, 72, 153, 0.1), transparent 70%),
+        radial-gradient(circle 800px at 50% 50%, rgba(168, 85, 247, 0.06), transparent 80%);
+    background-size: 200% 200%;
     pointer-events: none;
     z-index: 0;
+    animation: meshMove 15s ease-in-out infinite;
+    filter: blur(60px);
 }
 
 .hero-particles {
@@ -275,7 +284,10 @@ body {
     height: 76px;
     border-radius: 22px;
     background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.15));
-    border: 1px solid rgba(168, 85, 247, 0.4);
+    border: none;
+    box-shadow: 
+        0 10px 30px rgba(168, 85, 247, 0.2),
+        inset 0 0 20px rgba(168, 85, 247, 0.1);
     font-size: 2.4rem;
     color: var(--accent-gold);
     animation: pulseGlow 3s ease-in-out infinite;
@@ -334,7 +346,10 @@ body {
     overflow: hidden;
     /* Prevent shimmer overflow */
     border-radius: 20px; 
-    border: 1px solid rgba(168, 85, 247, 0.12);
+    border: none;
+    background: rgba(18, 10, 30, 0.4);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
 }
 
 /* Subtle shimmer on hover */
