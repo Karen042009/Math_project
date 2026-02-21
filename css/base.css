@@ -171,6 +171,11 @@ body {
     position: relative;
     padding: 80px 24px 50px;
     overflow: hidden;
+    /* Prevent text selection on the main hero section */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* Subtle mesh gradient overlay */
