@@ -28,12 +28,13 @@ function showSimulation(simId, btnEl) {
     if (simId === 'galton') initGalton();
     if (simId === 'buffon') initBuffon();
     if (simId === 'coin') initCoin();
+    if (simId === 'dice') initDice();
 }
 
 function updateSimDescriptions() {
     const ui = window.probabilityData.ui;
     const lang = currentLang || 'en';
-    
+
     // Update Monty Hall dynamic texts based on state
     const msgEl = document.getElementById('monty-message');
     if (msgEl) {
@@ -47,8 +48,8 @@ function updateSimDescriptions() {
             };
             msgEl.innerHTML = msgTemplate[lang];
         } else {
-             // Leave result texts alone as they auto-reset after 2 seconds anyway, or write out previous if needed.
-             // Auto runs and results have their own msg, we can rely on new game reset.
+            // Leave result texts alone as they auto-reset after 2 seconds anyway, or write out previous if needed.
+            // Auto runs and results have their own msg, we can rely on new game reset.
         }
     }
 
@@ -57,6 +58,7 @@ function updateSimDescriptions() {
     updateGaltonStats();
     updateBuffonStats();
     if (typeof updateCoinStats === 'function') updateCoinStats();
+    if (typeof updateDiceStats === 'function') updateDiceStats();
 }
 
 
@@ -159,11 +161,11 @@ function galtonAnimate() {
     const pegAreaBottom = h * 0.6;
     const binAreaTop = pegAreaBottom + 20;
     const gravity = 0.15;
-    
+
     // Get controls (with safe defaults if elements don't exist)
     const speedMult = parseInt(document.getElementById('galton-speed')?.value || '3');
     const elasticity = parseFloat(document.getElementById('galton-bounce')?.value || '0.6');
-    
+
     // Multi-step for speed
     const steps = speedMult || 3;
 
@@ -179,15 +181,15 @@ function galtonAnimate() {
             for (const peg of galtonPegs) {
                 const dx = ball.x - peg.x;
                 const dy = ball.y - peg.y;
-                const distSq = dx*dx + dy*dy;
+                const distSq = dx * dx + dy * dy;
                 const minDist = ball.r + peg.r + 1;
 
                 if (distSq < minDist * minDist) {
                     const dist = Math.sqrt(distSq);
                     const nx = dx / dist;
                     const ny = dy / dist;
-                    const randX = (Math.random() - 0.5) * 2.0; 
-                    
+                    const randX = (Math.random() - 0.5) * 2.0;
+
                     ball.vx = nx * 2.0 * elasticity + randX;
                     ball.vy = ny * 2.0 * elasticity + 0.5;
                     const overlap = minDist - dist;
@@ -197,13 +199,13 @@ function galtonAnimate() {
             }
 
             // Wall bounds
-            if (ball.x < ball.r) { 
-                ball.x = ball.r; 
-                ball.vx *= -0.6; 
+            if (ball.x < ball.r) {
+                ball.x = ball.r;
+                ball.vx *= -0.6;
             }
-            if (ball.x > w - ball.r) { 
-                ball.x = w - ball.r; 
-                ball.vx *= -0.6; 
+            if (ball.x > w - ball.r) {
+                ball.x = w - ball.r;
+                ball.vx *= -0.6;
             }
 
             // Settle in bin (Count and remove)
@@ -211,7 +213,7 @@ function galtonAnimate() {
                 const binWidth = w / (galtonRows + 1);
                 let binIdx = Math.floor(ball.x / binWidth);
                 binIdx = Math.max(0, Math.min(galtonRows, binIdx));
-                
+
                 galtonBins[binIdx]++;
                 galtonBalls.splice(i, 1);
             }
@@ -332,10 +334,10 @@ function drawGaltonFrame() {
             // Normal approximation to binomial
             const exponent = -Math.pow(binX - mu, 2) / (2 * Math.pow(sigma, 2));
             const y_theo = (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(exponent);
-            
+
             // Scale y_theo: total balls * y_theo * ball height
             const pixelY = h - 10 - (settledCount * y_theo * ballDiam * 1.5);
-            
+
             if (x === 0) ctx.moveTo(x, pixelY);
             else ctx.lineTo(x, pixelY);
         }
@@ -485,7 +487,7 @@ function montyAutoRun(count) {
         else montyStats.stayLose++;
     }
     updateMontyStats();
-    
+
     const lang = currentLang || 'en';
     const simMsg = {
         hy: `<strong>Սիմուլյացիա է արվել ${count} խաղ:</strong> Ստուգեք արդյունքները ստորև:`,
@@ -557,7 +559,7 @@ function updateMontyStats() {
         };
         const statsEl = document.getElementById('monty-stats');
         if (statsEl && !statsEl.innerHTML.includes('Theoretically')) {
-             statsEl.innerHTML += theoryAdvise[lang];
+            statsEl.innerHTML += theoryAdvise[lang];
         }
     }
 }
@@ -608,7 +610,7 @@ function resetBuffon() {
     const dInput = document.getElementById('buffon-spacing');
     if (lInput) buffonNeedleLength = parseInt(lInput.value) || 40;
     if (dInput) buffonLineSpacing = parseInt(dInput.value) || 60;
-    
+
     drawBuffonFrame();
     updateBuffonStats();
     drawBuffonGraph(); // Clear graph
@@ -617,7 +619,7 @@ function resetBuffon() {
 function dropNeedles(count) {
     const w = buffonCanvas.width;
     const h = buffonCanvas.height;
-    
+
     // Ensure params are fresh
     const lInput = document.getElementById('buffon-length');
     const dInput = document.getElementById('buffon-spacing');
@@ -734,7 +736,7 @@ function updateBuffonStats() {
             </div>
         `;
     }
-    
+
     // Add to history for graph (limit points to avoid slow down)
     if (buffonTotal > 0 && (buffonHistory.length === 0 || buffonTotal % 10 === 0 || buffonTotal < 100)) {
         buffonHistory.push({ n: buffonTotal, pi: piEstimate });
@@ -755,7 +757,7 @@ function drawBuffonGraph() {
     const minY = 2.0;
     const maxY = 4.5;
     const rangeY = maxY - minY;
-    
+
     const getY = (val) => h - ((val - minY) / rangeY) * h;
 
     // Draw Pi Line
@@ -817,14 +819,14 @@ function resetCoin() {
     coinTails = 0;
     coinHistory = [];
     coinRotation = 0;
-    
+
     const coinEl = document.getElementById('coin-element');
     if (coinEl) {
         coinEl.style.transition = 'none';
         coinEl.style.transform = `rotateX(0deg)`;
         setTimeout(() => coinEl.style.transition = 'transform 2s cubic-bezier(0.2, 0.8, 0.2, 1)', 50);
     }
-    
+
     updateCoinStats();
     drawCoinGraph(); // Clear graph
 }
@@ -838,11 +840,11 @@ function flipCoins(count) {
         if (lastFlipHeads) coinHeads++;
         else coinTails++;
         coinTotal++;
-        
+
         // Add to history
         if (coinTotal === 1 || coinTotal % 10 === 0 || coinTotal < 100 || count > 10) {
             coinHistory.push({ n: coinTotal, headsPct: coinHeads / coinTotal });
-            if (coinHistory.length > 200) coinHistory.shift(); 
+            if (coinHistory.length > 200) coinHistory.shift();
         }
     }
 
@@ -852,24 +854,24 @@ function flipCoins(count) {
         // Add multiple spins plus final face
         // Each full spin is 360deg. Let's do 5 spins (1800deg) overhead.
         // Heads is 0, 360, 720... Tails is 180, 540, 900...
-        const spins = 5 * 360; 
+        const spins = 5 * 360;
         const targetFace = lastFlipHeads ? 0 : 180;
-        
+
         // Add the spins to the current rotation so it always goes forward
         coinRotation += spins;
-        
+
         // Adjust final rotation to land on the correct face
         // We ensure the final rotation modulo 360 equals targetFace
         const currentMod = coinRotation % 360;
         let correction = targetFace - currentMod;
-        
+
         if (correction < 0) correction += 360;
-        
+
         coinRotation += correction;
-        
+
         // If it's a huge batch, maybe we spin even more just for show
         if (count > 10) coinRotation += 360 * 3;
-        
+
         coinEl.style.transform = `rotateX(${coinRotation}deg)`;
     }
 
@@ -897,10 +899,10 @@ function animateCoinFlips(count) {
 function updateCoinStats() {
     const statsEl = document.getElementById('coin-stats');
     if (!statsEl) return;
-    
+
     const ui = window.probabilityData.ui;
     const lang = currentLang || 'en';
-    
+
     const hPct = coinTotal > 0 ? (coinHeads / coinTotal * 100).toFixed(1) : '0.0';
     const tPct = coinTotal > 0 ? (coinTails / coinTotal * 100).toFixed(1) : '0.0';
 
@@ -929,7 +931,7 @@ function drawCoinGraph() {
     const minY = 0.0;
     const maxY = 1.0;
     const rangeY = maxY - minY;
-    
+
     const getY = (val) => h - ((val - minY) / rangeY) * h;
 
     // Draw 0.5 Line
@@ -959,6 +961,171 @@ function drawCoinGraph() {
     coinHistory.forEach((pt, i) => {
         const x = ((pt.n - minN) / rangeN) * w;
         const y = getY(pt.headsPct);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+}
+
+/* ============================================================
+ * 5. DICE THROW (Law of Large Numbers)
+ * ============================================================ */
+let diceGraphCanvas, diceGraphCtx;
+let diceHistory = [];
+let diceTotal = 0;
+let diceSum = 0;
+let diceSquaredSum = 0;
+let diceCounts = [0, 0, 0, 0, 0, 0];
+let diceRotationX = 0;
+let diceRotationY = 0;
+
+function initDice() {
+    diceGraphCanvas = document.getElementById('dice-graph');
+    if (diceGraphCanvas) {
+        diceGraphCtx = diceGraphCanvas.getContext('2d');
+        diceGraphCanvas.width = diceGraphCanvas.offsetWidth;
+        diceGraphCanvas.height = diceGraphCanvas.offsetHeight;
+    }
+    resetDice();
+}
+
+function resetDice() {
+    diceTotal = 0;
+    diceSum = 0;
+    diceSquaredSum = 0;
+    diceCounts = [0, 0, 0, 0, 0, 0];
+    diceHistory = [];
+    diceRotationX = 0;
+    diceRotationY = 0;
+
+    const diceEl = document.getElementById('dice-element');
+    if (diceEl) {
+        diceEl.style.transition = 'none';
+        diceEl.style.transform = `rotateX(0deg) rotateY(0deg)`;
+        setTimeout(() => diceEl.style.transition = 'transform 1.5s cubic-bezier(0.2, 0.8, 0.3, 1)', 50);
+    }
+
+    updateDiceStats();
+    drawDiceGraph();
+}
+
+function rollDice(count) {
+    let lastRoll = 1;
+
+    for (let i = 0; i < count; i++) {
+        lastRoll = Math.floor(Math.random() * 6) + 1;
+        diceSum += lastRoll;
+        diceSquaredSum += (lastRoll * lastRoll);
+        diceCounts[lastRoll - 1]++;
+        diceTotal++;
+
+        // Add to history (sampling for performance)
+        if (diceTotal === 1 || diceTotal % 10 === 0 || diceTotal < 100 || count > 10) {
+            diceHistory.push({ n: diceTotal, mean: diceSum / diceTotal });
+            if (diceHistory.length > 300) diceHistory.shift();
+        }
+    }
+
+    // Animate 3D Dice
+    const diceEl = document.getElementById('dice-element');
+    if (diceEl) {
+        // Base rotations to face the correct side
+        const rotMap = {
+            1: { x: 0, y: 0 },
+            2: { x: -90, y: 0 },
+            3: { x: 0, y: -90 },
+            4: { x: 0, y: 90 },
+            5: { x: 90, y: 0 },
+            6: { x: 180, y: 0 }
+        };
+
+        const target = rotMap[lastRoll];
+        // Add multiple full spins (3 * 360 = 1080)
+        diceRotationX += 1080 + target.x - (diceRotationX % 360);
+        diceRotationY += 1080 + target.y - (diceRotationY % 360);
+
+        diceEl.style.transform = `rotateX(${diceRotationX}deg) rotateY(${diceRotationY}deg)`;
+    }
+
+    if (count === 1) {
+        setTimeout(() => {
+            updateDiceStats();
+            drawDiceGraph();
+        }, 1500);
+    } else {
+        updateDiceStats();
+        drawDiceGraph();
+    }
+}
+
+function updateDiceStats() {
+    const totalEl = document.getElementById('dice-total');
+    const meanEl = document.getElementById('dice-mean');
+    const varEl = document.getElementById('dice-var');
+
+    const mean = diceTotal > 0 ? diceSum / diceTotal : 0;
+    const meanSq = diceTotal > 0 ? diceSquaredSum / diceTotal : 0;
+    const variance = Math.max(0, meanSq - (mean * mean));
+
+    if (totalEl) totalEl.innerText = diceTotal;
+    if (meanEl) meanEl.innerText = mean.toFixed(3);
+    if (varEl) varEl.innerText = variance.toFixed(3);
+
+    // Update Frequency bars
+    for (let i = 1; i <= 6; i++) {
+        const count = diceCounts[i - 1];
+        const pct = diceTotal > 0 ? (count / diceTotal) * 100 : 0;
+        const bar = document.getElementById(`dice-bar-${i}`);
+        const pctText = document.getElementById(`dice-pct-${i}`);
+
+        if (bar) bar.style.width = `${pct}%`;
+        if (pctText) pctText.innerText = `${pct.toFixed(1)}%`;
+    }
+}
+
+function drawDiceGraph() {
+    if (!diceGraphCtx || !diceGraphCanvas) return;
+    const ctx = diceGraphCtx;
+    const w = diceGraphCanvas.width;
+    const h = diceGraphCanvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Expected Value Line (3.5)
+    // Range 1 to 6
+    const minY = 1.0;
+    const maxY = 6.0;
+    const rangeY = maxY - minY;
+    const getY = (val) => h - ((val - minY) / rangeY) * h;
+
+    // Line 3.5
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    ctx.beginPath();
+    ctx.moveTo(0, getY(3.5));
+    ctx.lineTo(w, getY(3.5));
+    ctx.strokeStyle = '#ff7b00';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#ff7b00';
+    ctx.font = '10px Inter';
+    ctx.fillText('EV: 3.5', 5, getY(3.5) - 5);
+
+    if (diceHistory.length < 2) return;
+
+    // Plot History
+    ctx.beginPath();
+    ctx.strokeStyle = theme === 'light' ? '#4361ee' : '#4cc9f0';
+    ctx.lineWidth = 2;
+
+    const maxN = diceHistory[diceHistory.length - 1].n;
+    const minN = diceHistory[0].n;
+    const rangeN = maxN - minN || 1;
+
+    diceHistory.forEach((pt, i) => {
+        const x = ((pt.n - minN) / rangeN) * w;
+        const y = getY(pt.mean);
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
     });

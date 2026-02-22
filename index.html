@@ -497,6 +497,9 @@
                 <button class="glow-btn secondary sim-tab-btn" onclick="showSimulation('coin', this)">
                     <i class="fas fa-coins"></i> <span data-i18n="sim_coin_btn">Coin Flip</span>
                 </button>
+                <button class="glow-btn secondary sim-tab-btn" onclick="showSimulation('dice', this)">
+                    <i class="fas fa-dice"></i> <span data-i18n="sim_dice_btn">Dice Throw</span>
+                </button>
             </div>
 
             <!-- ──── GALTON BOARD ──── -->
@@ -782,6 +785,97 @@
                             </div>
                         </div>
                         <button class="glow-btn secondary" onclick="resetCoin()" data-i18n="btn_reset">Reset Simulation</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ──── DICE THROW ──── -->
+            <div id="sim-dice" class="sim-panel glass-panel" style="display:none; padding:20px;">
+                <div class="sim-header" style="margin-bottom:15px;">
+                     <h2 style="margin:0; background:linear-gradient(45deg, #4cc9f0, #4361ee); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_dice_title">Dice Simulation</h2>
+                     <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_dice_desc">Explore the Law of Large Numbers and see how the mean converges to 3.5.</p>
+                </div>
+
+                <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
+                    <div style="flex:2; min-width:300px; display:flex; flex-direction:column; background:var(--bg-display); border-radius:12px; border:1px solid var(--glass-border); padding:20px; position:relative; box-shadow:var(--glass-shadow);">
+                        <!-- 3D Dice Area -->
+                        <div style="flex:1; display:flex; justify-content:center; align-items:center; min-height:300px; perspective: 1000px;">
+                            <div id="dice-scene" class="dice-scene">
+                                <div id="dice-element" class="dice">
+                                    <div class="side front">1</div>
+                                    <div class="side back">6</div>
+                                    <div class="side right">3</div>
+                                    <div class="side left">4</div>
+                                    <div class="side top">2</div>
+                                    <div class="side bottom">5</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Convergence Graph -->
+                         <div style="margin-top:20px; height:150px; background:var(--bg-input); border-radius:8px; border:1px solid var(--glass-border); position:relative;">
+                             <canvas id="dice-graph" style="width:100%; height:100%;"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="controls-wrapper" style="flex:1; min-width:250px; display:flex; flex-direction:column; gap:15px;">
+                        <div class="stats-card" style="background:var(--bg-input); padding:15px; border-radius:10px; border:1px solid var(--glass-border);">
+                            <h4 style="margin:0 0 10px; color:#4cc9f0;" data-i18n="stat_realtime_analysis">Real-time Analysis</h4>
+                            <div id="dice-stats" style="color:var(--text-primary); font-size:0.95rem;">
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
+                                    <div><span data-i18n="stat_total_rolls">Total Rolls:</span> <span id="dice-total" style="font-weight:bold;">0</span></div>
+                                    <div><span data-i18n="stat_mean">Mean:</span> <span id="dice-mean" style="font-weight:bold; color:var(--accent-gold);">0.00</span></div>
+                                    <div style="grid-column: span 2;"><span data-i18n="stat_variance">Variance (Var):</span> <span id="dice-var" style="font-weight:bold;">0.00</span></div>
+                                </div>
+                                <div style="border-top:1px solid var(--border-dim); padding-top:10px;">
+                                    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;" data-i18n="stat_frequency">Frequency Distribution</p>
+                                    <div id="dice-frequencies" style="display:flex; flex-direction:column; gap:6px;">
+                                        <!-- Frequencies will be injected here -->
+                                        <div class="result-row" style="font-size:0.8rem;">
+                                            <span style="width:15px;">1</span>
+                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-1" style="background:#4cc9f0"></div></div>
+                                            <span id="dice-pct-1" style="width:35px; text-align:right;">0%</span>
+                                        </div>
+                                        <div class="result-row" style="font-size:0.8rem;">
+                                            <span style="width:15px;">2</span>
+                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-2" style="background:#4cc9f0"></div></div>
+                                            <span id="dice-pct-2" style="width:35px; text-align:right;">0%</span>
+                                        </div>
+                                        <div class="result-row" style="font-size:0.8rem;">
+                                            <span style="width:15px;">3</span>
+                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-3" style="background:#4cc9f0"></div></div>
+                                            <span id="dice-pct-3" style="width:35px; text-align:right;">0%</span>
+                                        </div>
+                                        <div class="result-row" style="font-size:0.8rem;">
+                                            <span style="width:15px;">4</span>
+                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-4" style="background:#4cc9f0"></div></div>
+                                            <span id="dice-pct-4" style="width:35px; text-align:right;">0%</span>
+                                        </div>
+                                        <div class="result-row" style="font-size:0.8rem;">
+                                            <span style="width:15px;">5</span>
+                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-5" style="background:#4cc9f0"></div></div>
+                                            <span id="dice-pct-5" style="width:35px; text-align:right;">0%</span>
+                                        </div>
+                                        <div class="result-row" style="font-size:0.8rem;">
+                                            <span style="width:15px;">6</span>
+                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-6" style="background:#4cc9f0"></div></div>
+                                            <span id="dice-pct-6" style="width:35px; text-align:right;">0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label data-i18n="sim_dice_roll_lbl">Roll the Dice</label>
+                            <div style="display:grid; grid-template-columns:1fr; gap:8px;">
+                                <button class="glow-btn" onclick="rollDice(1)" data-i18n="btn_roll_1">Roll Dice</button>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                                    <button class="glow-btn small secondary" onclick="rollDice(10)" data-i18n="btn_roll_10">+10</button>
+                                    <button class="glow-btn small secondary" onclick="rollDice(100)" data-i18n="btn_roll_100">+100</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="glow-btn secondary" onclick="resetDice()" data-i18n="btn_reset">Reset</button>
                     </div>
                 </div>
             </div>
