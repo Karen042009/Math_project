@@ -532,6 +532,10 @@ function drawNormal(ctx, w, h) {
 
     ctx.beginPath();
     ctx.lineWidth = 3;
+    if (theme === 'dark') {
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = 'rgba(157, 78, 221, 0.5)';
+    }
     ctx.strokeStyle = '#9d4edd'; // Neon Purple
 
     for (let px = 0; px <= w; px++) {
@@ -581,11 +585,17 @@ function drawVenn(ctx, w, h, highlight = null) {
 
     const cx = w / 2, cy = h / 2;
     
-    // Colors
-    const colBase = theme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.05)';
-    const colA = theme === 'light' ? 'rgba(219, 39, 119, 0.4)' : 'rgba(247, 37, 133, 0.5)';
-    const colB = theme === 'light' ? 'rgba(124, 58, 237, 0.4)' : 'rgba(168, 85, 247, 0.5)';
-    const colC = theme === 'light' ? 'rgba(180, 83, 9, 0.3)' : 'rgba(250, 204, 21, 0.4)';
+    // Colors - More vibrant for Dark mode
+    const colBase = theme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.04)';
+    const colA = theme === 'light' ? 'rgba(219, 39, 119, 0.4)' : 'rgba(247, 37, 133, 0.6)';
+    const colB = theme === 'light' ? 'rgba(124, 58, 237, 0.4)' : 'rgba(168, 85, 247, 0.6)';
+    const colC = theme === 'light' ? 'rgba(180, 83, 9, 0.3)' : 'rgba(255, 214, 10, 0.5)';
+    
+    // Add glow for dark mode
+    if (theme === 'dark') {
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = 'rgba(168, 85, 247, 0.3)';
+    }
     
     if (sets === '2') {
         const nA = parseInt(document.getElementById('v-a').value) || 0;
@@ -611,29 +621,30 @@ function drawVenn(ctx, w, h, highlight = null) {
         const isComp = highlight === 'complement';
 
         // Draw Universe
-        ctx.strokeStyle = '#555';
+        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
         ctx.strokeRect(cx - 250, cy - 180, 500, 360);
-        ctx.fillStyle = '#aaa';
+        ctx.fillStyle = theme === 'light' ? '#64748b' : '#888';
         ctx.fillText(`U = ${total}`, cx - 230, cy - 160);
 
         if (isComp) {
-             ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+             ctx.fillStyle = theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.1)';
              ctx.fillRect(cx - 250, cy - 180, 500, 360);
         }
 
         // Draw Base Circles
+        ctx.lineWidth = 1.5;
         // Left
         ctx.beginPath(); 
         ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
-        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(247, 37, 133, 0.1)';
+        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(247, 37, 133, 0.15)';
         ctx.fill();
-        ctx.strokeStyle = txtColor; 
+        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)'; 
         ctx.stroke();
 
         // Right
         ctx.beginPath(); 
         ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
-        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(168, 85, 247, 0.1)';
+        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(168, 85, 247, 0.15)';
         ctx.fill();
         ctx.stroke();
 
@@ -682,12 +693,14 @@ function drawVenn(ctx, w, h, highlight = null) {
         ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI); ctx.stroke();
         ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI); ctx.stroke();
 
-        // Labels
+        // Results Labels
+        ctx.shadowBlur = 0; // Turn off glow for text
         ctx.fillStyle = txtColor;
+        ctx.font = 'bold 13px Inter, sans-serif';
         ctx.fillText(`A only: ${onlyA}`, c1x - 30, cy);
         ctx.fillText(`B only: ${onlyB}`, c2x + 30, cy);
         ctx.fillText(`Both: ${nAB}`, cx, cy);
-
+        ctx.fillText(`None: ${none}`, cx - 200, cy + 150);
         // Analysis
         out.innerHTML = `
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
@@ -735,9 +748,9 @@ function drawVenn(ctx, w, h, highlight = null) {
         const isComp = highlight === 'complement';
 
         // Draw Universe
-        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.15)' : '#555';
+        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
         ctx.strokeRect(cx - 250, cy - 180, 500, 360);
-        ctx.fillStyle = theme === 'light' ? '#64748b' : '#aaa';
+        ctx.fillStyle = theme === 'light' ? '#64748b' : '#888';
         ctx.fillText(`U = ${total}`, cx - 230, cy - 160);
 
         if (isComp) {
@@ -749,7 +762,8 @@ function drawVenn(ctx, w, h, highlight = null) {
         const drawCircle = (x, y, col) => {
              ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI);
              ctx.fillStyle = col; ctx.fill(); 
-             ctx.strokeStyle = txtColor; ctx.stroke();
+             ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)';
+             ctx.stroke();
         };
 
         // Base

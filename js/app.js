@@ -468,7 +468,7 @@ function showModal(isCorrect, problem, attempts = 0) {
 
     if (isCorrect) {
         document.getElementById('modal-title').innerText = ui.modal_correct[currentLang];
-        document.getElementById('modal-title').style.color = '#4cc9f0';
+        document.getElementById('modal-title').style.color = 'var(--accent-blue)';
         document.getElementById('modal-msg').innerHTML = `
             <div style="text-align:center; padding:10px 0;">
                 <div style="font-size:3rem; margin-bottom:10px;">🎉</div>
@@ -482,7 +482,7 @@ function showModal(isCorrect, problem, attempts = 0) {
         btn.onclick = closeModal;
     } else {
         document.getElementById('modal-title').innerText = ui.modal_incorrect[currentLang];
-        document.getElementById('modal-title').style.color = '#f72585';
+        document.getElementById('modal-title').style.color = 'var(--accent-pink)';
 
         // Find related theory section
         let theoryTitle = null;
@@ -505,44 +505,47 @@ function showModal(isCorrect, problem, attempts = 0) {
         let feedbackHtml = '';
 
         // Difficulty badge
-        const diffColors = { beginner: '#4cc9f0', intermediate: '#ffd60a', advanced: '#f72585', olympic: '#9d4edd' };
+        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const diffColors = theme === 'light' 
+            ? { beginner: '#0284c7', intermediate: '#b45309', advanced: '#db2777', olympic: '#7c3aed' }
+            : { beginner: '#4cc9f0', intermediate: '#ffd60a', advanced: '#f72585', olympic: '#9d4edd' };
         const diffLabels = { beginner: ui.filter_beginner, intermediate: ui.filter_intermediate, advanced: ui.filter_advanced, olympic: ui.filter_olympic };
         const diffLabel = diffLabels[problem.difficulty] ? diffLabels[problem.difficulty][currentLang] : problem.difficulty;
-        const diffColor = diffColors[problem.difficulty] || '#aaa';
+        const diffColor = diffColors[problem.difficulty] || (theme === 'light' ? '#64748b' : '#aaa');
 
-        feedbackHtml += `<div style="margin-bottom:12px;">
-            <span style="display:inline-block; padding:3px 10px; border-radius:12px; font-size:0.75rem; font-weight:600; background:${diffColor}22; color:${diffColor}; border:1px solid ${diffColor}44;">
+        feedbackHtml += `<div style="margin-bottom:15px; text-align:center;">
+            <span style="display:inline-block; padding:4px 12px; border-radius:16px; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; background:${diffColor}15; color:${diffColor}; border:1.5px solid ${diffColor}40;">
                 ${diffLabel}
             </span>
         </div>`;
 
         if (attempts >= 3) {
             // Show full solution on 3rd+ failed attempt
-            let titlePrefix = currentLang === 'hy' ? "Խնդրի ճիշտ և գրագետ լուծումը" : (currentLang === 'ru' ? "Правильное решение" : "Correct Solution");
+            titlePrefix = currentLang === 'hy' ? "Խնդրի ճիշտ և գրագետ լուծումը" : (currentLang === 'ru' ? "Правильное решение" : "Correct Solution");
             document.getElementById('modal-title').innerText = titlePrefix + " (" + attempts + ")";
-            document.getElementById('modal-title').style.color = '#ffd60a';
+            document.getElementById('modal-title').style.color = 'var(--accent-gold)';
 
             let hint = (problem.related_theory_solution && (problem.related_theory_solution[currentLang] || problem.related_theory_solution['en'])) || (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
             
             feedbackHtml += `<p style="line-height:1.7;">${currentLang === 'hy' ? 'Քանի որ սա ձեր 3-րդ անհաջող փորձն էր, տրամադրում ենք խնդրի գրագետ լուծումը․' : (currentLang === 'ru' ? 'Так как это ваша третья неудачная попытка, мы предоставляем правильное решение.' : 'Since this is your 3rd incorrect attempt, here is the correct solution.')}</p>`;
             
             feedbackHtml += `
-                 <div style="margin-top:15px; padding:15px; background:rgba(6,214,160,0.1); border-left:4px solid #06d6a0; border-radius:0 8px 8px 0; font-size:1rem;">
-                    <div style="color:var(--accent-gold); font-weight:bold; margin-bottom:8px;">
+                 <div style="margin-top:15px; padding:18px; background:var(--neon-purple-dim); border-left:4px solid var(--neon-purple); border-radius:10px; font-size:1rem; border:1px solid var(--glass-border);">
+                    <div style="color:var(--accent-gold); font-weight:bold; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
                         <i class="fas fa-lightbulb"></i> ${currentLang === 'hy' ? 'Ամբողջական ցուցում և լուծում․' : (currentLang === 'ru' ? 'Полное указание и решение:' : 'Full Solution:')}
                     </div>
-                    ${hint ? `<span style="display:block; margin-bottom:12px; color:#e0e0e0; font-style:italic; line-height: 1.5;">"${hint}"</span>` : ''}
-                    <div style="display:inline-block; padding:8px 12px; background:rgba(0,0,0,0.3); border-radius:6px; font-family:'Fira Code',monospace; font-size:1.1rem; border:1px solid #4cc9f0;">
-                       <span style="color:#aaa;">${currentLang === 'hy' ? 'Պատասխան՝' : (currentLang === 'ru' ? 'Ответ:' : 'Answer:')}</span> <strong style="color:#a855f7; margin-left:5px;">${problem.answer}</strong>
+                    ${hint ? `<span style="display:block; margin-bottom:15px; color:var(--text-primary); font-style:italic; line-height: 1.6;">"${hint}"</span>` : ''}
+                    <div style="display:inline-block; padding:10px 16px; background:var(--bg-input); border-radius:8px; font-family:'Fira Code',monospace; font-size:1.1rem; border:1px solid var(--glass-border); box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                       <span style="color:var(--text-muted);">${currentLang === 'hy' ? 'Պատասխան՝' : (currentLang === 'ru' ? 'Ответ:' : 'Answer:')}</span> <strong style="color:var(--accent-pink); margin-left:8px;">${problem.answer}</strong>
                     </div>
                 </div>
             `;
 
             if (theorySectionTitle) {
                 feedbackHtml += `
-                    <div style="margin-top:15px; font-size:0.85rem; color:#888;">
+                    <div style="margin-top:15px; font-size:0.85rem; color:var(--text-muted);">
                         <i class="fas fa-book" style="margin-right:5px;"></i>
-                        ${theorySectionTitle} → <strong style="color:#ccc;">${theoryTitle}</strong>
+                        ${theorySectionTitle} → <strong style="color:var(--text-primary);">${theoryTitle}</strong>
                     </div>
                 `;
             }
@@ -556,9 +559,9 @@ function showModal(isCorrect, problem, attempts = 0) {
                 let hintHtml = '';
                 if (hint) {
                     hintHtml = `
-                        <div style="margin-top:15px; padding:12px 15px; background:rgba(157,78,221,0.1); border-left:3px solid var(--neon-purple); border-radius:0 8px 8px 0; font-family:'Fira Code',monospace; font-size:0.9rem;">
-                            <strong style="color:var(--accent-gold);">${ui.modal_hint_label[currentLang]}</strong><br>
-                            <span style="color:#e0e0e0;">${hint}</span>
+                        <div style="margin-top:15px; padding:14px 18px; background:var(--neon-purple-dim); border-left:4px solid var(--neon-purple); border-radius:10px; font-family:'Fira Code',monospace; font-size:0.9rem; border:1px solid var(--glass-border);">
+                            <strong style="color:var(--accent-gold); display:block; margin-bottom:5px;">${ui.modal_hint_label[currentLang]}</strong>
+                            <span style="color:var(--text-primary);">${hint}</span>
                         </div>
                     `;
                 }
@@ -569,9 +572,9 @@ function showModal(isCorrect, problem, attempts = 0) {
                 // Theory path breadcrumb
                 if (theorySectionTitle) {
                     feedbackHtml += `
-                        <div style="margin-top:12px; font-size:0.8rem; color:#888;">
+                        <div style="margin-top:15px; font-size:0.8rem; color:var(--text-muted);">
                             <i class="fas fa-book" style="margin-right:5px;"></i>
-                            ${theorySectionTitle} → <strong style="color:#ccc;">${theoryTitle}</strong>
+                            ${theorySectionTitle} → <strong style="color:var(--text-primary);">${theoryTitle}</strong>
                         </div>
                     `;
                 }
@@ -580,9 +583,9 @@ function showModal(isCorrect, problem, attempts = 0) {
             }
         } else {
             // First attempt
-            feedbackHtml += `<p>${ui.modal_incorrect_msg[currentLang]}</p>`;
+            feedbackHtml += `<p style="line-height:1.6;">${ui.modal_incorrect_msg[currentLang]}</p>`;
             let tryAgainMsg = currentLang === 'hy' ? 'Տրամաբանեք և փորձեք ևս մեկ անգամ։' : (currentLang === 'ru' ? 'Подумайте и попробуйте еще раз.' : 'Think about it and try again.');
-            feedbackHtml += `<p style="font-size:0.95rem; color:#aaa; margin-top:10px;"><i class="fas fa-lightbulb" style="color:#ffd60a"></i> ${tryAgainMsg}</p>`;
+            feedbackHtml += `<p style="font-size:0.95rem; color:var(--text-muted); margin-top:12px; display:flex; align-items:center; gap:8px;"><i class="fas fa-lightbulb" style="color:var(--accent-gold)"></i> ${tryAgainMsg}</p>`;
         }
 
         document.getElementById('modal-msg').innerHTML = feedbackHtml;
