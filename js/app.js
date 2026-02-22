@@ -54,7 +54,7 @@ function initTheme() {
 function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
+
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem(THEME_KEY, newTheme);
 }
@@ -337,9 +337,14 @@ function renderProblems(problems) {
             </span>
             <p>${qText}</p>
             <input type="text" class="problem-input" placeholder="..." id="input-${prob.id}" ${solved ? 'disabled' : ''}>
-            <button class="check-btn" onclick="checkAnswer(${prob.id})">
-                ${ui.btn_check[currentLang] || "Check"}
-            </button>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <button class="check-btn" onclick="checkAnswer(${prob.id})" ${solved ? 'disabled' : ''}>
+                    ${ui.btn_check[currentLang] || "Check"}
+                </button>
+                <button class="secondary-btn" style="padding:10px; font-size:0.9rem;" onclick="showProblemHint(${prob.id})" ${solved ? 'disabled' : ''}>
+                    <i class="fas fa-lightbulb"></i> ${ui.btn_hint[currentLang] || "Hint"}
+                </button>
+            </div>
         </div>
         `
     }).join('');
@@ -388,7 +393,7 @@ function checkAnswer(id) {
     saveProgress(prog);
 
     renderPracticeStats();
-    
+
     // Re-render current grid state so solved problems are moved to "Solved" tab
     const currentFilterBtn = document.querySelector('.filter-btn.active');
     const filterLevel = currentFilterBtn ? currentFilterBtn.getAttribute('data-filter') : 'all';
@@ -396,6 +401,37 @@ function checkAnswer(id) {
 
     const attemptsCount = prog.attempts[key];
     showModal(isCorrect, problem, attemptsCount);
+}
+
+function showProblemHint(id) {
+    const problem = allProblems.find(p => p.id === id);
+    if (!problem) return;
+
+    // We reuse showModal with a special flag or just call a simpler version
+    // For now, let's use a simple alert-like specialized modal content
+    const ui = window.probabilityData.ui;
+    const modal = document.getElementById('feedback-modal');
+    modal.style.display = 'flex';
+
+    document.getElementById('modal-title').innerText = ui.modal_hint_label[currentLang];
+    document.getElementById('modal-title').style.color = 'var(--accent-gold)';
+
+    const hintText = problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'] || "...";
+
+    document.getElementById('modal-msg').innerHTML = `
+        <div style="margin-top:10px; padding:18px; background:var(--neon-purple-dim); border-left:4px solid var(--neon-purple); border-radius:10px; font-size:1rem; border:1px solid var(--glass-border);">
+            <p style="line-height:1.6; color:var(--text-primary);">${hintText}</p>
+        </div>
+    `;
+
+    const btn = document.getElementById('modal-action-btn');
+    btn.style.display = 'inline-block';
+    btn.innerText = ui.btn_continue[currentLang];
+    btn.onclick = closeModal;
+
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([modal]);
+    }
 }
 
 function normalizeAnswerString(s) {
@@ -506,7 +542,7 @@ function showModal(isCorrect, problem, attempts = 0) {
 
         // Difficulty badge
         const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-        const diffColors = theme === 'light' 
+        const diffColors = theme === 'light'
             ? { beginner: '#0284c7', intermediate: '#b45309', advanced: '#db2777', olympic: '#7c3aed' }
             : { beginner: '#4cc9f0', intermediate: '#ffd60a', advanced: '#f72585', olympic: '#9d4edd' };
         const diffLabels = { beginner: ui.filter_beginner, intermediate: ui.filter_intermediate, advanced: ui.filter_advanced, olympic: ui.filter_olympic };
@@ -526,9 +562,9 @@ function showModal(isCorrect, problem, attempts = 0) {
             document.getElementById('modal-title').style.color = 'var(--accent-gold)';
 
             let hint = (problem.related_theory_solution && (problem.related_theory_solution[currentLang] || problem.related_theory_solution['en'])) || (problem.related_theory_hint && (problem.related_theory_hint[currentLang] || problem.related_theory_hint['en'])) || "";
-            
+
             feedbackHtml += `<p style="line-height:1.7;">${currentLang === 'hy' ? 'Քանի որ սա ձեր 3-րդ անհաջող փորձն էր, տրամադրում ենք խնդրի գրագետ լուծումը․' : (currentLang === 'ru' ? 'Так как это ваша третья неудачная попытка, мы предоставляем правильное решение.' : 'Since this is your 3rd incorrect attempt, here is the correct solution.')}</p>`;
-            
+
             feedbackHtml += `
                  <div style="margin-top:15px; padding:18px; background:var(--neon-purple-dim); border-left:4px solid var(--neon-purple); border-radius:10px; font-size:1rem; border:1px solid var(--glass-border);">
                     <div style="color:var(--accent-gold); font-weight:bold; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
@@ -666,7 +702,7 @@ function resetProgress() {
     // Reload UI
     initProblems();
     renderPracticeStats();
-    
+
     const ui = window.probabilityData.ui;
     const msg = {
         hy: "Առաջադիմությունը զրոյացվեց․",
