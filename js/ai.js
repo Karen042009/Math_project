@@ -1,19 +1,38 @@
 /* 
- * GENERATOR.JS (Formerly ai.js)
- * Handles Dynamic Problem Generation (Offline Mode)
+ * AI.JS
+ * Handles AI-powered Problem Analysis & Tutoring
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Hide the "Upload Image" section as it requires heavy AI
+    // Show the "Upload Image" section as we now have AI
     const uploadLabel = document.querySelector('.file-upload-label');
-    if (uploadLabel) uploadLabel.style.display = 'none';
+    if (uploadLabel) uploadLabel.style.display = 'inline-block';
 
-    // Update texts to reflect "Generator" instead of "AI"
+    // Ensure AI Branding is correct
     const aiTitle = document.querySelector('.ai-badge span');
-    if (aiTitle && currentLang === 'en') aiTitle.innerText = "Dynamic Problem Generator";
+    if (aiTitle) {
+        const labels = { hy: "AI Խորացված Ուսուցիչ", en: "AI Advanced Tutor", ru: "AI Продвинутый Тьютор" };
+        aiTitle.innerText = labels[currentLang] || labels['en'];
+    }
 });
 
 let currentGeneratedProblem = null;
+let aiAttempts = 0;
+
+function resetAISession() {
+    currentGeneratedProblem = null;
+    aiAttempts = 0;
+    document.getElementById('ai-question-text').innerText = '';
+    document.getElementById('ai-user-text').value = '';
+    document.getElementById('ai-feedback').style.display = 'none';
+    document.getElementById('ai-workspace').style.display = 'none';
+    
+    // Clear image preview
+    const previewContainer = document.getElementById('img-preview-container');
+    if (previewContainer) previewContainer.style.display = 'none';
+    const fileInput = document.getElementById('ai-user-image');
+    if (fileInput) fileInput.value = '';
+}
 
 async function generateAIProblem() {
     const topicSelect = document.getElementById('ai-topic');
@@ -22,7 +41,8 @@ async function generateAIProblem() {
     const workspace = document.getElementById('ai-workspace');
     const feedback = document.getElementById('ai-feedback');
 
-    // Reset UI
+    // Reset UI & Counter
+    aiAttempts = 0;
     workspace.style.display = 'block';
     feedback.style.display = 'none';
     document.getElementById('ai-user-text').value = '';
@@ -31,42 +51,26 @@ async function generateAIProblem() {
     // Simulate delay for "feeling"
     await new Promise(r => setTimeout(r, 600));
 
-    // logical generation
     if (window.probabilityData && window.probabilityData.generateBatch) {
-        // Collect filters
         const filters = {
             topic: topicSelect ? topicSelect.value : 'all',
             difficulty: diffSelect ? diffSelect.value : 'all'
         };
 
-        // Generate a text problem using our template engine
-        // Note: The templates currently pick random topics. 
-        // We can filter by "related_theory_id" mapping if we want specific topics.
-        // For now, we'll generate regular batch and pick one, or just pick random.
-
-        // Let's rely on the Batch Generator we built in data.js
         const batch = window.probabilityData.generateBatch(1, filters);
         if (batch && batch.length > 0) {
             currentGeneratedProblem = batch[0];
-
-            // Get language
             const lang = currentLang || 'en';
             const q = currentGeneratedProblem.question[lang] || currentGeneratedProblem.question['en'] || currentGeneratedProblem.question;
-
             outputText.innerText = typeof q === 'string' ? q : q[lang];
-
-            // Re-render MathJax
             if (window.MathJax) MathJax.typesetPromise([outputText]);
         } else {
             outputText.innerText = "Error: Could not generate problem.";
         }
-    } else {
-        outputText.innerText = "Generator data not found.";
     }
 }
 
-function checkSolutionWithAI() {
-    // Actually creates a local check
+async function checkSolutionWithAI() {
     if (!currentGeneratedProblem) return;
 
     const userVal = document.getElementById('ai-user-text').value.trim();
@@ -75,46 +79,104 @@ function checkSolutionWithAI() {
     const contentDiv = document.getElementById('ai-feedback-content');
 
     if (!userVal) {
-        alert(currentLang === 'hy' ? "Խնդրում ենք մուտքագրել պատասխանը:" : "Please enter an answer.");
+        alert(currentLang === 'hy' ? "Խնդրում ենք մուտքագրել պատասխանը կամ լուծումը:" : "Please enter your answer or solution.");
         return;
     }
 
-    // Check Logic
-    let isCorrect = false;
-    const correctAns = currentGeneratedProblem.answer;
+    aiAttempts++;
+    feedbackDiv.style.display = 'block';
+    contentDiv.innerHTML = `<i class="fas fa-robot fa-spin"></i> AI is analyzing (Attempt #${aiAttempts})...`;
+    scoreSpan.innerText = "--/100";
 
-    // Use custom check function if exists (defined in data.js templates)
-    // Note: The object from generateBatch has 'answer' but the checkFn might be lost if we didn't preserve it?
-    // In data.js generateBatch, we return: { id, difficulty, question, answer, ... } 
-    // We did NOT pass checkFn in generateBatch. Let's assume simple comparison for now or fix data.js.
-    // However, I can try to find the template again, OR just use compareAnswers from app.js if available globally.
+    // If API KEY is missing, fallback to local check
+    if (!window.GEMINI_API_KEY || window.GEMINI_API_KEY.includes("YOUR_KEY")) {
+        let isCorrect = (typeof compareAnswers === 'function') 
+            ? compareAnswers(userVal, currentGeneratedProblem.answer)
+            : (userVal === currentGeneratedProblem.answer);
 
-    // We need to access the helper compareAnswers from app.js. 
-    // Since app.js is loaded, compareAnswers should be available if it's global? 
-    // It's defined as function compareAnswers... in app.js, so it's global scope.
-
-    if (typeof compareAnswers === 'function') {
-        isCorrect = compareAnswers(userVal, correctAns);
-    } else {
-        // Fallback
-        isCorrect = (userVal === correctAns);
+        scoreSpan.innerText = isCorrect ? "100/100" : "0/100";
+        scoreSpan.style.color = isCorrect ? "#4cc9f0" : "#f72585";
+        contentDiv.innerHTML = isCorrect 
+            ? `<p>${currentLang === 'hy' ? 'Ճիշտ է:' : 'Correct!'} ${currentGeneratedProblem.answer}</p>`
+            : `<p>${currentLang === 'hy' ? 'Սխալ է:' : 'Incorrect.'} ${currentLang === 'hy' ? 'Ճիշտ պատասխան՝' : 'Expected:'} ${currentGeneratedProblem.answer}</p>`;
+        return;
     }
 
-    feedbackDiv.style.display = 'block';
-    if (isCorrect) {
-        scoreSpan.innerText = "100/100";
-        scoreSpan.style.color = "#4cc9f0";
-        contentDiv.innerHTML = `<p style="color:#a855f7">${currentLang === 'hy' ? 'Ճիշտ է:' : 'Correct!'} ${correctAns}</p>`;
-    } else {
-        scoreSpan.innerText = "0/100";
-        scoreSpan.style.color = "#f72585";
-        contentDiv.innerHTML = `
-            <p style="color:#f72585">${currentLang === 'hy' ? 'Սխալ է:' : 'Incorrect.'}</p>
-            <p>${currentLang === 'hy' ? 'Ճիշտ պատասխան՝' : 'Correct answer:'} <strong>${correctAns}</strong></p>
-        `;
+    try {
+        let tierHint = "";
+        if (aiAttempts === 1) {
+            tierHint = "The student just submitted their FIRST attempt. If they are wrong, DON'T give the answer. Just tell them it's wrong and highlight where exactly they might be mistaken.";
+        } else if (aiAttempts === 2) {
+            tierHint = "This is the SECOND attempt. If they are still wrong, provide a SMART HINT or a formula they should use, but still DON'T reveal the final answer.";
+        } else {
+            tierHint = "This is their 3rd or more attempt. If they are wrong, reveal the FULL CORRECT SOLUTION and explaining the steps clearly.";
+        }
+
+        const prompt = `You are a professional Mathematics Tutor on the ProbSpace platform.
+        Analyze the student's solution for the following probability problem.
+        
+        PROBLEM: ${currentGeneratedProblem.question[currentLang] || currentGeneratedProblem.question['en']}
+        CORRECT KEY ANSWER: ${currentGeneratedProblem.answer}
+        
+        STUDENT SUBMISSION:
+        "${userVal}"
+        
+        CONTEXT: ${tierHint}
+        
+        TASK:
+        1. Check if the logic is correct.
+        2. Assign a score from 0 to 100.
+        3. Provide feedback based on the attempt number provided in CONTEXT.
+        
+        IMPORTANT: Respond ONLY in ${currentLang === 'hy' ? 'Armenian' : (currentLang === 'ru' ? 'Russian' : 'English')}.
+        Format your response as a valid JSON object:
+        {
+          "score": number,
+          "feedback_html": "string with HTML tags"
+        }`;
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${window.GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: { response_mime_type: "application/json" }
+            })
+        });
+
+        const data = await response.json();
+        const rawText = data.candidates[0].content.parts[0].text;
+        // Clean markdown if AI returned it
+        const cleanJson = rawText.replace(/```json|```/g, "").trim();
+        const aiResponse = JSON.parse(cleanJson);
+
+        scoreSpan.innerText = aiResponse.score + "/100";
+        scoreSpan.style.color = aiResponse.score >= 70 ? "#4cc9f0" : (aiResponse.score >= 40 ? "#ffd60a" : "#f72585");
+        contentDiv.innerHTML = aiResponse.feedback_html;
+
+        if (window.MathJax) MathJax.typesetPromise([contentDiv]);
+
+    } catch (error) {
+        console.error("AI Error:", error);
+        contentDiv.innerHTML = `<p style="color:#f72585">AI Error: Could not connect to the brain. Please try again later.</p>`;
+    }
+}
+
+// Preview image logic
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('img-preview').src = e.target.result;
+            document.getElementById('img-preview-container').style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
     }
 }
 
 // Global scope
 window.generateAIProblem = generateAIProblem;
 window.checkSolutionWithAI = checkSolutionWithAI;
+window.resetAISession = resetAISession;
+window.previewImage = previewImage;
+

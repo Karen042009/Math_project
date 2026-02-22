@@ -628,6 +628,34 @@ window.onclick = function (event) {
     }
 }
 
+/* --- PROGRESS MANAGEMENT --- */
+function confirmResetProgress() {
+    const msg = {
+        hy: "Վստա՞հ եք, որ ուզում եք ջնջել ողջ առաջադիմությունը։ Այս գործողությունը անդառնալի է։",
+        en: "Are you sure you want to reset all progress? This cannot be undone.",
+        ru: "Вы уверены, что хотите сбросить весь прогресс? Это действие необратимо."
+    };
+    if (confirm(msg[currentLang] || msg['en'])) {
+        resetProgress();
+    }
+}
+
+function resetProgress() {
+    localStorage.removeItem(PROGRESS_KEY);
+    // Reload UI
+    initProblems();
+    renderPracticeStats();
+    
+    const ui = window.probabilityData.ui;
+    const msg = {
+        hy: "Առաջադիմությունը զրոյացվեց․",
+        en: "Progress reset successfully.",
+        ru: "Прогресс успешно сброшен."
+    };
+    alert(msg[currentLang] || msg['en']);
+    window.location.reload(); // Hard reload for clean state
+}
+
 /* --- HASH ROUTING (deep-linking) --- */
 function handleInitialHashRoute() {
     const hash = (location.hash || '').replace(/^#/, '').trim();

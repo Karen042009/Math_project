@@ -11,7 +11,10 @@ window.probabilityData = {
     nav_home: { hy: "Գլխավոր", en: "Home", ru: "Главная" },
     nav_practice: { hy: "Խնդիրներ", en: "Practice", ru: "Задачи" },
     nav_lab: { hy: "Լաբորատորիա", en: "Lab", ru: "Лаборатория" },
-    nav_simulations: { hy: "Սիմուլյացիաներ", en: "Simulations", ru: "Симуляции" },
+    nav_simulations: { hy: "Սիմուլյացիաներ", en: "Simulations", ru: "Симуляторы" },
+    btn_reset_progress: { hy: "Ջնջել առաջադիմությունը", en: "Reset Progress", ru: "Сбросить прогресс" },
+    btn_clear_session: { hy: "Մաքրել սեսիան", en: "Clear Session", ru: "Очистить сессию" },
+    btn_clear: { hy: "Մաքրել", en: "Clear", ru: "Очистить" },
     sidebar_title: { hy: "Բովանդակություն", en: "Contents", ru: "Содержание" },
 
     filter_all: { hy: "Բոլորը", en: "All", ru: "Все" },
@@ -66,9 +69,9 @@ window.probabilityData = {
 
     // Practice & AI
     ai_badge_text: { hy: "Սխալների վերլուծության համակարգ՝ կապ տեսության հետ", en: "Smart feedback system — links wrong answers to theory", ru: "Система анализа ошибок — связь с теорией" },
-    section_ai_gen: { hy: "Offline Խնդիրների Գեներատոր", en: "Offline Problem Generator", ru: "Offline Генератор Задач" },
-    btn_generate_problem: { hy: "Ստեղծել խնդիր", en: "Generate Problem", ru: "Создать задачу" },
-    ai_workspace_title: { hy: "Ստեղծված խնդիր", en: "Generated Problem", ru: "Сгенерированная задача" },
+    section_ai_gen: { hy: "AI Խորացված Ուսուցիչ", en: "AI Advanced Tutor", ru: "AI Продвинутый Тьютор" },
+    btn_generate_problem: { hy: "Ստեղծել նոր խնդիր", en: "Generate with AI", ru: "Создать через AI" },
+    ai_workspace_title: { hy: "AI աշխատանքային տիրույթ", en: "AI Workspace", ru: "Рабочая область AI" },
     ai_placeholder_solution: { hy: "Գրեք Ձեր լուծումը այստեղ...", en: "Write your solution here...", ru: "Напишите ваше решение здесь..." },
     ai_upload_label: { hy: "Վերբեռնել ձեռագիր լուծումը", en: "Upload handwritten solution", ru: "Загрузить рукописное решение" },
     btn_ask_ai: { hy: "Ստուգել", en: "Check Answer", ru: "Проверить" },

@@ -131,6 +131,7 @@
                     <div class="particle"></div>
                     <div class="particle"></div>
                 </div>
+
                 <div class="hero-content">
                     <h1 class="hero-title">
                         <span class="hero-math-icon"><i class="fas fa-infinity"></i></span>
@@ -201,11 +202,13 @@
 
         <!-- ─────────────── PRACTICE PAGE ─────────────── -->
         <section id="practice" class="page-section">
-            <div class="practice-header">
-                <h1><i class="fas fa-dumbbell" style="color:var(--accent-pink)"></i> <span
-                        data-i18n="section_practice">The Practice Arena</span></h1>
-                <div class="ai-badge"><i class="fas fa-brain"></i> <span data-i18n="ai_badge_text">Smart feedback system
-                        — links wrong answers to theory</span>
+            <div class="practice-header" style="display:flex; justify-content:space-between; align-items:center;">
+                <h1><i class="fas fa-dumbbell" style="color:var(--accent-pink)"></i> <span data-i18n="section_practice">The Practice Arena</span></h1>
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <button class="reset-btn-minimal" onclick="confirmResetProgress()" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#aaa; font-size:0.8rem; padding:8px 12px; border-radius:6px; cursor:pointer;">
+                        <i class="fas fa-trash-alt"></i> <span data-i18n="btn_reset_progress">Reset Progress</span>
+                    </button>
+                    <div class="ai-badge"><i class="fas fa-brain"></i> <span data-i18n="ai_badge_text">Smart feedback system — links wrong answers to theory</span></div>
                 </div>
             </div>
 
@@ -241,10 +244,14 @@
 
             <!-- AI Section -->
             <div style="margin-top:50px; padding-top:30px; border-top:1px solid rgba(255,255,255,0.1);">
-                <h2 style="margin-bottom:20px;">
-                    <i class="fas fa-robot" style="color:var(--neon-purple)"></i> <span data-i18n="section_ai_gen">AI
-                        Problem Generator</span>
-                </h2>
+                <div class="ai-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h2 style="margin:0;">
+                        <i class="fas fa-robot" style="color:var(--neon-purple)"></i> <span data-i18n="section_ai_gen">AI Advanced Tutor</span>
+                    </h2>
+                    <button class="reset-btn-minimal" onclick="resetAISession()" style="background:rgba(247, 37, 133, 0.1); border:1px solid rgba(247, 37, 133, 0.2); color:var(--accent-pink); font-size:0.8rem; padding:6px 12px; border-radius:6px; cursor:pointer;">
+                        <i class="fas fa-sync-alt"></i> <span data-i18n="btn_clear_session">Clear Session</span>
+                    </button>
+                </div>
                 <div class="ai-controls">
                     <select id="ai-topic" class="ai-select">
                         <option value="basic probability" data-i18n="topic_basic">Basic Probability</option>
@@ -780,6 +787,9 @@
     </div>
 
     <!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
+    <script>
+        window.GEMINI_API_KEY = "AIzaSyDghOkcsuUBMSVE2qVDKMyNmE4EAad1DLo";
+    </script>
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
     <script src="js/calculator.js"></script>
