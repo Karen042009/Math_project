@@ -32,20 +32,20 @@
 }
 
 .lab-panel h2 {
-    color: #fff;
+    color: var(--text-primary);
     margin-bottom: 20px;
     font-size: 1.45rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--border-dim);
     padding-bottom: 12px;
 }
 
 /* ═══════════ CALCULATOR DISPLAY ═══════════ */
 .calc-display-container {
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--bg-display);
     border-radius: 14px;
     padding: 20px 22px;
     margin-bottom: 22px;
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    border: 1px solid var(--glass-border);
     box-shadow: inset 0 0 25px rgba(168, 85, 247, 0.06);
     text-align: right;
     min-height: 85px;
@@ -63,8 +63,8 @@
 #calc-input {
     font-family: 'Fira Code', monospace;
     font-size: 2.1rem;
-    color: #ffffff !important;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    color: var(--text-primary) !important;
+    text-shadow: none;
     background: transparent;
     border: none;
     width: 100%;
@@ -75,7 +75,8 @@
 }
 
 #calc-input::placeholder {
-    color: rgba(255, 255, 255, 0.18);
+    color: var(--text-muted);
+    opacity: 0.3;
     font-size: 1.4rem;
 }
 
@@ -99,10 +100,10 @@
     padding: 14px;
     font-size: 1.15rem;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-dim);
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.04);
-    color: #fff;
+    background: var(--bg-input);
+    color: var(--text-primary);
     transition: all 0.2s var(--transition-smooth);
     font-family: 'Fira Code', monospace;
     position: relative;
@@ -171,9 +172,9 @@
 
 #dist-select,
 .modern-select {
-    background: rgba(0, 0, 0, 0.4);
-    color: #fff;
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
     padding: 10px 14px;
     border-radius: 10px;
     font-size: 0.95rem;
@@ -203,9 +204,9 @@
 }
 
 #dist-params input {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: white;
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
     width: 60px;
     padding: 8px;
     border-radius: 8px;
@@ -230,9 +231,9 @@
 }
 
 #venn-op {
-    background: rgba(0, 0, 0, 0.4);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
     padding: 8px 12px;
     border-radius: 8px;
     outline: none;
@@ -245,12 +246,12 @@
 
 /* ═══════════ LAB CANVAS ═══════════ */
 #lab-canvas {
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--bg-display);
     border-radius: 14px;
     width: 100%;
     height: 400px;
-    border: 1px solid rgba(168, 85, 247, 0.15);
-    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.1);
     transition: border-color 0.3s ease;
 }
 
@@ -285,9 +286,9 @@
 
 .ai-select {
     padding: 10px 12px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #fff;
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
     border-radius: 10px;
     outline: none;
     transition: all 0.3s ease;
@@ -302,9 +303,9 @@
     width: 100%;
     min-height: 100px;
     padding: 16px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
     border-radius: 14px;
     resize: vertical;
     margin-bottom: 14px;
@@ -342,9 +343,9 @@
     display: none;
     margin-top: 24px;
     padding: 24px;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--bg-input);
     border-radius: 16px;
-    border: 1px solid rgba(250, 204, 21, 0.2);
+    border: 1px solid var(--accent-gold);
     backdrop-filter: blur(10px);
 }
 
@@ -353,14 +354,14 @@
     display: flex;
     gap: 6px;
     margin-bottom: 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--border-dim);
     padding-bottom: 10px;
 }
 
 .calc-tab {
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-muted);
     padding: 8px 16px;
     cursor: pointer;
     font-weight: 600;
@@ -436,9 +437,9 @@
 
 /* ═══════════ ADVANCED VIS CONTROLS ═══════════ */
 .op-btn {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #fff;
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
     padding: 6px 12px;
     border-radius: 8px;
     cursor: pointer;
@@ -499,8 +500,8 @@
 .param-group input {
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-primary);
     width: 50px;
     text-align: center;
     font-weight: bold;
@@ -533,7 +534,8 @@
 .dist-output-content {
     font-family: 'Fira Code', monospace;
     font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-primary);
+    opacity: 0.8;
     line-height: 1.6;
 }
 

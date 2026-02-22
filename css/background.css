@@ -17,10 +17,15 @@
 .bg-particle {
     position: absolute;
     border-radius: 50%;
-    filter: blur(40px);
-    opacity: 0.35;
+    filter: blur(50px);
+    opacity: 0.25;
     will-change: transform, left, top;
-    transition: transform 0.1s linear;
+    transition: transform 0.1s linear, background 0.5s ease;
+}
+
+[data-theme='light'] .bg-particle {
+    opacity: 0.15;
+    filter: blur(80px);
 }
 
 @keyframes bgFloat {
@@ -74,7 +79,7 @@
     position: absolute;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.05), transparent 70%);
+    background: radial-gradient(circle, var(--neon-purple-dim), transparent 70%);
     pointer-events: none;
     z-index: -1;
     transform: translate(-50%, -50%);

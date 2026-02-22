@@ -789,6 +789,10 @@ function drawVenn(ctx, w, h, highlight = null) {
              ctx.restore();
         }
 
+        // Analysis
+        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const txtColor = theme === 'light' ? '#1e293b' : '#ffffff';
+
         if (isInter) {
              // Intersect A, B, C
              ctx.save();
@@ -797,19 +801,19 @@ function drawVenn(ctx, w, h, highlight = null) {
              ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
              ctx.clip();
              ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
-             ctx.fillStyle = '#fff'; 
+             ctx.fillStyle = txtColor; 
              ctx.fill();
              ctx.restore();
         }
 
         // Restroke outlines
-        ctx.strokeStyle = '#fff';
+        ctx.strokeStyle = txtColor;
         ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.stroke();
         ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.stroke();
         ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.stroke();
         
         // Labels
-        ctx.fillStyle='#fff'; 
+        ctx.fillStyle=txtColor; 
         ctx.fillText('A', ax, ay - 40);
         ctx.fillText('B', bx - 50, by);
         ctx.fillText('C', ccx + 50, ccy);
@@ -893,12 +897,15 @@ function drawTree(ctx, w, h) {
         const midY = (y + yUp) / 2; // Approximate mid for bezier
         // Actually bezier mid point is complex, simple mid is okay for curve
         
+        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const txtColor = theme === 'light' ? '#1e293b' : '#ffffff';
+        
         ctx.font = '11px Inter';
         
         // Draw Name
-        ctx.fillStyle = '#4cc9f0';
+        ctx.fillStyle = theme === 'light' ? '#0369a1' : '#4cc9f0';
         ctx.fillText(name1, midX, midY - 15);
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = txtColor;
         ctx.fillText(p.toFixed(2), midX, midY); // Prob
         
         // Recurse Up
@@ -916,9 +923,9 @@ function drawTree(ctx, w, h) {
         const midYX = (y + yDown) / 2;
 
         // Label 2
-        ctx.fillStyle = '#f72585';
+        ctx.fillStyle = theme === 'light' ? '#be185d' : '#f72585';
         ctx.fillText(name2, midX, midYX + 15);
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = txtColor;
         ctx.fillText(q.toFixed(2), midX, midYX);
 
         // Recurse Down
@@ -933,16 +940,16 @@ function drawTree(ctx, w, h) {
     if (out && results.length > 0) {
         let table = `<div style="max-height:100px; overflow-y:auto; margin-top:10px;">
         <table style="width:100%; text-align:left; font-size:0.8rem; border-collapse:collapse;">
-            <tr style="border-bottom:1px solid #444; color:#aaa;">
+            <tr style="border-bottom:1px solid var(--border-dim); color:var(--text-muted);">
                 <th style="padding:4px;">Outcome</th>
                 <th style="padding:4px;">Prob</th>
                 <th style="padding:4px;">%</th>
             </tr>`;
         results.forEach(r => {
             table += `<tr>
-                <td style="padding:4px; color:#fff;">${r.path}</td>
-                <td style="padding:4px; color:#aaa;">${r.p.toFixed(4)}</td>
-                <td style="padding:4px; color:#ffd60a;">${(r.p*100).toFixed(1)}%</td>
+                <td style="padding:4px; color:var(--text-primary);">${r.path}</td>
+                <td style="padding:4px; color:var(--text-muted);">${r.p.toFixed(4)}</td>
+                <td style="padding:4px; color:var(--accent-gold);">${(r.p*100).toFixed(1)}%</td>
             </tr>`;
         });
         table += `</table></div>`;

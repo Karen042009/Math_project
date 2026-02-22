@@ -239,16 +239,23 @@ function drawGaltonFrame() {
     ctx.clearRect(0, 0, w, h);
 
     // Background
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
     const bg = ctx.createLinearGradient(0, 0, 0, h);
-    bg.addColorStop(0, '#0a0514');
-    bg.addColorStop(1, '#140a1e');
+    if (theme === 'light') {
+        bg.addColorStop(0, '#f1f5f9');
+        bg.addColorStop(1, '#ffffff');
+    } else {
+        bg.addColorStop(0, '#0a0514');
+        bg.addColorStop(1, '#140a1e');
+    }
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, w, h);
 
     // Bin separators
-    const binWidth = w / (galtonRows + 1);
-    ctx.strokeStyle = 'rgba(157, 78, 221, 0.2)';
+    const theme_border = theme === 'light' ? 'rgba(124, 58, 237, 0.15)' : 'rgba(157, 78, 221, 0.2)';
+    ctx.strokeStyle = theme_border;
     ctx.lineWidth = 1;
+    const binWidth = w / (galtonRows + 1); // Define binWidth here
     for (let i = 0; i <= galtonRows + 1; i++) {
         ctx.beginPath();
         ctx.moveTo(i * binWidth, h * 0.6 + 20);
@@ -257,12 +264,18 @@ function drawGaltonFrame() {
     }
 
     // Draw Pegs
+    const peg_color = theme === 'light' ? '#7c3aed' : '#a855f7';
+    ctx.fillStyle = peg_color;
     for (const peg of galtonPegs) {
         ctx.beginPath();
         ctx.arc(peg.x, peg.y, peg.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 214, 10, 0.7)';
         ctx.fill();
+        if (theme === 'dark') {
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'rgba(168, 85, 247, 0.5)';
+        }
     }
+    ctx.shadowBlur = 0;
 
     // Draw Balls
     for (const ball of galtonBalls) {
@@ -668,11 +681,12 @@ function drawBuffonFrame() {
     const d = buffonLineSpacing;
 
     // Background
-    ctx.fillStyle = '#0a0514';
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    ctx.fillStyle = theme === 'light' ? '#f8fafc' : '#0a0514';
     ctx.fillRect(0, 0, w, h);
 
     // Parallel lines
-    ctx.strokeStyle = 'rgba(168, 85, 247, 0.3)';
+    ctx.strokeStyle = theme === 'light' ? 'rgba(124, 58, 237, 0.2)' : 'rgba(168, 85, 247, 0.3)';
     ctx.lineWidth = 1;
     for (let y = 0; y < h; y += d) {
         ctx.beginPath();
@@ -738,8 +752,6 @@ function drawBuffonGraph() {
     ctx.clearRect(0, 0, w, h);
 
     // Target Line (Pi)
-    const piY = h / 2; // Center Pi at middle roughly? No, let's scale it.
-    // Allow range [2, 4] for Y
     const minY = 2.0;
     const maxY = 4.5;
     const rangeY = maxY - minY;
@@ -747,15 +759,16 @@ function drawBuffonGraph() {
     const getY = (val) => h - ((val - minY) / rangeY) * h;
 
     // Draw Pi Line
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    ctx.strokeStyle = theme === 'light' ? '#7c3aed' : '#a855f7';
+    ctx.setLineDash([5, 5]);
     ctx.beginPath();
     ctx.moveTo(0, getY(Math.PI));
     ctx.lineTo(w, getY(Math.PI));
-    ctx.strokeStyle = '#4cc9f0';
-    ctx.setLineDash([5, 5]);
     ctx.lineWidth = 1;
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#4cc9f0';
+    ctx.fillStyle = ctx.strokeStyle;
     ctx.fillText('π', 5, getY(Math.PI) - 2);
 
     if (buffonHistory.length < 2) return;

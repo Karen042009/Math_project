@@ -5,8 +5,12 @@
 let currentLang = 'en'; // Default to English
 let revealObserver;
 const PROGRESS_KEY = 'probSpaceProgressV1';
+const THEME_KEY = 'probSpaceTheme';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Theme Init
+    initTheme();
+
     // Force English as default once for users who had it stuck on another language
     if (!localStorage.getItem('langResetEnV2')) {
         localStorage.setItem('probSpaceLang', 'en');
@@ -40,6 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 });
+
+/* --- THEME MANAGEMENT --- */
+function initTheme() {
+    const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem(THEME_KEY, newTheme);
+}
 
 /* --- I18N & ROUTING --- */
 function setLanguage(lang) {
