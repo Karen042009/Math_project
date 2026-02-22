@@ -31,25 +31,25 @@
 }
 
 [data-theme='light'] {
-    --bg-dark: #f0f2f5;
+    --bg-dark: #f8fafc;
     --bg-panel: #ffffff;
     --bg-card: #ffffff;
-    --text-primary: #1e293b;
+    --text-primary: #0f172a;
     --text-muted: #64748b;
     --neon-purple: #7c3aed;
-    --neon-purple-dim: rgba(124, 58, 237, 0.06);
+    --neon-purple-dim: rgba(124, 58, 237, 0.12); /* Increased from 0.06 */
     --accent-pink: #db2777;
     --accent-blue: #0284c7;
-    --accent-gold: #b45309; /* Darker gold for light mode text */
-    --glass-bg: rgba(255, 255, 255, 0.9);
-    --glass-border: rgba(124, 58, 237, 0.3);
-    --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-    --nav-bg: rgba(240, 242, 245, 0.9);
-    --glow-primary: rgba(124, 58, 237, 0.05);
-    --glow-secondary: rgba(219, 39, 119, 0.03);
+    --accent-gold: #b45309;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(124, 58, 237, 0.2);
+    --glass-shadow: 0 10px 40px rgba(124, 58, 237, 0.08); /* Tinted shadow */
+    --nav-bg: rgba(248, 250, 252, 0.85);
+    --glow-primary: rgba(124, 58, 237, 0.1); /* Increased from 0.05 */
+    --glow-secondary: rgba(219, 39, 119, 0.06); /* Increased from 0.03 */
     --bg-input: #f1f5f9;
     --bg-display: #ffffff;
-    --border-dim: rgba(0, 0, 0, 0.12);
+    --border-dim: rgba(0, 0, 0, 0.08);
 }
 
 /* ═══════════ RESET & BASE ═══════════ */
@@ -556,6 +556,15 @@ body {
     filter: blur(25px);
     will-change: transform, left, top;
     animation: cursorPulse 4s ease-in-out infinite alternate;
+}
+
+[data-theme='light'] .cursor-glow {
+    background: radial-gradient(circle at 50% 50%,
+        rgba(124, 58, 237, 0.1) 0%,
+        rgba(124, 58, 237, 0.05) 30%,
+        transparent 70%);
+    mix-blend-mode: multiply; /* Better for light backgrounds */
+    opacity: 0.6;
 }
 
 @keyframes cursorPulse {

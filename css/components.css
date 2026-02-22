@@ -462,6 +462,14 @@
     background: rgba(0, 0, 0, 0.2);
 }
 
+[data-theme='light'] .accordion-body {
+    background: rgba(124, 58, 237, 0.03); /* Clean tint instead of gray */
+}
+
+[data-theme='light'] .accordion-item {
+    border-color: rgba(124, 58, 237, 0.1);
+}
+
 .accordion-body a {
     display: block;
     color: var(--text-muted);
@@ -475,6 +483,10 @@
 .accordion-body a:hover {
     color: var(--neon-purple);
     padding-left: 6px;
+}
+
+[data-theme='light'] .accordion-body a {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
 }
 
 /* ═══════════ FORMULA / DEFINITION / THEOREM BOXES ═══════════ */
@@ -496,6 +508,15 @@
 .theorem-box {
     border-color: var(--accent-pink);
     background: rgba(236, 72, 153, 0.06);
+}
+
+[data-theme='light'] .formula-box,
+[data-theme='light'] .definition-box {
+    background: rgba(124, 58, 237, 0.035);
+}
+
+[data-theme='light'] .theorem-box {
+    background: rgba(236, 72, 153, 0.035);
 }
 
 /* ═══════════ SCROLL REVEAL ═══════════ */

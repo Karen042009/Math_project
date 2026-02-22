@@ -51,20 +51,12 @@ function initCursorGlow() {
 function initParallax() {
     const hero = document.querySelector('.hero-section');
     const title = document.querySelector('.hero-title');
-    
+
     if (!hero || !title) return;
 
-    hero.addEventListener('mousemove', (e) => {
-        // Calculate mouse position relative to the title element for precise gradient control
-        const rect = title.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // Update CSS variables for the gradient center
-        title.style.setProperty('--cursor-x', `${x}px`);
-        title.style.setProperty('--cursor-y', `${y}px`);
-
-        // Parallax effect for background particles
+    // Global mouse tracking for background glow and particles
+    document.addEventListener('mousemove', (e) => {
+        // Parallax effect for background particles (Global)
         const particles = document.querySelectorAll('.bg-particle');
         const moveX = (e.clientX - window.innerWidth / 2) * 0.05;
         const moveY = (e.clientY - window.innerHeight / 2) * 0.05;
@@ -74,11 +66,20 @@ function initParallax() {
             p.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
         });
 
-        // Background glow tracking
+        // Background glow tracking (Global)
         const glow = document.getElementById('bg-glow');
         if (glow) {
             glow.style.left = `${e.clientX}px`;
             glow.style.top = `${e.clientY}px`;
+        }
+
+        // Hero Flashlight Effect (Specific to Hero)
+        if (hero.offsetParent !== null) { // Only if visible
+            const rect = title.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            title.style.setProperty('--cursor-x', `${x}px`);
+            title.style.setProperty('--cursor-y', `${y}px`);
         }
     });
 }
