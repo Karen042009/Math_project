@@ -208,7 +208,7 @@
             <div class="practice-header" style="display:flex; justify-content:space-between; align-items:center;">
                 <h1><i class="fas fa-dumbbell" style="color:var(--accent-pink)"></i> <span data-i18n="section_practice">The Practice Arena</span></h1>
                 <div style="display:flex; gap:15px; align-items:center;">
-                    <button class="reset-btn-minimal" onclick="confirmResetProgress()" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#aaa; font-size:0.8rem; padding:8px 12px; border-radius:6px; cursor:pointer;">
+                    <button class="reset-btn-minimal" onclick="confirmResetProgress()">
                         <i class="fas fa-trash-alt"></i> <span data-i18n="btn_reset_progress">Reset Progress</span>
                     </button>
                     <div class="ai-badge"><i class="fas fa-brain"></i> <span data-i18n="ai_badge_text">Smart feedback system — links wrong answers to theory</span></div>
@@ -235,7 +235,7 @@
                 <button class="filter-btn" data-filter="olympic" onclick="filterProblems('olympic', this)">
                     <i class="fas fa-trophy"></i> <span data-i18n="filter_olympic">Olympic</span>
                 </button>
-                <div style="width:2px; height:24px; background:rgba(255,255,255,0.2); margin:0 5px; display:inline-block; vertical-align:middle;"></div>
+                <div class="section-divider"></div>
                 <button class="filter-btn" data-filter="solved" onclick="filterProblems('solved', this)">
                     <i class="fas fa-check-double" style="color:#06d6a0;"></i> <span data-i18n="filter_solved">Solved</span>
                 </button>
@@ -251,7 +251,7 @@
                     <h2 style="margin:0;">
                         <i class="fas fa-robot" style="color:var(--neon-purple)"></i> <span data-i18n="section_ai_gen">AI Advanced Tutor</span>
                     </h2>
-                    <button class="reset-btn-minimal" onclick="resetAISession()" style="background:rgba(247, 37, 133, 0.1); border:1px solid rgba(247, 37, 133, 0.2); color:var(--accent-pink); font-size:0.8rem; padding:6px 12px; border-radius:6px; cursor:pointer;">
+                    <button class="reset-btn-minimal" onclick="resetAISession()">
                         <i class="fas fa-sync-alt"></i> <span data-i18n="btn_clear_session">Clear Session</span>
                     </button>
                 </div>
@@ -435,7 +435,7 @@
                         <button class="glow-btn small" onclick="solveFormulaWithSteps()" style="width:100%"><i
                                 class="fas fa-lightbulb"></i> Solve</button>
                         <div id="formula-steps"
-                            style="margin-top:15px; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; font-family:'Fira Code', monospace; font-size:0.9rem;">
+                            style="margin-top:15px; background:var(--bg-input); padding:15px; border-radius:12px; border:1px solid var(--glass-border); font-family:'Fira Code', monospace; font-size:0.88rem; color:var(--text-primary);">
                         </div>
                     </div>
                 </div>
@@ -479,7 +479,7 @@
                 <i class="fas fa-atom" style="color:var(--accent-pink)"></i>
                 <span data-i18n="section_sims">Monte Carlo Playground</span>
             </h1>
-            <p class="intro-text" data-i18n="intro_sims_extended" style="font-size:1.05rem; line-height:1.7; color:#ddd; margin:10px auto 30px; text-align:left; background:rgba(0,0,0,0.3); padding:15px 20px; border-left:4px solid var(--neon-purple); border-radius:8px;">
+            <p class="intro-text" data-i18n="intro_sims_extended" style="font-size:1.05rem; line-height:1.7; color:var(--text-primary); margin:10px auto 30px; text-align:left; background:var(--bg-panel); padding:20px 25px; border-left:4px solid var(--neon-purple); border:1px solid var(--glass-border); border-left:4px solid var(--neon-purple); border-radius:12px; box-shadow:var(--glass-shadow);">
                 Here, the laws of probability theory are visually demonstrated in practice using the Monte Carlo method. The purpose of this section is to teach you complex mathematical concepts—such as the normal distribution, decision-making under uncertainty, and geometric probability—through interactive simulations and the analysis of thousands of random events.
             </p>
 
@@ -662,7 +662,7 @@
                 </div>
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
-                    <div style="flex:2; min-width:300px; display:flex; flex-direction:column; background:rgba(0,0,0,0.3); border-radius:12px; border:1px solid #333; padding:15px; position:relative;">
+                    <div style="flex:2; min-width:300px; display:flex; flex-direction:column; background:var(--bg-display); border-radius:12px; border:1px solid var(--glass-border); padding:20px; position:relative; box-shadow:var(--glass-shadow);">
                         <!-- Huge 3D Coin (Bimetallic 500 Dram) -->
                         <div style="flex:1; display:flex; justify-content:center; align-items:center; min-height:250px;">
                             <div class="coin-wrapper" style="perspective: 1000px; width: 180px; height: 180px;">
@@ -751,7 +751,7 @@
                             </div>
                         </div>
                         <!-- Convergence Graph (New) -->
-                        <div style="height:150px; background:rgba(0,0,0,0.2); border-radius:8px; border:1px solid #444; position:relative; margin-top:20px;">
+                        <div style="height:150px; background:var(--bg-input); border-radius:10px; border:1px solid var(--border-dim); position:relative; margin-top:20px;">
                              <canvas id="coin-graph" style="width:100%; height:100%;"></canvas>
                         </div>
                     </div>

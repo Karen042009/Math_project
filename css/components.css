@@ -113,6 +113,41 @@
     box-shadow: 0 0 15px var(--neon-purple-dim);
 }
 
+/* ═══════════ RESET BUTTONS ═══════════ */
+.reset-btn-minimal {
+    background: var(--neon-purple-dim);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reset-btn-minimal:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    color: #ef4444;
+    transform: translateY(-2px);
+}
+
+.reset-btn-minimal i {
+    font-size: 0.9rem;
+}
+
+.section-divider {
+    width: 2px;
+    height: 24px;
+    background: var(--border-dim);
+    margin: 0 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
 [data-theme='light'] .theme-toggle-btn i::before {
     content: "\f185"; /* Sun icon */
 }
@@ -189,7 +224,7 @@
 /* ═══════════ PROBLEM CARDS ═══════════ */
 .problem-card {
     background: var(--bg-card);
-    border: 1px solid rgba(168, 85, 247, 0.12);
+    border: 1px solid var(--glass-border);
     padding: 24px;
     border-radius: 16px;
     position: relative;
@@ -199,10 +234,10 @@
 
 .problem-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(168, 85, 247, 0.35);
+    border-color: var(--neon-purple);
     box-shadow:
-        0 12px 35px rgba(168, 85, 247, 0.12),
-        0 0 15px rgba(168, 85, 247, 0.05);
+        0 12px 35px rgba(168, 85, 247, 0.15),
+        0 0 15px var(--neon-purple-dim);
 }
 
 @keyframes checkmarkPop {

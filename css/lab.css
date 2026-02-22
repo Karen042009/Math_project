@@ -76,7 +76,7 @@
 
 #calc-input::placeholder {
     color: var(--text-muted);
-    opacity: 0.3;
+    opacity: 0.5;
     font-size: 1.4rem;
 }
 
@@ -120,9 +120,10 @@
 }
 
 .key:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--neon-purple-dim);
+    color: var(--text-primary);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .key:active::after {
@@ -224,8 +225,8 @@
     width: 100%;
     padding: 12px 14px;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    background: var(--bg-input);
     color: var(--text-primary);
     font-size: 0.92rem;
 }
@@ -269,11 +270,12 @@
 }
 
 .ai-problem {
-    background: rgba(168, 85, 247, 0.06);
-    border-left: 3px solid var(--neon-purple);
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    border-left: 4px solid var(--neon-purple);
     padding: 20px;
-    margin-bottom: 18px;
-    border-radius: 0 14px 14px 0;
+    margin-bottom: 22px;
+    border-radius: 12px;
     backdrop-filter: blur(10px);
 }
 
@@ -372,7 +374,7 @@
 }
 
 .calc-tab:hover {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-primary);
 }
 
 .calc-tab.active {
@@ -405,9 +407,9 @@
 /* ═══════════ DRAWER TOGGLE ═══════════ */
 .drawer-toggle-btn {
     width: 100%;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--neon-purple-dim);
     border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid var(--border-dim);
     color: var(--neon-purple);
     padding: 12px;
     margin-top: 14px;
@@ -449,7 +451,7 @@
 
 .op-btn:hover {
     background: var(--neon-purple);
-    color: #000;
+    color: #fff;
     border-color: var(--neon-purple);
 }
 
@@ -460,11 +462,11 @@
 }
 
 .vis-controls-advanced {
-    background: rgba(0, 0, 0, 0.15);
+    background: var(--bg-input);
     padding: 16px;
     border-radius: 14px;
-    margin-bottom: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    margin-bottom: 22px;
+    border: 1px solid var(--glass-border);
 }
 
 .vis-header {
@@ -486,10 +488,10 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.04);
-    padding: 6px 12px;
+    background: var(--bg-input);
+    padding: 6px 14px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
 }
 
 .param-group label {
@@ -515,11 +517,11 @@
 
 /* ═══════════ ANALYSIS PANEL ═══════════ */
 .analysis-panel {
-    margin-top: 18px;
-    background: rgba(168, 85, 247, 0.04);
-    border-left: 3px solid var(--neon-purple);
-    padding: 16px;
-    border-radius: 0 12px 12px 0;
+    margin-top: 22px;
+    background: var(--neon-purple-dim);
+    border-left: 4px solid var(--neon-purple);
+    padding: 18px;
+    border-radius: 12px;
     backdrop-filter: blur(5px);
 }
 

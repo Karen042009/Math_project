@@ -310,9 +310,10 @@ function updateVisualizer() {
             <div id="venn-vals" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
             
             <!-- Set Operations Highlights -->
-            <div id="venn-ops-container" style="width:100%; margin-top:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;"></div>
+            <div id="venn-ops-container" style="width:100%; margin-top:10px; border-top:1px solid var(--border-dim); padding-top:10px;"></div>
         `;
         renderVennInputs();
+        setTimeout(drawGraph, 100);
     } else if (type === 'tree') {
         paramsDiv.innerHTML = `
             <div style="width:100%; display:flex; flex-direction:column; gap:10px;">
@@ -323,7 +324,7 @@ function updateVisualizer() {
                     </div>
                 </div>
                 <!-- Custom Probabilities Container -->
-                <div id="tree-custom-container" style="display:grid; gap:10px; padding:10px; background:rgba(0,0,0,0.2); border-radius:8px;"></div>
+                <div id="tree-custom-container" style="display:grid; gap:12px; padding:15px; background:var(--bg-panel); border:1px solid var(--glass-border); border-radius:12px; box-shadow:var(--glass-shadow);"></div>
             </div>
         `;
         renderTreeCustomInputs();
@@ -343,21 +344,26 @@ function renderTreeCustomInputs() {
     container.innerHTML = '';
     
     // Helper to create input row
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const inputBg = 'var(--bg-input)';
+    const textColor = 'var(--text-primary)';
+    const mutedColor = 'var(--text-muted)';
+
     const createRow = (label, idPrefix, defName1, defName2) => `
-        <div style="border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">
-            <span style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">${label}</span>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:5px;">
-                <div style="display:flex; flex-direction:column; gap:2px;">
-                     <input type="text" id="${idPrefix}-name1" value="${defName1}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:rgba(255,255,255,0.05); border:none; color:#a855f7; padding:2px 5px; font-size:0.8rem;">
-                     <div style="display:flex; gap:5px; align-items:center;">
-                        <span style="font-size:0.75rem; color:#888;">P:</span>
-                        <input type="number" id="${idPrefix}-p" value="0.5" step="0.1" oninput="drawGraph()" style="width:100%; background:rgba(255,255,255,0.1); border:none; color:#fff; padding:2px 5px;">
+        <div style="border-bottom:1px solid var(--border-dim); padding-bottom:8px; margin-bottom:8px;">
+            <span style="font-size:0.75rem; color:${mutedColor}; text-transform:uppercase; letter-spacing:0.5px;">${label}</span>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                     <input type="text" id="${idPrefix}-name1" value="${defName1}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:${inputBg}; border:1px solid var(--glass-border); border-radius:4px; color:var(--neon-purple); padding:4px 8px; font-size:0.85rem; outline:none;">
+                     <div style="display:flex; gap:8px; align-items:center;">
+                        <span style="font-size:0.75rem; color:${mutedColor};">P:</span>
+                        <input type="number" id="${idPrefix}-p" value="0.5" step="0.1" oninput="drawGraph()" style="width:100%; background:${inputBg}; border:1px solid var(--glass-border); border-radius:4px; color:${textColor}; padding:2px 8px; font-size:0.85rem; outline:none;">
                      </div>
                 </div>
-                <div style="display:flex; flex-direction:column; gap:2px;">
-                     <input type="text" id="${idPrefix}-name2" value="${defName2}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:rgba(255,255,255,0.05); border:none; color:#f72585; padding:2px 5px; font-size:0.8rem;">
-                     <div style="display:flex; gap:5px; align-items:center;">
-                        <span style="font-size:0.75rem; color:#888;">1-P</span>
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                     <input type="text" id="${idPrefix}-name2" value="${defName2}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:${inputBg}; border:1px solid var(--glass-border); border-radius:4px; color:var(--accent-pink); padding:4px 8px; font-size:0.85rem; outline:none;">
+                     <div style="display:flex; gap:8px; align-items:center;">
+                        <span style="font-size:0.75rem; color:${mutedColor};">1-P</span>
                      </div>
                 </div>
             </div>
@@ -390,25 +396,24 @@ function renderVennInputs() {
     const count = document.getElementById('venn-sets').value;
     const div = document.getElementById('venn-vals');
     if (!div) return;
-
     if (count === '2') {
         div.innerHTML = `
-            <div class="param-group"><label>|A|</label> <input type="number" id="v-a" value="50"></div>
-            <div class="param-group"><label>|B|</label> <input type="number" id="v-b" value="40"></div>
-            <div class="param-group"><label>|A∩B|</label> <input type="number" id="v-ab" value="10"></div>
-            <div class="param-group"><label>Total</label> <input type="number" id="v-total" value="100"></div>
+            <div class="param-group"><label>|A|</label> <input type="number" id="v-a" value="50" oninput="drawGraph()"></div>
+            <div class="param-group"><label>|B|</label> <input type="number" id="v-b" value="40" oninput="drawGraph()"></div>
+            <div class="param-group"><label>|A∩B|</label> <input type="number" id="v-ab" value="10" oninput="drawGraph()"></div>
+            <div class="param-group"><label>Total</label> <input type="number" id="v-total" value="100" oninput="drawGraph()"></div>
         `;
     } else {
         div.innerHTML = `
-             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; font-size:0.8rem;">
-                <div class="param-group"><label>|A|</label> <input type="number" id="v-a" value="30"></div>
-                <div class="param-group"><label>|B|</label> <input type="number" id="v-b" value="30"></div>
-                <div class="param-group"><label>|C|</label> <input type="number" id="v-c" value="30"></div>
-                <div class="param-group"><label>|AB|</label> <input type="number" id="v-ab" value="10"></div>
-                <div class="param-group"><label>|AC|</label> <input type="number" id="v-ac" value="10"></div>
-                <div class="param-group"><label>|BC|</label> <input type="number" id="v-bc" value="10"></div>
-                <div class="param-group"><label>|ABC|</label> <input type="number" id="v-abc" value="5"></div>
-                <div class="param-group"><label>Total</label> <input type="number" id="v-total" value="100"></div>
+             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; font-size:0.8rem;">
+                <div class="param-group"><label>|A|</label> <input type="number" id="v-a" value="30" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|B|</label> <input type="number" id="v-b" value="30" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|C|</label> <input type="number" id="v-c" value="30" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|AB|</label> <input type="number" id="v-ab" value="10" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|AC|</label> <input type="number" id="v-ac" value="10" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|BC|</label> <input type="number" id="v-bc" value="10" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|ABC|</label> <input type="number" id="v-abc" value="5" oninput="drawGraph()"></div>
+                <div class="param-group"><label>Total</label> <input type="number" id="v-total" value="100" oninput="drawGraph()"></div>
             </div>
         `;
     }
@@ -422,7 +427,7 @@ function renderVennOps() {
     const container = document.getElementById('venn-ops-container');
     if (!container) return;
 
-    let html = '<label style="color:#aaa; font-size:0.8rem; display:block; margin-bottom:5px;">Highlight Operations:</label><div style="display:flex; gap:5px; flex-wrap:wrap;">';
+    let html = `<label style="color:var(--text-muted); font-size:0.8rem; display:block; margin-bottom:8px;">Highlight Operations:</label><div style="display:flex; gap:8px; flex-wrap:wrap;">`;
     
     if (count === '2') {
         html += `
@@ -463,7 +468,8 @@ function drawGraph(highlightMode = null) {
     const h = rect.height;
 
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#fff';
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    ctx.fillStyle = theme === 'light' ? '#1e293b' : '#ffffff';
 
     // Show Analysis
     const analysisPanel = document.getElementById('dist-analysis');
@@ -494,6 +500,7 @@ function normCdf(x, mu, sigma) {
 }
 
 function drawNormal(ctx, w, h) {
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
     const mu = parseFloat(document.getElementById('param-mu')?.value || 0);
     const sigma = parseFloat(document.getElementById('param-sigma')?.value || 1);
     let a = parseFloat(document.getElementById('param-a')?.value);
@@ -515,7 +522,7 @@ function drawNormal(ctx, w, h) {
     ctx.beginPath();
     ctx.moveTo(0, h - 30);
     ctx.lineTo(w, h - 30);
-    ctx.strokeStyle = '#aaa';
+    ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)';
     ctx.lineWidth = 1;
     ctx.stroke();
 
@@ -563,8 +570,10 @@ function drawNormal(ctx, w, h) {
 }
 
 function drawVenn(ctx, w, h, highlight = null) {
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
     const sets = document.getElementById('venn-sets').value;
     const out = document.getElementById('dist-output');
+    const txtColor = theme === 'light' ? '#1e293b' : '#ffffff';
     
     ctx.lineWidth = 2;
     ctx.font = '14px Inter, sans-serif';
@@ -573,10 +582,10 @@ function drawVenn(ctx, w, h, highlight = null) {
     const cx = w / 2, cy = h / 2;
     
     // Colors
-    const colBase = 'rgba(255, 255, 255, 0.05)';
-    const colA = 'rgba(247, 37, 133, 0.6)';
-    const colB = 'rgba(168, 85, 247, 0.6)';
-    const colC = 'rgba(255, 214, 10, 0.6)';
+    const colBase = theme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.05)';
+    const colA = theme === 'light' ? 'rgba(219, 39, 119, 0.4)' : 'rgba(247, 37, 133, 0.5)';
+    const colB = theme === 'light' ? 'rgba(124, 58, 237, 0.4)' : 'rgba(168, 85, 247, 0.5)';
+    const colC = theme === 'light' ? 'rgba(180, 83, 9, 0.3)' : 'rgba(250, 204, 21, 0.4)';
     
     if (sets === '2') {
         const nA = parseInt(document.getElementById('v-a').value) || 0;
@@ -618,7 +627,7 @@ function drawVenn(ctx, w, h, highlight = null) {
         ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
         ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(247, 37, 133, 0.1)';
         ctx.fill();
-        ctx.strokeStyle = '#fff'; 
+        ctx.strokeStyle = txtColor; 
         ctx.stroke();
 
         // Right
@@ -669,12 +678,12 @@ function drawVenn(ctx, w, h, highlight = null) {
         }
 
         // Re-Stroke
-        ctx.strokeStyle = '#fff';
+        ctx.strokeStyle = txtColor;
         ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI); ctx.stroke();
         ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI); ctx.stroke();
 
         // Labels
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = txtColor;
         ctx.fillText(`A only: ${onlyA}`, c1x - 30, cy);
         ctx.fillText(`B only: ${onlyB}`, c2x + 30, cy);
         ctx.fillText(`Both: ${nAB}`, cx, cy);
@@ -726,13 +735,13 @@ function drawVenn(ctx, w, h, highlight = null) {
         const isComp = highlight === 'complement';
 
         // Draw Universe
-        ctx.strokeStyle = '#555';
+        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.15)' : '#555';
         ctx.strokeRect(cx - 250, cy - 180, 500, 360);
-        ctx.fillStyle = '#aaa';
+        ctx.fillStyle = theme === 'light' ? '#64748b' : '#aaa';
         ctx.fillText(`U = ${total}`, cx - 230, cy - 160);
 
         if (isComp) {
-             ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+             ctx.fillStyle = theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.1)';
              ctx.fillRect(cx - 250, cy - 180, 500, 360);
         }
 
@@ -740,7 +749,7 @@ function drawVenn(ctx, w, h, highlight = null) {
         const drawCircle = (x, y, col) => {
              ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI);
              ctx.fillStyle = col; ctx.fill(); 
-             ctx.strokeStyle = '#fff'; ctx.stroke();
+             ctx.strokeStyle = txtColor; ctx.stroke();
         };
 
         // Base
@@ -790,9 +799,6 @@ function drawVenn(ctx, w, h, highlight = null) {
         }
 
         // Analysis
-        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-        const txtColor = theme === 'light' ? '#1e293b' : '#ffffff';
-
         if (isInter) {
              // Intersect A, B, C
              ctx.save();
@@ -859,14 +865,17 @@ function drawTree(ctx, w, h) {
 
     function drawBranch(x, y, level, nodeIndex, probSoFar, pathStr) {
         // Draw Node Circle
+        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const nodeColor = theme === 'light' ? '#7c3aed' : '#ffffff';
+        
         ctx.beginPath();
         ctx.arc(x, y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = nodeColor;
         ctx.fill();
 
         if (level === steps) {
             // Leaf node: Final Probability
-            ctx.fillStyle = '#ffd60a';
+            ctx.fillStyle = theme === 'light' ? '#b45309' : '#ffd60a'; // Darker gold for light mode
             ctx.font = 'bold 13px Inter';
             ctx.fillText((probSoFar*100).toFixed(1) + '%', x + 35, y);
             
@@ -897,16 +906,22 @@ function drawTree(ctx, w, h) {
         const midY = (y + yUp) / 2; // Approximate mid for bezier
         // Actually bezier mid point is complex, simple mid is okay for curve
         
-        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
         const txtColor = theme === 'light' ? '#1e293b' : '#ffffff';
         
-        ctx.font = '11px Inter';
+        // Draw Label 1 (Pill background)
+        const probText = p.toFixed(2);
+        ctx.font = 'bold 11px Inter';
+        const txtWidth = ctx.measureText(probText).width;
         
+        ctx.fillStyle = theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.6)';
+        ctx.roundRect(midX - (txtWidth + 8)/2, midY - 10, txtWidth + 8, 20, 4);
+        ctx.fill();
+
         // Draw Name
         ctx.fillStyle = theme === 'light' ? '#0369a1' : '#4cc9f0';
-        ctx.fillText(name1, midX, midY - 15);
+        ctx.fillText(name1, midX, midY - 18);
         ctx.fillStyle = txtColor;
-        ctx.fillText(p.toFixed(2), midX, midY); // Prob
+        ctx.fillText(probText, midX, midY); // Prob
         
         // Recurse Up
         drawBranch(nextX, yUp, level + 1, nodeIndex * 2, probSoFar * p, pathStr + (pathStr ? " → " : "") + name1);
@@ -923,10 +938,16 @@ function drawTree(ctx, w, h) {
         const midYX = (y + yDown) / 2;
 
         // Label 2
+        const qText = q.toFixed(2);
+        const qWidth = ctx.measureText(qText).width;
+        ctx.fillStyle = theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.6)';
+        ctx.roundRect(midX - (qWidth + 8)/2, midYX - 10, qWidth + 8, 20, 4);
+        ctx.fill();
+
         ctx.fillStyle = theme === 'light' ? '#be185d' : '#f72585';
-        ctx.fillText(name2, midX, midYX + 15);
+        ctx.fillText(name2, midX, midYX + 18);
         ctx.fillStyle = txtColor;
-        ctx.fillText(q.toFixed(2), midX, midYX);
+        ctx.fillText(qText, midX, midYX);
 
         // Recurse Down
         drawBranch(nextX, yDown, level + 1, nodeIndex * 2 + 1, probSoFar * q, pathStr + (pathStr ? " → " : "") + name2);

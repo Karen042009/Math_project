@@ -905,13 +905,13 @@ function updateCoinStats() {
     const tPct = coinTotal > 0 ? (coinTails / coinTotal * 100).toFixed(1) : '0.0';
 
     statsEl.innerHTML = `
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; font-size:0.95rem;">
-            <div>${ui.stat_total[lang]}: <span style="color:#fff">${coinTotal}</span></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; font-size:0.95rem; color:var(--text-primary);">
+            <div>${ui.stat_total[lang]}: <span style="color:var(--text-primary); font-weight:bold;">${coinTotal}</span></div>
             <div></div> <!-- empty col padding -->
-            <div><span style="color:#ffd60a">${ui.stat_heads[lang]}:</span> <span style="color:#fff">${coinHeads}</span> 
-                 <span style="color:#aaa">(${hPct}%)</span></div>
-            <div><span style="color:#ff7b00">${ui.stat_tails[lang]}:</span> <span style="color:#fff">${coinTails}</span> 
-                 <span style="color:#aaa">(${tPct}%)</span></div>
+            <div><span style="color:var(--accent-gold); font-weight:bold;">${ui.stat_heads[lang]}:</span> <span style="font-weight:bold;">${coinHeads}</span> 
+                 <span style="color:var(--text-muted); font-size:0.8rem;">(${hPct}%)</span></div>
+            <div><span style="color:#f72585; font-weight:bold;">${ui.stat_tails[lang]}:</span> <span style="font-weight:bold;">${coinTails}</span> 
+                 <span style="color:var(--text-muted); font-size:0.8rem;">(${tPct}%)</span></div>
         </div>
     `;
 }
@@ -933,22 +933,23 @@ function drawCoinGraph() {
     const getY = (val) => h - ((val - minY) / rangeY) * h;
 
     // Draw 0.5 Line
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
     ctx.beginPath();
     ctx.moveTo(0, getY(0.5));
     ctx.lineTo(w, getY(0.5));
-    ctx.strokeStyle = '#4cc9f0';
+    ctx.strokeStyle = theme === 'light' ? '#7c3aed' : '#4cc9f0';
     ctx.setLineDash([5, 5]);
     ctx.lineWidth = 1;
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#4cc9f0';
+    ctx.fillStyle = theme === 'light' ? '#7c3aed' : '#4cc9f0';
     ctx.fillText('50%', 5, getY(0.5) - 2);
 
     if (coinHistory.length < 2) return;
 
     // Plot History
     ctx.beginPath();
-    ctx.strokeStyle = '#ffd60a';
+    ctx.strokeStyle = theme === 'light' ? '#b45309' : '#ffd60a';
     ctx.lineWidth = 2;
 
     const maxN = coinHistory[coinHistory.length - 1].n;

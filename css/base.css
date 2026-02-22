@@ -42,14 +42,14 @@
     --accent-blue: #0284c7;
     --accent-gold: #b45309; /* Darker gold for light mode text */
     --glass-bg: rgba(255, 255, 255, 0.9);
-    --glass-border: rgba(124, 58, 237, 0.15);
-    --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+    --glass-border: rgba(124, 58, 237, 0.3);
+    --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     --nav-bg: rgba(240, 242, 245, 0.9);
     --glow-primary: rgba(124, 58, 237, 0.05);
     --glow-secondary: rgba(219, 39, 119, 0.03);
     --bg-input: #f1f5f9;
     --bg-display: #ffffff;
-    --border-dim: rgba(0, 0, 0, 0.08);
+    --border-dim: rgba(0, 0, 0, 0.12);
 }
 
 /* ═══════════ RESET & BASE ═══════════ */
