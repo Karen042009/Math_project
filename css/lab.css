@@ -265,7 +265,7 @@
     display: none;
     margin-top: 28px;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--border-dim);
     animation: fadeInUp 0.4s var(--transition-smooth);
 }
 

@@ -420,7 +420,7 @@
 /* ═══════════ ACCORDION ═══════════ */
 .accordion-item {
     margin-bottom: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-dim);
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -444,6 +444,7 @@
     font-weight: 600;
     font-size: 0.9rem;
     transition: all 0.25s ease;
+    word-break: break-word;
 }
 
 .accordion-header:hover {
@@ -454,6 +455,10 @@
     transition: transform 0.3s ease;
     font-size: 0.75rem;
     color: var(--text-muted);
+}
+
+.accordion-header.active i {
+    transform: rotate(180deg);
 }
 
 .accordion-body {
@@ -475,7 +480,7 @@
     color: var(--text-muted);
     text-decoration: none;
     padding: 7px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--border-dim);
     font-size: 0.88rem;
     transition: all 0.2s ease;
 }
@@ -579,7 +584,7 @@ details.proof-box[open]>summary {
     margin: 14px 0 6px;
     border-radius: 14px;
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-dim);
 }
 
 /* ═══════════ REDUCED MOTION ═══════════ */

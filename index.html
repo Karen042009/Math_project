@@ -33,12 +33,12 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/simulations.css">
-    <link rel="stylesheet" href="css/lab.css">
-    <link rel="stylesheet" href="css/background.css">
+    <link rel="stylesheet" href="css/base.css?v=2">
+    <link rel="stylesheet" href="css/layout.css?v=2">
+    <link rel="stylesheet" href="css/components.css?v=2">
+    <link rel="stylesheet" href="css/simulations.css?v=2">
+    <link rel="stylesheet" href="css/lab.css?v=2">
+    <link rel="stylesheet" href="css/background.css?v=2">
 </head>
 
 <body>
@@ -113,7 +113,7 @@
             <button class="mobile-nav-btn" onclick="showPage('simulations'); toggleMobileMenu();">
                 <i class="fas fa-atom"></i> <span data-i18n="nav_simulations">Simulations</span>
             </button>
-            <hr style="border-color: rgba(255,255,255,0.1)">
+            <hr style="border-color: var(--border-dim)">
             <div style="display:flex;gap:8px;justify-content:center;">
                 <button class="lang-btn" onclick="setLanguage('hy')">ՀՅ</button>
                 <button class="lang-btn" onclick="setLanguage('en')">EN</button>
@@ -186,14 +186,18 @@
         </section>
 
                 <section id="theory" class="page-section">
-            <h1 style="margin:20px 0 30px; font-size:2.2rem; color:var(--text-primary);">
-                <i class="fas fa-book" style="color:var(--neon-purple)"></i>
+            <h1 class="page-title theory-title">
+                <i class="fas fa-book"></i>
                 <span data-i18n="section_theory">Theory Encyclopedia</span>
             </h1>
             <div class="theory-layout">
                 <aside class="sidebar">
-                    <h3><i class="fas fa-list"></i> <span data-i18n="sidebar_title">Contents</span></h3>
-                    <div id="theory-nav">
+                    <h3 class="desktop-toc"><i class="fas fa-list"></i> <span data-i18n="sidebar_title">Contents</span></h3>
+                    <button class="accordion-header mobile-toc-btn" onclick="toggleAccordion(this)" style="display:none; margin-bottom: 15px; border-radius: 12px; border: 1px solid var(--border-dim); background: var(--glass-bg);">
+                        <span style="font-size:1.1rem; color: var(--neon-purple); font-weight:700;"><i class="fas fa-list"></i> <span data-i18n="sidebar_title">Contents</span></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="theory-nav" class="mobile-toc-content">
                         <!-- Dynamically populated by JS -->
                     </div>
                 </aside>
@@ -205,9 +209,12 @@
 
         <!-- ─────────────── PRACTICE PAGE ─────────────── -->
         <section id="practice" class="page-section">
-            <div class="practice-header" style="display:flex; justify-content:space-between; align-items:center;">
-                <h1><i class="fas fa-dumbbell" style="color:var(--accent-pink)"></i> <span data-i18n="section_practice">The Practice Arena</span></h1>
-                <div style="display:flex; gap:15px; align-items:center;">
+            <div class="practice-header">
+                <h1 class="page-title practice-title">
+                    <i class="fas fa-dumbbell"></i>
+                    <span data-i18n="section_practice">The Practice Arena</span>
+                </h1>
+                <div class="practice-actions">
                     <button class="reset-btn-minimal" onclick="confirmResetProgress()">
                         <i class="fas fa-trash-alt"></i> <span data-i18n="btn_reset_progress">Reset Progress</span>
                     </button>
@@ -247,7 +254,7 @@
 
             <!-- AI Section -->
             <div style="margin-top:50px; padding-top:30px; border-top:1px solid rgba(255,255,255,0.1);">
-                <div class="ai-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div class="ai-header">
                     <h2 style="margin:0;">
                         <i class="fas fa-robot" style="color:var(--neon-purple)"></i> <span data-i18n="section_ai_gen">AI Advanced Tutor</span>
                     </h2>
@@ -310,8 +317,8 @@
 
         <!-- ─────────────── LAB PAGE ─────────────── -->
         <section id="lab" class="page-section">
-            <h1 style="margin:20px 0 30px; font-size:2.2rem;">
-                <i class="fas fa-flask" style="color:var(--neon-purple)"></i>
+            <h1 class="page-title lab-title">
+                <i class="fas fa-flask"></i>
                 <span data-i18n="section_lab">The Lab — Calculator & Graphs</span>
             </h1>
 
@@ -321,8 +328,8 @@
                     <h2><i class="fas fa-calculator"></i> <span data-i18n="card_tab_calc">Calculator</span></h2>
 
                     <!-- CALCULATOR HEADER -->
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                        <div class="calc-display-container" style="flex:1; margin-bottom:0;">
+                    <div class="calc-header">
+                        <div class="calc-display-container">
                             <input type="text" id="calc-input" data-i18n="calc_placeholder" placeholder="...">
                             <div id="calc-result" style="font-size:0.9rem; color:var(--accent-gold);">0</div>
                         </div>
@@ -475,11 +482,11 @@
 
         <!-- ─────────────── SIMULATIONS PAGE ─────────────── -->
         <section id="simulations" class="page-section">
-            <h1 style="margin:20px 0 10px; font-size:2.2rem;">
-                <i class="fas fa-atom" style="color:var(--accent-pink)"></i>
+            <h1 class="page-title sims-title">
+                <i class="fas fa-atom"></i>
                 <span data-i18n="section_sims">Monte Carlo Playground</span>
             </h1>
-            <p class="intro-text" data-i18n="intro_sims_extended" style="font-size:1.05rem; line-height:1.7; color:var(--text-primary); margin:10px auto 30px; text-align:left; background:var(--bg-panel); padding:20px 25px; border-left:4px solid var(--neon-purple); border:1px solid var(--glass-border); border-left:4px solid var(--neon-purple); border-radius:12px; box-shadow:var(--glass-shadow);">
+            <p class="intro-text simulation-intro" data-i18n="intro_sims_extended">
                 Here, the laws of probability theory are visually demonstrated in practice using the Monte Carlo method. The purpose of this section is to teach you complex mathematical concepts—such as the normal distribution, decision-making under uncertainty, and geometric probability—through interactive simulations and the analysis of thousands of random events.
             </p>
 
@@ -505,7 +512,7 @@
             <!-- ──── GALTON BOARD ──── -->
             <!-- ──── GALTON BOARD ──── -->
             <div id="sim-galton" class="sim-panel glass-panel" style="display:block; padding:20px;">
-                <div class="sim-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <div class="sim-header">
                     <div>
                         <h2 style="margin:0; background:linear-gradient(45deg, #a855f7, #4361ee); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_galton_title">Galton Board</h2>
                         <p style="color:#aaa; font-size:0.9rem; margin-top:5px;" data-i18n="sim_galton_desc_short">Demonstrating Central Limit Theorem via Normal Distribution</p>
@@ -514,7 +521,7 @@
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
                     <div class="canvas-wrapper" style="flex:2; min-width:300px; background:var(--bg-display); border-radius:12px; padding:10px; border:1px solid var(--glass-border);">
-                        <canvas id="galton-canvas" style="width:100%; height:500px;"></canvas>
+                        <canvas id="galton-canvas" class="lg-canvas"></canvas>
                     </div>
                     
                     <div class="controls-wrapper" style="flex:1; min-width:250px; display:flex; flex-direction:column; gap:15px;">
@@ -559,7 +566,7 @@
 
             <!-- ──── MONTY HALL ──── -->
             <div id="sim-monty" class="sim-panel glass-panel" style="display:none; padding:20px;">
-                <div class="sim-header" style="margin-bottom:15px;">
+                <div class="sim-header">
                      <h2 style="margin:0; background:linear-gradient(45deg, var(--accent-pink), var(--neon-purple)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_monty_title">Monty Hall Problem</h2>
                      <p style="color:var(--text-muted); font-size:0.9rem;" data-i18n="sim_monty_desc">A probability puzzle based on a game show</p>
                 </div>
@@ -624,14 +631,14 @@
 
             <!-- ──── BUFFON'S NEEDLE ──── -->
             <div id="sim-buffon" class="sim-panel glass-panel" style="display:none; padding:20px;">
-                <div class="sim-header" style="margin-bottom:15px;">
+                <div class="sim-header">
                      <h2 style="margin:0; background:linear-gradient(45deg, var(--accent-pink), var(--neon-purple)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_buffon_title">Buffon's Needle</h2>
                      <p style="color:var(--text-muted); font-size:0.9rem;" data-i18n="sim_buffon_desc">Estimating Pi (π) by dropping needles</p>
                 </div>
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
                     <div style="flex:2; min-width:300px;">
-                        <canvas id="buffon-canvas" style="width:100%; height:400px; background:var(--bg-display); border-radius:12px; border:1px solid var(--glass-border);"></canvas>
+                        <canvas id="buffon-canvas" class="md-canvas"></canvas>
                         <!-- Convergence Graph (New) -->
                         <div style="margin-top:10px; height:150px; background:var(--bg-input); border-radius:8px; border:1px solid var(--glass-border); position:relative;">
                              <canvas id="buffon-graph" style="width:100%; height:100%;"></canvas>
@@ -669,7 +676,7 @@
             </div>
         <!-- ──── COIN FLIP ──── -->
             <div id="sim-coin" class="sim-panel glass-panel" style="display:none; padding:20px;">
-                <div class="sim-header" style="margin-bottom:15px;">
+                <div class="sim-header">
                      <h2 style="margin:0; background:linear-gradient(45deg, #ffd60a, #ff7b00); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_coin_title">Coin Flip</h2>
                      <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_coin_desc">Explore the Law of Large Numbers through coin flips (Heads or Tails).</p>
                 </div>
@@ -791,7 +798,7 @@
 
             <!-- ──── DICE THROW ──── -->
             <div id="sim-dice" class="sim-panel glass-panel" style="display:none; padding:20px;">
-                <div class="sim-header" style="margin-bottom:15px;">
+                <div class="sim-header">
                      <h2 style="margin:0; background:linear-gradient(45deg, #4cc9f0, #4361ee); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_dice_title">Dice Simulation</h2>
                      <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_dice_desc">Explore the Law of Large Numbers and see how the mean converges to 3.5.</p>
                 </div>

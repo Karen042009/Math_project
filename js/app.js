@@ -200,8 +200,8 @@ function initTheory() {
         navHTML += `
             <div class="accordion-item">
                 <button class="accordion-header" onclick="toggleAccordion(this)">
-                    ${title}
-                    <i class="fas fa-chevron-down"></i>
+                    <span style="flex:1; padding-right:10px; line-height:1.4;">${title}</span>
+                    <i class="fas fa-chevron-down" style="flex-shrink:0;"></i>
                 </button>
                 <div class="accordion-body">
                     ${section.subsections.map(sub => `
@@ -240,20 +240,55 @@ function initTheory() {
 function toggleAccordion(btn) {
     const body = btn.nextElementSibling;
     const isActive = body.style.display === 'block';
-    document.querySelectorAll('.accordion-body').forEach(el => el.style.display = 'none');
-    body.style.display = isActive ? 'none' : 'block';
+
+    // Close all other accordions and remove their active states
+    document.querySelectorAll('.accordion-body').forEach(el => {
+        el.style.display = 'none';
+        if (el.previousElementSibling && el.previousElementSibling.classList.contains('accordion-header')) {
+            el.previousElementSibling.classList.remove('active');
+        }
+    });
+
+    if (!isActive) {
+        body.style.display = 'block';
+        btn.classList.add('active');
+    } else {
+        body.style.display = 'none';
+        btn.classList.remove('active');
+    }
 }
 
 function scrollToTheory(id) {
     showPage('theory');
+
+    // Close mobile TOC if open
+    if (window.innerWidth <= 900) {
+        const theoryNav = document.getElementById('theory-nav');
+        if (theoryNav) {
+            theoryNav.style.display = 'none';
+            const btn = document.querySelector('.mobile-toc-btn');
+            if (btn) btn.classList.remove('active');
+        }
+    }
+
     setTimeout(() => {
         const el = document.getElementById(id);
         if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const offset = 90;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = el.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+
             el.classList.add('theory-highlight');
             setTimeout(() => { el.classList.remove('theory-highlight'); }, 1800);
         }
-    }, 100);
+    }, 150);
 }
 
 /* --- PRACTICE LOGIC --- */
