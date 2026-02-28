@@ -799,28 +799,74 @@ function initTheoryScrollReveal() {
  */
 let currentAudio = null;
 
-function playAIGuide(context) {
-    const btn = document.getElementById(context + '-speech-btn');
+function getActiveSimContext() {
+    // Returns something like 'sim_galton', 'sim_monty', etc.
+    const activeBtn = document.querySelector('.sim-tab-btn.active');
+    if (!activeBtn) return 'simulations'; // fallback general
 
-    // Toggle stop if already playing
+    // If it's the general intro, we can check a condition or just return the tab-based context
+    // Let's assume the user wants the specific sim explanation if they are on that tab
+    const onclickStr = activeBtn.getAttribute('onclick') || '';
+    if (onclickStr.includes("'galton'")) return 'sim_galton';
+    if (onclickStr.includes("'monty'")) return 'sim_monty';
+    if (onclickStr.includes("'buffon'")) return 'sim_buffon';
+    if (onclickStr.includes("'coin'")) return 'sim_coin';
+    if (onclickStr.includes("'dice'")) return 'sim_dice';
+
+    return 'simulations';
+}
+
+function playAIGuide(context) {
+    // 1. Determine Button ID for UI feedback (glowing)
+    let btnId = context + '-speech-btn';
+    if (context.startsWith('vis_')) btnId = 'vis-speech-btn';
+    if (context.startsWith('sim_')) btnId = 'sim-speech-btn';
+    if (context === 'simulations') btnId = 'sim-speech-btn';
+
+    const btn = document.getElementById(btnId);
+
+    // 2. Map Context to actual filename in assets/audio/
+    const audioMapping = {
+        'intro': '1.wav',
+        'theory': '2.wav',
+        'practice': '3.wav',
+        'lab': '4.wav',
+        'vis_normal': '4_1_normal.wav',
+        'vis_venn': '4_2_ven.wav',
+        'vis_tree': '4_3_tree.wav',
+        'simulations': 'simulations.wav',
+        'sim_galton': 'sim_galton.wav',
+        'sim_monty': 'sim_monty.wav',
+        'sim_buffon': 'sim_buffon.wav',
+        'sim_coin': 'sim_coin.wav',
+        'sim_dice': 'sim_dice.wav'
+    };
+
+    const fileName = audioMapping[context] || (context + '.wav');
+    const audioPath = `assets/audio/${fileName}`;
+
+    // 3. Handle playback logic
     if (currentAudio && !currentAudio.paused) {
         currentAudio.pause();
         currentAudio.currentTime = 0;
-        if (btn) btn.classList.remove('playing');
-        return;
+        document.querySelectorAll('.ai-speech-btn').forEach(b => b.classList.remove('playing'));
+
+        // If they clicked the same button, just stop
+        if (currentAudio.src.endsWith(fileName)) {
+            currentAudio = null;
+            return;
+        }
     }
 
-    // Path to the audio file (assumes user will place it here)
-    const audioPath = `assets/audio/${context}.mp3`;
     currentAudio = new Audio(audioPath);
 
-    if (btn) btn.classList.add('playing');
+    if (btn) {
+        document.querySelectorAll('.ai-speech-btn').forEach(b => b.classList.remove('playing'));
+        btn.classList.add('playing');
+    }
 
     currentAudio.play().catch(err => {
         console.warn("Audio play failed. Ensure the file exists at: " + audioPath);
-        alert(currentLang === 'hy' ?
-            "Ձայնային ֆայլը չգտնվեց: Խնդրում եմ ավելացրեք assets/audio/intro.mp3 ֆայլը:" :
-            "Audio file not found. Please add the file to assets/audio/intro.mp3");
         if (btn) btn.classList.remove('playing');
     });
 

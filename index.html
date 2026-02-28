@@ -163,8 +163,7 @@
                     <div class="feature-card glass-panel" onclick="showPage('theory')">
                         <div class="feature-icon"><i class="fas fa-book"></i></div>
                         <h3 data-i18n="card_theory_title">Theory Encyclopedia</h3>
-                        <p data-i18n="card_theory_desc">7 chapters covering everything from basic events to the Central
-                            Limit Theorem</p>
+                        <p data-i18n="card_theory_desc">9 chapters covering everything from history to practical applications</p>
                     </div>
                     <div class="feature-card glass-panel" onclick="showPage('practice')">
                         <div class="feature-icon"><i class="fas fa-brain"></i></div>
@@ -192,6 +191,9 @@
             <h1 class="page-title theory-title">
                 <i class="fas fa-book"></i>
                 <span data-i18n="section_theory">Theory Encyclopedia</span>
+                <button class="glow-btn ai-speech-btn small" id="theory-speech-btn" onclick="playAIGuide('theory')" style="margin-left: 20px;">
+                    <i class="fas fa-robot"></i> <span data-i18n="btn_ai_guide">Լսել AI Ուղեցույցին</span>
+                </button>
             </h1>
             <div class="theory-layout">
                 <aside class="sidebar">
@@ -216,6 +218,9 @@
                 <h1 class="page-title practice-title">
                     <i class="fas fa-dumbbell"></i>
                     <span data-i18n="section_practice">The Practice Arena</span>
+                    <button class="glow-btn ai-speech-btn small" id="practice-speech-btn" onclick="playAIGuide('practice')" style="margin-left: 20px;">
+                        <i class="fas fa-robot"></i> <span data-i18n="btn_ai_guide">Լսել AI Ուղեցույցին</span>
+                    </button>
                 </h1>
                 <div class="practice-actions">
                     <button class="reset-btn-minimal" onclick="confirmResetProgress()">
@@ -320,12 +325,21 @@
 
         <!-- ─────────────── LAB PAGE ─────────────── -->
         <section id="lab" class="page-section">
-            <h1 class="page-title lab-title">
-                <i class="fas fa-flask"></i>
-                <span data-i18n="section_lab">The Lab — Calculator & Graphs</span>
-            </h1>
-
             <div class="lab-grid">
+                <!-- Header with AI buttons -->
+                <div style="grid-column: 1 / -1; margin-bottom: 20px;">
+                    <h1 class="page-title lab-title" style="margin-bottom: 5px;">
+                        <i class="fas fa-flask"></i>
+                        <span data-i18n="section_lab">Laboratory</span>
+                        <button class="glow-btn ai-speech-btn small" id="lab-speech-btn" onclick="playAIGuide('lab')" style="margin-left: 20px;">
+                            <i class="fas fa-robot"></i> <span data-i18n="btn_ai_guide">Լսել AI Ուղեցույցին</span>
+                        </button>
+                    </h1>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 800px; margin-bottom: 20px;" data-i18n="lab_intro">
+                        Welcome to the Laboratory. Here you can perform precise calculations using our specialized probability calculator and visualize statistical distributions in real-time. Use the Step-by-Step Solver to understand the logic behind complex formulas.
+                    </p>
+                </div>
+
                 <!-- LEFT: Calculator -->
                 <div class="lab-panel">
                     <h2><i class="fas fa-calculator"></i> <span data-i18n="card_tab_calc">Calculator</span></h2>
@@ -461,6 +475,9 @@
                                 <option value="venn" data-i18n="dist_venn">Venn Diagram</option>
                                 <option value="tree" data-i18n="dist_tree">Probability Tree</option>
                             </select>
+                            <button class="glow-btn ai-speech-btn small" id="vis-speech-btn" onclick="playAIGuide('vis_' + document.getElementById('dist-select').value)" title="Explain this visualizer">
+                                <i class="fas fa-robot"></i>
+                            </button>
                             <button class="glow-btn small" onclick="drawGraph()">
                                 <i class="fas fa-sync-alt"></i> <span data-i18n="btn_render">Render</span>
                             </button>
@@ -487,10 +504,13 @@
         <section id="simulations" class="page-section">
             <h1 class="page-title sims-title">
                 <i class="fas fa-atom"></i>
-                <span data-i18n="section_sims">Monte Carlo Playground</span>
+                <span data-i18n="section_sims">Interactive Simulations</span>
+                <button class="glow-btn ai-speech-btn small" id="sim-speech-btn" onclick="playAIGuide('simulations')" style="margin-left: 20px;">
+                    <i class="fas fa-robot"></i> <span data-i18n="btn_ai_guide">Լսել AI Ուղեցույցին</span>
+                </button>
             </h1>
             <p class="intro-text simulation-intro" data-i18n="intro_sims_extended">
-                Here, the laws of probability theory are visually demonstrated in practice using the Monte Carlo method. The purpose of this section is to teach you complex mathematical concepts—such as the normal distribution, decision-making under uncertainty, and geometric probability—through interactive simulations and the analysis of thousands of random events.
+                Այստեղ վիզուալ կերպով ցուցադրվում է հավանականությունների տեսության օրենքների կիրառությունը գործնականում՝ Մոնտե Կառլոյի մեթոդով։ Այս բաժնի նպատակն է ինտերակտիվ սիմուլյացիաների և հազարավոր անգամ կրկնվող պատահական երևույթների վերլուծության միջոցով ձեզ սովորեցնել բարդ մաթեմատիկական հասկացություններ՝ ինչպիսիք են նորմալ բաշխումը, անորոշության պայմաններում ճշգրիտ ընտրության կայացումը և երկրաչափական հավանականությունը։
             </p>
 
             <!-- Simulation Tabs -->
@@ -515,11 +535,14 @@
             <!-- ──── GALTON BOARD ──── -->
             <!-- ──── GALTON BOARD ──── -->
             <div id="sim-galton" class="sim-panel glass-panel" style="display:block; padding:20px;">
-                <div class="sim-header">
+                <div class="sim-header" style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
                         <h2 style="margin:0; background:linear-gradient(45deg, #a855f7, #4361ee); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_galton_title">Galton Board</h2>
                         <p style="color:#aaa; font-size:0.9rem; margin-top:5px;" data-i18n="sim_galton_desc_short">Demonstrating Central Limit Theorem via Normal Distribution</p>
                     </div>
+                    <button class="glow-btn ai-speech-btn small" id="sim_galton-speech-btn" onclick="playAIGuide('sim_galton')">
+                        <i class="fas fa-robot"></i>
+                    </button>
                 </div>
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
@@ -569,9 +592,14 @@
 
             <!-- ──── MONTY HALL ──── -->
             <div id="sim-monty" class="sim-panel glass-panel" style="display:none; padding:20px;">
-                <div class="sim-header">
-                     <h2 style="margin:0; background:linear-gradient(45deg, var(--accent-pink), var(--neon-purple)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_monty_title">Monty Hall Problem</h2>
-                     <p style="color:var(--text-muted); font-size:0.9rem;" data-i18n="sim_monty_desc">A probability puzzle based on a game show</p>
+                <div class="sim-header" style="display:flex; justify-content:space-between; align-items:center;">
+                     <div>
+                        <h2 style="margin:0; background:linear-gradient(45deg, var(--accent-pink), var(--neon-purple)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_monty_title">Monty Hall Problem</h2>
+                        <p style="color:var(--text-muted); font-size:0.9rem;" data-i18n="sim_monty_desc">A probability puzzle based on a game show</p>
+                     </div>
+                     <button class="glow-btn ai-speech-btn small" id="sim_monty-speech-btn" onclick="playAIGuide('sim_monty')">
+                        <i class="fas fa-robot"></i>
+                     </button>
                 </div>
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
@@ -634,9 +662,14 @@
 
             <!-- ──── BUFFON'S NEEDLE ──── -->
             <div id="sim-buffon" class="sim-panel glass-panel" style="display:none; padding:20px;">
-                <div class="sim-header">
-                     <h2 style="margin:0; background:linear-gradient(45deg, var(--accent-pink), var(--neon-purple)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_buffon_title">Buffon's Needle</h2>
-                     <p style="color:var(--text-muted); font-size:0.9rem;" data-i18n="sim_buffon_desc">Estimating Pi (π) by dropping needles</p>
+                <div class="sim-header" style="display:flex; justify-content:space-between; align-items:center;">
+                     <div>
+                        <h2 style="margin:0; background:linear-gradient(45deg, var(--accent-pink), var(--neon-purple)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_buffon_title">Buffon's Needle</h2>
+                        <p style="color:var(--text-muted); font-size:0.9rem;" data-i18n="sim_buffon_desc">Estimating Pi (π) by dropping needles</p>
+                     </div>
+                     <button class="glow-btn ai-speech-btn small" id="sim_buffon-speech-btn" onclick="playAIGuide('sim_buffon')">
+                        <i class="fas fa-robot"></i>
+                     </button>
                 </div>
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
@@ -679,9 +712,14 @@
             </div>
         <!-- ──── COIN FLIP ──── -->
             <div id="sim-coin" class="sim-panel glass-panel" style="display:none; padding:20px;">
-                <div class="sim-header">
-                     <h2 style="margin:0; background:linear-gradient(45deg, #ffd60a, #ff7b00); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_coin_title">Coin Flip</h2>
-                     <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_coin_desc">Explore the Law of Large Numbers through coin flips (Heads or Tails).</p>
+                <div class="sim-header" style="display:flex; justify-content:space-between; align-items:center;">
+                     <div>
+                        <h2 style="margin:0; background:linear-gradient(45deg, #ffd60a, #ff7b00); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_coin_title">Coin Flip</h2>
+                        <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_coin_desc">Explore the Law of Large Numbers through coin flips (Heads or Tails).</p>
+                     </div>
+                     <button class="glow-btn ai-speech-btn small" id="sim_coin-speech-btn" onclick="playAIGuide('sim_coin')">
+                        <i class="fas fa-robot"></i>
+                     </button>
                 </div>
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
@@ -801,9 +839,14 @@
 
             <!-- ──── DICE THROW ──── -->
             <div id="sim-dice" class="sim-panel glass-panel" style="display:none; padding:20px;">
-                <div class="sim-header">
-                     <h2 style="margin:0; background:linear-gradient(45deg, #4cc9f0, #4361ee); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_dice_title">Dice Simulation</h2>
-                     <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_dice_desc">Explore the Law of Large Numbers and see how the mean converges to 3.5.</p>
+                <div class="sim-header" style="display:flex; justify-content:space-between; align-items:center;">
+                     <div>
+                        <h2 style="margin:0; background:linear-gradient(45deg, #4cc9f0, #4361ee); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="sim_dice_title">Dice Simulation</h2>
+                        <p style="color:#aaa; font-size:0.9rem;" data-i18n="sim_dice_desc">Explore the Law of Large Numbers and see how the mean converges to 3.5.</p>
+                     </div>
+                     <button class="glow-btn ai-speech-btn small" id="sim_dice-speech-btn" onclick="playAIGuide('sim_dice')">
+                        <i class="fas fa-robot"></i>
+                     </button>
                 </div>
 
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">

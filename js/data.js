@@ -48,7 +48,7 @@ window.probabilityData = {
     btn_ai_guide: { hy: "Լսել AI Ուղեցույցին", en: "Listen to AI Guide", ru: "Слушать AI Гида" },
 
     card_theory_title: { hy: "Տեսական Շտեմարան", en: "Theory Encyclopedia", ru: "Теоретическая База" },
-    card_theory_desc: { hy: "Ամբողջական դասընթաց՝ պարզ սահմանումներից մինչև բարդ թեորեմներ:", en: "Full course from simple definitions to complex theorems.", ru: "Полный курс: от простых определений до сложных теорем." },
+    card_theory_desc: { hy: "9 գլուխ՝ պատմությունից և պարզ սահմանումներից մինչև բարդ թեորեմներ և կիրառություններ։", en: "9 chapters from history and basic definitions to complex theorems and real-world apps.", ru: "9 глав: от истории и простых определений до сложных теорем и применений." },
     card_practice_title: { hy: "Խնդրագիրք", en: "Practice Arena", ru: "Задачник" },
     card_practice_desc: { hy: "Անսահմանափակ ինտերակտիվ խնդիրներ AI գեներացիայով:", en: "Unlimited interactive problems with AI generation.", ru: "Неограниченные интерактивные задачи с AI генерацией." },
     card_lab_title: { hy: "Հաշվիչ և Գրաֆիկներ", en: "Calculator & Graphs", ru: "Калькулятор и Графики" },
@@ -60,7 +60,7 @@ window.probabilityData = {
     section_theory: { hy: "Տեսական Շտեմարան", en: "Theory Encyclopedia", ru: "Теоретическая База" },
     section_practice: { hy: "Խնդրագիրք և Ուսուցանող Համակարգ", en: "The Practice Arena", ru: "Учебно-практический Раздел" },
     section_lab: { hy: "Հաշվիչ և Գրաֆիկական Վերլուծություն", en: "Calculator & Visualizer", ru: "Расчеты и Графики" },
-    section_sims: { hy: "Ինտերակտիվ Սիմուլյացիաներ", en: "Monte Carlo Playground", ru: "Интерактивные Симуляции" },
+    section_sims: { hy: "Ինտերակտիվ Սիմուլյացիաներ", en: "Interactive Simulations", ru: "Интерактивные Симуляции" },
 
     // ... (Simulation details remain the same) ...
     sim_galton_desc: { hy: "<strong>Գալտոնի տախտակ:</strong> Ցուցադրում է, թե ինչպես է բազմաթիվ պատահական շեղումների արդյունքում ձևավորվում նորմալ բաշխումը:", en: "<strong>Galton Board:</strong> Demonstrates how a normal distribution emerges from numerous random deviations.", ru: "<strong>Доска Гальтона:</strong> Демонстрирует формирование нормального распределения из множества случайных отклонений." },
@@ -501,7 +501,7 @@ window.probabilityData = {
       ]
     },
     {
-      title: { hy: "6. Սահմանային թեորեմներ", en: "6. Limit Theorems", ru: "6. Предельные теоремы" },
+      title: { hy: "7. Սահմանային թեորեմներ (LLN և CLT)", en: "7. Limit Theorems (LLN & CLT)", ru: "7. Предельные теоремы (ЗБЧ и ЦПТ)" },
       subsections: [
         {
           id: "theory-ill-markov",
@@ -537,6 +537,93 @@ window.probabilityData = {
             hy: "<p><strong>Կ.Ս.Թ.․</strong> Մի շարք անկախ պատահական մեծությունների գումարը ձգտում է <strong>Նորմալ բաշխման</strong>, նույնիսկ եթե հենց այդ մեծությունները նորմալ բաշխված չեն:</p>$$Z = \\frac{\\sum X_i - n\\mu}{\\sigma\\sqrt{n}} \\to N(0, 1)$$",
             en: "<p>One of the most profound theorems in all of mathematics:</p><blockquote><em>The sum (or average) of a large number of independent, identically distributed random variables tends toward a Normal distribution, regardless of the original distribution's shape.</em></blockquote>$$Z_n = \\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0, 1) \\text{ as } n \\to \\infty$$<p><strong>Why it's revolutionary:</strong> The bell curve appears everywhere in nature — heights, measurement errors, test scores — because they are sums of many small independent effects. The CLT explains WHY.</p><p><strong>Rule of thumb:</strong> For $n \\geq 30$, the CLT approximation is usually good; for non-symmetric or heavy-tailed distributions, larger $n$ may be needed.</p><p><strong>Example:</strong> Roll a die 100 times and sum the results. Each die has $\\mu=3.5$, $\\sigma^2=35/12$. The sum $\\approx N(350, 291.7)$. The CLT is the engine behind all classical statistical inference.</p>",
             ru: "<p>Одна из самых глубоких теорем во всей математике:</p><blockquote><em>Сумма (или среднее) большого числа независимых одинаково распределённых случайных величин стремится к нормальному распределению, независимо от формы исходного распределения.</em></blockquote>$$Z_n = \\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0, 1) \\text{ при } n \\to \\infty$$<p><strong>Почему это революционно:</strong> Колоколообразная кривая встречается повсюду в природе — рост, ошибки измерений, результаты тестов — потому что они являются суммами многих малых независимых эффектов. ЦПТ объясняет ПОЧЕМУ.</p><p><strong>Правило на практике:</strong> При $n \\geq 30$ приближение ЦПТ обычно хорошее; для несимметричных или тяжелохвостых распределений нужно большее $n$.</p><p><strong>Пример:</strong> Бросим кубик 100 раз и сложим результаты. Для каждого $\\mu=3{,}5$, $\\sigma^2=35/12$. Сумма $\\approx N(350, 291{,}7)$. ЦПТ — это двигатель всего классического статистического вывода.</p>"
+          }
+        }
+      ]
+    },
+    {
+      title: { hy: "8. Հավանականության կիրառությունը կյանքում", en: "8. Practical Applications", ru: "8. Практическое применение" },
+      subsections: [
+        {
+          id: "apps-finance",
+          title: { hy: "Ֆինանսներ և Ֆոնդային շուկա", en: "Finance & Stock Market", ru: "Финансы и фондовый рынок" },
+          content: {
+            hy: "<p>Ֆինանսական աշխարհում հավանականությունը ամեն ինչ է։ Թրեյդերները և ներդրողները օգտագործում են այն <strong>ռիսկերը կառավարելու</strong> համար։</p><ul><li><strong>Բաժնետոմսեր․</strong> Գների տատանումները մոդելավորվում են պատահական թափառումների միջոցով։</li><li><strong>Օպցիոններ․</strong> Բլեք-Շոուլզի մոդելը հիմնված է հավանականությունների վրա։</li></ul>",
+            en: "<p>In the financial world, probability is everything. Traders and investors use it to <strong>manage risks</strong> and maximize returns.</p><ul><li><strong>Stock Market:</strong> Price movements are often modeled as 'random walks'.</li><li><strong>Risk Management:</strong> Banks use Value-at-Risk (VaR) models to estimate potential losses.</li><li><strong>Options Pricing:</strong> The Black-Scholes model uses probability to determine the fair price of stock options.</li></ul>",
+            ru: "<p>В мире финансов вероятность — это всё. Трейдеры и инвесторы используют её для <strong>управления рисками</strong>.</p><ul><li><strong>Фондовый рынок:</strong> Движения цен моделируются как «случайные блуждания».</li><li><strong>Управление рисками:</strong> Банки используют модели Value-at-Risk (VaR) для оценки возможных убытков.</li></ul>"
+          }
+        },
+        {
+          id: "apps-medicine",
+          title: { hy: "Բժշկություն և Գենետիկա", en: "Medicine & Genetics", ru: "Медицина и генетика" },
+          content: {
+            hy: "<p>Բժշկության մեջ ոչ մի դեղամիջոց չի հաստատվում առանց հավանականային թեստերի։</p><ul><li><strong>Կլինիկական փորձարկումներ․</strong> Օգտագործվում է վիճակագրական նշանակալիությունը ստուգելու համար։</li><li><strong>Գենետիկա․</strong> Մենդելի օրենքները հիմնված են հավանականությունների վրա։</li></ul>",
+            en: "<p>Probability is the backbone of modern evidence-based medicine.</p><ul><li><strong>Clinical Trials:</strong> Testing whether a new drug works better than a placebo relies on 'P-values' to rule out pure luck.</li><li><strong>Epidemiology:</strong> Predicting the spread of viruses (like COVID-19) uses complex stochastic models.</li><li><strong>Genetics:</strong> Predicting the inheritance of traits or hereditary diseases follows Mendelian probability laws.</li></ul>",
+            ru: "<p>Вероятность — основа современной доказательной медицины.</p><ul><li><strong>Клинические испытания:</strong> Эффективность лекарств проверяется через статистические тесты (P-значения).</li><li><strong>Генетика:</strong> Наследование признаков и заболеваний подчиняется законам вероятности Менделя.</li></ul>"
+          }
+        },
+        {
+          id: "apps-ai",
+          title: { hy: "Արհեստական Բանականություն (AI)", en: "Artificial Intelligence (AI)", ru: "Искусственный интеллект (ИИ)" },
+          content: {
+            hy: "<p>Ժամանակակից AI-ն, ներառյալ ChatGPT-ն, հիմնված է հավանականությունների վրա:</p><ul><li><strong>Մեքենայական ուսուցում․</strong> Մոդելները գուշակում են ամենահավանական հաջորդ բառը կամ պատկերը։</li><li><strong>Ինքնավար մեքենաներ․</strong> Օգտագործում են հավանականային զտիչներ՝ ճանապարհը ճիշտ ընկալելու համար։</li></ul>",
+            en: "<p>Modern AI doesn't 'think' like humans — it calculates probabilities at massive scales.</p><ul><li><strong>Large Language Models (like ChatGPT):</strong> These models predict the most <em>probable</em> next word in a sequence.</li><li><strong>Computer Vision:</strong> AI identifies objects in photos based on the probability of certain pixel patterns match.</li><li><strong>Autonomous Vehicles:</strong> Self-driving cars constantly calculate the probability of different obstacles moving to make safe turns.</li></ul>",
+            ru: "<p>Современный ИИ не «думает», как человек — он вычисляет вероятности в огромных масштабах.</p><ul><li><strong>Нейросети:</strong> ChatGPT предсказывает наиболее <em>вероятное</em> следующее слово в предложении.</li><li><strong>Автопилоты:</strong> Машины постоянно вычисляют вероятность движения препятствий для безопасного маневра.</li></ul>"
+          }
+        },
+        {
+          id: "apps-weather",
+          title: { hy: "Եղանակի տեսություն և Կառավարում", en: "Weather & Management", ru: "Погода и управление" },
+          content: {
+            hy: "<p>«Անձրևի 30% հավանականություն» նշանակում է հավանականային մոդելավորում։</p><ul><li><strong>Եղանակ․</strong> Մթնոլորտային քաոսի մեջ գտնում ենք օրինաչափություններ։</li><li><strong>Ապահովագրություն․</strong> Ընկերությունները հաշվում են վթարների հավանականությունը՝ սակագներ սահմանելու համար։</li></ul>",
+            en: "<p>Weather prediction is inherently probabilistic due to the 'Butterfly Effect'.</p><ul><li><strong>Meteorology:</strong> Supercomputers run thousands of simulations (ensemble forecasting) to see what percentage of them result in rain.</li><li><strong>Insurance:</strong> Actuaries calculate the probability of accidents, fires, or floods to determine fair premiums.</li><li><strong>Logistics:</strong> Companies like Amazon use it to predict demand and stock warehouses optimally.</li></ul>",
+            ru: "<p>Прогноз погоды всегда вероятностен из-за сложности атмосферы.</p><ul><li><strong>Метеорология:</strong> Суперкомпьютеры запускают тысячи симуляций, чтобы найти процент выпадения осадков.</li><li><strong>Страхование:</strong> Актуарии вычисляют вероятность страховых случаев для установления тарифов.</li></ul>"
+          }
+        }
+      ]
+    },
+    {
+      title: { hy: "9. Մոնտե Կառլոյի մեթոդը (Սիմուլյացիաների ուժը)", en: "9. Monte Carlo Method (The Power of Simulation)", ru: "9. Метод Монте-Карло (Сила симуляций)" },
+      subsections: [
+        {
+          id: "theory-mc-basics",
+          title: { hy: "Ինչ է Մոնտե Կառլոն", en: "What is Monte Carlo?", ru: "Что такое Монте-Карло?" },
+          content: {
+            hy: "<p>Երբեմն մաթեմատիկական բանաձևերը լինում են չափազանց բարդ։ Այդ դեպքում օգնության է հասնում <strong>Մոնտե Կառլոյի մեթոդը</strong>․ մենք համակարգչով կատարում ենք միլիոնավոր պատահական փորձեր և հաշվում արդյունքների միջինը։</p><p>Աշխարհի ամենաբարդ խնդիրները՝ տիեզերանավերի թռիչքից մինչև ֆոնդային շուկայում ռիսկերը, լուծվում են հենց այս մեթոդով։</p>",
+            en: "<p>The <strong>Monte Carlo method</strong> is a way of solving complex problems using randomness. Instead of solving a difficult formula, we simulate the experiment millions of times on a computer and see what happens on average.</p><p>It's used in physics, finance, and engineering to solve problems that are analytically impossible to calculate.</p>",
+            ru: "<p><strong>Метод Монте-Карло</strong> — это способ решения сложных задач с помощью случайности. Если формулу решить невозможно, мы запускаем миллионы симуляций и находим среднее.</p>"
+          }
+        },
+        {
+          id: "theory-pi-estimation",
+          title: { hy: "π-ի հաշվարկը պատահականությամբ", en: "Estimating Pi by Randomness", ru: "Вычисление числа Пи через случайность" },
+          content: {
+            hy: "<p>Մոնտե Կառլոյի մեթոդի ամենահայտնի օրինակը <strong>π (Պի)</strong> թվի հաշվարկն է։ Եթե մենք քառակուսու մեջ պատահական կետեր նետենք, ապա ներգծած շրջանի մեջ ընկած կետերի հարաբերությունը քառակուսու մեջ ընկածներին մեզ թույլ կտա հաշվել π-ն։</p><p>Հենց սա է ընկած մեր <strong>«Լաբորատորիա»</strong> բաժնի հիմքում։</p>",
+            en: "<p>A classic example is estimating <strong>Pi (π)</strong>. By throwing random points into a square with an inscribed circle, the ratio of points inside the circle to total points will eventually reveal the value of Pi.</p>",
+            ru: "<p>Классический пример — вычисление числа <strong>Пи (π)</strong> через случайные точки в квадрате с вписанным кругом.</p>"
+          }
+        }
+      ]
+    },
+    {
+      title: { hy: "10. Հայտնի Պարադոքսներ", en: "10. Famous Paradoxes", ru: "10. Знаменитые парадоксы" },
+      subsections: [
+        {
+          id: "theory-monty-hall",
+          title: { hy: "Մոնտի Հոլլի պարադոքսը", en: "Monty Hall Problem", ru: "Парадокс Монти Холла" },
+          content: {
+            hy: "<p>Պատկերացրեք՝ խաղի ժամանակ կա 3 դուռ։ Մեկի հետևում ավտոմեքենա է, երկուսի հետևում՝ այծ։ Դուք ընտրում եք մեկը, և հաղորդավարը (ով գիտի՝ որտեղ է մեքենան) բացում է մյուս երկու դռներից մեկը, որտեղ այծ է։</p><p><strong>Հարց․</strong> Արդյո՞ք ձեզ ձեռնտու է փոխել ձեր ընտրությունը։</p><p><strong>Պատասխան․</strong> Այո՛: Ընտրությունը փոխելու դեպքում ձեր շանսերը 33%-ից դառնում են 66%։ Սա հակաինտուիտիվ է, բայց մաթեմատիկորեն ապացուցված։</p>",
+            en: "<p>One of the most famous probability puzzles. You have 3 doors: 1 car, 2 goats. You pick a door, and Monty Hall (who knows where the car is) opens one of the other doors showing a goat.</p><p><strong>Question:</strong> Should you switch? <br><strong>Answer:</strong> Yes. Switching doubles your chances from 1/3 (33%) to 2/3 (66%).</p>",
+            ru: "<p>Вы заменяете свой выбор? Да, смена выбора удваивает ваши шансы с 1/3 до 2/3. Это один из самых контринтуитивных парадоксов.</p>"
+          }
+        },
+        {
+          id: "theory-birthday-paradox",
+          title: { hy: "Ծննդյան օրերի պարադոքսը", en: "The Birthday Paradox", ru: "Парадокс дней рождения" },
+          content: {
+            hy: "<p>Քանի՞ հոգի պետք է լինի սենյակում, որպեսզի 50% հավանականությամբ գոնե երկուսը ունենան նույն ծննդյան օրը (ամիսը և օրը)։</p><p>Մարդկանց մեծամասնությունը կարծում է, որ պետք է մոտ 180 հոգի, բայց իրականում բավարար է ընդամենը **23 հոգին**։ Սա ևս մեկ ապացույց է, որ մեր ինտուիցիան հաճախ սխալվում է հավանականության հարցերում։</p>",
+            en: "<p>How many people do you need in a room for a 50% chance that at least two share the same birthday?</p><p>Most people guess around 180, but the actual number is surprisingly low: only <strong>23 people</strong>.</p>",
+            ru: "<p>Достаточно всего <strong>23 человека</strong> в комнате, чтобы вероятность совпадения дней рождения у двоих была 50%.</p>"
           }
         }
       ]
@@ -858,6 +945,40 @@ window.probabilityData = {
         hy: "Ըստ Չեբիշևի անհավասարության. P(|X - μ| ≥ k) ≤ Var(X) / k²։ Այստեղ E(X) = μ = 100, իսկ շեղումը k = 15 է։<br>P(|X - 100| ≥ 15) ≤ 25 / 15² = 25 / 225 = 1 / 9 ≈ 0.1111։",
         en: "Chebyshev's inequality: P(|X - μ| ≥ k) ≤ Var(X) / k². Here k = 15. So 25 / (15^2) = 25 / 225 = 1/9 ≈ 0.1111.",
         ru: "Неравенство Чебышёва: P(|X - μ| ≥ k) ≤ Var(X) / k². Здесь k = 15. 25 / (15^2) = 25 / 225 = 1/9 ≈ 0.1111."
+      }
+    },
+    {
+      id: 220,
+      difficulty: "intermediate",
+      question: { hy: "Քանի՞ եղանակով կարելի է 10 հոգանոց խմբից ընտրել նախագահ և քարտուղար:", en: "How many ways to choose a president and a secretary from a group of 10 people?", ru: "Сколькими способами можно выбрать президента и секретаря из группы в 10 человек?" },
+      answer: "90",
+      related_theory_id: "theory-arrangements",
+      related_theory_hint: {
+        hy: "Քանի որ պաշտոնները տարբեր են, հերթականությունը կարևոր է: Կիրառեք կարգավորությունների (Arrangements) բանաձևը:",
+        en: "Since the roles are different, order matters. Use the Arrangements formula A(n,k).",
+        ru: "Так как роли разные, порядок важен. Используйте формулу размещений A(n,k)."
+      },
+      related_theory_solution: {
+        hy: "A(10, 2) = 10! / (10-2)! = 10 × 9 = 90:",
+        en: "A(10, 2) = 10! / (10-2)! = 10 × 9 = 90.",
+        ru: "A(10, 2) = 10! / (10-2)! = 10 × 9 = 90."
+      }
+    },
+    {
+      id: 320,
+      difficulty: "advanced",
+      question: { hy: "2 զառ նետելիս, որքա՞ն է հավանականությունը, որ գումարը 7 է, եթե հայտնի է, որ առաջին զառի վրա 4 է ընկել:", en: "Roll 2 dice. Prob sum is 7 given first die is 4?", ru: "2 кубика. Вероятность суммы 7, если на первом выпало 4?" },
+      answer: "0.1667",
+      related_theory_id: "theory-conditional-prob",
+      related_theory_hint: {
+        hy: "Սա պայմանական հավանականություն է: Քանի որ առաջին զառի արդյունքը արդեն գիտենք, հաջորդ քայլի համար կա միայն 6 հնարավոր տարբերակ:",
+        en: "This is conditional probability. Since the first die is fixed, there are only 6 possibilities for the second die.",
+        ru: "Это условная вероятность. Так как первый кубик известен, для второго остается только 6 вариантов."
+      },
+      related_theory_solution: {
+        hy: "Քանի որ առաջին զառը 4 է, միակ բարենպաստ ելքը երկրորդ զառի 3 լինելն է։ Քանի որ երկրորդ զառն ունի 6 ելք, հավանականությունը 1/6 ≈ 0.1667 է։",
+        en: "The first die is 4. The only favorable outcome is the second die being 3. Since the second die has 6 outcomes, P = 1/6 ≈ 0.1667.",
+        ru: "Первый кубик 4. Единственный благоприятный исход — 3 на втором кубике. Вероятность 1/6 ≈ 0.1667."
       }
     }
   ],

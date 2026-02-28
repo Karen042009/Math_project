@@ -13,10 +13,10 @@ function toggleFormulaPanel() {
 
     if (panel.style.display === 'none') {
         panel.style.display = 'block';
-        if(btn) btn.classList.add('active');
+        if (btn) btn.classList.add('active');
     } else {
         panel.style.display = 'none';
-        if(btn) btn.classList.remove('active');
+        if (btn) btn.classList.remove('active');
     }
 }
 
@@ -203,8 +203,8 @@ function solveFormulaWithSteps() {
     // Standard Normal CDF approximation
     const phi = (z) => {
         const p = 0.3275911;
-        const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429;
-        const sign = z < 0 ? -1 : 1; 
+        const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429;
+        const sign = z < 0 ? -1 : 1;
         const mag = Math.abs(z);
         const t = 1.0 / (1.0 + p * mag);
         const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-mag * mag);
@@ -252,19 +252,19 @@ function solveFormulaWithSteps() {
         const res = C(n, k);
         html = `<p>${n}! / (${k}!(${n}-${k})!) = <strong>${res}</strong></p>`;
     } else if (type === 'normal_calc') {
-         const mu = parseFloat(document.getElementById('f-mu').value);
-         const s = parseFloat(document.getElementById('f-sigma').value);
-         const x = parseFloat(document.getElementById('f-x').value);
-         const z = (x - mu) / s;
-         const p = phi(z);
-         
-         html = `
+        const mu = parseFloat(document.getElementById('f-mu').value);
+        const s = parseFloat(document.getElementById('f-sigma').value);
+        const x = parseFloat(document.getElementById('f-x').value);
+        const z = (x - mu) / s;
+        const p = phi(z);
+
+        html = `
             <p><strong>Task:</strong> Find P(X < ${x})</p>
             <p>1. Calculate Z-score: Z = (x - μ) / σ</p>
             <p>Z = (${x} - ${mu}) / ${s} = <strong>${z.toFixed(4)}</strong></p>
             <p>2. Lookup Z-table (or approx): Φ(${z.toFixed(2)})</p>
             <p style="color:var(--accent-gold); margin-top:10px;">Result: P(X < ${x}) ≈ ${p.toFixed(5)}</p>
-            <p style="font-size:0.8rem; color:#888;">(This means ${ (p*100).toFixed(2) }% of data is below ${x})</p>
+            <p style="font-size:0.8rem; color:#888;">(This means ${(p * 100).toFixed(2)}% of data is below ${x})</p>
          `;
     }
 
@@ -279,24 +279,24 @@ function updateVisualizer() {
     const type = document.getElementById('dist-select').value;
     const paramsDiv = document.getElementById('dist-params');
     const analysisPanel = document.getElementById('dist-analysis');
-    
+
     // Hide analysis initially when switching modes
-    if(analysisPanel) analysisPanel.style.display = 'none';
-    if(paramsDiv) paramsDiv.innerHTML = '';
+    if (analysisPanel) analysisPanel.style.display = 'none';
+    if (paramsDiv) paramsDiv.innerHTML = '';
 
     if (type === 'normal') {
         paramsDiv.innerHTML = `
             <div class="param-group">
-                <label>μ</label> <input type="number" id="param-mu" value="0" style="width:40px">
+                <label>μ</label> <input type="number" id="param-mu" value="0" style="width:70px">
             </div>
             <div class="param-group">
-                <label>σ</label> <input type="number" id="param-sigma" value="1" step="0.1" style="width:40px">
+                <label>σ</label> <input type="number" id="param-sigma" value="1" step="0.1" style="width:70px">
             </div>
             <div class="param-group">
-                <label>Min</label> <input type="number" id="param-a" value="-1" style="width:40px">
+                <label>Min</label> <input type="number" id="param-a" value="-1" style="width:70px">
             </div>
             <div class="param-group">
-                <label>Max</label> <input type="number" id="param-b" value="1" style="width:40px">
+                <label>Max</label> <input type="number" id="param-b" value="1" style="width:70px">
             </div>
         `;
     } else if (type === 'venn') {
@@ -342,7 +342,7 @@ function renderTreeCustomInputs() {
 
     const container = document.getElementById('tree-custom-container');
     container.innerHTML = '';
-    
+
     // Helper to create input row
     const theme = document.documentElement.getAttribute('data-theme') || 'dark';
     const inputBg = 'var(--bg-input)';
@@ -372,14 +372,14 @@ function renderTreeCustomInputs() {
 
     // Level 1: Root
     let html = createRow("Start Node (Stage 1)", "node-0-0", "A", "B");
-    
+
     // Level 2
     if (steps >= 2) {
         html += `<div style="margin-top:5px; color:#aaa; font-size:0.8rem;">Stage 2 (Conditionals)</div>`;
         html += createRow("If A happened:", "node-1-0", "A1", "B1");
         html += createRow("If B happened:", "node-1-1", "A2", "B2");
     }
-    
+
     // Level 3
     if (steps >= 3) {
         html += `<div style="margin-top:5px; color:#aaa; font-size:0.8rem;">Stage 3</div>`;
@@ -388,7 +388,7 @@ function renderTreeCustomInputs() {
         html += createRow("If A2:", "node-2-2", "A2-1", "A2-2");
         html += createRow("If B2:", "node-2-3", "B2-1", "B2-2");
     }
-    
+
     container.innerHTML = html;
 }
 
@@ -417,9 +417,9 @@ function renderVennInputs() {
             </div>
         `;
     }
-    
+
     // Call buttons renderer
-    if(typeof renderVennOps === 'function') renderVennOps();
+    if (typeof renderVennOps === 'function') renderVennOps();
 }
 
 function renderVennOps() {
@@ -428,7 +428,7 @@ function renderVennOps() {
     if (!container) return;
 
     let html = `<label style="color:var(--text-muted); font-size:0.8rem; display:block; margin-bottom:8px;">Highlight Operations:</label><div style="display:flex; gap:8px; flex-wrap:wrap;">`;
-    
+
     if (count === '2') {
         html += `
             <button class="op-btn" onclick="drawGraph('union')">A ∪ B</button>
@@ -473,7 +473,7 @@ function drawGraph(highlightMode = null) {
 
     // Show Analysis
     const analysisPanel = document.getElementById('dist-analysis');
-    if(analysisPanel) analysisPanel.style.display = 'block';
+    if (analysisPanel) analysisPanel.style.display = 'block';
 
     if (type === 'normal') {
         drawNormal(ctx, w, h);
@@ -578,25 +578,25 @@ function drawVenn(ctx, w, h, highlight = null) {
     const sets = document.getElementById('venn-sets').value;
     const out = document.getElementById('dist-output');
     const txtColor = theme === 'light' ? '#1e293b' : '#ffffff';
-    
+
     ctx.lineWidth = 2;
     ctx.font = '14px Inter, sans-serif';
     ctx.textAlign = 'center';
 
     const cx = w / 2, cy = h / 2;
-    
+
     // Colors - More vibrant for Dark mode
     const colBase = theme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.04)';
     const colA = theme === 'light' ? 'rgba(219, 39, 119, 0.4)' : 'rgba(247, 37, 133, 0.6)';
     const colB = theme === 'light' ? 'rgba(124, 58, 237, 0.4)' : 'rgba(168, 85, 247, 0.6)';
     const colC = theme === 'light' ? 'rgba(180, 83, 9, 0.3)' : 'rgba(255, 214, 10, 0.5)';
-    
+
     // Add glow for dark mode
     if (theme === 'dark') {
         ctx.shadowBlur = 15;
         ctx.shadowColor = 'rgba(168, 85, 247, 0.3)';
     }
-    
+
     if (sets === '2') {
         const nA = parseInt(document.getElementById('v-a').value) || 0;
         const nB = parseInt(document.getElementById('v-b').value) || 0;
@@ -627,22 +627,22 @@ function drawVenn(ctx, w, h, highlight = null) {
         ctx.fillText(`U = ${total}`, cx - 230, cy - 160);
 
         if (isComp) {
-             ctx.fillStyle = theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.1)';
-             ctx.fillRect(cx - 250, cy - 180, 500, 360);
+            ctx.fillStyle = theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(cx - 250, cy - 180, 500, 360);
         }
 
         // Draw Base Circles
         ctx.lineWidth = 1.5;
         // Left
-        ctx.beginPath(); 
+        ctx.beginPath();
         ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
         ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(247, 37, 133, 0.15)';
         ctx.fill();
-        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)'; 
+        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)';
         ctx.stroke();
 
         // Right
-        ctx.beginPath(); 
+        ctx.beginPath();
         ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
         ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(168, 85, 247, 0.15)';
         ctx.fill();
@@ -651,39 +651,39 @@ function drawVenn(ctx, w, h, highlight = null) {
         // Highlights - Simple Overlays
         if (isUnion || isOnlyA) {
             ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
-            ctx.fillStyle = colA; ctx.fill(); 
+            ctx.fillStyle = colA; ctx.fill();
         }
 
         if (isUnion || isOnlyB) {
             ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
             ctx.fillStyle = colB; ctx.fill();
         }
-        
+
         // Correct Overlaps
         // If Only A: Erase B part
         if (isOnlyA) {
-             ctx.save();
-             ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
-             ctx.globalCompositeOperation = 'destination-out';
-             ctx.fill();
-             ctx.restore();
+            ctx.save();
+            ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fill();
+            ctx.restore();
         }
         // If Only B: Erase A part
         if (isOnlyB) {
-             ctx.save();
-             ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
-             ctx.globalCompositeOperation = 'destination-out';
-             ctx.fill();
-             ctx.restore();
+            ctx.save();
+            ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fill();
+            ctx.restore();
         }
-        
+
         // Intersection
         if (isInter) {
             ctx.save();
             ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
             ctx.clip();
             ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
-            ctx.fillStyle = 'rgba(157, 78, 221, 0.6)'; 
+            ctx.fillStyle = 'rgba(157, 78, 221, 0.6)';
             ctx.fill();
             ctx.restore();
         }
@@ -704,18 +704,18 @@ function drawVenn(ctx, w, h, highlight = null) {
         // Analysis
         out.innerHTML = `
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <div class="${isOnlyA?'highlight-text':''}">P(A) = ${(nA/total).toFixed(3)}</div>
-                <div class="${isOnlyB?'highlight-text':''}">P(B) = ${(nB/total).toFixed(3)}</div>
-                <div class="${isUnion?'highlight-text':''}">P(A ∪ B) = ${(union/total).toFixed(3)}</div>
-                <div class="${isInter?'highlight-text':''}">P(A ∩ B) = ${(nAB/total).toFixed(3)}</div>
-                <div>P(A|B) = ${(nB>0 ? nAB/nB : 0).toFixed(3)}</div>
-                <div>P(Only A) = ${onlyA}/${total} = <strong>${(onlyA/total).toFixed(3)}</strong></div>
+                <div class="${isOnlyA ? 'highlight-text' : ''}">P(A) = ${(nA / total).toFixed(3)}</div>
+                <div class="${isOnlyB ? 'highlight-text' : ''}">P(B) = ${(nB / total).toFixed(3)}</div>
+                <div class="${isUnion ? 'highlight-text' : ''}">P(A ∪ B) = ${(union / total).toFixed(3)}</div>
+                <div class="${isInter ? 'highlight-text' : ''}">P(A ∩ B) = ${(nAB / total).toFixed(3)}</div>
+                <div>P(A|B) = ${(nB > 0 ? nAB / nB : 0).toFixed(3)}</div>
+                <div>P(Only A) = ${onlyA}/${total} = <strong>${(onlyA / total).toFixed(3)}</strong></div>
             </div>
         `;
 
     } else {
         // 3 Sets
-         const nA = parseInt(document.getElementById('v-a').value) || 0;
+        const nA = parseInt(document.getElementById('v-a').value) || 0;
         const nB = parseInt(document.getElementById('v-b').value) || 0;
         const nC = parseInt(document.getElementById('v-c').value) || 0;
         const nAB = parseInt(document.getElementById('v-ab').value) || 0;
@@ -729,7 +729,7 @@ function drawVenn(ctx, w, h, highlight = null) {
         const ax = cx, ay = cy - 50;
         const bx = cx - 55, by = cy + 40;
         const ccx = cx + 55, ccy = cy + 40;
-        
+
         // Calculations
         const onlyAB = nAB - nABC;
         const onlyAC = nAC - nABC;
@@ -754,16 +754,16 @@ function drawVenn(ctx, w, h, highlight = null) {
         ctx.fillText(`U = ${total}`, cx - 230, cy - 160);
 
         if (isComp) {
-             ctx.fillStyle = theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.1)';
-             ctx.fillRect(cx - 250, cy - 180, 500, 360);
+            ctx.fillStyle = theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(cx - 250, cy - 180, 500, 360);
         }
 
         // Draw Circles Base (dim)
         const drawCircle = (x, y, col) => {
-             ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI);
-             ctx.fillStyle = col; ctx.fill(); 
-             ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)';
-             ctx.stroke();
+            ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.fillStyle = col; ctx.fill();
+            ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)';
+            ctx.stroke();
         };
 
         // Base
@@ -780,50 +780,50 @@ function drawVenn(ctx, w, h, highlight = null) {
         }
 
         if (isOnlyA) {
-             // Fill A, cut B, cut C
-             ctx.save();
-             ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
-             ctx.fillStyle = colA; ctx.fill();
-             // Cut B
-             ctx.globalCompositeOperation = 'destination-out';
-             ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.fill();
-             // Cut C
-             ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.fill();
-             ctx.restore();
+            // Fill A, cut B, cut C
+            ctx.save();
+            ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colA; ctx.fill();
+            // Cut B
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.fill();
+            // Cut C
+            ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.restore();
         }
-        
+
         if (isOnlyB) {
-             ctx.save();
-             ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
-             ctx.fillStyle = colB; ctx.fill();
-             ctx.globalCompositeOperation = 'destination-out';
-             ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.fill();
-             ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.fill();
-             ctx.restore();
+            ctx.save();
+            ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colB; ctx.fill();
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.restore();
         }
 
         if (isOnlyC) {
-             ctx.save();
-             ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
-             ctx.fillStyle = colC; ctx.fill();
-             ctx.globalCompositeOperation = 'destination-out';
-             ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.fill();
-             ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.fill();
-             ctx.restore();
+            ctx.save();
+            ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colC; ctx.fill();
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.restore();
         }
 
         // Analysis
         if (isInter) {
-             // Intersect A, B, C
-             ctx.save();
-             ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
-             ctx.clip();
-             ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
-             ctx.clip();
-             ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
-             ctx.fillStyle = txtColor; 
-             ctx.fill();
-             ctx.restore();
+            // Intersect A, B, C
+            ctx.save();
+            ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = txtColor;
+            ctx.fill();
+            ctx.restore();
         }
 
         // Restroke outlines
@@ -831,9 +831,9 @@ function drawVenn(ctx, w, h, highlight = null) {
         ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.stroke();
         ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.stroke();
         ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.stroke();
-        
+
         // Labels
-        ctx.fillStyle=txtColor; 
+        ctx.fillStyle = txtColor;
         ctx.fillText('A', ax, ay - 40);
         ctx.fillText('B', bx - 50, by);
         ctx.fillText('C', ccx + 50, ccy);
@@ -841,11 +841,11 @@ function drawVenn(ctx, w, h, highlight = null) {
         // Analysis
         out.innerHTML = `
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                 <div class="${isOnlyA?'highlight-text':''}">P(A only) = ${(onlyA/total).toFixed(3)}</div>
-                 <div class="${isOnlyB?'highlight-text':''}">P(B only) = ${(onlyB/total).toFixed(3)}</div>
-                 <div class="${isOnlyC?'highlight-text':''}">P(C only) = ${(onlyC/total).toFixed(3)}</div>
-                 <div class="${isInter?'highlight-text':''}">P(A∩B∩C) = ${(nABC/total).toFixed(3)}</div>
-                 <div class="${isUnion?'highlight-text':''}">P(A∪B∪C) = ${(union/total).toFixed(3)}</div>
+                 <div class="${isOnlyA ? 'highlight-text' : ''}">P(A only) = ${(onlyA / total).toFixed(3)}</div>
+                 <div class="${isOnlyB ? 'highlight-text' : ''}">P(B only) = ${(onlyB / total).toFixed(3)}</div>
+                 <div class="${isOnlyC ? 'highlight-text' : ''}">P(C only) = ${(onlyC / total).toFixed(3)}</div>
+                 <div class="${isInter ? 'highlight-text' : ''}">P(A∩B∩C) = ${(nABC / total).toFixed(3)}</div>
+                 <div class="${isUnion ? 'highlight-text' : ''}">P(A∪B∪C) = ${(union / total).toFixed(3)}</div>
                  <div>P(Total) = 1.000</div>
             </div>
         `;
@@ -855,8 +855,8 @@ function drawVenn(ctx, w, h, highlight = null) {
 function drawTree(ctx, w, h) {
     let steps = parseInt(document.getElementById('tree-steps')?.value || 2);
     // Clamp steps
-    if(steps > 3) steps = 3;
-    if(steps < 1) steps = 1;
+    if (steps > 3) steps = 3;
+    if (steps < 1) steps = 1;
 
     ctx.font = '12px Inter, sans-serif';
     ctx.textAlign = 'center';
@@ -881,7 +881,7 @@ function drawTree(ctx, w, h) {
         // Draw Node Circle
         const theme = document.documentElement.getAttribute('data-theme') || 'dark';
         const nodeColor = theme === 'light' ? '#7c3aed' : '#ffffff';
-        
+
         ctx.beginPath();
         ctx.arc(x, y, 4, 0, Math.PI * 2);
         ctx.fillStyle = nodeColor;
@@ -891,8 +891,8 @@ function drawTree(ctx, w, h) {
             // Leaf node: Final Probability
             ctx.fillStyle = theme === 'light' ? '#b45309' : '#ffd60a'; // Darker gold for light mode
             ctx.font = 'bold 13px Inter';
-            ctx.fillText((probSoFar*100).toFixed(1) + '%', x + 35, y);
-            
+            ctx.fillText((probSoFar * 100).toFixed(1) + '%', x + 35, y);
+
             // Collect result
             results.push({ path: pathStr, p: probSoFar });
             return;
@@ -900,18 +900,18 @@ function drawTree(ctx, w, h) {
 
         const nextX = x + layerWidth;
         const offset = (h / 2.2) / Math.pow(2, level + 1);
-        
+
         // Fetch Data for this split
         const { name1, name2, p } = getNodeData(level, nodeIndex);
         const q = 1 - p;
 
         // --- UP BRANCH (Success/Name1) ---
         const yUp = y - offset;
-        
+
         // Bezier Curve
         ctx.beginPath();
         ctx.moveTo(x, y);
-        ctx.bezierCurveTo(x + layerWidth/2, y, x + layerWidth/2, yUp, nextX, yUp);
+        ctx.bezierCurveTo(x + layerWidth / 2, y, x + layerWidth / 2, yUp, nextX, yUp);
         ctx.strokeStyle = 'rgba(168, 85, 247, 0.8)'; // Blue
         ctx.stroke();
 
@@ -919,16 +919,16 @@ function drawTree(ctx, w, h) {
         const midX = (x + nextX) / 2;
         const midY = (y + yUp) / 2; // Approximate mid for bezier
         // Actually bezier mid point is complex, simple mid is okay for curve
-        
+
         const txtColor = theme === 'light' ? '#1e293b' : '#ffffff';
-        
+
         // Draw Label 1 (Pill background)
         const probText = p.toFixed(2);
         ctx.font = 'bold 11px Inter';
         const txtWidth = ctx.measureText(probText).width;
-        
+
         ctx.fillStyle = theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.6)';
-        ctx.roundRect(midX - (txtWidth + 8)/2, midY - 10, txtWidth + 8, 20, 4);
+        ctx.roundRect(midX - (txtWidth + 8) / 2, midY - 10, txtWidth + 8, 20, 4);
         ctx.fill();
 
         // Draw Name
@@ -936,16 +936,16 @@ function drawTree(ctx, w, h) {
         ctx.fillText(name1, midX, midY - 18);
         ctx.fillStyle = txtColor;
         ctx.fillText(probText, midX, midY); // Prob
-        
+
         // Recurse Up
         drawBranch(nextX, yUp, level + 1, nodeIndex * 2, probSoFar * p, pathStr + (pathStr ? " → " : "") + name1);
 
         // --- DOWN BRANCH (Failure/Name2) ---
         const yDown = y + offset;
-        
+
         ctx.beginPath();
         ctx.moveTo(x, y);
-        ctx.bezierCurveTo(x + layerWidth/2, y, x + layerWidth/2, yDown, nextX, yDown);
+        ctx.bezierCurveTo(x + layerWidth / 2, y, x + layerWidth / 2, yDown, nextX, yDown);
         ctx.strokeStyle = 'rgba(247, 37, 133, 0.8)'; // Pink
         ctx.stroke();
 
@@ -955,7 +955,7 @@ function drawTree(ctx, w, h) {
         const qText = q.toFixed(2);
         const qWidth = ctx.measureText(qText).width;
         ctx.fillStyle = theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.6)';
-        ctx.roundRect(midX - (qWidth + 8)/2, midYX - 10, qWidth + 8, 20, 4);
+        ctx.roundRect(midX - (qWidth + 8) / 2, midYX - 10, qWidth + 8, 20, 4);
         ctx.fill();
 
         ctx.fillStyle = theme === 'light' ? '#be185d' : '#f72585';
@@ -969,7 +969,7 @@ function drawTree(ctx, w, h) {
 
     // Start
     drawBranch(startX, startY, 0, 0, 1, "");
-    
+
     // Output Tree Analysis
     const out = document.getElementById('dist-output');
     if (out && results.length > 0) {
@@ -984,7 +984,7 @@ function drawTree(ctx, w, h) {
             table += `<tr>
                 <td style="padding:4px; color:var(--text-primary);">${r.path}</td>
                 <td style="padding:4px; color:var(--text-muted);">${r.p.toFixed(4)}</td>
-                <td style="padding:4px; color:var(--accent-gold);">${(r.p*100).toFixed(1)}%</td>
+                <td style="padding:4px; color:var(--accent-gold);">${(r.p * 100).toFixed(1)}%</td>
             </tr>`;
         });
         table += `</table></div>`;
