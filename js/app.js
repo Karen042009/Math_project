@@ -793,3 +793,42 @@ function initTheoryScrollReveal() {
 
     items.forEach(i => revealObserver.observe(i));
 }
+/**
+ * AI Audio Guide for Presentation
+ * Plays the corresponding audio file based on the context.
+ */
+let currentAudio = null;
+
+function playAIGuide(context) {
+    const btn = document.getElementById(context + '-speech-btn');
+
+    // Toggle stop if already playing
+    if (currentAudio && !currentAudio.paused) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        if (btn) btn.classList.remove('playing');
+        return;
+    }
+
+    // Path to the audio file (assumes user will place it here)
+    const audioPath = `assets/audio/${context}.mp3`;
+    currentAudio = new Audio(audioPath);
+
+    if (btn) btn.classList.add('playing');
+
+    currentAudio.play().catch(err => {
+        console.warn("Audio play failed. Ensure the file exists at: " + audioPath);
+        alert(currentLang === 'hy' ?
+            "Ձայնային ֆայլը չգտնվեց: Խնդրում եմ ավելացրեք assets/audio/intro.mp3 ֆայլը:" :
+            "Audio file not found. Please add the file to assets/audio/intro.mp3");
+        if (btn) btn.classList.remove('playing');
+    });
+
+    currentAudio.onended = () => {
+        if (btn) btn.classList.remove('playing');
+        currentAudio = null;
+    };
+}
+
+// Global scope
+window.playAIGuide = playAIGuide;

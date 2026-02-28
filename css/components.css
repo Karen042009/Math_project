@@ -59,6 +59,48 @@
     background: var(--neon-purple-dim);
     border-color: var(--neon-purple);
     box-shadow: 0 4px 20px rgba(168, 85, 247, 0.15);
+    color: #fff;
+}
+
+/* AI Speech Button Special Variant */
+.glow-btn.ai-speech-btn {
+    background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+    box-shadow: 
+        0 4px 18px rgba(0, 210, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: none;
+    animation: aiBtnPulse 3s infinite ease-in-out;
+}
+
+.glow-btn.ai-speech-btn:hover {
+    background: linear-gradient(135deg, #33d9ff, #4ea5ff);
+    box-shadow: 
+        0 8px 30px rgba(0, 210, 255, 0.5),
+        0 0 40px rgba(0, 210, 255, 0.2);
+    transform: translateY(-4px) scale(1.05);
+}
+
+.glow-btn.ai-speech-btn i {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
+}
+
+@keyframes aiBtnPulse {
+    0%, 100% { box-shadow: 0 4px 18px rgba(0, 210, 255, 0.3), 0 0 0 0 rgba(0, 210, 255, 0); }
+    50% { box-shadow: 0 4px 18px rgba(0, 210, 255, 0.4), 0 0 20px 5px rgba(0, 210, 255, 0.15); }
+}
+
+.glow-btn.ai-speech-btn.playing {
+    border: 2px solid #fff;
+    box-shadow: 0 0 30px #00d2ff, inset 0 0 10px rgba(255,255,255,0.5);
+}
+
+.glow-btn.ai-speech-btn.playing i {
+    animation: bounce 0.5s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
 }
 
 .glow-btn.small {
