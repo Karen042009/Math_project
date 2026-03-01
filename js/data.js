@@ -190,7 +190,27 @@ window.probabilityData = {
     topic_bayes: { hy: "Բայեսի թեորեմ", en: "Bayes' Theorem", ru: "Теорема Байеса" },
     topic_distributions: { hy: "Բաշխումներ", en: "Distributions", ru: "Распределения" },
     topic_rv: { hy: "Պատահական մեծություններ", en: "Random Variables", ru: "Случайные величины" },
+
+    // Step-by-Step Solver Formula Names
+    calc_formula_sel: { hy: "-- Ընտրեք բանաձևը --", en: "-- Select Formula --", ru: "-- Выберите формулу --" },
+    formula_bernoulli: { hy: "Բեռնուլիի բանաձև", en: "Bernoulli Formula", ru: "Формула Бернулли" },
+    formula_bayes: { hy: "Բայեսի թեորեմ", en: "Bayes' Theorem", ru: "Теорема Байеса" },
+    formula_combinations: { hy: "Զուգորդություններ (C_n^k)", en: "Combinations (C_n^k)", ru: "Сочетания (C_n^k)" },
+    formula_permutations: { hy: "Տեղափոխություններ (P_n)", en: "Permutations (P_n)", ru: "Перестановки (P_n)" },
+    formula_normal: { hy: "Նորմալ բաշխում (Z-աղյուսակ)", en: "Normal Dist (Z-Table)", ru: "Нормальное распр. (Z-таблица)" },
+    formula_poisson: { hy: "Պուասոնի մոտարկում", en: "Poisson Approx", ru: "Аппроксимация Пуассона" },
+    btn_solve: { hy: "Լուծել", en: "Solve", ru: "Решить" },
+
+    // Lab Labels derived for steps
+    lbl_trials: { hy: "Փորձեր (n):", en: "Trials (n):", ru: "Испытаний (n):" },
+    lbl_successes: { hy: "Հաջողություններ (k):", en: "Successes (k):", ru: "Успехов (k):" },
+    lbl_prob: { hy: "Հավանականություն (p):", en: "Prob (p):", ru: "Вер-ность (p):" },
+    lbl_lambda: { hy: "Լյամբդա (λ):", en: "Lambda (λ):", ru: "Лямбда (λ):" },
+    lbl_mean: { hy: "Միջին (μ):", en: "Mean (μ):", ru: "Среднее (μ):" },
+    lbl_stddev: { hy: "Շեղում (σ):", en: "StdDev (σ):", ru: "Откл. (σ):" },
+    lbl_value: { hy: "Արժեք (x):", en: "Value (x):", ru: "Значение (x):" }
   },
+
 
   /* ===================== THEORY CONTENT (ENCYCLOPEDIA) ===================== */
   theory: [

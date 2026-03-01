@@ -141,49 +141,53 @@ function renderFormulaInputs() {
     const container = document.getElementById('formula-inputs');
     container.innerHTML = '';
 
+    const lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+    const ui = (window.probabilityData && window.probabilityData.ui) ? window.probabilityData.ui : {};
+    const getLabel = (key, fallback) => (ui[key] && ui[key][lang]) ? ui[key][lang] : fallback;
+
     if (type === 'bernoulli') {
         container.innerHTML = `
             <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
-                <label>n (Trials): <input type="number" id="f-n" class="ai-select" value="10"></label>
-                <label>k (Successes): <input type="number" id="f-k" class="ai-select" value="5"></label>
-                <label>p (Prob): <input type="number" id="f-p" class="ai-select" value="0.5" step="0.1"></label>
+                <label>${getLabel('lbl_trials', 'n (Trials)')}: <input type="number" id="f-n" class="ai-select" value="10"></label>
+                <label>${getLabel('lbl_successes', 'k (Successes)')}: <input type="number" id="f-k" class="ai-select" value="5"></label>
+                <label>${getLabel('lbl_prob', 'p (Prob)')}: <input type="number" id="f-p" class="ai-select" value="0.5" step="0.1"></label>
             </div>
         `;
     } else if (type === 'bayes') {
         container.innerHTML = `
             <p style="margin-bottom:10px; color:#aaa;">P(H|E) = P(E|H)P(H) / [P(E|H)P(H) + P(E|not H)P(not H)]</p>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <label>P(H) (Prior): <input type="number" id="f-ph" class="ai-select" value="0.01" step="0.01"></label>
-                <label>P(E|H) (True Pos): <input type="number" id="f-peh" class="ai-select" value="0.99" step="0.01"></label>
-                <label>P(E|¬H) (False Pos): <input type="number" id="f-penh" class="ai-select" value="0.05" step="0.01"></label>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                <label>P(H) [Prior]: <input type="number" id="f-ph" class="ai-select" value="0.01" step="0.01"></label>
+                <label>P(E|H): <input type="number" id="f-peh" class="ai-select" value="0.99" step="0.01"></label>
+                <label>P(E|¬H): <input type="number" id="f-penh" class="ai-select" value="0.05" step="0.01"></label>
             </div>
         `;
     } else if (type === 'combinations') {
         container.innerHTML = `
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <label>n (Total): <input type="number" id="f-n" class="ai-select" value="5"></label>
-                <label>k (Choose): <input type="number" id="f-k" class="ai-select" value="3"></label>
+                <label>${getLabel('lbl_trials', 'n (Total)')}: <input type="number" id="f-n" class="ai-select" value="5"></label>
+                <label>${getLabel('lbl_successes', 'k (Choose)')}: <input type="number" id="f-k" class="ai-select" value="3"></label>
             </div>
         `;
     } else if (type === 'permutations') {
         container.innerHTML = `
             <div style="display:grid; grid-template-columns:1fr; gap:10px;">
-                <label>n (Total): <input type="number" id="f-n" class="ai-select" value="5"></label>
+                <label>${getLabel('lbl_trials', 'n (Total)')}: <input type="number" id="f-n" class="ai-select" value="5"></label>
             </div>
         `;
     } else if (type === 'poisson') {
         container.innerHTML = `
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <label>λ (Lambda): <input type="number" id="f-lam" class="ai-select" value="3"></label>
-                <label>k (Events): <input type="number" id="f-k" class="ai-select" value="2"></label>
+                <label>${getLabel('lbl_lambda', 'λ (Lambda)')}: <input type="number" id="f-lam" class="ai-select" value="3"></label>
+                <label>${getLabel('lbl_successes', 'k (Events)')}: <input type="number" id="f-k" class="ai-select" value="2"></label>
             </div>
         `;
     } else if (type === 'normal_calc') {
         container.innerHTML = `
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <label>μ (Mean): <input type="number" id="f-mu" class="ai-select" value="100"></label>
-                <label>σ (StdDev): <input type="number" id="f-sigma" class="ai-select" value="15"></label>
-                <label>x (Value): <input type="number" id="f-x" class="ai-select" value="115"></label>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                <label>${getLabel('lbl_mean', 'μ (Mean)')}: <input type="number" id="f-mu" class="ai-select" value="100"></label>
+                <label>${getLabel('lbl_stddev', 'σ (StdDev)')}: <input type="number" id="f-sigma" class="ai-select" value="15"></label>
+                <label>${getLabel('lbl_value', 'x (Value)')}: <input type="number" id="f-x" class="ai-select" value="115"></label>
             </div>
         `;
     }
@@ -192,15 +196,60 @@ function renderFormulaInputs() {
 function solveFormulaWithSteps() {
     const type = document.getElementById('formula-select').value;
     const out = document.getElementById('formula-steps');
+    const lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+
+    if (!type) {
+        out.innerHTML = '';
+        return;
+    }
+
+    // Solver i18n
+    const i18n = {
+        hy: {
+            formula: "Բանաձև", task: "Խնդիր", step: "Քայլ", res: "Արդյունք",
+            n_val: "Ընդամենը (n)", k_val: "Ընտրություն (k)", p_val: "Հավանականություն (p)",
+            calc_c: (n, k) => `1. Հաշվել զուգորդությունները $C_{${n}}^{${k}} = \\frac{${n}!}{${k}!(${n}-${k}!)}$`,
+            calc_pk: (p, k, val) => `2. Հաշվել հաջողության մասը $p^k = ${p}^{${k}} \\approx ${val}$`,
+            calc_qn: (q, n, k, val) => `3. Հաշվել ձախողման մասը $q^{n-k} = ${q.toFixed(2)}^{${n - k}} \\approx ${val}$`,
+            bayes_num: (ph, peh, res) => `1. Համարիչ (Այս հիպոթեզը): $P(H) \\cdot P(E|H) = ${ph} \\cdot ${peh} = ${res}$`,
+            bayes_den: (den) => `2. Հայտարար (Լրիվ հավանականություն): $\\sum P(H_i)P(E|H_i) = ${den}$`,
+            poisson_parts: (lam, k) => `Հաշվել բաղադրիչները: $\\lambda^k = ${lam}^${k}$, $e^{-\\lambda} = e^{-${lam}}$, $k! = ${k}!$`,
+            text_below: (p, x) => `Սա նշանակում է, որ տվյալների ${(p * 100).toFixed(2)}%-ը գտնվում է ${x}-ից ցածր:`
+        },
+        en: {
+            formula: "Formula", task: "Task", step: "Step", res: "Result",
+            n_val: "Total (n)", k_val: "Choose (k)", p_val: "Prob (p)",
+            calc_c: (n, k) => `1. Calculate $C_{${n}}^{${k}} = \\frac{${n}!}{${k}!(${n}-${k}!)}$`,
+            calc_pk: (p, k, val) => `2. Calculate $p^k = ${p}^{${k}} \\approx ${val}$`,
+            calc_qn: (q, n, k, val) => `3. Calculate $q^{n-k} = ${q.toFixed(2)}^{${n - k}} \\approx ${val}$`,
+            bayes_num: (ph, peh, res) => `1. Numerator: $P(H) \\cdot P(E|H) = ${ph} \\cdot ${peh} = ${res}$`,
+            bayes_den: (den) => `2. Denominator (Total Prob): ${den}$`,
+            poisson_parts: (lam, k) => `Parts: $\\lambda^k = ${lam}^${k}$, $e^{-\\lambda} = e^{-${lam}}$, $k! = ${k}!$`,
+            text_below: (p, x) => `This means ${(p * 100).toFixed(2)}% of data is below ${x}.`
+        },
+        ru: {
+            formula: "Формула", task: "Задача", step: "Шаг", res: "Результат",
+            n_val: "Всего (n)", k_val: "Выбор (k)", p_val: "Веров. (p)",
+            calc_c: (n, k) => `1. Вычислить сочетания $C_{${n}}^{${k}} = \\frac{${n}!}{${k}!(${n}-${k}!)}$`,
+            calc_pk: (p, k, val) => `2. Вычислить $p^k = ${p}^{${k}} \\approx ${val}$`,
+            calc_qn: (q, n, k, val) => `3. Вычислить $q^{n-k} = ${q.toFixed(2)}^{${n - k}} \\approx ${val}$`,
+            bayes_num: (ph, peh, res) => `1. Числитель: $P(H) \\cdot P(E|H) = ${ph} \\cdot ${peh} = ${res}$`,
+            bayes_den: (den) => `2. Знаменатель (Полная вер.): ${den}$`,
+            poisson_parts: (lam, k) => `Части: $\\lambda^k = ${lam}^${k}$, $e^{-\\lambda} = e^{-${lam}}$, $k! = ${k}!$`,
+            text_below: (p, x) => `Это значит, что ${(p * 100).toFixed(2)}% данных ниже ${x}.`
+        }
+    };
+
+    const t = i18n[lang] || i18n['en'];
 
     // Helpers
     const factorial = (n) => {
         if (n < 0) return 0;
+        if (n === 0) return 1;
         let r = 1; for (let i = 2; i <= n; i++) r *= i;
         return r;
     };
     const C = (n, k) => factorial(n) / (factorial(k) * factorial(n - k));
-    // Standard Normal CDF approximation
     const phi = (z) => {
         const p = 0.3275911;
         const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429;
@@ -209,7 +258,7 @@ function solveFormulaWithSteps() {
         const t = 1.0 / (1.0 + p * mag);
         const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-mag * mag);
         return 0.5 * (1 + sign * y);
-    }
+    };
 
     let html = '';
 
@@ -220,14 +269,16 @@ function solveFormulaWithSteps() {
         const q = 1 - p;
 
         const comb = C(n, k);
-        const res = comb * Math.pow(p, k) * Math.pow(q, n - k);
+        const pk = Math.pow(p, k);
+        const qnk = Math.pow(q, n - k);
+        const res = comb * pk * qnk;
 
         html = `
-            <p><strong>Formula:</strong> P_n(k) = C(${n}, ${k}) · p^k · q^{n-k}</p>
-            <p>1. Calculate C(${n}, ${k}) = ${n}! / (${k}! · ${n - k}!) = <strong>${comb}</strong></p>
-            <p>2. Calculate p^k = ${p}^${k} ≈ ${Math.pow(p, k).toFixed(5)}</p>
-            <p>3. Calculate q^{n-k} = ${q.toFixed(2)}^${n - k} ≈ ${Math.pow(q, n - k).toFixed(5)}</p>
-            <p style="color:var(--accent-gold); margin-top:10px;">Result: ${res.toFixed(6)}</p>
+            <p><strong>${t.formula}:</strong> $P_n(k) = C_n^k \\cdot p^k \\cdot q^{n-k}$</p>
+            <p>${t.calc_c(n, k)} = <strong>${comb}</strong></p>
+            <p>${t.calc_pk(p, k, pk.toFixed(5))}</p>
+            <p>${t.calc_qn(q, n, k, qnk.toFixed(5))}</p>
+            <p style="color:var(--accent-gold); margin-top:10px; font-size:1.1rem;">${t.res}: <strong>${res.toFixed(6)}</strong></p>
         `;
 
     } else if (type === 'bayes') {
@@ -238,19 +289,42 @@ function solveFormulaWithSteps() {
 
         const num = ph * peh;
         const den = (ph * peh) + (pnh * penh);
-        const res = num / den;
+        const res = den !== 0 ? num / den : 0;
 
         html = `
-            <p><strong>Formula:</strong> P(H|E) = [P(H)P(E|H)] / P(E)</p>
-            <p>1. Numerator: ${ph} * ${peh} = <strong>${num.toFixed(5)}</strong></p>
-            <p>2. Denominator (Total Prob): (${ph}*${peh}) + (${pnh.toFixed(2)}*${penh}) = <strong>${den.toFixed(5)}</strong></p>
-            <p style="color:var(--accent-gold); margin-top:10px;">Result: ${res.toFixed(6)}</p>
+            <p><strong>${t.formula}:</strong> $P(H|E) = \\frac{P(H)P(E|H)}{P(E)}$</p>
+            <p>${t.bayes_num(ph, peh, num.toFixed(5))}</p>
+            <p>${t.bayes_den(den.toFixed(5))}</p>
+            <p style="color:var(--accent-gold); margin-top:10px; font-size:1.1rem;">${t.res}: <strong>${res.toFixed(6)}</strong></p>
         `;
     } else if (type === 'combinations') {
         const n = parseInt(document.getElementById('f-n').value);
         const k = parseInt(document.getElementById('f-k').value);
         const res = C(n, k);
-        html = `<p>${n}! / (${k}!(${n}-${k})!) = <strong>${res}</strong></p>`;
+        html = `
+            <p><strong>${t.formula}:</strong> $C_n^k = \\frac{n!}{k!(n-k)!}$</p>
+            <p>$\\frac{${n}!}{${k}!(${n}-${k})!} = \\frac{${factorial(n)}}{${factorial(k)} \\cdot ${factorial(n - k)}}$</p>
+            <p style="color:var(--accent-gold); font-size:1.1rem;">${t.res}: <strong>${res}</strong></p>
+        `;
+    } else if (type === 'permutations') {
+        const n = parseInt(document.getElementById('f-n').value);
+        const res = factorial(n);
+        html = `
+            <p><strong>${t.formula}:</strong> $P_n = n!$</p>
+            <p>$P_{${n}} = ${n}! = ${Array.from({ length: n }, (_, i) => n - i).join(' \\cdot ')}$</p>
+            <p style="color:var(--accent-gold); font-size:1.1rem;">${t.res}: <strong>${res}</strong></p>
+        `;
+    } else if (type === 'poisson') {
+        const lam = parseFloat(document.getElementById('f-lam').value);
+        const k = parseInt(document.getElementById('f-k').value);
+        const res = (Math.pow(lam, k) * Math.exp(-lam)) / factorial(k);
+
+        html = `
+            <p><strong>${t.formula}:</strong> $P(X=k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}$</p>
+            <p>${t.poisson_parts(lam, k)}</p>
+            <p>$\\frac{${Math.pow(lam, k).toFixed(4)} \\cdot ${Math.exp(-lam).toFixed(5)}}{${factorial(k)}}$</p>
+            <p style="color:var(--accent-gold); margin-top:10px; font-size:1.1rem;">${t.res}: <strong>${res.toFixed(6)}</strong></p>
+        `;
     } else if (type === 'normal_calc') {
         const mu = parseFloat(document.getElementById('f-mu').value);
         const s = parseFloat(document.getElementById('f-sigma').value);
@@ -259,18 +333,20 @@ function solveFormulaWithSteps() {
         const p = phi(z);
 
         html = `
-            <p><strong>Task:</strong> Find P(X < ${x})</p>
-            <p>1. Calculate Z-score: Z = (x - μ) / σ</p>
-            <p>Z = (${x} - ${mu}) / ${s} = <strong>${z.toFixed(4)}</strong></p>
-            <p>2. Lookup Z-table (or approx): Φ(${z.toFixed(2)})</p>
-            <p style="color:var(--accent-gold); margin-top:10px;">Result: P(X < ${x}) ≈ ${p.toFixed(5)}</p>
-            <p style="font-size:0.8rem; color:#888;">(This means ${(p * 100).toFixed(2)}% of data is below ${x})</p>
+            <p><strong>${t.task}:</strong> $P(X < ${x})$</p>
+            <p>1. Z-score: $Z = \\frac{x - \\mu}{\\sigma} = \\frac{${x} - ${mu}}{${s}} = <strong>${z.toFixed(4)}</strong>$</p>
+            <p>2. $\\Phi(${z.toFixed(2)}) \\approx ${p.toFixed(5)}$</p>
+            <p style="color:var(--accent-gold); margin-top:10px; font-size:1.1rem;">${t.res}: <strong>${p.toFixed(6)}</strong></p>
+            <p style="font-size:0.8rem; color:#888;">${t.text_below(p, x)}</p>
          `;
     }
 
     out.innerHTML = html;
-    if (window.MathJax && window.MathJax.typesetPromise) MathJax.typesetPromise([out]);
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([out]).catch(err => console.log('MathJax typeset failed: ', err));
+    }
 }
+
 
 /* ----------------------------------------------------
    4. VISUALIZER LOGIC (Updated VENN & TREE)
