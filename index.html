@@ -853,9 +853,20 @@
                 <div class="sim-layout" style="display:flex; flex-wrap:wrap; gap:20px;">
                     <div style="flex:2; min-width:300px; display:flex; flex-direction:column; background:var(--bg-display); border-radius:12px; border:1px solid var(--glass-border); padding:20px; position:relative; box-shadow:var(--glass-shadow);">
                         <!-- 3D Dice Area -->
-                        <div style="flex:1; display:flex; justify-content:center; align-items:center; min-height:300px; perspective: 1000px;">
+                        <div style="flex:1; display:flex; justify-content:center; align-items:center; min-height:220px; perspective: 1000px; gap: 40px; padding: 20px 0;">
                             <div id="dice-scene" class="dice-scene">
                                 <div id="dice-element" class="dice">
+                                    <div class="side front">1</div>
+                                    <div class="side back">6</div>
+                                    <div class="side right">3</div>
+                                    <div class="side left">4</div>
+                                    <div class="side top">2</div>
+                                    <div class="side bottom">5</div>
+                                </div>
+                            </div>
+                            <!-- Second Die (hidden by default) -->
+                            <div id="dice-scene-2" class="dice-scene" style="display:none;">
+                                <div id="dice-element-2" class="dice">
                                     <div class="side front">1</div>
                                     <div class="side back">6</div>
                                     <div class="side right">3</div>
@@ -883,39 +894,17 @@
                                 <div style="border-top:1px solid var(--border-dim); padding-top:10px;">
                                     <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;" data-i18n="stat_frequency">Frequency Distribution</p>
                                     <div id="dice-frequencies" style="display:flex; flex-direction:column; gap:6px;">
-                                        <!-- Frequencies will be injected here -->
-                                        <div class="result-row" style="font-size:0.8rem;">
-                                            <span style="width:15px;">1</span>
-                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-1" style="background:#4cc9f0"></div></div>
-                                            <span id="dice-pct-1" style="width:35px; text-align:right;">0%</span>
-                                        </div>
-                                        <div class="result-row" style="font-size:0.8rem;">
-                                            <span style="width:15px;">2</span>
-                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-2" style="background:#4cc9f0"></div></div>
-                                            <span id="dice-pct-2" style="width:35px; text-align:right;">0%</span>
-                                        </div>
-                                        <div class="result-row" style="font-size:0.8rem;">
-                                            <span style="width:15px;">3</span>
-                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-3" style="background:#4cc9f0"></div></div>
-                                            <span id="dice-pct-3" style="width:35px; text-align:right;">0%</span>
-                                        </div>
-                                        <div class="result-row" style="font-size:0.8rem;">
-                                            <span style="width:15px;">4</span>
-                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-4" style="background:#4cc9f0"></div></div>
-                                            <span id="dice-pct-4" style="width:35px; text-align:right;">0%</span>
-                                        </div>
-                                        <div class="result-row" style="font-size:0.8rem;">
-                                            <span style="width:15px;">5</span>
-                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-5" style="background:#4cc9f0"></div></div>
-                                            <span id="dice-pct-5" style="width:35px; text-align:right;">0%</span>
-                                        </div>
-                                        <div class="result-row" style="font-size:0.8rem;">
-                                            <span style="width:15px;">6</span>
-                                            <div class="bar-bg" style="height:8px;"><div class="bar-fill" id="dice-bar-6" style="background:#4cc9f0"></div></div>
-                                            <span id="dice-pct-6" style="width:35px; text-align:right;">0%</span>
-                                        </div>
+                                        <!-- Frequencies are injected dynamically by simulations.js -->
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label data-i18n="sim_dice_count_lbl">Number of Dice</label>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                                <button class="filter-btn dice-count-btn active" data-count="1" onclick="setDiceCount(1)">1</button>
+                                <button class="filter-btn dice-count-btn" data-count="2" onclick="setDiceCount(2)">2</button>
                             </div>
                         </div>
 

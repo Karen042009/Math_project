@@ -186,15 +186,25 @@ function galtonAnimate() {
 
                 if (distSq < minDist * minDist) {
                     const dist = Math.sqrt(distSq);
-                    const nx = dx / dist;
-                    const ny = dy / dist;
-                    const randX = (Math.random() - 0.5) * 2.0;
+                    const nx = dx / dist; // Normal X
+                    const ny = dy / dist; // Normal Y
 
-                    ball.vx = nx * 2.0 * elasticity + randX;
-                    ball.vy = ny * 2.0 * elasticity + 0.5;
+                    // Reflect velocity: v_new = (v - 2 * (v . n) * n) * elasticity
+                    const dot = ball.vx * nx + ball.vy * ny;
+
+                    // Add some random divergence for the "branching" effect
+                    const randX = (Math.random() - 0.5) * 0.8;
+
+                    ball.vx = (ball.vx - 2 * dot * nx) * elasticity + randX;
+                    ball.vy = (ball.vy - 2 * dot * ny) * elasticity;
+
+                    // Ensure the ball moves away from the peg to prevent sticking
                     const overlap = minDist - dist;
                     ball.x += nx * overlap;
                     ball.y += ny * overlap;
+
+                    // Minimal vertical push to keep it moving down
+                    if (ball.vy < 0.5) ball.vy += 0.5;
                 }
             }
 
@@ -975,9 +985,12 @@ let diceHistory = [];
 let diceTotal = 0;
 let diceSum = 0;
 let diceSquaredSum = 0;
-let diceCounts = [0, 0, 0, 0, 0, 0];
+let diceCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // 1-12
 let diceRotationX = 0;
 let diceRotationY = 0;
+let dice2RotationX = 0;
+let dice2RotationY = 0;
+let diceCount = 1; // 1 or 2 dice
 
 function initDice() {
     diceGraphCanvas = document.getElementById('dice-graph');
@@ -993,30 +1006,56 @@ function resetDice() {
     diceTotal = 0;
     diceSum = 0;
     diceSquaredSum = 0;
-    diceCounts = [0, 0, 0, 0, 0, 0];
+    diceCounts = new Array(12).fill(0);
     diceHistory = [];
     diceRotationX = 0;
     diceRotationY = 0;
+    dice2RotationX = 0;
+    dice2RotationY = 0;
 
-    const diceEl = document.getElementById('dice-element');
-    if (diceEl) {
-        diceEl.style.transition = 'none';
-        diceEl.style.transform = `rotateX(0deg) rotateY(0deg)`;
-        setTimeout(() => diceEl.style.transition = 'transform 1.5s cubic-bezier(0.2, 0.8, 0.3, 1)', 50);
-    }
+    const dice1 = document.getElementById('dice-element');
+    const dice2 = document.getElementById('dice-element-2');
+
+    [dice1, dice2].forEach(el => {
+        if (el) {
+            el.style.transition = 'none';
+            el.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            setTimeout(() => el.style.transition = 'transform 1.5s cubic-bezier(0.2, 0.8, 0.3, 1)', 50);
+        }
+    });
 
     updateDiceStats();
     drawDiceGraph();
 }
 
+function setDiceCount(n) {
+    diceCount = n;
+    const d2Container = document.getElementById('dice-scene-2');
+    if (d2Container) d2Container.style.display = (n === 2) ? 'block' : 'none';
+
+    // Update active button state
+    document.querySelectorAll('.dice-count-btn').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.count) === n);
+    });
+
+    resetDice();
+}
+
 function rollDice(count) {
-    let lastRoll = 1;
+    let lastRoll1 = 1;
+    let lastRoll2 = 1;
 
     for (let i = 0; i < count; i++) {
-        lastRoll = Math.floor(Math.random() * 6) + 1;
-        diceSum += lastRoll;
-        diceSquaredSum += (lastRoll * lastRoll);
-        diceCounts[lastRoll - 1]++;
+        const r1 = Math.floor(Math.random() * 6) + 1;
+        const r2 = (diceCount === 2) ? Math.floor(Math.random() * 6) + 1 : 0;
+
+        lastRoll1 = r1;
+        lastRoll2 = r2;
+
+        const total = r1 + r2;
+        diceSum += total;
+        diceSquaredSum += (total * total);
+        diceCounts[total - 1]++;
         diceTotal++;
 
         // Add to history (sampling for performance)
@@ -1027,24 +1066,30 @@ function rollDice(count) {
     }
 
     // Animate 3D Dice
-    const diceEl = document.getElementById('dice-element');
-    if (diceEl) {
-        // Base rotations to face the correct side
-        const rotMap = {
-            1: { x: 0, y: 0 },
-            2: { x: -90, y: 0 },
-            3: { x: 0, y: -90 },
-            4: { x: 0, y: 90 },
-            5: { x: 90, y: 0 },
-            6: { x: 180, y: 0 }
-        };
+    const dice1 = document.getElementById('dice-element');
+    const dice2 = document.getElementById('dice-element-2');
 
-        const target = rotMap[lastRoll];
-        // Add multiple full spins (3 * 360 = 1080)
+    const rotMap = {
+        1: { x: 0, y: 0 },
+        2: { x: -90, y: 0 },
+        3: { x: 0, y: -90 },
+        4: { x: 0, y: 90 },
+        5: { x: 90, y: 0 },
+        6: { x: 180, y: 0 }
+    };
+
+    if (dice1) {
+        const target = rotMap[lastRoll1];
         diceRotationX += 1080 + target.x - (diceRotationX % 360);
         diceRotationY += 1080 + target.y - (diceRotationY % 360);
+        dice1.style.transform = `rotateX(${diceRotationX}deg) rotateY(${diceRotationY}deg)`;
+    }
 
-        diceEl.style.transform = `rotateX(${diceRotationX}deg) rotateY(${diceRotationY}deg)`;
+    if (dice2 && diceCount === 2) {
+        const target = rotMap[lastRoll2];
+        dice2RotationX += 1080 + target.x - (dice2RotationX % 360);
+        dice2RotationY += 1080 + target.y - (dice2RotationY % 360);
+        dice2.style.transform = `rotateX(${dice2RotationX}deg) rotateY(${dice2RotationY}deg)`;
     }
 
     if (count === 1) {
@@ -1072,15 +1117,25 @@ function updateDiceStats() {
     if (varEl) varEl.innerText = variance.toFixed(3);
 
     // Update Frequency bars
-    for (let i = 1; i <= 6; i++) {
+    const freqContainer = document.getElementById('dice-frequencies');
+    if (!freqContainer) return;
+
+    let html = '';
+    const start = (diceCount === 1) ? 1 : 2;
+    const end = (diceCount === 1) ? 6 : 12;
+
+    for (let i = start; i <= end; i++) {
         const count = diceCounts[i - 1];
         const pct = diceTotal > 0 ? (count / diceTotal) * 100 : 0;
-        const bar = document.getElementById(`dice-bar-${i}`);
-        const pctText = document.getElementById(`dice-pct-${i}`);
-
-        if (bar) bar.style.width = `${pct}%`;
-        if (pctText) pctText.innerText = `${pct.toFixed(1)}%`;
+        html += `
+            <div class="result-row" style="font-size:0.8rem;">
+                <span style="width:18px; font-weight:bold;">${i}</span>
+                <div class="bar-bg" style="height:8px;"><div class="bar-fill" style="width:${pct}%; background:#4cc9f0"></div></div>
+                <span style="width:40px; text-align:right;">${pct.toFixed(1)}%</span>
+            </div>
+        `;
     }
+    freqContainer.innerHTML = html;
 }
 
 function drawDiceGraph() {
@@ -1091,18 +1146,19 @@ function drawDiceGraph() {
 
     ctx.clearRect(0, 0, w, h);
 
-    // Expected Value Line (3.5)
-    // Range 1 to 6
-    const minY = 1.0;
-    const maxY = 6.0;
+    // Expected Value Line
+    const ev = (diceCount === 1) ? 3.5 : 7.0;
+    const minY = (diceCount === 1) ? 1.0 : 2.0;
+    const maxY = (diceCount === 1) ? 6.0 : 12.0;
+
     const rangeY = maxY - minY;
     const getY = (val) => h - ((val - minY) / rangeY) * h;
 
-    // Line 3.5
+    // Line EV
     const theme = document.documentElement.getAttribute('data-theme') || 'dark';
     ctx.beginPath();
-    ctx.moveTo(0, getY(3.5));
-    ctx.lineTo(w, getY(3.5));
+    ctx.moveTo(0, getY(ev));
+    ctx.lineTo(w, getY(ev));
     ctx.strokeStyle = '#ff7b00';
     ctx.setLineDash([5, 5]);
     ctx.lineWidth = 1;
@@ -1110,7 +1166,7 @@ function drawDiceGraph() {
     ctx.setLineDash([]);
     ctx.fillStyle = '#ff7b00';
     ctx.font = '10px Inter';
-    ctx.fillText('EV: 3.5', 5, getY(3.5) - 5);
+    ctx.fillText(`EV: ${ev}`, 5, getY(ev) - 5);
 
     if (diceHistory.length < 2) return;
 
