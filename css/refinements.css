@@ -143,3 +143,41 @@ footer { border-top:1px solid var(--glass-border); }
 #theory .theory-subsection { scroll-margin-top:90px; }
 .reading-theory .bg-particle { animation-play-state:paused; }
 .reading-theory .cursor-glow { display:none; }
+/* Keep figure prose in HTML so labels wrap independently of plot geometry. */
+.theory-figure { margin:24px 0; padding:20px; border:1px solid var(--glass-border); border-radius:12px; background:var(--bg-panel); }
+.theory-figure figcaption { font-weight:650; line-height:1.6; text-wrap:balance; color:var(--text-primary); margin-bottom:18px; }
+.theory-figure svg { display:block; width:100%; max-width:760px; height:auto; margin:auto; }
+.theory-figure svg text { font-family:inherit; font-size:14px; stroke:none; }
+.diagram-axes { fill:var(--text-muted); stroke:var(--text-muted); stroke-width:1.3; }
+.diagram-curve { fill:none; stroke:var(--neon-purple); stroke-width:3; }
+.diagram-blue { fill:#38bdf8; stroke:#38bdf8; }
+.diagram-green { fill:#10b981; stroke:#10b981; }
+.diagram-blue path,.diagram-green path { fill:none; stroke-dasharray:4 4; stroke-width:1.2; }
+.diagram-secant { fill:none; stroke:#38bdf8; stroke-width:2; stroke-dasharray:5 4; }
+.diagram-tangent { fill:none; stroke:#10b981; stroke-width:2.5; }
+.diagram-h { fill:none; stroke:var(--text-muted); stroke-width:1.2; }
+.diagram-rectangles { fill:rgba(56,189,248,.18); stroke:#38bdf8; stroke-width:1; }
+.diagram-ticks { fill:var(--text-muted); }
+.theory-figure .diagram-key { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 24px; padding:0; margin:14px 0 0; list-style:none; font-size:.9rem; }
+.theory-figure .diagram-key li { margin:0; opacity:1; }
+.diagram-key .key-purple { color:var(--neon-purple); }
+.diagram-key .key-blue { color:#38bdf8; }
+.diagram-key .key-green { color:#10b981; }
+.theory-figure .diagram-note { font-size:.9rem; line-height:1.8; color:var(--text-muted); margin:14px 0 0; }
+.theory-timeline { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; padding:0; list-style:none; }
+.theory-timeline > li { margin:0; min-width:0; opacity:1; }
+.era-step { display:grid; place-items:center; width:44px; height:44px; margin-bottom:14px; border:1px solid var(--neon-purple); border-radius:50%; color:var(--neon-purple); font-family:'Fira Code',monospace; }
+.theory-timeline h4 { font-size:1rem; line-height:1.6; margin:0 0 8px; }
+.theory-timeline p { font-size:.9rem; line-height:1.7; margin:0 0 8px; }
+.theory-timeline .era-date { color:var(--neon-purple); }
+/* A quiet fallback for tables or genuinely indivisible mathematical expressions. */
+* { scrollbar-width:thin; scrollbar-color:color-mix(in srgb,var(--text-muted) 45%,transparent) transparent; }
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-thumb { background:color-mix(in srgb,var(--text-muted) 45%,transparent); }
+::-webkit-scrollbar-thumb:hover { background:var(--text-muted); }
+@media(max-width:600px) {
+  .theory-figure { padding:12px; }
+  .theory-figure svg text { font-size:22px; }
+  .theory-timeline { grid-template-columns:minmax(0,1fr); gap:20px; }
+  .theory-timeline > li + li { border-top:1px solid var(--glass-border); padding-top:20px; }
+}

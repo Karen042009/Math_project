@@ -1,3 +1,4 @@
+from theory_diagrams import refine_theory_diagrams
 from theory_additions import get_integral_properties_section
 
 # Chapter 5: Մակերեսից դեպի որոշյալ ինտեգրալ (From Area to the Definite Integral)
@@ -46,33 +47,7 @@ def get_chapter_5():
     </ol>
 </div>
 
-<div class="theory-svg-container" style="text-align: center; margin: 20px 0;">
-    <svg viewBox="0 0 500 200" style="max-width: 100%; height: auto; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--glass-border);">
-        <!-- Axes -->
-        <line x1="40" y1="170" x2="460" y2="170" stroke="var(--text-muted)" stroke-width="1.5"/>
-        <line x1="60" y1="190" x2="60" y2="20" stroke="var(--text-muted)" stroke-width="1.5"/>
-        
-        <!-- Rectangles for f(x)=x^2 on [0, 4] scaled -->
-        <!-- x in [60, 420], delta x = 90, 4 rectangles -->
-        <rect x="60" y="165" width="90" height="5" fill="rgba(56,189,248,0.3)" stroke="#38bdf8"/>
-        <rect x="150" y="150" width="90" height="20" fill="rgba(56,189,248,0.3)" stroke="#38bdf8"/>
-        <rect x="240" y="115" width="90" height="55" fill="rgba(56,189,248,0.3)" stroke="#38bdf8"/>
-        <rect x="330" y="55" width="90" height="115" fill="rgba(56,189,248,0.3)" stroke="#38bdf8"/>
-        
-        <!-- Smooth curve y = f(x) -->
-        <path d="M 60 170 Q 240 160 420 30" fill="none" stroke="var(--neon-purple)" stroke-width="3"/>
-        
-        <!-- Labels -->
-        <text x="60" y="185" fill="var(--text-primary)" font-size="11" text-anchor="middle">a = x₀</text>
-        <text x="150" y="185" fill="var(--text-muted)" font-size="10" text-anchor="middle">x₁</text>
-        <text x="240" y="185" fill="var(--text-muted)" font-size="10" text-anchor="middle">x₂</text>
-        <text x="330" y="185" fill="var(--text-muted)" font-size="10" text-anchor="middle">x₃</text>
-        <text x="420" y="185" fill="var(--text-primary)" font-size="11" text-anchor="middle">b = x₄</text>
-        <text x="105" y="160" fill="var(--accent-gold)" font-size="9" text-anchor="middle">Δx</text>
-        
-        <text x="250" y="25" fill="var(--neon-purple)" font-size="11" font-weight="bold" text-anchor="middle">Ռիմանի ուղղանկյունների գումար․ Σ f(ξᵢ)Δx</text>
-    </svg>
-</div>
+<!-- Responsive diagram inserted by theory_diagrams.py -->
 
 <div class="theory-callout">
     <h4><i class="fas fa-info-circle"></i> Ինտեգրալի նշանակումների բացատրությունը</h4>
@@ -352,4 +327,4 @@ Learners often confuse the indefinite integral with the definite integral, or mi
         ]
     }
     chapter["subsections"].append(get_integral_properties_section())
-    return chapter
+    return refine_theory_diagrams(chapter)

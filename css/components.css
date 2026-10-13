@@ -694,10 +694,11 @@ details.selftest-box > summary {
     color: var(--neon-purple);
     font-weight: 700;
     font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: block;
+    line-height: 1.8;
 }
+
+details.selftest-box > summary > i { margin-inline-end: 8px; }
 
 details.selftest-box[open] > summary {
     margin-bottom: 12px;

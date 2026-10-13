@@ -1,10 +1,11 @@
+from theory_diagrams import refine_theory_diagrams
 # Chapter 3: Ածանցյալ․ իմաստը և ստացումը (The Derivative: Meaning and Derivation)
 # Subsections:
 # 3.1: derivative-meaning-derivation
 # 3.2: derivative-rules-formulas
 
 def get_chapter_3():
-    return {
+    chapter = {
         "title": {
             "hy": "3. Ածանցյալ․ իմաստը և ստացումը",
             "en": "3. The Derivative: Meaning and Derivation",
@@ -37,35 +38,7 @@ def get_chapter_3():
     $$f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
 </div>
 
-<div class="theory-svg-container" style="text-align: center; margin: 20px 0;">
-    <svg viewBox="0 0 500 220" style="max-width: 100%; height: auto; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--glass-border);">
-        <line x1="40" y1="180" x2="460" y2="180" stroke="var(--text-muted)" stroke-width="1.5"/>
-        <line x1="60" y1="200" x2="60" y2="30" stroke="var(--text-muted)" stroke-width="1.5"/>
-        <text x="455" y="195" fill="var(--text-muted)" font-size="11">x</text>
-        <text x="45" y="40" fill="var(--text-muted)" font-size="11">y</text>
-        
-        <!-- Parabola curve -->
-        <path d="M 80 170 Q 200 150 250 110 T 400 30" fill="none" stroke="var(--neon-purple)" stroke-width="3"/>
-        
-        <!-- Secant line -->
-        <line x1="120" y1="165" x2="380" y2="45" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <text x="385" y="55" fill="#38bdf8" font-size="10">Հատող (Secant)</text>
-        
-        <!-- Tangent line at P(200, 130) -->
-        <line x1="100" y1="180" x2="320" y2="70" stroke="#10b981" stroke-width="2.5"/>
-        <text x="325" y="80" fill="#10b981" font-size="10" font-weight="bold">Շոշափող (Tangent, f'(x))</text>
-        
-        <!-- Points P and Q -->
-        <circle cx="200" cy="130" r="5" fill="var(--accent-gold)"/>
-        <text x="195" y="120" fill="var(--accent-gold)" font-size="11" font-weight="bold">P(x, f(x))</text>
-        
-        <circle cx="300" cy="85" r="5" fill="#38bdf8"/>
-        <text x="305" y="80" fill="#38bdf8" font-size="11">Q(x+h, f(x+h))</text>
-        
-        <path d="M 290 92 Q 250 115 210 128" fill="none" stroke="var(--accent-pink)" stroke-width="1.5" marker-end="url(#arrow)"/>
-        <text x="255" y="115" fill="var(--accent-pink)" font-size="9">h → 0</text>
-    </svg>
-</div>
+<!-- Responsive diagram inserted by theory_diagrams.py -->
 
 <div class="theory-callout">
     <h4><i class="fas fa-calculator"></i> Քայլ առ քայլ ստացում․ $f(x) = x^2$ ֆունկցիայի ածանցյալը</h4>
@@ -429,3 +402,4 @@ Rather than evaluating limits from first principles each time, mathematicians de
             }
         ]
     }
+    return refine_theory_diagrams(chapter)

@@ -1,10 +1,11 @@
+from theory_diagrams import refine_theory_diagrams
 # Chapter 2: Ֆունկցիա, փոփոխություն և սահման (Function, Change, and Limit)
 # Subsections:
 # 2.1: func-change-graphs
 # 2.2: rates-limits-concept
 
 def get_chapter_2():
-    return {
+    chapter = {
         "title": {
             "hy": "2. Ֆունկցիա, փոփոխություն և սահման",
             "en": "2. Function, Change, and Limit",
@@ -34,33 +35,7 @@ def get_chapter_2():
     </ul>
 </div>
 
-<div class="theory-svg-container" style="text-align: center; margin: 20px 0;">
-    <svg viewBox="0 0 500 200" style="max-width: 100%; height: auto; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--glass-border);">
-        <!-- Axes -->
-        <line x1="50" y1="170" x2="450" y2="170" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#arrow)"/>
-        <line x1="70" y1="190" x2="70" y2="20" stroke="var(--text-muted)" stroke-width="1.5"/>
-        <text x="445" y="190" fill="var(--text-muted)" font-size="12">x (անկախ)</text>
-        <text x="35" y="30" fill="var(--text-muted)" font-size="12">y = f(x)</text>
-        
-        <!-- Curve f(x) = 0.002*(x-70)^2 + 40 -->
-        <path d="M 70 160 Q 200 150 260 110 T 430 40" fill="none" stroke="var(--neon-purple)" stroke-width="3"/>
-        
-        <!-- Points x1, y1 and x2, y2 -->
-        <circle cx="160" cy="140" r="5" fill="#38bdf8"/>
-        <line x1="160" y1="140" x2="160" y2="170" stroke="#38bdf8" stroke-dasharray="3,3"/>
-        <line x1="160" y1="140" x2="70" y2="140" stroke="#38bdf8" stroke-dasharray="3,3"/>
-        <text x="160" y="185" fill="#38bdf8" font-size="11" text-anchor="middle">x₁</text>
-        <text x="50" y="144" fill="#38bdf8" font-size="11" text-anchor="end">f(x₁)</text>
-        
-        <circle cx="340" cy="70" r="5" fill="#10b981"/>
-        <line x1="340" y1="70" x2="340" y2="170" stroke="#10b981" stroke-dasharray="3,3"/>
-        <line x1="340" y1="70" x2="70" y2="70" stroke="#10b981" stroke-dasharray="3,3"/>
-        <text x="340" y="185" fill="#10b981" font-size="11" text-anchor="middle">x₂</text>
-        <text x="50" y="74" fill="#10b981" font-size="11" text-anchor="end">f(x₂)</text>
-        
-        <text x="250" y="35" fill="var(--accent-gold)" font-size="11" text-anchor="middle">f(x) գրաֆիկի կետեր․ յուրաքանչյուր x-ին՝ մեկ y</text>
-    </svg>
-</div>
+<!-- Responsive diagram inserted by theory_diagrams.py -->
 
 <div class="example-box">
     <h4><i class="fas fa-check-circle"></i> Լուծված օրինակ․ Առօրյա շարժման մոդել</h4>
@@ -336,3 +311,4 @@ How do we mathematically quantify change? In nature and engineering, quantities 
             }
         ]
     }
+    return refine_theory_diagrams(chapter)

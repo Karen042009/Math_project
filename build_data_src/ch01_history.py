@@ -1,10 +1,11 @@
+from theory_diagrams import refine_theory_diagrams
 # Chapter 1: Պատմական ներածություն (Historical Introduction)
 # Subsections:
 # 1.1: history-calculus
 # 1.2: history-monte-carlo
 
 def get_chapter_1():
-    return {
+    chapter = {
         "title": {
             "hy": "1. Պատմական ներածություն․ Ինտեգրալի և Մոնտե Կառլոյի ծագումը",
             "en": "1. Historical Introduction: Origins of Calculus & Monte Carlo",
@@ -36,30 +37,7 @@ def get_chapter_1():
     <p><strong>3. Բեռնհարդ Ռիման (1854 թ․)․</strong> Իր «Եռանկյունաչափական շարքերով ֆունկցիայի ներկայացման մասին» հաբիլիտացիոն աշխատանքում (<em>Über die Darstellbarkeit einer Function durch eine trigonometrische Reihe</em>) Ռիմանը տվեց որոշյալ ինտեգրալի խիստ մաթեմատիկական սահմանումը՝ հիմնված ինտեգրալային գումարների սահմանի վրա։</p>
 </div>
 
-<div class="theory-svg-container" style="text-align: center; margin: 20px 0;">
-    <svg viewBox="0 0 500 180" style="max-width: 100%; height: auto; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--glass-border);">
-        <text x="250" y="25" fill="var(--text-muted)" font-size="12" text-anchor="middle">Ինտեգրալի պատմական էվոլյուցիան</text>
-        <circle cx="80" cy="90" r="32" fill="rgba(168,85,247,0.15)" stroke="var(--neon-purple)" stroke-width="2"/>
-        <text x="80" y="85" fill="var(--text-primary)" font-size="11" font-weight="bold" text-anchor="middle">Արքիմեդես</text>
-        <text x="80" y="102" fill="var(--accent-gold)" font-size="9" text-anchor="middle">Մ․թ․ա․ 250 թ․</text>
-        
-        <line x1="115" y1="90" x2="195" y2="90" stroke="var(--border-dim)" stroke-width="2" marker-end="url(#arrow)"/>
-        
-        <circle cx="230" cy="90" r="32" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="2"/>
-        <text x="230" y="85" fill="var(--text-primary)" font-size="11" font-weight="bold" text-anchor="middle">Նյուտոն & Լայբնից</text>
-        <text x="230" y="102" fill="var(--accent-gold)" font-size="9" text-anchor="middle">1665-1675 թթ․</text>
-        
-        <line x1="265" y1="90" x2="345" y2="90" stroke="var(--border-dim)" stroke-width="2"/>
-        
-        <circle cx="380" cy="90" r="32" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="2"/>
-        <text x="380" y="85" fill="var(--text-primary)" font-size="11" font-weight="bold" text-anchor="middle">Բ․ Ռիման</text>
-        <text x="380" y="102" fill="var(--accent-gold)" font-size="9" text-anchor="middle">1854 թ․</text>
-        
-        <text x="80" y="145" fill="var(--text-muted)" font-size="9" text-anchor="middle">Սպառման մեթոդ</text>
-        <text x="230" y="145" fill="var(--text-muted)" font-size="9" text-anchor="middle">Անալիզի հիմնական թեորեմ</text>
-        <text x="380" y="145" fill="var(--text-muted)" font-size="9" text-anchor="middle">Ինտեգրալային գումարներ</text>
-    </svg>
-</div>
+<!-- Responsive diagram inserted by theory_diagrams.py -->
 
 <div class="example-box">
     <h4><i class="fas fa-check-circle"></i> Պատմական օրինակ․ Արքիմեդեսի պարաբոլի սեգմենտը</h4>
@@ -349,3 +327,4 @@ In the mid-20th century, physicists and mathematicians confronting multidimensio
             }
         ]
     }
+    return refine_theory_diagrams(chapter)

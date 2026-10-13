@@ -348,17 +348,12 @@
     border-collapse: collapse;
 }
 
-mjx-container,
-.theory-content mjx-container,
-.theory-subsection mjx-container {
-    max-width: 100% !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    vertical-align: middle;
+mjx-container {
+    vertical-align: baseline;
 }
 mjx-container[display="true"] {
-    display: block !important;
-    overflow-x: auto !important;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .theory-content h2 {
