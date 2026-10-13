@@ -1,0 +1,406 @@
+/* ═══════════════════════════════════════════════════════════
+   SIMULATIONS.CSS — Canvas, Doors, Controls, Stats Bars
+   ProbSpace — Enhanced UI/UX 2.0
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══════════ SIMULATION CONTAINER ═══════════ */
+.sim-container {
+    display: none;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 30px;
+    width: 95%;
+    max-width: 1600px;
+    margin: 40px auto;
+    padding: 28px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
+    min-height: 70vh;
+}
+
+/* ═══════════ CANVAS ═══════════ */
+canvas {
+    background: var(--bg-dark);
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.lg-canvas {
+    height: 500px;
+}
+
+.md-canvas {
+    height: 400px;
+}
+
+canvas:hover {
+    border-color: rgba(168, 85, 247, 0.3);
+}
+
+/* ═══════════ SIM DESCRIPTION ═══════════ */
+.sim-description {
+    width: 100%;
+    background: rgba(168, 85, 247, 0.06);
+    border-left: 3px solid var(--neon-purple);
+    padding: 15px 18px;
+    margin-bottom: 20px;
+    border-radius: 0 12px 12px 0;
+    font-size: 1rem;
+    color: var(--text-primary);
+    backdrop-filter: blur(5px);
+}
+
+.sim-description strong {
+    color: var(--neon-purple);
+}
+
+/* ═══════════ SIMULATION CONTROLS SIDEBAR ═══════════ */
+.controls {
+    flex: 1;
+    min-width: 280px;
+    max-width: 380px;
+    padding: 20px;
+    background: var(--bg-panel);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.control-group label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+
+.control-group input[type="number"],
+.control-group input[type="text"] {
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.control-group input[type="number"]:focus,
+.control-group input[type="text"]:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+}
+
+/* Range slider enhancement */
+.control-group input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--border-dim);
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--neon-purple);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+    transition: all 0.2s ease;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.6);
+}
+
+/* ═══════════ STATS PANEL ═══════════ */
+.stats-panel {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--bg-input);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+}
+
+.stats-panel p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stats-panel span {
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-family: 'Fira Code', monospace;
+}
+
+/* ═══════════ MONTY HALL DOORS ═══════════ */
+.doors-container,
+.door-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.door-box,
+.door {
+    width: 110px;
+    height: 165px;
+    background: linear-gradient(180deg, var(--bg-panel), var(--bg-dark));
+    border: 2px solid var(--glass-border);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.35s var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.door-box::before,
+.door::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--neon-purple-dim), transparent);
+    border-radius: inherit;
+}
+
+.door-box:hover,
+.door:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow:
+        0 15px 30px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(168, 85, 247, 0.1);
+    border-color: var(--neon-purple);
+}
+
+.door-box.selected,
+.door.selected {
+    border-color: var(--accent-gold);
+    box-shadow:
+        0 0 25px rgba(250, 204, 21, 0.25),
+        inset 0 0 20px rgba(250, 204, 21, 0.05);
+}
+
+.door-box.open,
+.door.open {
+    background: rgba(10, 10, 15, 0.9);
+    border-color: var(--border-dim);
+}
+
+.door-content {
+    font-size: 3.5rem;
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.door-box.open .door-content,
+.door.open .door-content {
+    display: block;
+}
+
+.door .door-number {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    z-index: 1;
+}
+
+/* ═══════════ MONTY HALL STATS BARS ═══════════ */
+.monty-results {
+    width: 100%;
+    max-width: 520px;
+    margin: 10px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.result-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.bar-bg {
+    flex: 1;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--bg-input);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(168, 85, 247, 0.85), rgba(168, 85, 247, 0.6));
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
+    border-radius: 999px;
+    transition: width 0.4s var(--transition-smooth);
+}
+
+.bar-fill.gold {
+    background: linear-gradient(90deg, rgba(250, 204, 21, 0.9), rgba(250, 204, 21, 0.6));
+    box-shadow: 0 0 12px rgba(250, 204, 21, 0.2);
+}
+
+/* ═══════════ SIM TAB BUTTONS ═══════════ */
+.sim-tab-btn {
+    border-radius: 12px !important;
+}
+
+/* ═══════════ STATS CARD ═══════════ */
+.stats-card {
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media (max-width: 768px) {
+    .door-box,
+    .door {
+        width: 90px;
+        height: 140px;
+    }
+
+    .door-content {
+        font-size: 2.8rem;
+    }
+
+    .doors-container,
+    .door-container {
+        gap: 12px;
+    }
+
+    .sim-container {
+        padding: 16px;
+        gap: 20px;
+    }
+
+    .controls {
+        min-width: auto;
+        max-width: none;
+    }
+
+    .lg-canvas,
+    .md-canvas {
+        height: 350px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .door-box,
+    .door {
+        width: 80px;
+        height: 120px;
+    }
+
+    .door-content {
+        font-size: 2.2rem;
+    }
+
+    .lg-canvas,
+    .md-canvas {
+        height: 250px !important;
+    }
+}
+/* ═══════════ 3D DICE STYLES ═══════════ */
+.dice-scene {
+    width: 100px;
+    height: 100px;
+    perspective: 600px;
+}
+
+.dice {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.side {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #333;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 0 10px rgba(0,0,0,0.1);
+    backface-visibility: hidden;
+}
+
+/* Light mode adjustments for dice */
+[data-theme='light'] .side {
+    background: #ffffff;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+/* Dark mode adjustments for dice */
+[data-theme='dark'] .side {
+    background: #f8fafc;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+.front  { transform: rotateY(0deg) translateZ(50px); }
+.back   { transform: rotateY(180deg) translateZ(50px); }
+.right  { transform: rotateY(90deg) translateZ(50px); }
+.left   { transform: rotateY(-90deg) translateZ(50px); }
+.top    { transform: rotateX(90deg) translateZ(50px); }
+.bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+/* Dice Dot system (Optional upgrade if requested, using numbers for now) */
+/*.dice .side {
+    padding: 15px;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}*/

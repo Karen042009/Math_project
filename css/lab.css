@@ -1,0 +1,581 @@
+/* ═══════════════════════════════════════════════════════════
+   LAB.CSS — Calculator, Visualizer, AI Panel
+   ProbSpace — Enhanced UI/UX 2.0
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══════════ LAB GRID ═══════════ */
+.lab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 28px;
+    min-height: 60vh;
+}
+
+/* ═══════════ LAB PANEL ═══════════ */
+.lab-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: var(--glass-shadow);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.35s var(--transition-smooth);
+}
+
+.lab-panel:hover {
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.45),
+        0 0 30px rgba(168, 85, 247, 0.05);
+}
+
+.lab-panel h2 {
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    font-size: 1.45rem;
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 12px;
+}
+
+/* ═══════════ CALCULATOR DISPLAY ═══════════ */
+.calc-display-container {
+    background: var(--bg-display);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 22px;
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 0 25px rgba(168, 85, 247, 0.06);
+    text-align: right;
+    min-height: 85px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: border-color 0.3s ease;
+}
+
+.calc-display-container:focus-within {
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow: inset 0 0 30px rgba(168, 85, 247, 0.1), 0 0 15px rgba(168, 85, 247, 0.1);
+}
+
+#calc-input {
+    font-family: 'Fira Code', monospace;
+    font-size: 2.1rem;
+    color: var(--text-primary) !important;
+    text-shadow: none;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: right;
+    margin-bottom: 8px;
+    outline: none;
+    caret-color: var(--neon-purple);
+}
+
+#calc-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
+    font-size: 1.4rem;
+}
+
+#calc-result {
+    color: var(--accent-gold);
+    font-family: 'Fira Code', monospace;
+    font-size: 1.5rem;
+    font-weight: bold;
+    min-height: 2rem;
+    text-shadow: 0 0 12px rgba(250, 204, 21, 0.25);
+}
+
+/* ═══════════ KEYPAD ═══════════ */
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.key {
+    padding: 14px;
+    font-size: 1.15rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-dim);
+    cursor: pointer;
+    background: var(--bg-input);
+    color: var(--text-primary);
+    transition: all 0.2s var(--transition-smooth);
+    font-family: 'Fira Code', monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.key::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.12), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.key:hover {
+    background: var(--neon-purple-dim);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.key:active::after {
+    opacity: 1;
+}
+
+.key:active {
+    transform: translateY(0);
+    transition-duration: 0.05s;
+}
+
+.key.op {
+    color: var(--neon-purple);
+    font-weight: 600;
+}
+
+.key.num {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.key.action {
+    color: var(--accent-pink);
+    font-weight: 600;
+}
+
+.key.enter {
+    background: linear-gradient(135deg, var(--neon-purple), rgba(168, 85, 247, 0.7));
+    color: white;
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3);
+    border: none;
+}
+
+.key.enter:hover {
+    box-shadow: 0 6px 22px rgba(168, 85, 247, 0.45);
+    background: linear-gradient(135deg, #b066ff, var(--neon-purple));
+}
+
+/* ═══════════ VISUALIZER CONTROLS ═══════════ */
+.vis-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#dist-select,
+.modern-select {
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#dist-select:hover,
+.modern-select:hover {
+    border-color: var(--neon-purple);
+}
+
+#dist-select:focus,
+.modern-select:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+}
+
+#dist-params {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#dist-params input {
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    width: 60px;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+#dist-params input:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+}
+
+.dist-output {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 0.92rem;
+}
+
+#venn-op {
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    padding: 8px 12px;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#venn-op:focus {
+    border-color: var(--neon-purple);
+}
+
+/* ═══════════ LAB CANVAS ═══════════ */
+#lab-canvas {
+    background: var(--bg-display);
+    border-radius: 14px;
+    width: 100%;
+    height: 400px;
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+#lab-canvas:hover {
+    border-color: rgba(168, 85, 247, 0.3);
+}
+
+/* ═══════════ AI WORKSPACE ═══════════ */
+#ai-workspace {
+    display: none;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-dim);
+    animation: fadeInUp 0.4s var(--transition-smooth);
+}
+
+.ai-problem {
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    border-left: 4px solid var(--neon-purple);
+    padding: 20px;
+    margin-bottom: 22px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.ai-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.ai-select {
+    padding: 10px 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.ai-select:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+}
+
+.ai-input-area textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: 14px;
+    resize: vertical;
+    margin-bottom: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.ai-input-area textarea:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+}
+
+.file-upload-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.file-upload-label:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--neon-purple);
+    color: #fff;
+}
+
+#ai-feedback {
+    display: none;
+    margin-top: 24px;
+    padding: 24px;
+    background: var(--bg-input);
+    border-radius: 16px;
+    border: 1px solid var(--accent-gold);
+    backdrop-filter: blur(10px);
+}
+
+/* ═══════════ CALCULATOR TABS ═══════════ */
+.calc-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 10px;
+}
+
+.calc-tab {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    position: relative;
+    transition: all 0.3s var(--transition-smooth);
+    border-radius: 8px 8px 0 0;
+}
+
+.calc-tab:hover {
+    color: var(--text-primary);
+}
+
+.calc-tab.active {
+    color: var(--neon-purple);
+}
+
+.calc-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -11px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--neon-purple);
+    box-shadow: 0 0 10px var(--neon-purple);
+    border-radius: 2px;
+}
+
+.calc-pad {
+    display: none;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    animation: fadeIn 0.25s ease;
+}
+
+.calc-pad.active {
+    display: grid;
+}
+
+/* ═══════════ DRAWER TOGGLE ═══════════ */
+.drawer-toggle-btn {
+    width: 100%;
+    background: var(--neon-purple-dim);
+    border: none;
+    border-top: 1px solid var(--border-dim);
+    color: var(--neon-purple);
+    padding: 12px;
+    margin-top: 14px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border-radius: 0 0 14px 14px;
+}
+
+.drawer-toggle-btn:hover {
+    background: rgba(168, 85, 247, 0.06);
+    color: #fff;
+}
+
+.drawer-toggle-btn i {
+    transition: transform 0.3s var(--transition-smooth);
+}
+
+.drawer-toggle-btn.active i {
+    transform: rotate(180deg);
+}
+
+/* ═══════════ ADVANCED VIS CONTROLS ═══════════ */
+.op-btn {
+    background: var(--bg-input);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.25s ease;
+}
+
+.op-btn:hover {
+    background: var(--neon-purple);
+    color: #fff;
+    border-color: var(--neon-purple);
+}
+
+.highlight-text {
+    color: var(--accent-gold);
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(250, 204, 21, 0.3);
+}
+
+.vis-controls-advanced {
+    background: var(--bg-input);
+    padding: 16px;
+    border-radius: 14px;
+    margin-bottom: 22px;
+    border: 1px solid var(--glass-border);
+}
+
+.vis-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dist-params-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.param-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-input);
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+}
+
+.param-group label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.param-group input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.param-group input:focus {
+    border-color: var(--neon-purple);
+}
+
+/* ═══════════ ANALYSIS PANEL ═══════════ */
+.analysis-panel {
+    margin-top: 22px;
+    background: var(--neon-purple-dim);
+    border-left: 4px solid var(--neon-purple);
+    padding: 18px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.analysis-panel h4 {
+    margin-bottom: 10px;
+    color: var(--neon-purple);
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+}
+
+.dist-output-content {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media (max-width: 900px) {
+    .lab-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #lab-canvas {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lab-panel {
+        padding: 18px;
+    }
+
+    #calc-input {
+        font-size: 1.6rem;
+    }
+
+    #calc-result {
+        font-size: 1.2rem;
+    }
+
+    .key {
+        padding: 12px 8px;
+        font-size: 1rem;
+    }
+
+    .keypad,
+    .calc-pad {
+        gap: 6px;
+    }
+
+    .key.num {
+        font-size: 1.1rem;
+    }
+}

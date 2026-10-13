@@ -1,0 +1,1073 @@
+/* 
+ * CALCULATOR.JS
+ * Enhanced with Formula Solver and Advanced Visualizer (Venn 2/3 sets & Custom Tree)
+ */
+
+/* ----------------------------------------------------
+   1. CALCULATOR MODES & TABS
+   ---------------------------------------------------- */
+// Unified mode: Standard is default. "Step-by-Step" is triggered via the Formula Dropdown below.
+function toggleFormulaPanel() {
+    const panel = document.getElementById('calc-formula-container');
+    const btn = document.getElementById('btn-formula-drawer'); // Updated ID
+
+    if (panel.style.display === 'none') {
+        panel.style.display = 'block';
+        if (btn) btn.classList.add('active');
+    } else {
+        panel.style.display = 'none';
+        if (btn) btn.classList.remove('active');
+    }
+}
+
+function switchCalcTab(tab) {
+    document.querySelectorAll('.calc-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.calc-pad').forEach(p => {
+        p.classList.remove('active');
+        p.style.display = 'none';
+    });
+
+    const btn = document.querySelector(`.calc-tab[onclick*="'${tab}'"]`);
+    if (btn) btn.classList.add('active');
+
+    // Explicitly handle keypad visibility
+    const panel = document.getElementById(`calc-pad-${tab}`);
+    if (panel) {
+        panel.classList.add('active');
+        panel.style.display = 'grid';
+    }
+}
+
+/* ----------------------------------------------------
+   2. STANDARD CALCULATOR LOGIC
+   ---------------------------------------------------- */
+function addToCalc(val) {
+    const input = document.getElementById('calc-input');
+    if (!input) return;
+    input.focus();
+    // Insert at cursor
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    input.setRangeText(val, start, end, 'end');
+}
+
+function clearCalc() {
+    document.getElementById('calc-input').value = '';
+    const ui = window.probabilityData?.ui || { calc_result_label: { hy: 'Արդյունք՝' } };
+    const lang = currentLang || 'en';
+    const label = ui.calc_result_label[lang] || 'Result:';
+    document.getElementById('calc-result').innerText = `${label} 0`;
+}
+
+function backspaceCalc() {
+    const input = document.getElementById('calc-input');
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    if (start === end) {
+        if (start > 0) {
+            input.value = input.value.slice(0, start - 1) + input.value.slice(end);
+            input.selectionStart = input.selectionEnd = start - 1;
+        }
+    } else {
+        input.value = input.value.slice(0, start) + input.value.slice(end);
+        input.selectionStart = input.selectionEnd = start;
+    }
+}
+
+async function calculateResult() {
+    const input = document.getElementById('calc-input');
+    const resultDisplay = document.getElementById('calc-result');
+    let expr = input.value;
+
+    if (!expr) return;
+
+    // Helpers
+    const factorial = (n) => {
+        if (n < 0) return NaN;
+        if (n === 0 || n === 1) return 1;
+        let res = 1;
+        for (let i = 2; i <= n; i++) res *= i;
+        return res;
+    };
+    const P = (n, r) => factorial(n) / factorial(n - r);
+    const C = (n, r) => factorial(n) / (factorial(r) * factorial(n - r));
+
+    // Cleanup
+    let processed = expr.replace(/(\d+)!/g, 'factorial($1)');
+    const replacements = [
+        [/×/g, '*'], [/÷/g, '/'], [/−/g, '-'],
+        [/∩/g, '*'], [/∪/g, '+'],
+        [/√/g, 'Math.sqrt'],
+        [/π/g, 'Math.PI'],
+        [/∞/g, 'Infinity'],
+        [/e/g, 'Math.E'],
+        [/\^/g, '**'],
+        [/log\(/g, 'Math.log10('],
+        [/ln\(/g, 'Math.log('],
+        [/sin\(/g, 'Math.sin('],
+        [/cos\(/g, 'Math.cos('],
+        [/tan\(/g, 'Math.tan('],
+        [/abs\(/g, 'Math.abs('],
+        [/sqrt\(/g, 'Math.sqrt(']
+    ];
+
+    replacements.forEach(([reg, rep]) => {
+        processed = processed.replace(reg, rep);
+    });
+
+    try {
+        const safeEval = new Function('P', 'C', 'factorial', 'Math', `
+            "use strict";
+            return (${processed});
+        `);
+        const res = safeEval(P, C, factorial, Math);
+
+        if (isNaN(res) || res === undefined) throw new Error("NaN");
+        const lang = currentLang || 'en';
+        const label = window.probabilityData?.ui?.calc_result_label[lang] || 'Result:';
+        resultDisplay.innerText = `${label} ${parseFloat(res.toFixed(6))}`;
+        resultDisplay.style.color = 'var(--accent-gold)';
+    } catch (e) {
+        resultDisplay.innerText = "Error (Invalid Syntax)";
+        resultDisplay.style.color = 'red';
+    }
+}
+
+/* ----------------------------------------------------
+   3. FORMULA SOLVER LOGIC
+   ---------------------------------------------------- */
+function renderFormulaInputs() {
+    const type = document.getElementById('formula-select').value;
+    const container = document.getElementById('formula-inputs');
+    container.innerHTML = '';
+
+    const lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+    const ui = (window.probabilityData && window.probabilityData.ui) ? window.probabilityData.ui : {};
+    const getLabel = (key, fallback) => (ui[key] && ui[key][lang]) ? ui[key][lang] : fallback;
+
+    if (type === 'bernoulli') {
+        container.innerHTML = `
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                <label>${getLabel('lbl_trials', 'n (Trials)')}: <input type="number" id="f-n" class="ai-select" value="10"></label>
+                <label>${getLabel('lbl_successes', 'k (Successes)')}: <input type="number" id="f-k" class="ai-select" value="5"></label>
+                <label>${getLabel('lbl_prob', 'p (Prob)')}: <input type="number" id="f-p" class="ai-select" value="0.5" step="0.1"></label>
+            </div>
+        `;
+    } else if (type === 'bayes') {
+        container.innerHTML = `
+            <p style="margin-bottom:10px; color:#aaa;">P(H|E) = P(E|H)P(H) / [P(E|H)P(H) + P(E|not H)P(not H)]</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                <label>P(H) [Prior]: <input type="number" id="f-ph" class="ai-select" value="0.01" step="0.01"></label>
+                <label>P(E|H): <input type="number" id="f-peh" class="ai-select" value="0.99" step="0.01"></label>
+                <label>P(E|¬H): <input type="number" id="f-penh" class="ai-select" value="0.05" step="0.01"></label>
+            </div>
+        `;
+    } else if (type === 'combinations') {
+        container.innerHTML = `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <label>${getLabel('lbl_trials', 'n (Total)')}: <input type="number" id="f-n" class="ai-select" value="5"></label>
+                <label>${getLabel('lbl_successes', 'k (Choose)')}: <input type="number" id="f-k" class="ai-select" value="3"></label>
+            </div>
+        `;
+    } else if (type === 'permutations') {
+        container.innerHTML = `
+            <div style="display:grid; grid-template-columns:1fr; gap:10px;">
+                <label>${getLabel('lbl_trials', 'n (Total)')}: <input type="number" id="f-n" class="ai-select" value="5"></label>
+            </div>
+        `;
+    } else if (type === 'poisson') {
+        container.innerHTML = `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <label>${getLabel('lbl_lambda', 'λ (Lambda)')}: <input type="number" id="f-lam" class="ai-select" value="3"></label>
+                <label>${getLabel('lbl_successes', 'k (Events)')}: <input type="number" id="f-k" class="ai-select" value="2"></label>
+            </div>
+        `;
+    } else if (type === 'normal_calc') {
+        container.innerHTML = `
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                <label>${getLabel('lbl_mean', 'μ (Mean)')}: <input type="number" id="f-mu" class="ai-select" value="100"></label>
+                <label>${getLabel('lbl_stddev', 'σ (StdDev)')}: <input type="number" id="f-sigma" class="ai-select" value="15"></label>
+                <label>${getLabel('lbl_value', 'x (Value)')}: <input type="number" id="f-x" class="ai-select" value="115"></label>
+            </div>
+        `;
+    }
+}
+
+function solveFormulaWithSteps() {
+    const type = document.getElementById('formula-select').value;
+    const out = document.getElementById('formula-steps');
+    const lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+
+    if (!type) {
+        out.innerHTML = '';
+        return;
+    }
+
+    // Solver i18n
+    const i18n = {
+        hy: {
+            formula: "Բանաձև", task: "Խնդիր", step: "Քայլ", res: "Արդյունք",
+            n_val: "Ընդամենը (n)", k_val: "Ընտրություն (k)", p_val: "Հավանականություն (p)",
+            calc_c: (n, k) => `1. Հաշվել զուգորդությունները $C_{${n}}^{${k}} = \\frac{${n}!}{${k}!(${n}-${k}!)}$`,
+            calc_pk: (p, k, val) => `2. Հաշվել հաջողության մասը $p^k = ${p}^{${k}} \\approx ${val}$`,
+            calc_qn: (q, n, k, val) => `3. Հաշվել ձախողման մասը $q^{n-k} = ${q.toFixed(2)}^{${n - k}} \\approx ${val}$`,
+            bayes_num: (ph, peh, res) => `1. Համարիչ (Այս հիպոթեզը): $P(H) \\cdot P(E|H) = ${ph} \\cdot ${peh} = ${res}$`,
+            bayes_den: (den) => `2. Հայտարար (Լրիվ հավանականություն): $\\sum P(H_i)P(E|H_i) = ${den}$`,
+            poisson_parts: (lam, k) => `Հաշվել բաղադրիչները: $\\lambda^k = ${lam}^${k}$, $e^{-\\lambda} = e^{-${lam}}$, $k! = ${k}!$`,
+            text_below: (p, x) => `Սա նշանակում է, որ տվյալների ${(p * 100).toFixed(2)}%-ը գտնվում է ${x}-ից ցածր:`
+        },
+        en: {
+            formula: "Formula", task: "Task", step: "Step", res: "Result",
+            n_val: "Total (n)", k_val: "Choose (k)", p_val: "Prob (p)",
+            calc_c: (n, k) => `1. Calculate $C_{${n}}^{${k}} = \\frac{${n}!}{${k}!(${n}-${k}!)}$`,
+            calc_pk: (p, k, val) => `2. Calculate $p^k = ${p}^{${k}} \\approx ${val}$`,
+            calc_qn: (q, n, k, val) => `3. Calculate $q^{n-k} = ${q.toFixed(2)}^{${n - k}} \\approx ${val}$`,
+            bayes_num: (ph, peh, res) => `1. Numerator: $P(H) \\cdot P(E|H) = ${ph} \\cdot ${peh} = ${res}$`,
+            bayes_den: (den) => `2. Denominator (Total Prob): ${den}$`,
+            poisson_parts: (lam, k) => `Parts: $\\lambda^k = ${lam}^${k}$, $e^{-\\lambda} = e^{-${lam}}$, $k! = ${k}!$`,
+            text_below: (p, x) => `This means ${(p * 100).toFixed(2)}% of data is below ${x}.`
+        },
+        ru: {
+            formula: "Формула", task: "Задача", step: "Шаг", res: "Результат",
+            n_val: "Всего (n)", k_val: "Выбор (k)", p_val: "Веров. (p)",
+            calc_c: (n, k) => `1. Вычислить сочетания $C_{${n}}^{${k}} = \\frac{${n}!}{${k}!(${n}-${k}!)}$`,
+            calc_pk: (p, k, val) => `2. Вычислить $p^k = ${p}^{${k}} \\approx ${val}$`,
+            calc_qn: (q, n, k, val) => `3. Вычислить $q^{n-k} = ${q.toFixed(2)}^{${n - k}} \\approx ${val}$`,
+            bayes_num: (ph, peh, res) => `1. Числитель: $P(H) \\cdot P(E|H) = ${ph} \\cdot ${peh} = ${res}$`,
+            bayes_den: (den) => `2. Знаменатель (Полная вер.): ${den}$`,
+            poisson_parts: (lam, k) => `Части: $\\lambda^k = ${lam}^${k}$, $e^{-\\lambda} = e^{-${lam}}$, $k! = ${k}!$`,
+            text_below: (p, x) => `Это значит, что ${(p * 100).toFixed(2)}% данных ниже ${x}.`
+        }
+    };
+
+    const t = i18n[lang] || i18n['en'];
+
+    // Helpers
+    const factorial = (n) => {
+        if (n < 0) return 0;
+        if (n === 0) return 1;
+        let r = 1; for (let i = 2; i <= n; i++) r *= i;
+        return r;
+    };
+    const C = (n, k) => factorial(n) / (factorial(k) * factorial(n - k));
+    const phi = (z) => {
+        const p = 0.3275911;
+        const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429;
+        const sign = z < 0 ? -1 : 1;
+        const mag = Math.abs(z);
+        const t = 1.0 / (1.0 + p * mag);
+        const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-mag * mag);
+        return 0.5 * (1 + sign * y);
+    };
+
+    let html = '';
+
+    if (type === 'bernoulli') {
+        const n = parseInt(document.getElementById('f-n').value);
+        const k = parseInt(document.getElementById('f-k').value);
+        const p = parseFloat(document.getElementById('f-p').value);
+        const q = 1 - p;
+
+        const comb = C(n, k);
+        const pk = Math.pow(p, k);
+        const qnk = Math.pow(q, n - k);
+        const res = comb * pk * qnk;
+
+        html = `
+            <p><strong>${t.formula}:</strong> $P_n(k) = C_n^k \\cdot p^k \\cdot q^{n-k}$</p>
+            <p>${t.calc_c(n, k)} = <strong>${comb}</strong></p>
+            <p>${t.calc_pk(p, k, pk.toFixed(5))}</p>
+            <p>${t.calc_qn(q, n, k, qnk.toFixed(5))}</p>
+            <p style="color:var(--accent-gold); margin-top:10px; font-size:1.1rem;">${t.res}: <strong>${res.toFixed(6)}</strong></p>
+        `;
+
+    } else if (type === 'bayes') {
+        const ph = parseFloat(document.getElementById('f-ph').value);
+        const peh = parseFloat(document.getElementById('f-peh').value);
+        const penh = parseFloat(document.getElementById('f-penh').value);
+        const pnh = 1 - ph;
+
+        const num = ph * peh;
+        const den = (ph * peh) + (pnh * penh);
+        const res = den !== 0 ? num / den : 0;
+
+        html = `
+            <p><strong>${t.formula}:</strong> $P(H|E) = \\frac{P(H)P(E|H)}{P(E)}$</p>
+            <p>${t.bayes_num(ph, peh, num.toFixed(5))}</p>
+            <p>${t.bayes_den(den.toFixed(5))}</p>
+            <p style="color:var(--accent-gold); margin-top:10px; font-size:1.1rem;">${t.res}: <strong>${res.toFixed(6)}</strong></p>
+        `;
+    } else if (type === 'combinations') {
+        const n = parseInt(document.getElementById('f-n').value);
+        const k = parseInt(document.getElementById('f-k').value);
+        const res = C(n, k);
+        html = `
+            <p><strong>${t.formula}:</strong> $C_n^k = \\frac{n!}{k!(n-k)!}$</p>
+            <p>$\\frac{${n}!}{${k}!(${n}-${k})!} = \\frac{${factorial(n)}}{${factorial(k)} \\cdot ${factorial(n - k)}}$</p>
+            <p style="color:var(--accent-gold); font-size:1.1rem;">${t.res}: <strong>${res}</strong></p>
+        `;
+    } else if (type === 'permutations') {
+        const n = parseInt(document.getElementById('f-n').value);
+        const res = factorial(n);
+        html = `
+            <p><strong>${t.formula}:</strong> $P_n = n!$</p>
+            <p>$P_{${n}} = ${n}! = ${Array.from({ length: n }, (_, i) => n - i).join(' \\cdot ')}$</p>
+            <p style="color:var(--accent-gold); font-size:1.1rem;">${t.res}: <strong>${res}</strong></p>
+        `;
+    } else if (type === 'poisson') {
+        const lam = parseFloat(document.getElementById('f-lam').value);
+        const k = parseInt(document.getElementById('f-k').value);
+        const res = (Math.pow(lam, k) * Math.exp(-lam)) / factorial(k);
+
+        html = `
+            <p><strong>${t.formula}:</strong> $P(X=k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}$</p>
+            <p>${t.poisson_parts(lam, k)}</p>
+            <p>$\\frac{${Math.pow(lam, k).toFixed(4)} \\cdot ${Math.exp(-lam).toFixed(5)}}{${factorial(k)}}$</p>
+            <p style="color:var(--accent-gold); margin-top:10px; font-size:1.1rem;">${t.res}: <strong>${res.toFixed(6)}</strong></p>
+        `;
+    } else if (type === 'normal_calc') {
+        const mu = parseFloat(document.getElementById('f-mu').value);
+        const s = parseFloat(document.getElementById('f-sigma').value);
+        const x = parseFloat(document.getElementById('f-x').value);
+        const z = (x - mu) / s;
+        const p = phi(z);
+
+        html = `
+            <p><strong>${t.task}:</strong> $P(X < ${x})$</p>
+            <p>1. Z-score: $Z = \\frac{x - \\mu}{\\sigma} = \\frac{${x} - ${mu}}{${s}} = <strong>${z.toFixed(4)}</strong>$</p>
+            <p>2. $\\Phi(${z.toFixed(2)}) \\approx ${p.toFixed(5)}$</p>
+            <p style="color:var(--accent-gold); margin-top:10px; font-size:1.1rem;">${t.res}: <strong>${p.toFixed(6)}</strong></p>
+            <p style="font-size:0.8rem; color:#888;">${t.text_below(p, x)}</p>
+         `;
+    }
+
+    out.innerHTML = html;
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([out]).catch(err => console.log('MathJax typeset failed: ', err));
+    }
+}
+
+
+/* ----------------------------------------------------
+   4. VISUALIZER LOGIC (Updated VENN & TREE)
+   ---------------------------------------------------- */
+function updateVisualizer() {
+    const type = document.getElementById('dist-select').value;
+    const paramsDiv = document.getElementById('dist-params');
+    const analysisPanel = document.getElementById('dist-analysis');
+
+    // Hide analysis initially when switching modes
+    if (analysisPanel) analysisPanel.style.display = 'none';
+    if (paramsDiv) paramsDiv.innerHTML = '';
+
+    if (type === 'normal') {
+        paramsDiv.innerHTML = `
+            <div class="param-group">
+                <label>μ</label> <input type="number" id="param-mu" value="0" style="width:70px">
+            </div>
+            <div class="param-group">
+                <label>σ</label> <input type="number" id="param-sigma" value="1" step="0.1" style="width:70px">
+            </div>
+            <div class="param-group">
+                <label>Min</label> <input type="number" id="param-a" value="-1" style="width:70px">
+            </div>
+            <div class="param-group">
+                <label>Max</label> <input type="number" id="param-b" value="1" style="width:70px">
+            </div>
+        `;
+    } else if (type === 'venn') {
+        paramsDiv.innerHTML = `
+            <div class="param-group" style="padding:0; background:none; border:none;">
+                <select id="venn-sets" onchange="renderVennInputs()" class="modern-select">
+                    <option value="2">2 Sets (A, B)</option>
+                    <option value="3">3 Sets (A, B, C)</option>
+                </select>
+            </div>
+            <div id="venn-vals" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
+            
+            <!-- Set Operations Highlights -->
+            <div id="venn-ops-container" style="width:100%; margin-top:10px; border-top:1px solid var(--border-dim); padding-top:10px;"></div>
+        `;
+        renderVennInputs();
+        setTimeout(drawGraph, 100);
+    } else if (type === 'tree') {
+        paramsDiv.innerHTML = `
+            <div style="width:100%; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <div class="param-group">
+                        <label>Steps (Max 3)</label> 
+                        <input type="number" id="tree-steps" value="2" min="1" max="3" onchange="renderTreeCustomInputs(); setTimeout(drawGraph, 100);" style="width:50px">
+                    </div>
+                </div>
+                <!-- Custom Probabilities Container -->
+                <div id="tree-custom-container" style="display:grid; gap:12px; padding:15px; background:var(--bg-panel); border:1px solid var(--glass-border); border-radius:12px; box-shadow:var(--glass-shadow);"></div>
+            </div>
+        `;
+        renderTreeCustomInputs();
+        // Force initial draw
+        setTimeout(drawGraph, 100);
+    }
+}
+
+function renderTreeCustomInputs() {
+    // Limit steps to 3 for UI sanity (4 levels = 15 inputs)
+    const stepInput = document.getElementById('tree-steps');
+    let steps = parseInt(stepInput.value);
+    if (steps > 3) { stepInput.value = 3; steps = 3; }
+    if (steps < 1) { stepInput.value = 1; steps = 1; }
+
+    const container = document.getElementById('tree-custom-container');
+    container.innerHTML = '';
+
+    // Helper to create input row
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const inputBg = 'var(--bg-input)';
+    const textColor = 'var(--text-primary)';
+    const mutedColor = 'var(--text-muted)';
+
+    const createRow = (label, idPrefix, defName1, defName2) => `
+        <div style="border-bottom:1px solid var(--border-dim); padding-bottom:8px; margin-bottom:8px;">
+            <span style="font-size:0.75rem; color:${mutedColor}; text-transform:uppercase; letter-spacing:0.5px;">${label}</span>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                     <input type="text" id="${idPrefix}-name1" value="${defName1}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:${inputBg}; border:1px solid var(--glass-border); border-radius:4px; color:var(--neon-purple); padding:4px 8px; font-size:0.85rem; outline:none;">
+                     <div style="display:flex; gap:8px; align-items:center;">
+                        <span style="font-size:0.75rem; color:${mutedColor};">P:</span>
+                        <input type="number" id="${idPrefix}-p" value="0.5" step="0.1" oninput="drawGraph()" style="width:100%; background:${inputBg}; border:1px solid var(--glass-border); border-radius:4px; color:${textColor}; padding:2px 8px; font-size:0.85rem; outline:none;">
+                     </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                     <input type="text" id="${idPrefix}-name2" value="${defName2}" placeholder="Name" oninput="drawGraph()" style="width:100%; background:${inputBg}; border:1px solid var(--glass-border); border-radius:4px; color:var(--accent-pink); padding:4px 8px; font-size:0.85rem; outline:none;">
+                     <div style="display:flex; gap:8px; align-items:center;">
+                        <span style="font-size:0.75rem; color:${mutedColor};">1-P</span>
+                     </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Level 1: Root
+    let html = createRow("Start Node (Stage 1)", "node-0-0", "A", "B");
+
+    // Level 2
+    if (steps >= 2) {
+        html += `<div style="margin-top:5px; color:#aaa; font-size:0.8rem;">Stage 2 (Conditionals)</div>`;
+        html += createRow("If A happened:", "node-1-0", "A1", "B1");
+        html += createRow("If B happened:", "node-1-1", "A2", "B2");
+    }
+
+    // Level 3
+    if (steps >= 3) {
+        html += `<div style="margin-top:5px; color:#aaa; font-size:0.8rem;">Stage 3</div>`;
+        html += createRow("If A1:", "node-2-0", "A1-1", "A1-2");
+        html += createRow("If B1:", "node-2-1", "B1-1", "B1-2");
+        html += createRow("If A2:", "node-2-2", "A2-1", "A2-2");
+        html += createRow("If B2:", "node-2-3", "B2-1", "B2-2");
+    }
+
+    container.innerHTML = html;
+}
+
+function renderVennInputs() {
+    const count = document.getElementById('venn-sets').value;
+    const div = document.getElementById('venn-vals');
+    if (!div) return;
+    if (count === '2') {
+        div.innerHTML = `
+            <div class="param-group"><label>|A|</label> <input type="number" id="v-a" value="50" oninput="drawGraph()"></div>
+            <div class="param-group"><label>|B|</label> <input type="number" id="v-b" value="40" oninput="drawGraph()"></div>
+            <div class="param-group"><label>|A∩B|</label> <input type="number" id="v-ab" value="10" oninput="drawGraph()"></div>
+            <div class="param-group"><label>Total</label> <input type="number" id="v-total" value="100" oninput="drawGraph()"></div>
+        `;
+    } else {
+        div.innerHTML = `
+             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; font-size:0.8rem;">
+                <div class="param-group"><label>|A|</label> <input type="number" id="v-a" value="30" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|B|</label> <input type="number" id="v-b" value="30" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|C|</label> <input type="number" id="v-c" value="30" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|AB|</label> <input type="number" id="v-ab" value="10" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|AC|</label> <input type="number" id="v-ac" value="10" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|BC|</label> <input type="number" id="v-bc" value="10" oninput="drawGraph()"></div>
+                <div class="param-group"><label>|ABC|</label> <input type="number" id="v-abc" value="5" oninput="drawGraph()"></div>
+                <div class="param-group"><label>Total</label> <input type="number" id="v-total" value="100" oninput="drawGraph()"></div>
+            </div>
+        `;
+    }
+
+    // Call buttons renderer
+    if (typeof renderVennOps === 'function') renderVennOps();
+}
+
+function renderVennOps() {
+    const count = document.getElementById('venn-sets').value;
+    const container = document.getElementById('venn-ops-container');
+    if (!container) return;
+
+    let html = `<label style="color:var(--text-muted); font-size:0.8rem; display:block; margin-bottom:8px;">Highlight Operations:</label><div style="display:flex; gap:8px; flex-wrap:wrap;">`;
+
+    if (count === '2') {
+        html += `
+            <button class="op-btn" onclick="drawGraph('union')">A ∪ B</button>
+            <button class="op-btn" onclick="drawGraph('intersection')">A ∩ B</button>
+            <button class="op-btn" onclick="drawGraph('onlyA')">A \\ B</button>
+            <button class="op-btn" onclick="drawGraph('onlyB')">B \\ A</button>
+            <button class="op-btn" onclick="drawGraph('complement')">(A ∪ B)'</button>
+        `;
+    } else {
+        html += `
+            <button class="op-btn" onclick="drawGraph('union')">A ∪ B ∪ C</button>
+            <button class="op-btn" onclick="drawGraph('intersection')">A ∩ B ∩ C</button>
+            <button class="op-btn" onclick="drawGraph('onlyA')">A Only</button>
+            <button class="op-btn" onclick="drawGraph('onlyB')">B Only</button>
+            <button class="op-btn" onclick="drawGraph('onlyC')">C Only</button>
+            <button class="op-btn" onclick="drawGraph('complement')">Outside</button>
+        `;
+    }
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function drawGraph(highlightMode = null) {
+    const type = document.getElementById('dist-select').value;
+    const canvas = document.getElementById('lab-canvas');
+    if (!canvas) return;
+
+    // High-DPI
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    const w = rect.width;
+    const h = rect.height;
+
+    ctx.clearRect(0, 0, w, h);
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    ctx.fillStyle = theme === 'light' ? '#1e293b' : '#ffffff';
+
+    // Show Analysis
+    const analysisPanel = document.getElementById('dist-analysis');
+    if (analysisPanel) analysisPanel.style.display = 'block';
+
+    if (type === 'normal') {
+        drawNormal(ctx, w, h);
+    } else if (type === 'venn') {
+        drawVenn(ctx, w, h, highlightMode);
+    } else if (type === 'tree') {
+        drawTree(ctx, w, h);
+    }
+}
+
+// Helper for Normal Dist
+function erf(x) {
+    const sign = x < 0 ? -1 : 1;
+    const ax = Math.abs(x);
+    const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429;
+    const p = 0.3275911;
+    const t = 1.0 / (1.0 + p * ax);
+    const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-ax * ax);
+    return sign * y;
+}
+function normCdf(x, mu, sigma) {
+    const z = (x - mu) / (sigma * Math.sqrt(2));
+    return 0.5 * (1 + erf(z));
+}
+
+function drawNormal(ctx, w, h) {
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const mu = parseFloat(document.getElementById('param-mu')?.value || 0);
+    const sigma = parseFloat(document.getElementById('param-sigma')?.value || 1);
+    let a = parseFloat(document.getElementById('param-a')?.value);
+    let b = parseFloat(document.getElementById('param-b')?.value);
+
+    // Auto-defaults if empty
+    if (isNaN(a)) a = mu - sigma;
+    if (isNaN(b)) b = mu + sigma;
+
+    // Ensure a < b
+    if (a > b) [a, b] = [b, a];
+
+    const pdf = (x) => (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * ((x - mu) / sigma) ** 2);
+
+    const minX = mu - 4 * sigma, maxX = mu + 4 * sigma;
+    const range = maxX - minX;
+
+    // Draw Base Line
+    ctx.beginPath();
+    ctx.moveTo(0, h - 30);
+    ctx.lineTo(w, h - 30);
+    ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Draw Curve
+    const maxY = pdf(mu);
+    const safeMaxY = maxY || 1;
+
+    ctx.beginPath();
+    ctx.lineWidth = 3;
+    if (theme === 'dark') {
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = 'rgba(157, 78, 221, 0.5)';
+    }
+    ctx.strokeStyle = '#9d4edd'; // Neon Purple
+
+    for (let px = 0; px <= w; px++) {
+        const x = minX + (px / w) * range;
+        const y = pdf(x);
+        const py = (h - 30) - (y / safeMaxY) * (h - 60);
+        if (px === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+
+    // Shade Area [a, b]
+    const getPx = (val) => ((Math.max(minX, Math.min(maxX, val)) - minX) / range) * w;
+
+    ctx.beginPath();
+    const startPx = getPx(a);
+    const endPx = getPx(b);
+
+    ctx.moveTo(startPx, h - 30);
+    for (let px = Math.floor(startPx); px <= Math.ceil(endPx); px++) {
+        const x = minX + (px / w) * range;
+        const y = pdf(x);
+        const py = (h - 30) - (y / safeMaxY) * (h - 60);
+        ctx.lineTo(px, py);
+    }
+    ctx.lineTo(endPx, h - 30);
+    ctx.fillStyle = 'rgba(247, 37, 133, 0.3)';
+    ctx.fill();
+
+    // Calculate Area
+    const p = Math.max(0, Math.min(1, normCdf(b, mu, sigma) - normCdf(a, mu, sigma)));
+    const out = document.getElementById('dist-output');
+    if (out) {
+        out.innerHTML = `<div><strong>P(${a} ≤ X ≤ ${b}) = ${p.toFixed(5)}</strong></div>`;
+    }
+}
+
+function drawVenn(ctx, w, h, highlight = null) {
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const sets = document.getElementById('venn-sets').value;
+    const out = document.getElementById('dist-output');
+    const txtColor = theme === 'light' ? '#1e293b' : '#ffffff';
+
+    ctx.lineWidth = 2;
+    ctx.font = '14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+
+    const cx = w / 2, cy = h / 2;
+
+    // Colors - More vibrant for Dark mode
+    const colBase = theme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.04)';
+    const colA = theme === 'light' ? 'rgba(219, 39, 119, 0.4)' : 'rgba(247, 37, 133, 0.6)';
+    const colB = theme === 'light' ? 'rgba(124, 58, 237, 0.4)' : 'rgba(168, 85, 247, 0.6)';
+    const colC = theme === 'light' ? 'rgba(180, 83, 9, 0.3)' : 'rgba(255, 214, 10, 0.5)';
+
+    // Add glow for dark mode
+    if (theme === 'dark') {
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = 'rgba(168, 85, 247, 0.3)';
+    }
+
+    if (sets === '2') {
+        const nA = parseInt(document.getElementById('v-a').value) || 0;
+        const nB = parseInt(document.getElementById('v-b').value) || 0;
+        const nAB = parseInt(document.getElementById('v-ab').value) || 0;
+        const total = parseInt(document.getElementById('v-total').value) || 100;
+
+        // Calculations
+        const onlyA = nA - nAB;
+        const onlyB = nB - nAB;
+        const union = nA + nB - nAB;
+        const none = total - union;
+
+        const r = 100;
+        const c1x = cx - 60;
+        const c2x = cx + 60;
+
+        // Determine highlights
+        const isUnion = highlight === 'union';
+        const isInter = highlight === 'intersection';
+        const isOnlyA = highlight === 'onlyA';
+        const isOnlyB = highlight === 'onlyB';
+        const isComp = highlight === 'complement';
+
+        // Draw Universe
+        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
+        ctx.strokeRect(cx - 250, cy - 180, 500, 360);
+        ctx.fillStyle = theme === 'light' ? '#64748b' : '#888';
+        ctx.fillText(`U = ${total}`, cx - 230, cy - 160);
+
+        if (isComp) {
+            ctx.fillStyle = theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(cx - 250, cy - 180, 500, 360);
+        }
+
+        // Draw Base Circles
+        ctx.lineWidth = 1.5;
+        // Left
+        ctx.beginPath();
+        ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
+        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(247, 37, 133, 0.15)';
+        ctx.fill();
+        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)';
+        ctx.stroke();
+
+        // Right
+        ctx.beginPath();
+        ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
+        ctx.fillStyle = (highlight && !isComp) ? colBase : 'rgba(168, 85, 247, 0.15)';
+        ctx.fill();
+        ctx.stroke();
+
+        // Highlights - Simple Overlays
+        if (isUnion || isOnlyA) {
+            ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colA; ctx.fill();
+        }
+
+        if (isUnion || isOnlyB) {
+            ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colB; ctx.fill();
+        }
+
+        // Correct Overlaps
+        // If Only A: Erase B part
+        if (isOnlyA) {
+            ctx.save();
+            ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fill();
+            ctx.restore();
+        }
+        // If Only B: Erase A part
+        if (isOnlyB) {
+            ctx.save();
+            ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // Intersection
+        if (isInter) {
+            ctx.save();
+            ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(157, 78, 221, 0.6)';
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // Re-Stroke
+        ctx.strokeStyle = txtColor;
+        ctx.beginPath(); ctx.arc(c1x, cy, r, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(c2x, cy, r, 0, 2 * Math.PI); ctx.stroke();
+
+        // Results Labels
+        ctx.shadowBlur = 0; // Turn off glow for text
+        ctx.fillStyle = txtColor;
+        ctx.font = 'bold 13px Inter, sans-serif';
+        ctx.fillText(`A only: ${onlyA}`, c1x - 30, cy);
+        ctx.fillText(`B only: ${onlyB}`, c2x + 30, cy);
+        ctx.fillText(`Both: ${nAB}`, cx, cy);
+        ctx.fillText(`None: ${none}`, cx - 200, cy + 150);
+        // Analysis
+        out.innerHTML = `
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div class="${isOnlyA ? 'highlight-text' : ''}">P(A) = ${(nA / total).toFixed(3)}</div>
+                <div class="${isOnlyB ? 'highlight-text' : ''}">P(B) = ${(nB / total).toFixed(3)}</div>
+                <div class="${isUnion ? 'highlight-text' : ''}">P(A ∪ B) = ${(union / total).toFixed(3)}</div>
+                <div class="${isInter ? 'highlight-text' : ''}">P(A ∩ B) = ${(nAB / total).toFixed(3)}</div>
+                <div>P(A|B) = ${(nB > 0 ? nAB / nB : 0).toFixed(3)}</div>
+                <div>P(Only A) = ${onlyA}/${total} = <strong>${(onlyA / total).toFixed(3)}</strong></div>
+            </div>
+        `;
+
+    } else {
+        // 3 Sets
+        const nA = parseInt(document.getElementById('v-a').value) || 0;
+        const nB = parseInt(document.getElementById('v-b').value) || 0;
+        const nC = parseInt(document.getElementById('v-c').value) || 0;
+        const nAB = parseInt(document.getElementById('v-ab').value) || 0;
+        const nAC = parseInt(document.getElementById('v-ac').value) || 0;
+        const nBC = parseInt(document.getElementById('v-bc').value) || 0;
+        const nABC = parseInt(document.getElementById('v-abc').value) || 0;
+        const total = parseInt(document.getElementById('v-total').value) || 100;
+
+        // Visual Layout
+        const r = 90;
+        const ax = cx, ay = cy - 50;
+        const bx = cx - 55, by = cy + 40;
+        const ccx = cx + 55, ccy = cy + 40;
+
+        // Calculations
+        const onlyAB = nAB - nABC;
+        const onlyAC = nAC - nABC;
+        const onlyBC = nBC - nABC;
+        const onlyA = nA - (nAB + nAC - nABC);
+        const onlyB = nB - (nAB + nBC - nABC);
+        const onlyC = nC - (nAC + nBC - nABC);
+        const union = onlyA + onlyB + onlyC + onlyAB + onlyAC + onlyBC + nABC;
+
+        // Highlights
+        const isUnion = highlight === 'union';
+        const isInter = highlight === 'intersection';
+        const isOnlyA = highlight === 'onlyA';
+        const isOnlyB = highlight === 'onlyB';
+        const isOnlyC = highlight === 'onlyC';
+        const isComp = highlight === 'complement';
+
+        // Draw Universe
+        ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
+        ctx.strokeRect(cx - 250, cy - 180, 500, 360);
+        ctx.fillStyle = theme === 'light' ? '#64748b' : '#888';
+        ctx.fillText(`U = ${total}`, cx - 230, cy - 160);
+
+        if (isComp) {
+            ctx.fillStyle = theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(cx - 250, cy - 180, 500, 360);
+        }
+
+        // Draw Circles Base (dim)
+        const drawCircle = (x, y, col) => {
+            ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.fillStyle = col; ctx.fill();
+            ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)';
+            ctx.stroke();
+        };
+
+        // Base
+        drawCircle(ax, ay, (highlight && !isComp) ? colBase : 'rgba(247, 37, 133, 0.1)');
+        drawCircle(bx, by, (highlight && !isComp) ? colBase : 'rgba(168, 85, 247, 0.1)');
+        drawCircle(ccx, ccy, (highlight && !isComp) ? colBase : 'rgba(255, 214, 10, 0.1)');
+
+        // Highlights
+        if (isUnion) {
+            // Just fill all 3
+            drawCircle(ax, ay, colA);
+            drawCircle(bx, by, colB);
+            drawCircle(ccx, ccy, colC);
+        }
+
+        if (isOnlyA) {
+            // Fill A, cut B, cut C
+            ctx.save();
+            ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colA; ctx.fill();
+            // Cut B
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.fill();
+            // Cut C
+            ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.restore();
+        }
+
+        if (isOnlyB) {
+            ctx.save();
+            ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colB; ctx.fill();
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.restore();
+        }
+
+        if (isOnlyC) {
+            ctx.save();
+            ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = colC; ctx.fill();
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.fill();
+            ctx.restore();
+        }
+
+        // Analysis
+        if (isInter) {
+            // Intersect A, B, C
+            ctx.save();
+            ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = txtColor;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // Restroke outlines
+        ctx.strokeStyle = txtColor;
+        ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(bx, by, r, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(ccx, ccy, r, 0, 2 * Math.PI); ctx.stroke();
+
+        // Labels
+        ctx.fillStyle = txtColor;
+        ctx.fillText('A', ax, ay - 40);
+        ctx.fillText('B', bx - 50, by);
+        ctx.fillText('C', ccx + 50, ccy);
+
+        // Analysis
+        out.innerHTML = `
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                 <div class="${isOnlyA ? 'highlight-text' : ''}">P(A only) = ${(onlyA / total).toFixed(3)}</div>
+                 <div class="${isOnlyB ? 'highlight-text' : ''}">P(B only) = ${(onlyB / total).toFixed(3)}</div>
+                 <div class="${isOnlyC ? 'highlight-text' : ''}">P(C only) = ${(onlyC / total).toFixed(3)}</div>
+                 <div class="${isInter ? 'highlight-text' : ''}">P(A∩B∩C) = ${(nABC / total).toFixed(3)}</div>
+                 <div class="${isUnion ? 'highlight-text' : ''}">P(A∪B∪C) = ${(union / total).toFixed(3)}</div>
+                 <div>P(Total) = 1.000</div>
+            </div>
+        `;
+    }
+}
+
+function drawTree(ctx, w, h) {
+    let steps = parseInt(document.getElementById('tree-steps')?.value || 2);
+    // Clamp steps
+    if (steps > 3) steps = 3;
+    if (steps < 1) steps = 1;
+
+    ctx.font = '12px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.lineWidth = 2;
+
+    const startX = 60;
+    const startY = h / 2;
+    const layerWidth = (w - 120) / steps;
+    const results = [];
+
+    // Helper to read custom values
+    function getNodeData(level, idx) {
+        const name1 = document.getElementById(`node-${level}-${idx}-name1`)?.value || 'A';
+        const name2 = document.getElementById(`node-${level}-${idx}-name2`)?.value || 'B';
+        const pInput = document.getElementById(`node-${level}-${idx}-p`);
+        const p = pInput ? parseFloat(pInput.value) : 0.5;
+        return { name1, name2, p };
+    }
+
+    function drawBranch(x, y, level, nodeIndex, probSoFar, pathStr) {
+        // Draw Node Circle
+        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const nodeColor = theme === 'light' ? '#7c3aed' : '#ffffff';
+
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = nodeColor;
+        ctx.fill();
+
+        if (level === steps) {
+            // Leaf node: Final Probability
+            ctx.fillStyle = theme === 'light' ? '#b45309' : '#ffd60a'; // Darker gold for light mode
+            ctx.font = 'bold 13px Inter';
+            ctx.fillText((probSoFar * 100).toFixed(1) + '%', x + 35, y);
+
+            // Collect result
+            results.push({ path: pathStr, p: probSoFar });
+            return;
+        }
+
+        const nextX = x + layerWidth;
+        const offset = (h / 2.2) / Math.pow(2, level + 1);
+
+        // Fetch Data for this split
+        const { name1, name2, p } = getNodeData(level, nodeIndex);
+        const q = 1 - p;
+
+        // --- UP BRANCH (Success/Name1) ---
+        const yUp = y - offset;
+
+        // Bezier Curve
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.bezierCurveTo(x + layerWidth / 2, y, x + layerWidth / 2, yUp, nextX, yUp);
+        ctx.strokeStyle = 'rgba(168, 85, 247, 0.8)'; // Blue
+        ctx.stroke();
+
+        // Label 1 (Pill background)
+        const midX = (x + nextX) / 2;
+        const midY = (y + yUp) / 2; // Approximate mid for bezier
+        // Actually bezier mid point is complex, simple mid is okay for curve
+
+        const txtColor = theme === 'light' ? '#1e293b' : '#ffffff';
+
+        // Draw Label 1 (Pill background)
+        const probText = p.toFixed(2);
+        ctx.font = 'bold 11px Inter';
+        const txtWidth = ctx.measureText(probText).width;
+
+        ctx.fillStyle = theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.6)';
+        ctx.roundRect(midX - (txtWidth + 8) / 2, midY - 10, txtWidth + 8, 20, 4);
+        ctx.fill();
+
+        // Draw Name
+        ctx.fillStyle = theme === 'light' ? '#0369a1' : '#4cc9f0';
+        ctx.fillText(name1, midX, midY - 18);
+        ctx.fillStyle = txtColor;
+        ctx.fillText(probText, midX, midY); // Prob
+
+        // Recurse Up
+        drawBranch(nextX, yUp, level + 1, nodeIndex * 2, probSoFar * p, pathStr + (pathStr ? " → " : "") + name1);
+
+        // --- DOWN BRANCH (Failure/Name2) ---
+        const yDown = y + offset;
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.bezierCurveTo(x + layerWidth / 2, y, x + layerWidth / 2, yDown, nextX, yDown);
+        ctx.strokeStyle = 'rgba(247, 37, 133, 0.8)'; // Pink
+        ctx.stroke();
+
+        const midYX = (y + yDown) / 2;
+
+        // Label 2
+        const qText = q.toFixed(2);
+        const qWidth = ctx.measureText(qText).width;
+        ctx.fillStyle = theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.6)';
+        ctx.roundRect(midX - (qWidth + 8) / 2, midYX - 10, qWidth + 8, 20, 4);
+        ctx.fill();
+
+        ctx.fillStyle = theme === 'light' ? '#be185d' : '#f72585';
+        ctx.fillText(name2, midX, midYX + 18);
+        ctx.fillStyle = txtColor;
+        ctx.fillText(qText, midX, midYX);
+
+        // Recurse Down
+        drawBranch(nextX, yDown, level + 1, nodeIndex * 2 + 1, probSoFar * q, pathStr + (pathStr ? " → " : "") + name2);
+    }
+
+    // Start
+    drawBranch(startX, startY, 0, 0, 1, "");
+
+    // Output Tree Analysis
+    const out = document.getElementById('dist-output');
+    if (out && results.length > 0) {
+        let table = `<div style="max-height:100px; overflow-y:auto; margin-top:10px;">
+        <table style="width:100%; text-align:left; font-size:0.8rem; border-collapse:collapse;">
+            <tr style="border-bottom:1px solid var(--border-dim); color:var(--text-muted);">
+                <th style="padding:4px;">Outcome</th>
+                <th style="padding:4px;">Prob</th>
+                <th style="padding:4px;">%</th>
+            </tr>`;
+        results.forEach(r => {
+            table += `<tr>
+                <td style="padding:4px; color:var(--text-primary);">${r.path}</td>
+                <td style="padding:4px; color:var(--text-muted);">${r.p.toFixed(4)}</td>
+                <td style="padding:4px; color:var(--accent-gold);">${(r.p * 100).toFixed(1)}%</td>
+            </tr>`;
+        });
+        table += `</table></div>`;
+        out.innerHTML = table;
+    }
+}
+// Initial mode (must be last)
+if (typeof setCalcMode === 'function') {
+    setCalcMode('std');
+}
