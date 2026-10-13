@@ -31,7 +31,9 @@ async function flushMathFrame() {
         const page = element.closest('.page-section');
         if (element.isConnected && element.dataset?.mathRendered !== 'true' && (!page || page.classList.contains('active-section'))) {
             await window.MathJax.typesetPromise([element]);
-            if (element.classList?.contains('theory-body')) element.dataset.mathRendered = 'true';
+            if (element.classList?.contains('theory-body') || element.classList?.contains('experiment-equation')) {
+                element.dataset.mathRendered = 'true';
+            }
         }
     } catch (error) {
         console.warn('Could not render mathematics in the requested section.', error);
@@ -57,8 +59,10 @@ function clearMathContainer(container) {
 
 function typesetVisibleMath() {
     const active = document.querySelector('.page-section.active-section');
-    if (!active || active.id === 'home') return;
-    if (active.id === 'theory') {
+    if (!active) return;
+    if (active.id === 'home') {
+        queueMathTypeset(active.querySelector('.experiment-equation'));
+    } else if (active.id === 'theory') {
         active.querySelectorAll('[data-theory-loaded="true"] .theory-body').forEach(queueMathTypeset);
     } else if (active.id === 'simulations') {
         const panel = document.getElementById('sim-' + currentSim);

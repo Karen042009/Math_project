@@ -1,0 +1,82 @@
+- generic [active] [ref=f1e1]:
+  - navigation [ref=f1e2]:
+    - generic [ref=f1e3]: ProbSpace
+    - generic [ref=f1e5]:
+      - text:     
+      - button "Toggle color theme" [ref=f1e6] [cursor=pointer]:
+        - generic [ref=f1e7]: 
+      - button "Open navigation" [ref=f1e8] [cursor=pointer]:
+        - generic [ref=f1e9]: 
+  - text:     
+  - generic [ref=f1e10]:
+    - generic [ref=f1e11]:
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]:
+          - paragraph [ref=f1e14]: МАТЕМАТИКА ЧЕРЕЗ ЭКСПЕРИМЕНТ
+          - heading "Метод Монте-Карло. Вычисление интегралов и вероятностные симуляции." [level=1] [ref=f1e15]:
+            - generic [ref=f1e16]: Метод Монте-Карло.
+            - generic [ref=f1e17]: Вычисление интегралов и вероятностные симуляции.
+          - paragraph [ref=f1e18]: От случайных точек к математическим закономерностям. Изучайте интегралы, вычисляйте площади и объёмы, проверяйте вероятности на практике.
+          - generic [ref=f1e19]:
+            - button "Начать эксперимент" [ref=f1e20] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f1e22]: ↗
+            - button "Изучить теорию" [ref=f1e23] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f1e25]: →
+          - generic [ref=f1e26]:
+            - button "Вероятность" [ref=f1e27] [cursor=pointer]
+            - generic [aria-hidden] [ref=f1e30]: /
+            - button "Интегралы" [ref=f1e31] [cursor=pointer]
+        - figure "∫₀¹ x² dx = ⅓ Доля точек под кривой позволяет оценить интеграл. Иллюстрация · не текущий расчёт" [ref=f1e34]:
+          - generic [ref=f1e35]:
+            - generic [ref=f1e36]: ИНТЕГРИРОВАНИЕ МОНТЕ-КАРЛО
+            - generic [ref=f1e37]: 01 / ∫
+          - 'img "Monte Carlo integration: random points under the curve y = x²" [ref=f1e38]':
+            - generic [ref=f1e143]:
+              - generic [ref=f1e144]: "0"
+              - generic [ref=f1e145]: "1"
+              - generic [ref=f1e146]: "1"
+              - generic [ref=f1e147]: x
+              - generic [ref=f1e148]: f(x) = x²
+          - generic [ref=f1e149]:
+            - generic [ref=f1e150]: ∫₀¹ x² dx = ⅓
+            - paragraph [ref=f1e151]: Доля точек под кривой позволяет оценить интеграл.
+            - text: Иллюстрация · не текущий расчёт
+      - generic [ref=f1e152]:
+        - generic [ref=f1e153]:
+          - text: 01 — 04
+          - heading "Поймите. Вычислите. Проверьте." [level=2] [ref=f1e154]
+        - paragraph [ref=f1e155]: Одна идея — от теории до собственного эксперимента.
+      - generic [ref=f1e156]:
+        - 'button "01 Два направления, одна основа Вероятность и интегралы: от определений до метода Монте-Карло." [ref=f1e157] [cursor=pointer]':
+          - generic [ref=f1e158]:
+            - generic [ref=f1e159]: "01"
+            - generic [aria-hidden] [ref=f1e160]: 
+          - heading "Два направления, одна основа" [level=3] [ref=f1e161]
+          - paragraph [ref=f1e162]: "Вероятность и интегралы: от определений до метода Монте-Карло."
+          - generic [aria-hidden] [ref=f1e163]: ↗
+        - button "02 Практика шаг за шагом Решайте задачи обоих направлений с подсказками и решениями." [ref=f1e164] [cursor=pointer]:
+          - generic [ref=f1e165]:
+            - generic [ref=f1e166]: "02"
+            - generic [aria-hidden] [ref=f1e167]: 
+          - heading "Практика шаг за шагом" [level=3] [ref=f1e168]
+          - paragraph [ref=f1e169]: Решайте задачи обоих направлений с подсказками и решениями.
+          - generic [aria-hidden] [ref=f1e170]: ↗
+        - button "03 Ваши инструменты вычислений Производные, интегралы, площади, объёмы и движение с графиками." [ref=f1e171] [cursor=pointer]:
+          - generic [ref=f1e172]:
+            - generic [ref=f1e173]: "03"
+            - generic [aria-hidden] [ref=f1e174]: 
+          - heading "Ваши инструменты вычислений" [level=3] [ref=f1e175]
+          - paragraph [ref=f1e176]: Производные, интегралы, площади, объёмы и движение с графиками.
+          - generic [aria-hidden] [ref=f1e177]: ↗
+        - button "04 Случайность в действии Интегрирование случайной выборкой, монеты, кости и вероятностные эксперименты." [ref=f1e178] [cursor=pointer]:
+          - generic [ref=f1e179]:
+            - generic [ref=f1e180]: "04"
+            - generic [aria-hidden] [ref=f1e181]: 
+          - heading "Случайность в действии" [level=3] [ref=f1e182]
+          - paragraph [ref=f1e183]: Интегрирование случайной выборкой, монеты, кости и вероятностные эксперименты.
+          - generic [aria-hidden] [ref=f1e184]: ↗
+    - text:                                                                                                                                          
+  - contentinfo [ref=f1e185]:
+    - generic [ref=f1e186]:
+      - paragraph [ref=f1e188]: © 2026 Проект «Метод Монте-Карло» | Все права защищены
+      - paragraph [ref=f1e190]: "Создано Карен Погосяном | Научный руководитель: Манушак Сардарян"
