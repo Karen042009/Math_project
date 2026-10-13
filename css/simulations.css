@@ -404,3 +404,55 @@ canvas:hover {
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 }*/
+
+/* ═══════════ MONTE CARLO INTEGRATION SIMULATION ═══════════ */
+.mc-main-canvas {
+    height: 380px;
+    width: 100%;
+}
+
+.mc-convergence-canvas {
+    height: 160px;
+    width: 100%;
+    margin-top: 14px;
+}
+
+.mc-btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.mc-btn-grid button {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.calc-select {
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.calc-select:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+
+.calc-select option {
+    background: var(--bg-panel);
+    color: var(--text-primary);
+}

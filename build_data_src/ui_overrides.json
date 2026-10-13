@@ -1,0 +1,377 @@
+{
+  "lab_mode_basic": {
+    "hy": "Սովորական հաշվիչ",
+    "en": "Calculator",
+    "ru": "Калькулятор"
+  },
+  "lab_mode_prob": {
+    "hy": "Հավանականություն",
+    "en": "Probability",
+    "ru": "Вероятность"
+  },
+  "lab_mode_calculus": {
+    "hy": "Ածանցյալ և ինտեգրալ",
+    "en": "Calculus",
+    "ru": "Производные и интегралы"
+  },
+  "lab_mode_area": {
+    "hy": "Մակերես",
+    "en": "Area",
+    "ru": "Площадь"
+  },
+  "lab_mode_volume": {
+    "hy": "Ծավալ",
+    "en": "Volume",
+    "ru": "Объём"
+  },
+  "lab_mode_motion": {
+    "hy": "Շարժում",
+    "en": "Motion",
+    "ru": "Движение"
+  },
+  "lab_calc_title": {
+    "hy": "Ածանցյալի և Ինտեգրալի Հաշվիչ",
+    "en": "Derivatives & integrals",
+    "ru": "Производные и интегралы"
+  },
+  "lab_sub_deriv": {
+    "hy": "Ածանցյալ",
+    "en": "Derivative",
+    "ru": "Производная"
+  },
+  "lab_sub_indef": {
+    "hy": "Անորոշ ինտեգրալ",
+    "en": "Indefinite integral",
+    "ru": "Неопределённый интеграл"
+  },
+  "lab_sub_def": {
+    "hy": "Որոշյալ ինտեգրալ",
+    "en": "Definite integral",
+    "ru": "Определённый интеграл"
+  },
+  "lab_lbl_fx": {
+    "hy": "Ֆունկցիա՝ f(x)",
+    "en": "Function: f(x)",
+    "ru": "Функция: f(x)"
+  },
+  "lab_lbl_x0": {
+    "hy": "Կետ՝ x₀ (ածանցյալի արժեքի և շոշափողի համար)",
+    "en": "Point x₀ (derivative and tangent)",
+    "ru": "Точка x₀ (производная и касательная)"
+  },
+  "lab_lbl_presets": {
+    "hy": "Օրինակներ",
+    "en": "Examples",
+    "ru": "Примеры"
+  },
+  "btn_calculate": {
+    "hy": "Հաշվել",
+    "en": "Calculate",
+    "ru": "Вычислить"
+  },
+  "btn_view_theory": {
+    "hy": "Անցնել տեսությանը",
+    "en": "Explore the theory",
+    "ru": "Перейти к теории"
+  },
+  "lab_lbl_a": {
+    "hy": "Ստորին սահման (a)",
+    "en": "Lower bound (a)",
+    "ru": "Нижний предел (a)"
+  },
+  "lab_lbl_b": {
+    "hy": "Վերին սահման (b)",
+    "en": "Upper bound (b)",
+    "ru": "Верхний предел (b)"
+  },
+  "lab_lbl_method": {
+    "hy": "Մեթոդ",
+    "en": "Method",
+    "ru": "Метод"
+  },
+  "lab_lbl_n": {
+    "hy": "Ենթամիջակայքեր (n / N)",
+    "en": "Intervals / samples (n / N)",
+    "ru": "Интервалы / выборки (n / N)"
+  },
+  "lab_area_title": {
+    "hy": "Մակերեսի Հաշվիչ",
+    "en": "Area calculator",
+    "ru": "Калькулятор площади"
+  },
+  "lab_area_mode_axis": {
+    "hy": "Կորի և x առանցքի միջև",
+    "en": "Curve and x-axis",
+    "ru": "Кривая и ось x"
+  },
+  "lab_area_mode_between": {
+    "hy": "Երկու կորերի միջև",
+    "en": "Between two curves",
+    "ru": "Между двумя кривыми"
+  },
+  "lab_lbl_gx": {
+    "hy": "Ստորին / Երկրորդ ֆունկցիա՝ g(x)",
+    "en": "Second function: g(x)",
+    "ru": "Вторая функция: g(x)"
+  },
+  "btn_calc_area": {
+    "hy": "Հաշվել Երկրաչափական Մակերեսը",
+    "en": "Calculate area",
+    "ru": "Вычислить площадь"
+  },
+  "btn_find_roots": {
+    "hy": "Գտնել հատման կետերը",
+    "en": "Find intersections",
+    "ru": "Найти пересечения"
+  },
+  "lab_vol_title": {
+    "hy": "Ծավալի Հաշվիչ",
+    "en": "Volume calculator",
+    "ru": "Калькулятор объёма"
+  },
+  "vol_mode_disks": {
+    "hy": "Սկավառակներ",
+    "en": "Disks",
+    "ru": "Диски"
+  },
+  "vol_mode_washers": {
+    "hy": "Օղակներ",
+    "en": "Washers",
+    "ru": "Кольца"
+  },
+  "vol_mode_slicing": {
+    "hy": "Լայնական հատույթ",
+    "en": "Cross-sections",
+    "ru": "Поперечные сечения"
+  },
+  "vol_mode_solids": {
+    "hy": "Պատրաստի մարմիններ",
+    "en": "Standard solids",
+    "ru": "Геометрические тела"
+  },
+  "lab_lbl_rx": {
+    "hy": "Շառավիղ՝ R(x) (կամ f(x))",
+    "en": "Outer radius: R(x)",
+    "ru": "Внешний радиус: R(x)"
+  },
+  "lab_lbl_inner_r": {
+    "hy": "Ներքին շառավիղ՝ r(x)",
+    "en": "Inner radius: r(x)",
+    "ru": "Внутренний радиус: r(x)"
+  },
+  "lab_lbl_ax": {
+    "hy": "Հատույթի մակերես՝ A(x)",
+    "en": "Cross-sectional area: A(x)",
+    "ru": "Площадь сечения: A(x)"
+  },
+  "lab_lbl_solid_type": {
+    "hy": "Մարմնի տեսակ",
+    "en": "Solid type",
+    "ru": "Тип тела"
+  },
+  "solid_cylinder": {
+    "hy": "Գլան (Cylinder)",
+    "en": "Cylinder",
+    "ru": "Цилиндр"
+  },
+  "solid_cone": {
+    "hy": "Կոն (Cone)",
+    "en": "Cone",
+    "ru": "Конус"
+  },
+  "solid_sphere": {
+    "hy": "Գունդ (Sphere)",
+    "en": "Sphere",
+    "ru": "Шар"
+  },
+  "lab_lbl_radius": {
+    "hy": "Շառավիղ (R կամ r)",
+    "en": "Radius (R or r)",
+    "ru": "Радиус (R или r)"
+  },
+  "lab_lbl_height": {
+    "hy": "Բարձրություն (h)",
+    "en": "Height (h)",
+    "ru": "Высота (h)"
+  },
+  "btn_calc_vol": {
+    "hy": "Հաշվել Ծավալը",
+    "en": "Calculate volume",
+    "ru": "Вычислить объём"
+  },
+  "lab_motion_title": {
+    "hy": "Շարժման և Կինեմատիկայի Հաշվիչ",
+    "en": "Motion & kinematics",
+    "ru": "Движение и кинематика"
+  },
+  "lab_lbl_t1": {
+    "hy": "Սկզբնական ժամանակ՝ t₁ (վրկ)",
+    "en": "Initial time: t₁ (s)",
+    "ru": "Начальное время: t₁ (с)"
+  },
+  "lab_lbl_t2": {
+    "hy": "Վերջնական ժամանակ՝ t₂ (վրկ)",
+    "en": "Final time: t₂ (s)",
+    "ru": "Конечное время: t₂ (с)"
+  },
+  "lab_lbl_s0": {
+    "hy": "Սկզբնական դիրք՝ s(t₁) (մետր)",
+    "en": "Initial position: s(t₁) (m)",
+    "ru": "Начальное положение: s(t₁) (м)"
+  },
+  "lab_lbl_v0": {
+    "hy": "Սկզբնական արագություն՝ v(t₁) (մ/վ)",
+    "en": "Initial velocity: v(t₁) (m/s)",
+    "ru": "Начальная скорость: v(t₁) (м/с)"
+  },
+  "btn_calc_motion": {
+    "hy": "Հաշվել շարժման պարամետրերը",
+    "en": "Calculate motion",
+    "ru": "Рассчитать движение"
+  },
+  "lab_text_13": {
+    "hy": "-- Ընտրել օրինակ --",
+    "en": "Choose an example",
+    "ru": "Выберите пример"
+  },
+  "lab_text_20": {
+    "hy": "Ճշգրիտ անալիտիկ / Բարձր ճշգրտություն",
+    "en": "Numerical integration (Simpson)",
+    "ru": "Численное интегрирование (Симпсон)"
+  },
+  "lab_text_21": {
+    "hy": "Սիմպսոնի կանոն (Simpson's Rule)",
+    "en": "Simpson’s rule",
+    "ru": "Правило Симпсона"
+  },
+  "lab_text_22": {
+    "hy": "Սեղանների կանոն (Trapezoidal Rule)",
+    "en": "Trapezoidal rule",
+    "ru": "Правило трапеций"
+  },
+  "lab_text_23": {
+    "hy": "Միջնակետերի կանոն (Midpoint Rule)",
+    "en": "Midpoint rule",
+    "ru": "Правило средних прямоугольников"
+  },
+  "lab_text_24": {
+    "hy": "Մոնտե Կառլոյի ընտրանքի միջին",
+    "en": "Monte Carlo sample mean",
+    "ru": "Среднее выборки Монте-Карло"
+  },
+  "lab_text_56": {
+    "hy": "Արագության ֆունկցիա՝ v(t) (մ/վ)",
+    "en": "Velocity: v(t) (m/s)",
+    "ru": "Скорость: v(t) (м/с)"
+  },
+  "hero_title": {
+    "hy": "<span class=\"hero-title-main\">Մոնտե-Կառլոյի մեթոդը․</span><span class=\"hero-title-detail\">Ինտեգրալների հաշվումը և հավանականության սիմուլյացիաները։</span>",
+    "en": "<span class=\"hero-title-main\">The Monte Carlo method.</span><span class=\"hero-title-detail\">Computing integrals & simulating probability.</span>",
+    "ru": "<span class=\"hero-title-main\">Метод Монте-Карло.</span><span class=\"hero-title-detail\">Вычисление интегралов и вероятностные симуляции.</span>"
+  },
+  "hero_subtitle": {
+    "hy": "ՄԱԹԵՄԱՏԻԿԱ՝ ՓՈՐՁԻ ՄԻՋՈՑՈՎ",
+    "en": "MATHEMATICS THROUGH EXPERIMENT",
+    "ru": "МАТЕМАТИКА ЧЕРЕЗ ЭКСПЕРИМЕНТ"
+  },
+  "hero_desc": {
+    "hy": "Պատահական կետերից՝ դեպի հաշվարկված օրինաչափություններ։ Ուսումնասիրեք ինտեգրալը, հաշվեք մակերեսն ու ծավալը և փորձարկեք հավանականությունը։",
+    "en": "From random points to mathematical patterns. Explore integrals, calculate areas and volumes, and put probability to the test.",
+    "ru": "От случайных точек к математическим закономерностям. Изучайте интегралы, вычисляйте площади и объёмы, проверяйте вероятности на практике."
+  },
+  "btn_start": {
+    "hy": "Ուսումնասիրել տեսությունը",
+    "en": "Explore the theory",
+    "ru": "Изучить теорию"
+  },
+  "btn_try_sims": {
+    "hy": "Սկսել փորձը",
+    "en": "Run an experiment",
+    "ru": "Начать эксперимент"
+  },
+  "hero_plot_label": {
+    "hy": "Պատահականություն → գնահատական",
+    "en": "Randomness → estimate",
+    "ru": "Случайность → оценка"
+  },
+  "hero_plot_caption": {
+    "hy": "Կորի տակ ընկած կետերի բաժնով մոտարկում ենք ինտեգրալը։",
+    "en": "The fraction of points under the curve estimates the integral.",
+    "ru": "Доля точек под кривой позволяет оценить интеграл."
+  },
+  "hero_plot_tag": {
+    "hy": "ՄՈՆՏԵ ԿԱՌԼՈՅԻ ԻՆՏԵԳՐՈՒՄ",
+    "en": "MONTE CARLO INTEGRATION",
+    "ru": "ИНТЕГРИРОВАНИЕ МОНТЕ-КАРЛО"
+  },
+  "hero_plot_note": {
+    "hy": "Սխեմատիկ պատկեր · ոչ ընթացիկ հաշվարկ",
+    "en": "Illustration · not a live estimate",
+    "ru": "Иллюстрация · не текущий расчёт"
+  },
+  "home_path_title": {
+    "hy": "Հասկացեք։ Հաշվեք։ Փորձարկեք։",
+    "en": "Understand. Calculate. Experiment.",
+    "ru": "Поймите. Вычислите. Проверьте."
+  },
+  "home_path_desc": {
+    "hy": "Մի գաղափար՝ տեսությունից մինչև ձեր սեփական փորձը։",
+    "en": "One idea, from the theory to your own experiment.",
+    "ru": "Одна идея — от теории до собственного эксперимента."
+  },
+  "card_theory_title": {
+    "hy": "Երկու ուղղություն, մեկ հիմք",
+    "en": "Two paths, one foundation",
+    "ru": "Два направления, одна основа"
+  },
+  "card_theory_desc": {
+    "hy": "Հավանականություն և ինտեգրալ․ սահմանումներից մինչև Մոնտե Կառլոյի մեթոդը։",
+    "en": "Probability and calculus, from definitions to the Monte Carlo method.",
+    "ru": "Вероятность и интегралы: от определений до метода Монте-Карло."
+  },
+  "card_practice_title": {
+    "hy": "Խնդիրներ՝ քայլ առ քայլ",
+    "en": "Practice, step by step",
+    "ru": "Практика шаг за шагом"
+  },
+  "card_practice_desc": {
+    "hy": "Լուծեք երկու ուղղությունների խնդիրները՝ հուշումներով և բացատրված լուծումներով։",
+    "en": "Solve problems in both tracks with hints and worked solutions.",
+    "ru": "Решайте задачи обоих направлений с подсказками и решениями."
+  },
+  "card_lab_title": {
+    "hy": "Ձեր հաշվարկային գործիքները",
+    "en": "Your calculation tools",
+    "ru": "Ваши инструменты вычислений"
+  },
+  "card_lab_desc": {
+    "hy": "Ածանցյալ, ինտեգրալ, մակերես, ծավալ և շարժում՝ տեսանելի գրաֆիկներով։",
+    "en": "Derivatives, integrals, areas, volumes and motion, with visual graphs.",
+    "ru": "Производные, интегралы, площади, объёмы и движение с графиками."
+  },
+  "card_sims_title": {
+    "hy": "Պատահականությունը՝ գործողության մեջ",
+    "en": "Randomness in action",
+    "ru": "Случайность в действии"
+  },
+  "card_sims_desc": {
+    "hy": "Ինտեգրում պատահական ընտրանքով, մետաղադրամ, զառ և հավանականային փորձեր։",
+    "en": "Random-sample integration, coin tosses, dice and probability experiments.",
+    "ru": "Интегрирование случайной выборкой, монеты, кости и вероятностные эксперименты."
+  },
+  "lab_desc": {
+    "hy": "Ընտրեք գործիքը և անցեք հաշվարկի․ ինտեգրալներ, մակերեսներ, ծավալներ, շարժում և հավանականություն՝ բացատրված արդյունքներով։",
+    "en": "Choose a tool to calculate integrals, areas, volumes, motion and probabilities, with explained results.",
+    "ru": "Выберите инструмент: интегралы, площади, объёмы, движение и вероятности с пояснениями к результатам."
+  },
+  "lab_intro": {
+    "hy": "Ընտրեք գործիքը և անցեք հաշվարկի․ ինտեգրալներ, մակերեսներ, ծավալներ, շարժում և հավանականություն՝ բացատրված արդյունքներով։",
+    "en": "Choose a tool to calculate integrals, areas, volumes, motion and probabilities, with explained results.",
+    "ru": "Выберите инструмент: интегралы, площади, объёмы, движение и вероятности с пояснениями к результатам."
+  },
+  "footer_copyright": {
+    "hy": "© 2026 «Մոնտե-Կառլոյի մեթոդը» նախագիծ | Բոլոր իրավունքները պաշտպանված են",
+    "en": "© 2026 The Monte Carlo Method project | All rights reserved",
+    "ru": "© 2026 Проект «Метод Монте-Карло» | Все права защищены"
+  }
+}

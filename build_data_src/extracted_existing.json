@@ -1,0 +1,862 @@
+{
+  "ui": {
+    "nav_theory": {
+      "hy": "Տեսություն",
+      "en": "Theory",
+      "ru": "Теория"
+    },
+    "nav_home": {
+      "hy": "Գլխավոր",
+      "en": "Home",
+      "ru": "Главная"
+    },
+    "nav_practice": {
+      "hy": "Խնդիրներ",
+      "en": "Practice",
+      "ru": "Задачи"
+    },
+    "nav_lab": {
+      "hy": "Լաբորատորիա",
+      "en": "Lab",
+      "ru": "Лаборатория"
+    },
+    "nav_simulations": {
+      "hy": "Սիմուլյացիաներ",
+      "en": "Simulations",
+      "ru": "Симуляторы"
+    },
+    "btn_reset_progress": {
+      "hy": "Ջնջել առաջադիմությունը",
+      "en": "Reset Progress",
+      "ru": "Сбросить прогресс"
+    },
+    "btn_clear_session": {
+      "hy": "Մաքրել սեսիան",
+      "en": "Clear Session",
+      "ru": "Очистить сессию"
+    },
+    "btn_clear": {
+      "hy": "Մաքրել",
+      "en": "Clear",
+      "ru": "Очистить"
+    },
+    "sidebar_title": {
+      "hy": "Բովանդակություն",
+      "en": "Contents",
+      "ru": "Содержание"
+    },
+    "filter_all": {
+      "hy": "Բոլորը",
+      "en": "All",
+      "ru": "Все"
+    },
+    "filter_beginner": {
+      "hy": "Սկսնակ",
+      "en": "Beginner",
+      "ru": "Начинающий"
+    },
+    "filter_intermediate": {
+      "hy": "Միջին",
+      "en": "Intermediate",
+      "ru": "Средний"
+    },
+    "filter_advanced": {
+      "hy": "Բարդ",
+      "en": "Advanced",
+      "ru": "Продвинутый"
+    },
+    "filter_olympic": {
+      "hy": "Օլիմպիական",
+      "en": "Olympic",
+      "ru": "Олимпийский"
+    },
+    "filter_solved": {
+      "hy": "Լուծվածներ",
+      "en": "Solved",
+      "ru": "Решенные"
+    },
+    "btn_check": {
+      "hy": "Ստուգել",
+      "en": "Check",
+      "ru": "Проверить"
+    },
+    "btn_hint": {
+      "hy": "Հուշում",
+      "en": "Hint",
+      "ru": "Подсказка"
+    },
+    "btn_goto_theory": {
+      "hy": "Կարդալ տեսությունը",
+      "en": "Go to Theory",
+      "ru": "Перейти к теории"
+    },
+    "btn_continue": {
+      "hy": "Շարունակել",
+      "en": "Continue",
+      "ru": "Продолжить"
+    },
+    "modal_correct": {
+      "hy": "Ճիշտ է!",
+      "en": "Correct!",
+      "ru": "Правильно!"
+    },
+    "modal_correct_msg": {
+      "hy": "Հրաշալի աշխատանք: Դուք ճիշտ լուծեցիք խնդիրը:",
+      "en": "Great job! You solved it correctly.",
+      "ru": "Отлично! Вы решили правильно."
+    },
+    "modal_incorrect": {
+      "hy": "Սխալ է",
+      "en": "Incorrect",
+      "ru": "Неверно"
+    },
+    "modal_incorrect_msg": {
+      "hy": "Ցավոք, պատասխանը սխալ է: Փորձեք ևս մեկ ամգամ:",
+      "en": "Unfortunately, that's incorrect. Try again.",
+      "ru": "К сожалению, неверно. Попробуйте ещё."
+    },
+    "modal_smart_feedback": {
+      "hy": "Ցավոք, սխալ է։ Կարծես թե Դուք դժվարանում եք <strong>«{topic}»</strong> թեմայում։ {hint}",
+      "en": "Unfortunately, that's incorrect. It looks like you're struggling with <strong>\"{topic}\"</strong>. {hint}",
+      "ru": "К сожалению, неверно. Похоже, вы затрудняетесь в теме <strong>«{topic}»</strong>. {hint}"
+    },
+    "modal_hint_label": {
+      "hy": "Հուշում՝",
+      "en": "Hint:",
+      "ru": "Подсказка:"
+    },
+    "hero_title": {
+      "hy": "Ինտերակտիվ հարթակ",
+      "en": "Interactive platform",
+      "ru": "Интерактивная платформа"
+    },
+    "hero_subtitle": {
+      "hy": "ՀԱՎԱՆԱԿԱՆՈՒԹՅՈՒՆՆԵՐԻ ՏԵՍՈՒԹՅՈՒՆ",
+      "en": "INTERACTIVE LEARNING PLATFORM",
+      "ru": "ИНТЕРАКТИВНАЯ УЧЕБНАЯ ПЛАТФОРМА"
+    },
+    "hero_desc": {
+      "hy": "Բարդ մաթեմատիկական հասկացությունները դառնում են հասանելի, տեսանելի և կիրառելի: Տեսնել, փորձարկել, հասկանալ:",
+      "en": "Complex mathematical concepts become accessible, visual, and applicable. See, experiment, understand.",
+      "ru": "Сложные математические концепции становятся доступными и наглядными. Смотрите, пробуйте, понимайте."
+    },
+    "btn_start": {
+      "hy": "Սկսել ուսուցումը",
+      "en": "Start Learning",
+      "ru": "Начать обучение"
+    },
+    "btn_try_sims": {
+      "hy": "Փորձարկել սիմուլյացիաները",
+      "en": "Try Simulations",
+      "ru": "Попробовать симуляции"
+    },
+    "btn_ai_guide": {
+      "hy": "Լսել AI Ուղեցույցին",
+      "en": "Listen to AI Guide",
+      "ru": "Слушать AI Гида"
+    },
+    "card_theory_title": {
+      "hy": "Տեսական Շտեմարան",
+      "en": "Theory Encyclopedia",
+      "ru": "Теоретическая База"
+    },
+    "card_theory_desc": {
+      "hy": "9 գլուխ՝ պատմությունից և պարզ սահմանումներից մինչև բարդ թեորեմներ և կիրառություններ։",
+      "en": "9 chapters from history and basic definitions to complex theorems and real-world apps.",
+      "ru": "9 глав: от истории и простых определений до сложных теорем и применений."
+    },
+    "card_practice_title": {
+      "hy": "Խնդրագիրք",
+      "en": "Practice Arena",
+      "ru": "Задачник"
+    },
+    "card_practice_desc": {
+      "hy": "Անսահմանափակ ինտերակտիվ խնդիրներ AI գեներացիայով:",
+      "en": "Unlimited interactive problems with AI generation.",
+      "ru": "Неограниченные интерактивные задачи с AI генерацией."
+    },
+    "card_lab_title": {
+      "hy": "Հաշվիչ և Գրաֆիկներ",
+      "en": "Calculator & Graphs",
+      "ru": "Калькулятор и Графики"
+    },
+    "card_lab_desc": {
+      "hy": "Մասնագիտացված հաշվիչ և հավանականային բաշխումների վիզուալիզացիա:",
+      "en": "Specialized calculator and visualization of probability distributions.",
+      "ru": "Специализированный калькулятор и визуализация распределений."
+    },
+    "card_sims_title": {
+      "hy": "Սիմուլյացիաներ",
+      "en": "Monte Carlo Lab",
+      "ru": "Симуляции"
+    },
+    "card_sims_desc": {
+      "hy": "Վիրտուալ փորձեր և պատահականության օրինաչափությունների դիտարկում:",
+      "en": "Virtual experiments and observation of patterns in randomness.",
+      "ru": "Виртуальные эксперименты и наблюдение за закономерностями."
+    },
+    "section_theory": {
+      "hy": "Տեսական Շտեմարան",
+      "en": "Theory Encyclopedia",
+      "ru": "Теоретическая База"
+    },
+    "section_practice": {
+      "hy": "Խնդրագիրք և Ուսուցանող Համակարգ",
+      "en": "The Practice Arena",
+      "ru": "Учебно-практический Раздел"
+    },
+    "section_lab": {
+      "hy": "Հաշվիչ և Գրաֆիկական Վերլուծություն",
+      "en": "Calculator & Visualizer",
+      "ru": "Расчеты и Графики"
+    },
+    "section_sims": {
+      "hy": "Ինտերակտիվ Սիմուլյացիաներ",
+      "en": "Interactive Simulations",
+      "ru": "Интерактивные Симуляции"
+    },
+    "sim_galton_desc": {
+      "hy": "<strong>Գալտոնի տախտակ:</strong> Ցուցադրում է, թե ինչպես է բազմաթիվ պատահական շեղումների արդյունքում ձևավորվում նորմալ բաշխումը:",
+      "en": "<strong>Galton Board:</strong> Demonstrates how a normal distribution emerges from numerous random deviations.",
+      "ru": "<strong>Доска Гальтона:</strong> Демонстрирует формирование нормального распределения из множества случайных отклонений."
+    },
+    "sim_galton_desc_short": {
+      "hy": "Ցուցադրում է Կենտրոնական Սահմանային Թեորեմը",
+      "en": "Demonstrating Central Limit Theorem via Normal Distribution",
+      "ru": "Демонстрация Центральной Предельной Теоремы"
+    },
+    "sim_monty_desc": {
+      "hy": "Հավանականությունների խնդիր հեռուստախաղի հիման վրա",
+      "en": "A probability puzzle based on a game show",
+      "ru": "Вероятностная головоломка на основе телешоу"
+    },
+    "sim_monty_desc_short": {
+      "hy": "Հավանականային գլուխկոտրուկ հեռուստախաղի հիման վրա",
+      "en": "A probability puzzle based on a game show",
+      "ru": "Вероятностная головоломка по мотивам телешоу"
+    },
+    "sim_dice_desc": {
+      "hy": "<strong>Զառի նետում:</strong> Ուսումնասիրեք մեծ թվերի օրենքը և տեսեք, թե ինչպես է միջինը ձգտում 3.5-ի:",
+      "en": "<strong>Dice Throw:</strong> Explore the Law of Large Numbers and see how the mean converges to 3.5.",
+      "ru": "<strong>Бросок кубика:</strong> Изучите закон больших чисел и посмотрите, как среднее стремится к 3.5."
+    },
+    "sim_dice_desc_short": {
+      "hy": "Մեծ թվերի օրենքի ցուցադրում",
+      "en": "Demonstrating the Law of Large Numbers",
+      "ru": "Демонстрация закона больших чисел"
+    },
+    "sim_buffon_desc": {
+      "hy": "π-ի մոտարկումը ասեղներ նետելով",
+      "en": "Estimating Pi (π) by dropping needles",
+      "ru": "Оценка числа Пи (π) бросанием игл"
+    },
+    "ai_badge_text": {
+      "hy": "Սխալների վերլուծության համակարգ՝ կապ տեսության հետ",
+      "en": "Smart feedback system — links wrong answers to theory",
+      "ru": "Система анализа ошибок — связь с теорией"
+    },
+    "section_ai_gen": {
+      "hy": "AI Խորացված Ուսուցիչ",
+      "en": "AI Advanced Tutor",
+      "ru": "AI Продвинутый Тьютор"
+    },
+    "btn_generate_problem": {
+      "hy": "Ստեղծել նոր խնդիր",
+      "en": "Generate with AI",
+      "ru": "Создать через AI"
+    },
+    "ai_workspace_title": {
+      "hy": "AI աշխատանքային տիրույթ",
+      "en": "AI Workspace",
+      "ru": "Рабочая область AI"
+    },
+    "ai_placeholder_solution": {
+      "hy": "Գրեք Ձեր լուծումը այստեղ...",
+      "en": "Write your solution here...",
+      "ru": "Напишите ваше решение здесь..."
+    },
+    "ai_upload_label": {
+      "hy": "Վերբեռնել ձեռագիր լուծումը",
+      "en": "Upload handwritten solution",
+      "ru": "Загрузить рукописное решение"
+    },
+    "btn_ask_ai": {
+      "hy": "Ստուգել",
+      "en": "Check Answer",
+      "ru": "Проверить"
+    },
+    "ai_score_label": {
+      "hy": "Միավոր՝",
+      "en": "Score:",
+      "ru": "Баллы:"
+    },
+    "calc_placeholder": {
+      "hy": "Մուտքագրեք արտահայտությունը...",
+      "en": "Enter expression...",
+      "ru": "Введите выражение..."
+    },
+    "calc_result_label": {
+      "hy": "Արդյունք՝",
+      "en": "Result:",
+      "ru": "Результат:"
+    },
+    "btn_calculate": {
+      "hy": "Հաշվել",
+      "en": "Calculate",
+      "ru": "Посчитать"
+    },
+    "dist_normal": {
+      "hy": "Նորմալ բաշխում",
+      "en": "Normal Distribution",
+      "ru": "Нормальное распределение"
+    },
+    "dist_venn": {
+      "hy": "Վեննի դիագրամ",
+      "en": "Venn Diagram",
+      "ru": "Диаграмма Венна"
+    },
+    "dist_tree": {
+      "hy": "Հավանականությունների ծառ",
+      "en": "Probability Tree",
+      "ru": "Дерево вероятностей"
+    },
+    "btn_draw": {
+      "hy": "Գծել",
+      "en": "Draw",
+      "ru": "Нарисовать"
+    },
+    "intro_sims": {
+      "hy": "Դիտեք, թե ինչպես են աշխատում հավանականությունները ինտերակտիվ սիմուլյացիաների միջոցով",
+      "en": "Watch probability come alive through interactive simulations!",
+      "ru": "Наблюдайте за теорией вероятностей в действии через симуляции"
+    },
+    "intro_sims_extended": {
+      "hy": "Այստեղ վիզուալ կերպով ցուցադրվում է հավանականությունների տեսության օրենքների կիրառությունը գործնականում՝ Մոնտե Կառլոյի մեթոդով։ Այս բաժնի նպատակն է ինտերակտիվ սիմուլյացիաների և հազարավոր անգամ կրկնվող պատահական երևույթների վերլուծության միջոցով ձեզ սովորեցնել բարդ մաթեմատիկական հասկացություններ՝ ինչպիսիք են նորմալ բաշխումը, անորոշության պայմաններում ճշգրիտ ընտրության կայացումը և երկրաչափական հավանականությունը։",
+      "en": "Here, the laws of probability theory are visually demonstrated in practice using the Monte Carlo method. The purpose of this section is to teach you complex mathematical concepts—such as the normal distribution, decision-making under uncertainty, and geometric probability—through interactive simulations and the analysis of thousands of random events.",
+      "ru": "Здесь визуально демонстрируется применение законов теории вероятностей на практике с помощью метода Монте-Карло. Цель этого раздела — через интерактивные симуляции и анализ тысяч случайных событий помочь вам освоить такие сложные математические концепции, как нормальное распределение, парадоксы выбора и геометрическая вероятность."
+    },
+    "galton_rows_label": {
+      "hy": "Շարքերի քանակը",
+      "en": "Number of Rows",
+      "ru": "Количество рядов"
+    },
+    "sim_dice_count_lbl": {
+      "hy": "Զառերի քանակը",
+      "en": "Number of Dice",
+      "ru": "Количество кубиков"
+    },
+    "galton_speed_label": {
+      "hy": "Արագություն",
+      "en": "Simulation Speed",
+      "ru": "Скорость симуляции"
+    },
+    "galton_bounce_label": {
+      "hy": "Առաձգականություն",
+      "en": "Elasticity (Bounce)",
+      "ru": "Упругость"
+    },
+    "btn_drop_1": {
+      "hy": "Նետել 1 գնդիկ",
+      "en": "Drop 1 Ball",
+      "ru": "Бросить 1 шарик"
+    },
+    "btn_drop_50": {
+      "hy": "Նետել 50",
+      "en": "Drop 50",
+      "ru": "Бросить 50"
+    },
+    "btn_drop_500": {
+      "hy": "Նետել 500",
+      "en": "Drop 500",
+      "ru": "Бросить 500"
+    },
+    "btn_reset": {
+      "hy": "Վերակայել",
+      "en": "Reset",
+      "ru": "Сброс"
+    },
+    "stat_balls_dropped": {
+      "hy": "Նետված գնդիկներ՝",
+      "en": "Balls dropped:",
+      "ru": "Брошено шаров:"
+    },
+    "stat_settled": {
+      "hy": "Տեղավորված՝",
+      "en": "Settled:",
+      "ru": "Осело:"
+    },
+    "monty_choose_door": {
+      "hy": "Ընտրեք դուռը",
+      "en": "Choose a door!",
+      "ru": "Выберите дверь!"
+    },
+    "btn_switch": {
+      "hy": "Փոխել",
+      "en": "Switch!",
+      "ru": "Сменить!"
+    },
+    "btn_stay": {
+      "hy": "Մնալ",
+      "en": "Stay",
+      "ru": "Оставить"
+    },
+    "btn_sim_100": {
+      "hy": "Սիմուլյացիա (100)",
+      "en": "Simulate 100",
+      "ru": "Симулировать 100"
+    },
+    "btn_sim_1000": {
+      "hy": "Սիմուլյացիա (1000)",
+      "en": "Simulate 1000",
+      "ru": "Симулировать 1000"
+    },
+    "stat_total_games": {
+      "hy": "Խաղերի քանակը՝",
+      "en": "Total games:",
+      "ru": "Всего игр:"
+    },
+    "stat_switch_wins": {
+      "hy": "Հաղթանակ (փոխելով)՝",
+      "en": "Switch wins:",
+      "ru": "Побед при смене:"
+    },
+    "stat_stay_wins": {
+      "hy": "Հաղթանակ (մնալով)՝",
+      "en": "Stay wins:",
+      "ru": "Побед без смены:"
+    },
+    "btn_roll_1": {
+      "hy": "Նետել զառը",
+      "en": "Roll Dice",
+      "ru": "Бросить кубик"
+    },
+    "btn_roll_10": {
+      "hy": "Նետել 10 անգամ",
+      "en": "Roll 10 Times",
+      "ru": "Бросить 10 раз"
+    },
+    "btn_roll_100": {
+      "hy": "Նետել 100 անգամ",
+      "en": "Roll 100 Times",
+      "ru": "Бросить 100 раз"
+    },
+    "stat_total_rolls": {
+      "hy": "Նետումների քանակը՝",
+      "en": "Total rolls:",
+      "ru": "Всего бросков:"
+    },
+    "sim_dice_roll_lbl": {
+      "hy": "Նետել զառը",
+      "en": "Roll the Dice",
+      "ru": "Бросить кубик"
+    },
+    "stat_frequency": {
+      "hy": "Հաճախականություն",
+      "en": "Frequency",
+      "ru": "Частота"
+    },
+    "stat_variance": {
+      "hy": "Դիսպերսիա (Var):",
+      "en": "Variance (Var):",
+      "ru": "Дисперсия (Var):"
+    },
+    "sim_dice_btn": {
+      "hy": "Զառ",
+      "en": "Dice",
+      "ru": "Кубик"
+    },
+    "sim_dice_title": {
+      "hy": "Զառի Սիմուլյացիա",
+      "en": "Dice Simulation",
+      "ru": "Симуляция Кубика"
+    },
+    "buffon_length_label": {
+      "hy": "Ասեղի երկարությունը (l)",
+      "en": "Needle Length (l)",
+      "ru": "Длина иглы (l)"
+    },
+    "buffon_spacing_label": {
+      "hy": "Գծերի հեռավորությունը (d)",
+      "en": "Line Spacing (d)",
+      "ru": "Расстояние (d)"
+    },
+    "btn_drop_10": {
+      "hy": "Նետել 10",
+      "en": "Drop 10",
+      "ru": "Бросить 10"
+    },
+    "btn_drop_100": {
+      "hy": "Նետել 100",
+      "en": "Drop 100",
+      "ru": "Бросить 100"
+    },
+    "btn_drop_1000": {
+      "hy": "Նետել 1000",
+      "en": "Drop 1000",
+      "ru": "Бросить 1000"
+    },
+    "btn_drop_10000": {
+      "hy": "Նետել 10,000",
+      "en": "Drop 10,000",
+      "ru": "Бросить 10,000"
+    },
+    "stat_total_needles": {
+      "hy": "Ընդամենը ասեղներ՝",
+      "en": "Total needles:",
+      "ru": "Всего игл:"
+    },
+    "stat_crossing": {
+      "hy": "Հատումներ՝",
+      "en": "Crossing:",
+      "ru": "Пересечений:"
+    },
+    "stat_pi_estimate": {
+      "hy": "π-ի մոտարկումը՝",
+      "en": "π estimate:",
+      "ru": "Приближение π:"
+    },
+    "stat_actual_pi": {
+      "hy": "Իրական π՝",
+      "en": "Actual π:",
+      "ru": "Реальное π:"
+    },
+    "stat_mean": {
+      "hy": "Միջին (μ):",
+      "en": "Mean (μ):",
+      "ru": "Среднее (μ):"
+    },
+    "stat_stddev": {
+      "hy": "Շեղում (σ):",
+      "en": "StdDev (σ):",
+      "ru": "Отклон. (σ):"
+    },
+    "stat_dropped": {
+      "hy": "Նետված:",
+      "en": "Dropped:",
+      "ru": "Сброшено:"
+    },
+    "stat_finished": {
+      "hy": "Ավարտված:",
+      "en": "Finished:",
+      "ru": "Завершено:"
+    },
+    "stat_approx_results": {
+      "hy": "Մոտարկման Արդյունքներ",
+      "en": "Approximation Results",
+      "ru": "Результаты Приближения"
+    },
+    "stat_game_stats": {
+      "hy": "Խաղի Վիճակագրություն",
+      "en": "Game Stats",
+      "ru": "Статистика Игры"
+    },
+    "stat_realtime_analysis": {
+      "hy": "Իրական Ժամանակի Վերլուծություն",
+      "en": "Real-time Analysis",
+      "ru": "Анализ в Реальном Времени"
+    },
+    "stat_solved": {
+      "hy": "Լուծված",
+      "en": "Solved",
+      "ru": "Решено"
+    },
+    "stat_attempts": {
+      "hy": "Փորձեր",
+      "en": "Attempts",
+      "ru": "Попытки"
+    },
+    "stat_total": {
+      "hy": "Ընդամենը",
+      "en": "Total",
+      "ru": "Всего"
+    },
+    "footer_copyright": {
+      "hy": "© 2026 «Հավանականությունների տեսություն» նախագիծ | Բոլոր իրավունքները պաշտպանված են",
+      "en": "© 2026 \"Probability Theory\" Project | All rights reserved",
+      "ru": "© 2026 Проект «Теория вероятностей» | Все права защищены"
+    },
+    "footer_credits": {
+      "hy": "Ստեղծվել է Կարեն Պողոսյանի կողմից | Նախագծավար ուսուցիչ՝ Մանուշակ Սարդարյան",
+      "en": "Created by Karen Poghosyan | Project Advisor Teacher: Manushak Sardaryan",
+      "ru": "Создано Карен Погосяном | Научный руководитель: Манушак Сардарян"
+    },
+    "calc_group_basic": {
+      "hy": "Հիմնական",
+      "en": "Basic",
+      "ru": "Основные"
+    },
+    "calc_group_adv": {
+      "hy": "Բարդ",
+      "en": "Advanced",
+      "ru": "Продвинутые"
+    },
+    "calc_group_greek": {
+      "hy": "Հունական",
+      "en": "Greek",
+      "ru": "Греческие"
+    },
+    "calc_mode_std": {
+      "hy": "Ստանդարտ",
+      "en": "Standard",
+      "ru": "Стандарт"
+    },
+    "calc_mode_formula": {
+      "hy": "Քայլերով լուծում",
+      "en": "Step-by-Step",
+      "ru": "Пошагово"
+    },
+    "card_tab_calc": {
+      "hy": "Հաշվիչ",
+      "en": "Calculator",
+      "ru": "Калькулятор"
+    },
+    "card_visualizer": {
+      "hy": "Վիզուալիզատոր",
+      "en": "Data Visualizer",
+      "ru": "Визуализатор"
+    },
+    "btn_render": {
+      "hy": "Գծել",
+      "en": "Render",
+      "ru": "Отрисовать"
+    },
+    "btn_step_solver": {
+      "hy": "Քայլերով լուծում",
+      "en": "Step-by-Step Solver",
+      "ru": "Пошаговое решение"
+    },
+    "analysis_title": {
+      "hy": "Վերլուծություն",
+      "en": "Analysis",
+      "ru": "Анализ"
+    },
+    "sim_galton_btn": {
+      "hy": "Գալտոնի տախտակ",
+      "en": "Galton Board",
+      "ru": "Доска Гальтона"
+    },
+    "sim_galton_title": {
+      "hy": "Գալտոնի Տախտակ",
+      "en": "Galton Board",
+      "ru": "Доска Гальтона"
+    },
+    "sim_galton_rows_lbl": {
+      "hy": "Տողեր (Զամբյուղներ)",
+      "en": "Rows (Bin Count)",
+      "ru": "Ряды (Корзины)"
+    },
+    "sim_monty_title": {
+      "hy": "Մոնտի Հոլլի Խնդիր",
+      "en": "Monty Hall Problem",
+      "ru": "Парадокс Монти Холла"
+    },
+    "sim_monty_autosim": {
+      "hy": "Ավտոմատ Սիմուլյացիա",
+      "en": "Auto-Simulate",
+      "ru": "Авто-Симуляция"
+    },
+    "sim_buffon_title": {
+      "hy": "Բյուֆոնի Ասեղ",
+      "en": "Buffon's Needle",
+      "ru": "Игла Бюффона"
+    },
+    "sim_buffon_drop_lbl": {
+      "hy": "Նետել Ասեղներ",
+      "en": "Drop Needles",
+      "ru": "Бросать Иглы"
+    },
+    "sim_monty_btn": {
+      "hy": "Մոնտի Հոլլ",
+      "en": "Monty Hall",
+      "ru": "Монти Холл"
+    },
+    "sim_buffon_btn": {
+      "hy": "Բյուֆոնի ասեղ",
+      "en": "Buffon's Needle",
+      "ru": "Игла Бюффона"
+    },
+    "sim_coin_btn": {
+      "hy": "Մետաղադրամ",
+      "en": "Coin Flip",
+      "ru": "Монетка"
+    },
+    "sim_coin_title": {
+      "hy": "Մետաղադրամի Նետում",
+      "en": "Coin Flip",
+      "ru": "Бросок Монеты"
+    },
+    "sim_coin_desc": {
+      "hy": "Ուսումնասիրեք մեծ թվերի օրենքը մետաղադրամի նետման միջոցով (Զինանշան կամ Թիվ):",
+      "en": "Explore the Law of Large Numbers through coin flips (Heads or Tails).",
+      "ru": "Изучайте закон больших чисел через броски монеты (Орел или Решка)."
+    },
+    "stat_heads": {
+      "hy": "Զինանշան",
+      "en": "Heads",
+      "ru": "Орел"
+    },
+    "stat_tails": {
+      "hy": "Թիվ",
+      "en": "Tails",
+      "ru": "Решка"
+    },
+    "btn_flip_1": {
+      "hy": "Նետել 1",
+      "en": "Flip 1",
+      "ru": "Бросить 1"
+    },
+    "btn_flip_10": {
+      "hy": "Նետել 10",
+      "en": "Flip 10",
+      "ru": "Бросить 10"
+    },
+    "btn_flip_100": {
+      "hy": "Նետել 100",
+      "en": "Flip 100",
+      "ru": "Бросить 100"
+    },
+    "btn_flip_1000": {
+      "hy": "Նետել 1000",
+      "en": "Flip 1k",
+      "ru": "Бросить 1k"
+    },
+    "sim_coin_drop_lbl": {
+      "hy": "Նետել Մետաղադրամներ",
+      "en": "Drop Coins",
+      "ru": "Бросить Монеты"
+    },
+    "topic_basic": {
+      "hy": "Հիմնական հավանականություն",
+      "en": "Basic Probability",
+      "ru": "Основы вероятности"
+    },
+    "topic_combinatorics": {
+      "hy": "Կոմբինատորիկա",
+      "en": "Combinatorics",
+      "ru": "Комбинаторика"
+    },
+    "topic_conditional": {
+      "hy": "Պայմանական հավանականություն",
+      "en": "Conditional Probability",
+      "ru": "Условная вероятность"
+    },
+    "topic_bayes": {
+      "hy": "Բայեսի թեորեմ",
+      "en": "Bayes' Theorem",
+      "ru": "Теорема Байеса"
+    },
+    "topic_distributions": {
+      "hy": "Բաշխումներ",
+      "en": "Distributions",
+      "ru": "Распределения"
+    },
+    "topic_rv": {
+      "hy": "Պատահական մեծություններ",
+      "en": "Random Variables",
+      "ru": "Случайные величины"
+    },
+    "calc_formula_sel": {
+      "hy": "-- Ընտրեք բանաձևը --",
+      "en": "-- Select Formula --",
+      "ru": "-- Выберите формулу --"
+    },
+    "formula_bernoulli": {
+      "hy": "Բեռնուլիի բանաձև",
+      "en": "Bernoulli Formula",
+      "ru": "Формула Бернулли"
+    },
+    "formula_bayes": {
+      "hy": "Բայեսի թեորեմ",
+      "en": "Bayes' Theorem",
+      "ru": "Теорема Байеса"
+    },
+    "formula_combinations": {
+      "hy": "Զուգորդություններ (C_n^k)",
+      "en": "Combinations (C_n^k)",
+      "ru": "Сочетания (C_n^k)"
+    },
+    "formula_permutations": {
+      "hy": "Տեղափոխություններ (P_n)",
+      "en": "Permutations (P_n)",
+      "ru": "Перестановки (P_n)"
+    },
+    "formula_normal": {
+      "hy": "Նորմալ բաշխում (Z-աղյուսակ)",
+      "en": "Normal Dist (Z-Table)",
+      "ru": "Нормальное распр. (Z-таблица)"
+    },
+    "formula_poisson": {
+      "hy": "Պուասոնի մոտարկում",
+      "en": "Poisson Approx",
+      "ru": "Аппроксимация Пуассона"
+    },
+    "btn_solve": {
+      "hy": "Լուծել",
+      "en": "Solve",
+      "ru": "Решить"
+    },
+    "lbl_trials": {
+      "hy": "Փորձեր (n):",
+      "en": "Trials (n):",
+      "ru": "Испытаний (n):"
+    },
+    "lbl_successes": {
+      "hy": "Հաջողություններ (k):",
+      "en": "Successes (k):",
+      "ru": "Успехов (k):"
+    },
+    "lbl_prob": {
+      "hy": "Հավանականություն (p):",
+      "en": "Prob (p):",
+      "ru": "Вер-ность (p):"
+    },
+    "lbl_lambda": {
+      "hy": "Լյամբդա (λ):",
+      "en": "Lambda (λ):",
+      "ru": "Лямбда (λ):"
+    },
+    "lbl_mean": {
+      "hy": "Միջին (μ):",
+      "en": "Mean (μ):",
+      "ru": "Среднее (μ):"
+    },
+    "lbl_stddev": {
+      "hy": "Շեղում (σ):",
+      "en": "StdDev (σ):",
+      "ru": "Откл. (σ):"
+    },
+    "lbl_value": {
+      "hy": "Արժեք (x):",
+      "en": "Value (x):",
+      "ru": "Значение (x):"
+    }
+  },
+  "problemTemplates": [
+    {
+      "topic": "basic",
+      "difficulty": "beginner",
+      "theoryId": "theory-classical-prob"
+    },
+    {
+      "topic": "combinatorics",
+      "difficulty": "intermediate",
+      "theoryId": "theory-combinations"
+    },
+    {
+      "topic": "distributions",
+      "difficulty": "intermediate",
+      "theoryId": "theory-bernoulli"
+    },
+    {
+      "topic": "basic",
+      "difficulty": "intermediate",
+      "theoryId": "theory-classical-prob"
+    },
+    {
+      "topic": "distributions",
+      "difficulty": "olympic",
+      "theoryId": "theory-geometric-prob"
+    }
+  ],
+  "generateBatchExists": true
+}

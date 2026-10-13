@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ինտերակտիվ հարթակ — ProbSpace</title>
+    <title>Մոնտե-Կառլոյի մեթոդը․ ինտեգրալների հաշվումը և հավանականության սիմուլյացիաները — ProbSpace</title>
     <meta
       name="description"
-      content="Ինտերակտիվ հարթակ — Հավանականությունների տեսության ուսումնասիրման համապարփակ հարթակ:"
+      content="Մոնտե Կառլոյի մեթոդը․ ինտեգրալների հաշվումը, հավանականային սիմուլյացիաները և տվյալների հանրահաշվական պաշտպանությունը:"
     />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Armenian:wght@400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap"
       rel="stylesheet"
     />
 
@@ -26,6 +26,7 @@
     <!-- MathJax -->
     <script>
       window.MathJax = {
+        startup: { typeset: false },
         tex: {
           inlineMath: [
             ["\\(", "\\)"],
@@ -54,6 +55,8 @@
     <link rel="stylesheet" href="css/simulations.css?v=2" />
     <link rel="stylesheet" href="css/lab.css?v=2" />
     <link rel="stylesheet" href="css/background.css?v=2" />
+    <link rel="stylesheet" href="css/refinements.css?v=3" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   </head>
 
   <body>
@@ -114,7 +117,7 @@
         <button
           class="theme-toggle-btn"
           id="theme-toggle"
-          onclick="toggleTheme()"
+          onclick="toggleTheme()" aria-label="Toggle color theme"
           title="Toggle Dark/Light Mode"
         >
           <i class="fas fa-moon"></i>
@@ -128,7 +131,7 @@
           <button class="lang-btn" onclick="setLanguage('ru')">RU</button>
         </div>
 
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <button class="mobile-menu-btn" aria-label="Open navigation" onclick="toggleMobileMenu()">
           <i class="fas fa-bars"></i>
         </button>
       </div>
@@ -199,91 +202,41 @@
       <!-- ─────────────── HOME PAGE ─────────────── -->
       <section id="home" class="page-section active-section">
         <div class="hero-section">
-          <div class="hero-particles">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-          </div>
-
           <div class="hero-content">
-            <h1 class="hero-title">
-              <span class="hero-math-icon"
-                ><i class="fas fa-infinity"></i
-              ></span>
-              <span data-i18n="hero_title">Probability Theory</span>
-            </h1>
-            <p class="hero-subtitle" data-i18n="hero_subtitle">
-              Interactive Learning Platform
-            </p>
-            <p class="hero-desc" data-i18n="hero_desc">
-              Explore the world of probability through comprehensive theory,
-              practice problems, visual calculators, and interactive Monte Carlo
-              simulations.
-            </p>
+            <p class="hero-subtitle" data-i18n="hero_subtitle">ՄԱԹԵՄԱՏԻԿԱ՝ ՓՈՐՁԻ ՄԻՋՈՑՈՎ</p>
+            <h1 class="hero-title" data-i18n="hero_title"><span class="hero-title-main">Մոնտե-Կառլոյի մեթոդը․</span><span class="hero-title-detail">Ինտեգրալների հաշվումը և հավանականության սիմուլյացիաները։</span></h1>
+            <p class="hero-desc" data-i18n="hero_desc"></p>
             <div class="hero-buttons">
-              <button class="glow-btn large" onclick="showPage('theory')">
-                <i class="fas fa-book-open"></i>
-                <span data-i18n="btn_start">Սկսել ուսուցումը</span>
-              </button>
-              <button
-                class="glow-btn secondary large"
-                onclick="showPage('simulations')"
-              >
-                <i class="fas fa-flask"></i>
-                <span data-i18n="btn_try_sims">Փորձարկել սիմուլյացիաները</span>
-              </button>
-              <button
-                class="glow-btn ai-speech-btn large"
-                id="intro-speech-btn"
-                onclick="playAIGuide('intro')"
-              >
-                <i class="fas fa-robot"></i>
-                <span data-i18n="btn_ai_guide">Լսել AI Ուղեցույցին</span>
-              </button>
+              <button class="glow-btn large" onclick="showPage('simulations'); showSimulation('integral', document.querySelector('.sim-tab-btn[onclick*=integral]'))"><span data-i18n="btn_try_sims">Սկսել փորձը</span><span aria-hidden="true">↗</span></button>
+              <button class="hero-theory-link" onclick="showPage('theory'); switchTheoryTrack('integral')"><span data-i18n="btn_start">Ուսումնասիրել տեսությունը</span><span aria-hidden="true">→</span></button>
+            </div>
+            <div class="hero-track-links">
+              <button onclick="showPage('theory'); switchTheoryTrack('probability')"><span class="track-dot"></span><span data-i18n="track_probability">Հավանականություն</span></button>
+              <span aria-hidden="true">/</span>
+              <button onclick="showPage('theory'); switchTheoryTrack('integral')"><span class="track-dot"></span><span data-i18n="track_integral">Ինտեգրալ</span></button>
             </div>
           </div>
-
-          <div class="hero-features">
-            <div class="feature-card glass-panel" onclick="showPage('theory')">
-              <div class="feature-icon"><i class="fas fa-book"></i></div>
-              <h3 data-i18n="card_theory_title">Theory Encyclopedia</h3>
-              <p data-i18n="card_theory_desc">
-                9 chapters covering everything from history to practical
-                applications
-              </p>
-            </div>
-            <div
-              class="feature-card glass-panel"
-              onclick="showPage('practice')"
-            >
-              <div class="feature-icon"><i class="fas fa-brain"></i></div>
-              <h3 data-i18n="card_practice_title">Practice Arena</h3>
-              <p data-i18n="card_practice_desc">
-                20+ problems from beginner to Olympic level with smart feedback
-              </p>
-            </div>
-            <div class="feature-card glass-panel" onclick="showPage('lab')">
-              <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
-              <h3 data-i18n="card_lab_title">Calculator & Graphs</h3>
-              <p data-i18n="card_lab_desc">
-                Custom keypad, distribution calculator, Venn diagrams,
-                probability trees
-              </p>
-            </div>
-            <div
-              class="feature-card glass-panel"
-              onclick="showPage('simulations')"
-            >
-              <div class="feature-icon"><i class="fas fa-dice"></i></div>
-              <h3 data-i18n="card_sims_title">Monte Carlo Lab</h3>
-              <p data-i18n="card_sims_desc">
-                Galton Board, Monty Hall, and Buffon's Needle interactive
-                simulations
-              </p>
-            </div>
-          </div>
+          <figure class="hero-experiment">
+            <div class="experiment-header"><span data-i18n="hero_plot_tag"></span><span class="experiment-index">01 / ∫</span></div>
+            <svg viewBox="0 0 440 310" role="img" aria-labelledby="hero-plot-title">
+              <title id="hero-plot-title">Monte Carlo integration: random points under the curve y = x²</title>
+              <defs><pattern id="plot-grid" width="43" height="40" patternUnits="userSpaceOnUse"><path d="M 43 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.12"/></pattern></defs>
+              <rect x="48" y="58" width="344" height="202" fill="url(#plot-grid)"/>
+              <path d="M48 260 Q220 260 392 58 L392 260 Z" fill="var(--neon-purple)" opacity="0.07"/>
+              <path d="M48 58 V260 H392" fill="none" stroke="currentColor" opacity="0.3"/>
+              <circle cx="110.4" cy="126.4" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="163.1" cy="220.0" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="216.4" cy="160.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="213.0" cy="167.4" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="139.0" cy="208.7" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="286.0" cy="194.5" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="280.1" cy="101.0" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="345.9" cy="69.3" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="128.7" cy="212.0" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="300.8" cy="143.7" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="117.4" cy="123.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="348.4" cy="91.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="122.3" cy="199.6" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="50.3" cy="62.9" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="123.8" cy="113.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="233.0" cy="140.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="229.2" cy="93.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="254.4" cy="198.8" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="87.5" cy="163.6" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="365.5" cy="230.7" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="283.3" cy="132.5" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="103.1" cy="218.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="284.1" cy="171.7" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="188.0" cy="163.0" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="82.8" cy="117.7" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="250.4" cy="152.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="164.8" cy="96.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="331.4" cy="149.9" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="78.5" cy="230.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="100.4" cy="244.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="271.0" cy="150.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="118.1" cy="76.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="264.6" cy="100.0" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="329.4" cy="122.3" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="229.2" cy="61.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="93.7" cy="120.8" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="352.2" cy="163.4" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="329.1" cy="223.4" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="191.2" cy="205.3" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="184.6" cy="118.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="97.4" cy="191.6" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="339.0" cy="199.1" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="91.4" cy="59.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="234.2" cy="256.3" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="244.5" cy="230.5" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="104.0" cy="110.8" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="272.4" cy="173.9" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="225.0" cy="147.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="205.9" cy="239.6" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="312.4" cy="104.4" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="193.2" cy="178.4" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="258.0" cy="164.7" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="190.9" cy="83.0" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="359.3" cy="229.5" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="107.2" cy="101.5" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="377.4" cy="112.5" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="150.1" cy="248.2" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="332.6" cy="72.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="309.0" cy="111.3" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="382.6" cy="154.2" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="368.0" cy="207.0" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="74.3" cy="90.4" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="288.3" cy="99.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="92.8" cy="199.4" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="250.0" cy="247.0" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="161.0" cy="138.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="370.3" cy="114.7" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="184.4" cy="177.6" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="224.4" cy="110.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="390.5" cy="257.8" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="366.4" cy="97.9" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="63.7" cy="208.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="142.1" cy="216.5" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="103.8" cy="232.5" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="280.5" cy="171.6" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="84.8" cy="89.6" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="335.3" cy="207.4" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="333.4" cy="103.3" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="230.4" cy="242.2" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="291.9" cy="83.3" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="353.1" cy="68.1" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="103.8" cy="62.9" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="80.2" cy="186.5" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="233.4" cy="130.9" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="230.2" cy="76.8" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="314.4" cy="86.5" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="280.8" cy="168.0" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="55.1" cy="129.3" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="369.8" cy="221.5" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="390.7" cy="256.5" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="184.6" cy="108.3" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="293.4" cy="143.4" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="144.5" cy="210.2" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="96.2" cy="129.7" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="54.3" cy="233.9" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="294.6" cy="169.8" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="53.9" cy="174.3" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="366.1" cy="156.6" r="2.6" fill="var(--neon-purple)" opacity="0.8"/><circle cx="140.4" cy="232.4" r="2.6" fill="var(--plot-dot)" opacity="0.8"/><circle cx="219.8" cy="211.0" r="2.6" fill="var(--neon-purple)" opacity="0.8"/>
+              <path d="M48 260 Q220 260 392 58" fill="none" stroke="var(--neon-purple)" stroke-width="2.5"/>
+              <g fill="currentColor" font-family="monospace" font-size="12"><text x="30" y="277">0</text><text x="390" y="277">1</text><text x="27" y="61">1</text><text x="397" y="265">x</text><text x="324" y="38">f(x) = x²</text></g>
+            </svg>
+            <figcaption><div class="experiment-equation">∫₀¹ x² dx <span>= ⅓</span></div><p data-i18n="hero_plot_caption"></p><small data-i18n="hero_plot_note"></small></figcaption>
+          </figure>
+        </div>
+        <div class="home-path-heading"><div><span class="section-number">01 — 04</span><h2 data-i18n="home_path_title"></h2></div><p data-i18n="home_path_desc"></p></div>
+        <div class="hero-features">
+          <button class="feature-card" onclick="showPage('theory')"><span class="feature-top"><span class="feature-number">01</span><i class="fas fa-book-open" aria-hidden="true"></i></span><h3 data-i18n="card_theory_title"></h3><p data-i18n="card_theory_desc"></p><span class="feature-arrow" aria-hidden="true">↗</span></button>
+          <button class="feature-card" onclick="showPage('practice')"><span class="feature-top"><span class="feature-number">02</span><i class="fas fa-pen" aria-hidden="true"></i></span><h3 data-i18n="card_practice_title"></h3><p data-i18n="card_practice_desc"></p><span class="feature-arrow" aria-hidden="true">↗</span></button>
+          <button class="feature-card" onclick="showPage('lab')"><span class="feature-top"><span class="feature-number">03</span><i class="fas fa-calculator" aria-hidden="true"></i></span><h3 data-i18n="card_lab_title"></h3><p data-i18n="card_lab_desc"></p><span class="feature-arrow" aria-hidden="true">↗</span></button>
+          <button class="feature-card" onclick="showPage('simulations')"><span class="feature-top"><span class="feature-number">04</span><i class="fas fa-chart-line" aria-hidden="true"></i></span><h3 data-i18n="card_sims_title"></h3><p data-i18n="card_sims_desc"></p><span class="feature-arrow" aria-hidden="true">↗</span></button>
         </div>
       </section>
 
@@ -295,12 +248,42 @@
             class="glow-btn ai-speech-btn small"
             id="theory-speech-btn"
             onclick="playAIGuide('theory')"
-            style="margin-left: 20px"
+            style="display: none; margin-left: 20px"
           >
             <i class="fas fa-robot"></i>
             <span data-i18n="btn_ai_guide">Լսել AI Ուղեցույցին</span>
           </button>
         </h1>
+
+        <!-- Theory Track Switcher -->
+        <div class="theory-track-tabs">
+          <button
+            class="track-tab-btn active"
+            id="theory-tab-prob"
+            onclick="switchTheoryTrack('probability')"
+          >
+            <i class="fas fa-dice"></i>
+            <span data-i18n="track_prob_title">Հավանականություն</span>
+          </button>
+          <button
+            class="track-tab-btn"
+            id="theory-tab-calc"
+            onclick="switchTheoryTrack('integral')"
+          >
+            <i class="fas fa-wave-square"></i>
+            <span data-i18n="track_calc_title">Ինտեգրալ</span>
+          </button>
+          <button
+            class="track-tab-btn supplementary-btn"
+            id="theory-tab-supp"
+            onclick="switchTheoryTrack('supplementary')"
+            title="Լրացուցիչ թեմա"
+          >
+            <i class="fas fa-key"></i>
+            <span data-i18n="track_supp_title">Լրացուցիչ թեմա: Տվյալների պաշտպանություն</span>
+          </button>
+        </div>
+
         <div class="theory-layout">
           <aside class="sidebar">
             <h3 class="desktop-toc">
@@ -369,11 +352,39 @@
           </div>
         </div>
 
+        <!-- Practice Track Switcher -->
+        <div class="practice-track-tabs">
+          <button
+            class="track-tab-btn active"
+            id="practice-tab-prob"
+            onclick="switchPracticeTrack('probability')"
+          >
+            <i class="fas fa-dice"></i>
+            <span data-i18n="track_prob_title">Հավանականություն</span>
+          </button>
+          <button
+            class="track-tab-btn"
+            id="practice-tab-calc"
+            onclick="switchPracticeTrack('integral')"
+          >
+            <i class="fas fa-wave-square"></i>
+            <span data-i18n="track_calc_title">Ինտեգրալ</span>
+          </button>
+        </div>
+
         <div class="practice-stats glass-panel" id="practice-stats">
           <!-- Populated by JS -->
         </div>
 
         <div class="filters">
+          <select
+            id="practice-topic-filter"
+            class="topic-select"
+            onchange="onPracticeTopicChange(this.value)"
+          >
+            <option value="all" data-i18n="filter_topic_all">Բոլոր թեմաները</option>
+          </select>
+          <div class="section-divider"></div>
           <button
             class="filter-btn active"
             data-filter="all"
@@ -439,7 +450,7 @@
           <div class="ai-header">
             <h2 style="margin: 0">
               <i class="fas fa-robot" style="color: var(--neon-purple)"></i>
-              <span data-i18n="section_ai_gen">AI Advanced Tutor</span>
+              <span data-i18n="section_ai_gen">Խնդիրների գեներատոր և օգնական</span>
             </h2>
             <button class="reset-btn-minimal" onclick="resetAISession()">
               <i class="fas fa-sync-alt"></i>
@@ -447,26 +458,24 @@
             </button>
           </div>
           <div class="ai-controls">
+            <select id="ai-track" class="ai-select" onchange="updateAITopicsByTrack(this.value)">
+              <option value="probability" data-i18n="track_prob_title">Հավանականություն</option>
+              <option value="integral" data-i18n="track_calc_title">Ինտեգրալ</option>
+            </select>
             <select id="ai-topic" class="ai-select">
-              <option value="basic probability" data-i18n="topic_basic">
+              <option value="basic" data-i18n="topic_basic">
                 Basic Probability
               </option>
               <option value="combinatorics" data-i18n="topic_combinatorics">
                 Combinatorics
               </option>
-              <option
-                value="conditional probability"
-                data-i18n="topic_conditional"
-              >
-                Conditional Probability
-              </option>
-              <option value="Bayes theorem" data-i18n="topic_bayes">
-                Bayes' Theorem
+              <option value="bayes" data-i18n="topic_bayes">
+                Bayes' Theorem & Cond.
               </option>
               <option value="distributions" data-i18n="topic_distributions">
                 Distributions
               </option>
-              <option value="random variables" data-i18n="topic_rv">
+              <option value="random_variables" data-i18n="topic_rv">
                 Random Variables
               </option>
             </select>
@@ -504,10 +513,10 @@
                 data-i18n="ai_placeholder_solution"
                 placeholder="Write your solution here..."
               ></textarea>
-              <label class="file-upload-label">
+              <label class="file-upload-label" title="Ձեռագիր աշխատանքի նախադիտում (տեղային)">
                 <i class="fas fa-camera"></i>
                 <span data-i18n="ai_upload_label"
-                  >Upload handwritten solution</span
+                  >Upload handwritten solution (Preview)</span
                 >
                 <input
                   type="file"
@@ -586,57 +595,57 @@
             </p>
           </div>
 
-          <!-- LEFT: Calculator -->
-          <div class="lab-panel">
-            <h2>
-              <i class="fas fa-calculator"></i>
-              <span data-i18n="card_tab_calc">Calculator</span>
-            </h2>
+        <!-- LAB MODE TABS -->
+        <div class="lab-mode-tabs" style="grid-column: 1 / -1;">
+          <button class="lab-mode-btn active" id="lab-tab-basic" onclick="switchLabMode('basic', this)">
+            <i class="fas fa-calculator"></i> <span data-i18n="lab_mode_basic">Սովորական հաշվիչ</span>
+          </button>
+          <button class="lab-mode-btn" id="lab-tab-prob" onclick="switchLabMode('prob', this)">
+            <i class="fas fa-chart-pie"></i> <span data-i18n="lab_mode_prob">Հավանականություն</span>
+          </button>
+          <button class="lab-mode-btn" id="lab-tab-calculus" onclick="switchLabMode('calculus', this)">
+            <i class="fas fa-wave-square"></i> <span data-i18n="lab_mode_calculus">Ածանցյալ և ինտեգրալ</span>
+          </button>
+          <button class="lab-mode-btn" id="lab-tab-area" onclick="switchLabMode('area', this)">
+            <i class="fas fa-chart-area"></i> <span data-i18n="lab_mode_area">Մակերես</span>
+          </button>
+          <button class="lab-mode-btn" id="lab-tab-volume" onclick="switchLabMode('volume', this)">
+            <i class="fas fa-cube"></i> <span data-i18n="lab_mode_volume">Ծավալ</span>
+          </button>
+          <button class="lab-mode-btn" id="lab-tab-motion" onclick="switchLabMode('motion', this)">
+            <i class="fas fa-running"></i> <span data-i18n="lab_mode_motion">Շարժում</span>
+          </button>
+        </div>
 
-            <!-- CALCULATOR HEADER -->
+        <!-- 1. BASIC CALCULATOR PANEL -->
+        <div id="lab-panel-basic" class="lab-subpanel active" style="grid-column: 1 / -1;">
+          <div style="max-width: 480px; margin: 0 auto;" class="glass-panel">
+            <h3 style="margin-top: 0; color: var(--accent-gold); display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-calculator"></i> <span data-i18n="card_tab_calc">Calculator</span>
+            </h3>
             <div class="calc-header">
               <div class="calc-display-container">
                 <input
                   type="text"
                   id="calc-input"
                   data-i18n="calc_placeholder"
-                  placeholder="..."
+                  placeholder="2 + 2 or C(5, 2)"
                 />
                 <div
                   id="calc-result"
-                  style="font-size: 0.9rem; color: var(--accent-gold)"
+                  style="font-size: 0.95rem; color: var(--accent-gold); font-family: monospace;"
                 >
                   0
                 </div>
               </div>
             </div>
 
-            <!-- TABS -->
             <div class="calc-tabs">
-              <button
-                class="calc-tab active"
-                onclick="switchCalcTab('basic')"
-                data-i18n="calc_group_basic"
-              >
-                Basic
-              </button>
-              <button
-                class="calc-tab"
-                onclick="switchCalcTab('advanced')"
-                data-i18n="calc_group_adv"
-              >
-                Advanced
-              </button>
-              <button
-                class="calc-tab"
-                onclick="switchCalcTab('greek')"
-                data-i18n="calc_group_greek"
-              >
-                Greek
-              </button>
+              <button class="calc-tab active" onclick="switchCalcTab('basic')" data-i18n="calc_group_basic">Basic</button>
+              <button class="calc-tab" onclick="switchCalcTab('advanced')" data-i18n="calc_group_adv">Advanced</button>
+              <button class="calc-tab" onclick="switchCalcTab('greek')" data-i18n="calc_group_greek">Greek</button>
             </div>
 
-            <!-- KEYPADS (Always Available) -->
             <div id="calc-pad-basic" class="keypad calc-pad active">
               <button class="key num" onclick="addToCalc('7')">7</button>
               <button class="key num" onclick="addToCalc('8')">8</button>
@@ -655,9 +664,7 @@
 
               <button class="key num" onclick="addToCalc('0')">0</button>
               <button class="key num" onclick="addToCalc('.')">.</button>
-              <button class="key action" onclick="backspaceCalc()">
-                <i class="fas fa-backspace"></i>
-              </button>
+              <button class="key action" onclick="backspaceCalc()"><i class="fas fa-backspace"></i></button>
               <button class="key op" onclick="addToCalc('+')">+</button>
 
               <button class="key action" onclick="clearCalc()">AC</button>
@@ -682,21 +689,9 @@
               <button class="key op" onclick="addToCalc('tan(')">tan</button>
               <button class="key op" onclick="addToCalc('e')">e</button>
 
-              <button
-                class="key op"
-                onclick="addToCalc('∪')"
-                style="color: var(--accent-pink)"
-              >
-                ∪
-              </button>
-              <button
-                class="key op"
-                onclick="addToCalc('∩')"
-                style="color: var(--neon-purple)"
-              >
-                ∩
-              </button>
+              <button class="key op" onclick="addToCalc('pi')">π</button>
               <button class="key op" onclick="addToCalc(',')">,</button>
+              <button class="key action" onclick="backspaceCalc()"><i class="fas fa-backspace"></i></button>
               <button class="key enter" onclick="calculateResult()">=</button>
             </div>
 
@@ -717,42 +712,20 @@
               <button class="key op" onclick="addToCalc('∞')">∞</button>
 
               <button class="key action" onclick="clearCalc()">AC</button>
-              <button class="key action" onclick="backspaceCalc()">
-                <i class="fas fa-backspace"></i>
-              </button>
+              <button class="key action" onclick="backspaceCalc()"><i class="fas fa-backspace"></i></button>
               <button class="key op" onclick="addToCalc(',')">,</button>
               <button class="key enter" onclick="calculateResult()">=</button>
             </div>
+          </div>
+        </div>
 
-            <!-- Step-by-Step Toggle Bar -->
-            <button
-              id="btn-formula-drawer"
-              class="drawer-toggle-btn"
-              onclick="toggleFormulaPanel()"
-            >
-              <i class="fas fa-chevron-down"></i>
-              <span data-i18n="btn_step_solver">Step-by-Step Solver</span>
-            </button>
-
-            <!-- FORMULA STEPS DRAWER -->
-            <div
-              id="calc-formula-container"
-              style="
-                display: none;
-                margin-top: 20px;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-                padding-top: 15px;
-              "
-            >
-              <h3
-                data-i18n="calc_mode_formula"
-                style="
-                  font-size: 1rem;
-                  color: var(--neon-purple);
-                  margin-bottom: 10px;
-                "
-              >
-                Step-by-Step Formulas
+        <!-- 2. PROBABILITY PANEL (Step-by-step Solver & Visualizer) -->
+        <div id="lab-panel-prob" class="lab-subpanel" style="grid-column: 1 / -1;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+            <!-- Formula Solver -->
+            <div class="lab-panel glass-panel">
+              <h3 style="margin-top: 0; color: var(--neon-purple); display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-lightbulb"></i> <span data-i18n="calc_mode_formula">Step-by-Step Probability Formulas</span>
               </h3>
               <select
                 id="formula-select"
@@ -760,112 +733,413 @@
                 style="width: 100%; margin-bottom: 15px"
                 onchange="renderFormulaInputs()"
               >
-                <option value="" data-i18n="calc_formula_sel">
-                  -- Select Formula --
-                </option>
-                <option value="bernoulli" data-i18n="formula_bernoulli">
-                  Bernoulli Formula
-                </option>
-                <option value="bayes" data-i18n="formula_bayes">
-                  Bayes' Theorem
-                </option>
-                <option value="combinations" data-i18n="formula_combinations">
-                  Combinations (C_n^k)
-                </option>
-                <option value="permutations" data-i18n="formula_permutations">
-                  Permutations (P_n)
-                </option>
-                <option value="normal_calc" data-i18n="formula_normal">
-                  Normal Dist (Z-Table)
-                </option>
-                <option value="poisson" data-i18n="formula_poisson">
-                  Poisson Approx
-                </option>
+                <option value="" data-i18n="calc_formula_sel">-- Select Formula --</option>
+                <option value="bernoulli" data-i18n="formula_bernoulli">Bernoulli Formula</option>
+                <option value="bayes" data-i18n="formula_bayes">Bayes' Theorem</option>
+                <option value="combinations" data-i18n="formula_combinations">Combinations (C_n^k)</option>
+                <option value="permutations" data-i18n="formula_permutations">Permutations (P_n)</option>
+                <option value="normal_calc" data-i18n="formula_normal">Normal Dist (Z-Table)</option>
+                <option value="poisson" data-i18n="formula_poisson">Poisson Approx</option>
               </select>
               <div id="formula-inputs" style="margin-bottom: 15px"></div>
-              <button
-                class="glow-btn small"
-                onclick="solveFormulaWithSteps()"
-                style="width: 100%"
-              >
-                <i class="fas fa-lightbulb"></i>
-                <span data-i18n="btn_solve">Solve</span>
+              <button class="glow-btn small" onclick="solveFormulaWithSteps()" style="width: 100%">
+                <i class="fas fa-calculator"></i> <span data-i18n="btn_solve">Solve</span>
               </button>
-              <div
-                id="formula-steps"
-                style="
-                  margin-top: 15px;
-                  background: var(--bg-input);
-                  padding: 15px;
-                  border-radius: 12px;
-                  border: 1px solid var(--glass-border);
-                  font-family: &quot;Fira Code&quot;, monospace;
-                  font-size: 0.88rem;
-                  color: var(--text-primary);
-                "
-              ></div>
+              <div id="formula-steps" class="calc-step-card" style="display: none;"></div>
+            </div>
+
+            <!-- Visualizer -->
+            <div class="lab-panel glass-panel">
+              <h3 style="margin-top: 0; color: #38bdf8; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-chart-pie"></i> <span data-i18n="card_visualizer">Data Visualizer</span>
+              </h3>
+              <div class="vis-controls-advanced">
+                <div class="vis-header">
+                  <select id="dist-select" onchange="updateVisualizer()" class="modern-select">
+                    <option value="normal" data-i18n="dist_normal">Normal Distribution</option>
+                    <option value="venn" data-i18n="dist_venn">Venn Diagram</option>
+                    <option value="tree" data-i18n="dist_tree">Probability Tree</option>
+                  </select>
+                  <button class="glow-btn small" onclick="drawGraph()">
+                    <i class="fas fa-sync-alt"></i> <span data-i18n="btn_render">Render</span>
+                  </button>
+                </div>
+                <div id="dist-params" class="dist-params-panel"></div>
+              </div>
+              <div class="canvas-container">
+                <canvas id="lab-canvas" width="600" height="380"></canvas>
+              </div>
+              <div id="dist-analysis" class="analysis-panel" style="display: none">
+                <h4 data-i18n="analysis_title">Analysis</h4>
+                <div id="dist-output" class="dist-output-content"></div>
+              </div>
             </div>
           </div>
+        </div>
 
-          <!-- RIGHT: Visualizer -->
-          <div class="lab-panel">
-            <h2>
-              <i class="fas fa-chart-pie"></i>
-              <span data-i18n="card_visualizer">Data Visualizer</span>
-            </h2>
-
-            <div class="vis-controls-advanced">
-              <div class="vis-header">
-                <select
-                  id="dist-select"
-                  onchange="updateVisualizer()"
-                  class="modern-select"
-                >
-                  <option value="normal" data-i18n="dist_normal">
-                    Normal Distribution
-                  </option>
-                  <option value="venn" data-i18n="dist_venn">
-                    Venn Diagram
-                  </option>
-                  <option value="tree" data-i18n="dist_tree">
-                    Probability Tree
-                  </option>
-                </select>
-                <button
-                  class="glow-btn ai-speech-btn small"
-                  id="vis-speech-btn"
-                  onclick="
-                    playAIGuide(
-                      'vis_' + document.getElementById('dist-select').value,
-                    )
-                  "
-                  title="Explain this visualizer"
-                >
-                  <i class="fas fa-robot"></i>
+        <!-- 3. DERIVATIVE & INTEGRAL PANEL -->
+        <div id="lab-panel-calculus" class="lab-subpanel" style="grid-column: 1 / -1;">
+          <div class="glass-panel" style="padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+              <h3 style="margin: 0; color: var(--neon-purple); display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-wave-square"></i> <span data-i18n="lab_calc_title">Ածանցյալի և Ինտեգրալի Հաշվիչ</span>
+              </h3>
+              <div style="display: flex; gap: 8px;">
+                <button class="glow-btn small active" id="btn-calc-sub-deriv" onclick="switchCalcSubmode('deriv')">
+                  <span data-i18n="lab_sub_deriv">Ածանցյալ</span>
                 </button>
-                <button class="glow-btn small" onclick="drawGraph()">
-                  <i class="fas fa-sync-alt"></i>
-                  <span data-i18n="btn_render">Render</span>
+                <button class="glow-btn small secondary" id="btn-calc-sub-indef" onclick="switchCalcSubmode('indef')">
+                  <span data-i18n="lab_sub_indef">Անորոշ ինտեգրալ</span>
+                </button>
+                <button class="glow-btn small secondary" id="btn-calc-sub-def" onclick="switchCalcSubmode('def')">
+                  <span data-i18n="lab_sub_def">Որոշյալ ինտեգրալ</span>
                 </button>
               </div>
-
-              <!-- Dynamic Parameters Area -->
-              <div id="dist-params" class="dist-params-panel"></div>
             </div>
 
-            <div class="canvas-container">
-              <canvas id="lab-canvas" width="600" height="400"></canvas>
+            <!-- DERIVATIVE SUBMODE -->
+            <div id="calc-submode-deriv">
+              <div class="calc-io-grid">
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_fx">Ֆունկցիա՝ f(x)</label>
+                  <input type="text" id="deriv-input-fx" value="x^3" placeholder="e.g. x^3, sin(x), exp(x)">
+                </div>
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_x0">Կետ՝ x₀ (ածանցյալի արժեքի և շոշափողի համար)</label>
+                  <input type="number" id="deriv-input-x0" value="2" step="0.5">
+                </div>
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_presets">Օրինակներ</label>
+                  <select class="calc-select" onchange="applyDerivPreset(this.value)">
+                    <option value="" data-i18n="lab_text_13">-- Ընտրել օրինակ --</option>
+                    <option value="x^3,2">f(x) = x³ (x₀ = 2)</option>
+                    <option value="5*x^2 - 4*x + 7,3">f(x) = 5x² - 4x + 7 (x₀ = 3)</option>
+                    <option value="sin(x),0">f(x) = sin(x) (x₀ = 0)</option>
+                    <option value="exp(x),1">f(x) = e^x (x₀ = 1)</option>
+                    <option value="ln(x),1">f(x) = ln(x) (x₀ = 1)</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display: flex; gap: 12px; margin-top: 10px;">
+                <button class="glow-btn" onclick="calculateDerivative()">
+                  <i class="fas fa-play"></i> <span data-i18n="btn_calculate">Հաշվել</span>
+                </button>
+                <button class="glow-btn secondary" onclick="scrollToTheory('derivative-rules-formulas')">
+                  <i class="fas fa-book-open"></i> <span data-i18n="btn_view_theory">Անցնել տեսությանը</span>
+                </button>
+              </div>
+              <div id="deriv-output-card" class="calc-step-card" style="display: none;"></div>
+              <canvas id="deriv-canvas" class="calc-canvas" width="700" height="320" style="display: none;"></canvas>
             </div>
 
-            <!-- Analysis/Output Panel -->
-            <div
-              id="dist-analysis"
-              class="analysis-panel"
-              style="display: none"
-            >
-              <h4 data-i18n="analysis_title">Analysis</h4>
-              <div id="dist-output" class="dist-output-content"></div>
+            <!-- INDEFINITE INTEGRAL SUBMODE -->
+            <div id="calc-submode-indef" style="display: none;">
+              <div class="calc-io-grid">
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_fx">Ֆունկցիա՝ f(x)</label>
+                  <input type="text" id="indef-input-fx" value="3*x^2" placeholder="e.g. 3*x^2, sin(x), 1/x">
+                </div>
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_presets">Օրինակներ</label>
+                  <select class="calc-select" onchange="applyIndefPreset(this.value)">
+                    <option value="" data-i18n="lab_text_13">-- Ընտրել օրինակ --</option>
+                    <option value="3*x^2">f(x) = 3x²</option>
+                    <option value="4*x^3 + 2*x">f(x) = 4x³ + 2x</option>
+                    <option value="sin(x)">f(x) = sin(x)</option>
+                    <option value="cos(x)">f(x) = cos(x)</option>
+                    <option value="exp(x)">f(x) = e^x</option>
+                    <option value="1/x">f(x) = 1/x</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display: flex; gap: 12px; margin-top: 10px;">
+                <button class="glow-btn" onclick="calculateIndefiniteIntegral()">
+                  <i class="fas fa-play"></i> <span data-i18n="btn_calculate">Հաշվել F(x) + C</span>
+                </button>
+                <button class="glow-btn secondary" onclick="scrollToTheory('antiderivative-indefinite-integral')">
+                  <i class="fas fa-book-open"></i> <span data-i18n="btn_view_theory">Անցնել տեսությանը</span>
+                </button>
+              </div>
+              <div id="indef-output-card" class="calc-step-card" style="display: none;"></div>
             </div>
+
+            <!-- DEFINITE INTEGRAL SUBMODE -->
+            <div id="calc-submode-def" style="display: none;">
+              <div class="calc-io-grid">
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_fx">Ֆունկցիա՝ f(x)</label>
+                  <input type="text" id="def-input-fx" value="x^2" placeholder="e.g. x^2, sin(x)">
+                </div>
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_a">Ստորին սահման (a)</label>
+                  <input type="number" id="def-input-a" value="0" step="0.5">
+                </div>
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_b">Վերին սահման (b)</label>
+                  <input type="number" id="def-input-b" value="1" step="0.5">
+                </div>
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_method">Մեթոդ</label>
+                  <select id="def-select-method" class="calc-select">
+                    <option value="auto" data-i18n="lab_text_20">Թվային ինտեգրում (Սիմպսոն)</option>
+                    <option value="simpson" data-i18n="lab_text_21">Սիմպսոնի կանոն (Simpson's Rule)</option>
+                    <option value="trapezoid" data-i18n="lab_text_22">Սեղանների կանոն (Trapezoidal Rule)</option>
+                    <option value="midpoint" data-i18n="lab_text_23">Միջնակետերի կանոն (Midpoint Rule)</option>
+                    <option value="monte_carlo" data-i18n="lab_text_24">Մոնտե Կառլոյի ընտրանքի միջին</option>
+                  </select>
+                </div>
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_n">Ենթամիջակայքեր (n / N)</label>
+                  <input type="number" id="def-input-n" value="100" min="2" step="2">
+                </div>
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_presets">Օրինակներ</label>
+                  <select class="calc-select" onchange="applyDefPreset(this.value)">
+                    <option value="" data-i18n="lab_text_13">-- Ընտրել օրինակ --</option>
+                    <option value="x^2,0,1">∫₀¹ x² dx = 1/3</option>
+                    <option value="sin(x),0,pi">∫₀^π sin(x) dx = 2</option>
+                    <option value="x^2,1,0">∫₁⁰ x² dx = -1/3</option>
+                    <option value="x,-1,1">∫₋₁¹ x dx = 0</option>
+                    <option value="3*x^2,0,2">∫₀² 3x² dx = 8</option>
+                    <option value="1/x,-1,1">∫₋₁¹ 1/x dx (Առանձնահատկություն!)</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display: flex; gap: 12px; margin-top: 10px;">
+                <button class="glow-btn" onclick="calculateDefiniteIntegral()">
+                  <i class="fas fa-play"></i> <span data-i18n="btn_calculate">Հաշվել որոշյալ ինտեգրալը</span>
+                </button>
+                <button class="glow-btn secondary" onclick="scrollToTheory('newton-leibniz-solved-examples')">
+                  <i class="fas fa-book-open"></i> <span data-i18n="btn_view_theory">Անցնել տեսությանը</span>
+                </button>
+              </div>
+              <div id="def-output-card" class="calc-step-card" style="display: none;"></div>
+              <canvas id="def-canvas" class="calc-canvas" width="700" height="320" style="display: none;"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. AREA CALCULATOR PANEL -->
+        <div id="lab-panel-area" class="lab-subpanel" style="grid-column: 1 / -1;">
+          <div class="glass-panel" style="padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+              <h3 style="margin: 0; color: #06d6a0; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-chart-area"></i> <span data-i18n="lab_area_title">Մակերեսի Հաշվիչ</span>
+              </h3>
+              <div style="display: flex; gap: 8px;">
+                <button class="glow-btn small active" id="btn-area-mode-axis" onclick="switchAreaMode('axis')">
+                  <span data-i18n="lab_area_mode_axis">Կորի և x առանցքի միջև</span>
+                </button>
+                <button class="glow-btn small secondary" id="btn-area-mode-between" onclick="switchAreaMode('between')">
+                  <span data-i18n="lab_area_mode_between">Երկու կորերի միջև</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="calc-io-grid">
+              <div class="calc-io-group">
+                <label data-i18n="lab_lbl_fx">Վերին / Առաջին ֆունկցիա՝ f(x)</label>
+                <input type="text" id="area-input-fx" value="x" placeholder="e.g. x, 4 - x^2">
+              </div>
+              <div class="calc-io-group" id="area-group-gx" style="display: none;">
+                <label data-i18n="lab_lbl_gx">Ստորին / Երկրորդ ֆունկցիա՝ g(x)</label>
+                <input type="text" id="area-input-gx" value="x^2" placeholder="e.g. x^2, 2*x">
+              </div>
+              <div class="calc-io-group">
+                <label data-i18n="lab_lbl_a">Ստորին սահման (a)</label>
+                <input type="number" id="area-input-a" value="-1" step="0.5">
+              </div>
+              <div class="calc-io-group">
+                <label data-i18n="lab_lbl_b">Վերին սահման (b)</label>
+                <input type="number" id="area-input-b" value="1" step="0.5">
+              </div>
+              <div class="calc-io-group">
+                <label data-i18n="lab_lbl_presets">Օրինակներ</label>
+                <select class="calc-select" onchange="applyAreaPreset(this.value)">
+                  <option value="" data-i18n="lab_text_13">-- Ընտրել օրինակ --</option>
+                  <option value="axis,x,-1,1">f(x) = x առանցքի հետ [-1, 1] (A = 1, ոչ թե 0!)</option>
+                  <option value="axis,3*x,0,4">f(x) = 3x [0, 4] (A = 24)</option>
+                  <option value="between,4,x^2,-2,2">y = 4 և y = x² միջև [-2, 2] (A = 32/3)</option>
+                  <option value="between,2*x,x^2,0,2">y = 2x և y = x² միջև [0, 2] (A = 4/3)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap;">
+              <button class="glow-btn" onclick="calculateArea()">
+                <i class="fas fa-play"></i> <span data-i18n="btn_calc_area">Հաշվել Երկրաչափական Մակերեսը</span>
+              </button>
+              <button class="glow-btn secondary" id="btn-find-intersections" onclick="findAreaIntersections()" style="display: none;">
+                <i class="fas fa-crosshairs"></i> <span data-i18n="btn_find_roots">Գտնել հատման կետերը</span>
+              </button>
+              <button class="glow-btn secondary" onclick="scrollToTheory('area-under-curve-axis')">
+                <i class="fas fa-book-open"></i> <span data-i18n="btn_view_theory">Անցնել տեսությանը</span>
+              </button>
+            </div>
+
+            <div id="area-output-card" class="calc-step-card" style="display: none;"></div>
+            <canvas id="area-canvas" class="calc-canvas" width="700" height="320" style="display: none;"></canvas>
+          </div>
+        </div>
+
+        <!-- 5. VOLUME CALCULATOR PANEL -->
+        <div id="lab-panel-volume" class="lab-subpanel" style="grid-column: 1 / -1;">
+          <div class="glass-panel" style="padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+              <h3 style="margin: 0; color: #ffd60a; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-cube"></i> <span data-i18n="lab_vol_title">Ծավալի Հաշվիչ</span>
+              </h3>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="glow-btn small active" id="btn-vol-mode-disks" onclick="switchVolumeMode('disks')">
+                  <span data-i18n="vol_mode_disks">Սկավառակներ</span>
+                </button>
+                <button class="glow-btn small secondary" id="btn-vol-mode-washers" onclick="switchVolumeMode('washers')">
+                  <span data-i18n="vol_mode_washers">Օղակներ</span>
+                </button>
+                <button class="glow-btn small secondary" id="btn-vol-mode-slicing" onclick="switchVolumeMode('slicing')">
+                  <span data-i18n="vol_mode_slicing">Լայնական հատույթ</span>
+                </button>
+                <button class="glow-btn small secondary" id="btn-vol-mode-solids" onclick="switchVolumeMode('solids')">
+                  <span data-i18n="vol_mode_solids">Պատրաստի մարմիններ</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- DISKS / WASHERS / SLICING INPUTS -->
+            <div id="vol-inputs-integration">
+              <div class="calc-io-grid">
+                <div class="calc-io-group" id="vol-group-rx">
+                  <label id="vol-lbl-rx" data-i18n="lab_lbl_rx">Շառավիղ՝ R(x) (կամ f(x))</label>
+                  <input type="text" id="vol-input-rx" value="x" placeholder="e.g. x, sqrt(x)">
+                </div>
+                <div class="calc-io-group" id="vol-group-inner-r" style="display: none;">
+                  <label data-i18n="lab_lbl_inner_r">Ներքին շառավիղ՝ r(x)</label>
+                  <input type="text" id="vol-input-inner-r" value="x^2" placeholder="e.g. x^2">
+                </div>
+                <div class="calc-io-group" id="vol-group-ax" style="display: none;">
+                  <label data-i18n="lab_lbl_ax">Հատույթի մակերես՝ A(x)</label>
+                  <input type="text" id="vol-input-ax" value="x^2" placeholder="e.g. x^2, pi*x^2">
+                </div>
+                <div class="calc-io-group" id="vol-group-bounds-a">
+                  <label data-i18n="lab_lbl_a">Ստորին սահման (a)</label>
+                  <input type="number" id="vol-input-a" value="0" step="0.5">
+                </div>
+                <div class="calc-io-group" id="vol-group-bounds-b">
+                  <label data-i18n="lab_lbl_b">Վերին սահման (b)</label>
+                  <input type="number" id="vol-input-b" value="1" step="0.5">
+                </div>
+                <div class="calc-io-group" id="vol-group-presets">
+                  <label data-i18n="lab_lbl_presets">Օրինակներ</label>
+                  <select class="calc-select" onchange="applyVolumePreset(this.value)">
+                    <option value="" data-i18n="lab_text_13">-- Ընտրել օրինակ --</option>
+                    <option value="disks,x,0,1">y = x պտույտ x առանցքի շուրջ [0, 1] (V = π/3)</option>
+                    <option value="disks,sqrt(x),0,4">y = √x պտույտ [0, 4] (V = 8π)</option>
+                    <option value="washers,x,x^2,0,1">y = x և y = x² միջև [0, 1] (V = 2π/15)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- STANDARD SOLIDS INPUTS -->
+            <div id="vol-inputs-solids" style="display: none;">
+              <div class="calc-io-grid">
+                <div class="calc-io-group">
+                  <label data-i18n="lab_lbl_solid_type">Մարմնի տեսակ</label>
+                  <select id="vol-select-solid" class="calc-select" onchange="updateSolidInputs(this.value)">
+                    <option value="cylinder" data-i18n="solid_cylinder">Գլան (Cylinder)</option>
+                    <option value="cone" data-i18n="solid_cone">Կոն (Cone)</option>
+                    <option value="sphere" data-i18n="solid_sphere" selected>Գունդ (Sphere)</option>
+                  </select>
+                </div>
+                <div class="calc-io-group" id="solid-group-r">
+                  <label data-i18n="lab_lbl_radius">Շառավիղ (R կամ r)</label>
+                  <input type="number" id="solid-input-r" value="1" min="0.1" step="0.5">
+                </div>
+                <div class="calc-io-group" id="solid-group-h" style="display: none;">
+                  <label data-i18n="lab_lbl_height">Բարձրություն (h)</label>
+                  <input type="number" id="solid-input-h" value="3" min="0.1" step="0.5">
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 10px;">
+              <button class="glow-btn" onclick="calculateVolume()">
+                <i class="fas fa-play"></i> <span data-i18n="btn_calc_vol">Հաշվել Ծավալը</span>
+              </button>
+              <button class="glow-btn secondary" onclick="scrollToTheory('volume-slicing-disks')">
+                <i class="fas fa-book-open"></i> <span data-i18n="btn_view_theory">Անցնել տեսությանը</span>
+              </button>
+            </div>
+
+            <div id="vol-output-card" class="calc-step-card" style="display: none;"></div>
+            <canvas id="vol-canvas" class="calc-canvas" width="700" height="300" style="display: none;"></canvas>
+          </div>
+        </div>
+
+        <!-- 6. MOTION / KINEMATICS PANEL -->
+        <div id="lab-panel-motion" class="lab-subpanel" style="grid-column: 1 / -1;">
+          <div class="glass-panel" style="padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+              <h3 style="margin: 0; color: #f72585; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-running"></i> <span data-i18n="lab_motion_title">Շարժման և Կինեմատիկայի Հաշվիչ</span>
+              </h3>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="glow-btn small secondary" id="btn-motion-mode-pos" onclick="switchMotionMode('pos')">
+                  <span>s(t) → v(t), a(t)</span>
+                </button>
+                <button class="glow-btn small active" id="btn-motion-mode-vel" onclick="switchMotionMode('vel')">
+                  <span>v(t) → Δs & L</span>
+                </button>
+                <button class="glow-btn small secondary" id="btn-motion-mode-acc" onclick="switchMotionMode('acc')">
+                  <span>a(t) → v(t), s(t)</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="calc-io-grid">
+              <div class="calc-io-group" id="motion-group-fn">
+                <label id="motion-lbl-fn" data-i18n="lab_text_56">Արագության ֆունկցիա՝ v(t) (մ/վ)</label>
+                <input type="text" id="motion-input-fn" value="t - 1" placeholder="e.g. t - 1, 6*t">
+              </div>
+              <div class="calc-io-group">
+                <label data-i18n="lab_lbl_t1">Սկզբնական ժամանակ՝ t₁ (վրկ)</label>
+                <input type="number" id="motion-input-t1" value="0" step="0.5">
+              </div>
+              <div class="calc-io-group">
+                <label data-i18n="lab_lbl_t2">Վերջնական ժամանակ՝ t₂ (վրկ)</label>
+                <input type="number" id="motion-input-t2" value="2" step="0.5">
+              </div>
+              <div class="calc-io-group" id="motion-group-s0" style="display: none;">
+                <label data-i18n="lab_lbl_s0">Սկզբնական դիրք՝ s(t₁) (մետր)</label>
+                <input type="number" id="motion-input-s0" value="0" step="1">
+              </div>
+              <div class="calc-io-group" id="motion-group-v0" style="display: none;">
+                <label data-i18n="lab_lbl_v0">Սկզբնական արագություն՝ v(t₁) (մ/վ)</label>
+                <input type="number" id="motion-input-v0" value="0" step="1">
+              </div>
+              <div class="calc-io-group">
+                <label data-i18n="lab_lbl_presets">Օրինակներ</label>
+                <select class="calc-select" onchange="applyMotionPreset(this.value)">
+                  <option value="" data-i18n="lab_text_13">-- Ընտրել օրինակ --</option>
+                  <option value="vel,t - 1,0,2">v(t) = t - 1 [0, 2]: Տեղաշարժ = 0, Ճանապարհ = 1</option>
+                  <option value="vel,6*t,0,3">v(t) = 6t [0, 3]: Տեղաշարժ = 27մ</option>
+                  <option value="pos,t^3 - 3*t^2 + 2*t,0,3">s(t) = t³ - 3t² + 2t [0, 3]</option>
+                  <option value="acc,4,0,5">a(t) = 4մ/վ² հաստատուն [0, 5]</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 10px;">
+              <button class="glow-btn" onclick="calculateMotion()">
+                <i class="fas fa-play"></i> <span data-i18n="btn_calc_motion">Հաշվել շարժման պարամետրերը</span>
+              </button>
+              <button class="glow-btn secondary" onclick="scrollToTheory('kinematics-velocity-acceleration')">
+                <i class="fas fa-book-open"></i> <span data-i18n="btn_view_theory">Անցնել տեսությանը</span>
+              </button>
+            </div>
+
+            <div id="motion-output-card" class="calc-step-card" style="display: none;"></div>
+            <canvas id="motion-canvas" class="calc-canvas" width="700" height="300" style="display: none;"></canvas>
           </div>
         </div>
       </section>
@@ -902,6 +1176,13 @@
         >
           <button
             class="glow-btn sim-tab-btn active"
+            onclick="showSimulation('integral', this)"
+          >
+            <i class="fas fa-chart-area"></i>
+            <span data-i18n="sim_integral_btn">Մոնտե Կառլոյի Ինտեգրում</span>
+          </button>
+          <button
+            class="glow-btn secondary sim-tab-btn"
             onclick="showSimulation('galton', this)"
           >
             <i class="fas fa-circle-notch"></i>
@@ -937,12 +1218,248 @@
           </button>
         </div>
 
-        <!-- ──── GALTON BOARD ──── -->
+        <!-- ──── MONTE CARLO INTEGRATION ──── -->
+        <div
+          id="sim-integral"
+          class="sim-panel glass-panel"
+          style="display: block; padding: 20px"
+        >
+          <div
+            class="sim-header"
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 15px;
+            "
+          >
+            <div>
+              <h2
+                style="
+                  margin: 0;
+                  background: linear-gradient(45deg, #a855f7, #38bdf8);
+                  -webkit-background-clip: text;
+                  background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                "
+                data-i18n="sim_integral_title"
+              >
+                Մոնտե Կառլոյի Ինտեգրում
+              </h2>
+              <p
+                style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px"
+                data-i18n="sim_integral_desc_short"
+              >
+                Որոշյալ ինտեգրալների հաշվումը պատահական ընտրանքի և Hit-or-Miss մեթոդով
+              </p>
+            </div>
+          </div>
+
+          <div class="sim-description" data-i18n="sim_integral_desc">
+            <strong>Մոնտե Կառլոյի Ինտեգրում․</strong> Որոշյալ ինտեգրալը հաշվվում է պատահական կետերի գեներացմամբ։ Կորի տակ ընկած կետերի (Hit) և ընդհանուր կետերի հարաբերությունը բազմապատկվում է ուղղանկյան մակերեսով՝ տալով ինտեգրալի մոտարկումը։
+          </div>
+
+          <div
+            class="sim-layout"
+            style="display: flex; flex-wrap: wrap; gap: 20px"
+          >
+            <!-- Canvases: Main function plot + Convergence plot -->
+            <div
+              class="canvas-wrapper"
+              style="
+                flex: 2;
+                min-width: 320px;
+                background: var(--bg-display);
+                border-radius: 14px;
+                padding: 16px;
+                border: 1px solid var(--glass-border);
+              "
+            >
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;" data-i18n="mc_canvas_title">
+                  <i class="fas fa-draw-polygon" style="color: var(--neon-purple); margin-right: 6px;"></i> Ֆունկցիայի գրաֆիկը և պատահական կետերը
+                </span>
+                <span id="mc-func-badge" style="font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; background: rgba(168,85,247,0.15); color: var(--neon-purple); font-weight: 600;">
+                  f(x) = x²
+                </span>
+              </div>
+              <canvas id="mc-integral-canvas" class="mc-main-canvas"></canvas>
+
+              <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-weight: 600; color: var(--text-primary); font-size: 0.85rem;" data-i18n="mc_conv_title">
+                  <i class="fas fa-chart-line" style="color: #38bdf8; margin-right: 6px;"></i> Գնահատականի զուգամիտությունը (I_N ըստ N-ի)
+                </span>
+                <span style="font-size: 0.78rem; color: var(--text-muted);" data-i18n="mc_conv_legend">
+                  Դեղին գիծ՝ ճշգրիտ արժեք | Կապույտ՝ մոտարկում
+                </span>
+              </div>
+              <canvas id="mc-convergence-canvas" class="mc-convergence-canvas"></canvas>
+            </div>
+
+            <!-- Controls and Real-time Stats -->
+            <div
+              class="controls-wrapper"
+              style="
+                flex: 1;
+                min-width: 280px;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+              "
+            >
+              <!-- Function and Bounds Selection -->
+              <div
+                class="control-group"
+                style="background: var(--bg-panel); padding: 16px; border-radius: 12px; border: 1px solid var(--glass-border);"
+              >
+                <div style="margin-bottom: 12px;">
+                  <label style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;" data-i18n="mc_method_label">Մեթոդ</label>
+                  <select id="mc-method-select" class="calc-select" onchange="mcChangeMethod(this.value)">
+                    <option value="hit_or_miss" data-i18n="mc_method_hit_or_miss" selected>Hit-or-Miss (Կորի տակ ընկնելու հարաբերություն)</option>
+                    <option value="sample_mean" data-i18n="mc_method_sample_mean">Ընտրանքի միջին (Sample Mean)</option>
+                  </select>
+                </div>
+
+                <label style="font-weight: 600; color: var(--text-primary); margin-bottom: 6px;" data-i18n="mc_func_label">
+                  Ֆունկցիա (f(x))
+                </label>
+                <select id="mc-func-select" class="calc-select" onchange="mcChangeFunction()">
+                  <option value="x2">f(x) = x² [0, 1] (Ճշգրիտ՝ 1/3)</option>
+                  <option value="sin">f(x) = sin(x) [0, π] (Ճշգրիտ՝ 2.0)</option>
+                  <option value="quarter_circle">f(x) = √(1 - x²) [0, 1] (Ճշգրիտ՝ π/4)</option>
+                  <option value="exp">f(x) = e^(-x) [0, 2] (Ճշգրիտ՝ 1 - e⁻²)</option>
+                  <option value="inv_quad">f(x) = 1 / (1 + x²) [0, 1] (Ճշգրիտ՝ π/4)</option>
+                  <option value="parabola_inv">f(x) = 4 - x² [0, 2] (Ճշգրիտ՝ 16/3)</option>
+                  <option value="poly">f(x) = x³ - 2x + 3 [0, 2] (Ճշգրիտ՝ 6.0)</option>
+                </select>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;">
+                  <div>
+                    <label style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="mc_bound_a">Ստորին (a)</label>
+                    <input type="number" id="mc-bound-a" value="0" step="0.1" style="width: 100%; padding: 8px 10px; background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--glass-border); border-radius: 8px; font-weight: 600;" onchange="mcUpdateBounds()">
+                  </div>
+                  <div>
+                    <label style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="mc_bound_b">Վերին (b)</label>
+                    <input type="number" id="mc-bound-b" value="1" step="0.1" style="width: 100%; padding: 8px 10px; background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--glass-border); border-radius: 8px; font-weight: 600;" onchange="mcUpdateBounds()">
+                  </div>
+                </div>
+
+                <div style="margin-top: 12px;">
+                  <label style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="mc_points_label">Կետերի թիրախ (N)</label>
+                  <select id="mc-points-target" class="calc-select" onchange="mcUpdateTarget()">
+                    <option value="500">500 կետ</option>
+                    <option value="1000" selected>1,000 կետ</option>
+                    <option value="5000">5,000 կետ</option>
+                    <option value="10000">10,000 կետ</option>
+                    <option value="50000">50,000 կետ</option>
+                  </select>
+                </div>
+
+                <div style="margin-top: 12px;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+                    <span data-i18n="mc_speed_label">Արագություն</span>
+                    <span id="mc-speed-val">35</span>
+                  </div>
+                  <input type="range" id="mc-speed-slider" min="1" max="100" value="35" style="width: 100%; margin-top: 4px;" oninput="document.getElementById('mc-speed-val').innerText = this.value;">
+                </div>
+
+                <!-- Simulation Action Buttons -->
+                <div class="mc-btn-grid" style="margin-top: 16px;">
+                  <button class="glow-btn" id="mc-btn-start" onclick="mcStart()">
+                    <i class="fas fa-play"></i> <span data-i18n="mc_btn_start">Սկսել</span>
+                  </button>
+                  <button class="glow-btn secondary" id="mc-btn-pause" onclick="mcPause()">
+                    <i class="fas fa-pause"></i> <span data-i18n="mc_btn_pause">Դադարեցնել</span>
+                  </button>
+                  <button class="glow-btn secondary" id="mc-btn-resume" onclick="mcResume()">
+                    <i class="fas fa-forward"></i> <span data-i18n="mc_btn_resume">Շարունակել</span>
+                  </button>
+                  <button class="glow-btn secondary" id="mc-btn-reset" onclick="mcReset()">
+                    <i class="fas fa-undo"></i> <span data-i18n="mc_btn_reset">Զրոյացնել</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Live Stats Card -->
+              <div
+                class="stats-card"
+                style="
+                  background: var(--bg-panel);
+                  padding: 16px;
+                  border-radius: 12px;
+                  border: 1px solid var(--glass-border);
+                "
+              >
+                <h4
+                  style="
+                    margin: 0 0 12px;
+                    color: var(--accent-gold);
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                  "
+                  data-i18n="stat_realtime_analysis"
+                >
+                  <i class="fas fa-calculator"></i> Իրական Ժամանակի Վերլուծություն
+                </h4>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 10px;
+                    font-size: 0.85rem;
+                    color: var(--text-primary);
+                  "
+                >
+                  <div>
+                    <span style="color: var(--text-muted);" data-i18n="mc_stat_total">Ընդհանուր (N)՝</span><br>
+                    <strong id="mc-stat-n" style="color: var(--neon-purple); font-size: 1.05rem;">0</strong>
+                  </div>
+                  <div>
+                    <span style="color: var(--text-muted);" data-i18n="mc_stat_inside">Կորի տակ (N_in)՝</span><br>
+                    <strong id="mc-stat-nin" style="color: var(--accent-emerald); font-size: 1.05rem;">0</strong>
+                  </div>
+                  <div>
+                    <span style="color: var(--text-muted);" data-i18n="mc_stat_ratio">Հարաբերություն՝</span><br>
+                    <strong id="mc-stat-ratio">0.0000</strong>
+                  </div>
+                  <div>
+                    <span style="color: var(--text-muted);" data-i18n="mc_stat_exact">Ճշգրիտ արժեք՝</span><br>
+                    <strong id="mc-stat-exact" style="color: #38bdf8;">0.333333</strong>
+                  </div>
+                  <div
+                    style="
+                      grid-column: span 2;
+                      height: 1px;
+                      background: var(--border-dim);
+                      margin: 4px 0;
+                    "
+                  ></div>
+                  <div style="grid-column: span 2; background: rgba(168,85,247,0.08); padding: 10px; border-radius: 8px; border-left: 3px solid var(--accent-gold);">
+                    <span style="font-size: 0.82rem; color: var(--text-muted);" data-i18n="mc_stat_approx">Մոտավոր ինտեգրալ (I_N)՝</span><br>
+                    <strong id="mc-stat-approx" style="color: var(--accent-gold); font-size: 1.35rem; font-family: monospace;">—</strong>
+                  </div>
+                  <div>
+                    <span style="color: var(--text-muted);" data-i18n="mc_stat_abs_err">Բացարձակ սխալ՝</span><br>
+                    <strong id="mc-stat-abs-err" style="color: var(--accent-pink); font-family: monospace;">—</strong>
+                  </div>
+                  <div>
+                    <span style="color: var(--text-muted);" data-i18n="mc_stat_stderr">Ստանդարտ սխալ՝</span><br>
+                    <strong id="mc-stat-stderr" style="color: var(--text-primary); font-family: monospace;">—</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- ──── GALTON BOARD ──── -->
         <div
           id="sim-galton"
           class="sim-panel glass-panel"
-          style="display: block; padding: 20px"
+          style="display: none; padding: 20px"
         >
           <div
             class="sim-header"
@@ -2300,10 +2817,13 @@
 
     <!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
     <script>
-      window.GEMINI_API_KEY = "AIzaSyDghOkcsuUBMSVE2qVDKMyNmE4EAad1DLo";
+      // Gemini API Key: retrieved safely from user's browser localStorage if set; offline calculation works by default.
+      window.GEMINI_API_KEY = (typeof localStorage !== 'undefined' ? localStorage.getItem('probspace_gemini_api_key') : '') || '';
     </script>
+    <script src="js/math-renderer.js"></script>
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/lab-i18n.js"></script>
     <script src="js/calculator.js"></script>
     <script src="js/simulations.js"></script>
     <script src="js/ai.js"></script>

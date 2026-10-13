@@ -282,6 +282,8 @@
     grid-template-columns: 270px 1fr;
     gap: 36px;
     min-height: 80vh;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .sidebar {
@@ -297,6 +299,7 @@
     border-radius: 20px;
     padding: 22px;
     transition: all 0.3s ease;
+    min-width: 0;
 }
 
 [data-theme='light'] .sidebar {
@@ -332,6 +335,30 @@
     word-break: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.theory-content table,
+.theory-subsection table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-collapse: collapse;
+}
+
+mjx-container,
+.theory-content mjx-container,
+.theory-subsection mjx-container {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    vertical-align: middle;
+}
+mjx-container[display="true"] {
+    display: block !important;
+    overflow-x: auto !important;
 }
 
 .theory-content h2 {

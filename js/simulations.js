@@ -8,7 +8,7 @@
 /* ============================================================
  * SIMULATION SELECTOR
  * ============================================================ */
-let currentSim = 'galton';
+let currentSim = 'integral';
 
 function showSimulation(simId, btnEl) {
     currentSim = simId;
@@ -25,10 +25,12 @@ function showSimulation(simId, btnEl) {
         setTimeout(() => panel.classList.remove('fade-in-up'), 600);
     }
 
+    if (simId === 'integral') initIntegralSim();
     if (simId === 'galton') initGalton();
     if (simId === 'buffon') initBuffon();
     if (simId === 'coin') initCoin();
     if (simId === 'dice') initDice();
+    if (typeof typesetVisibleMath === 'function') typesetVisibleMath();
 }
 
 function updateSimDescriptions() {
@@ -48,8 +50,7 @@ function updateSimDescriptions() {
             };
             msgEl.innerHTML = msgTemplate[lang];
         } else {
-            // Leave result texts alone as they auto-reset after 2 seconds anyway, or write out previous if needed.
-            // Auto runs and results have their own msg, we can rely on new game reset.
+            // Leave result texts alone
         }
     }
 
@@ -59,7 +60,750 @@ function updateSimDescriptions() {
     updateBuffonStats();
     if (typeof updateCoinStats === 'function') updateCoinStats();
     if (typeof updateDiceStats === 'function') updateDiceStats();
+    if (typeof updateIntegralStats === 'function') updateIntegralStats();
+
+    // Refresh Monte Carlo select options
+    const mcFuncSelect = document.getElementById('mc-func-select');
+    if (mcFuncSelect) {
+        const funcLabels = {
+            'x2': { hy: 'f(x) = x² [0, 1] (Ճշգրիտ՝ 1/3)', en: 'f(x) = x² [0, 1] (Exact: 1/3)', ru: 'f(x) = x² [0, 1] (Точно: 1/3)' },
+            'sin': { hy: 'f(x) = sin(x) [0, π] (Ճշգրիտ՝ 2.0)', en: 'f(x) = sin(x) [0, π] (Exact: 2.0)', ru: 'f(x) = sin(x) [0, π] (Точно: 2.0)' },
+            'quarter_circle': { hy: 'f(x) = √(1 - x²) [0, 1] (Ճշգրիտ՝ π/4)', en: 'f(x) = √(1 - x²) [0, 1] (Exact: π/4)', ru: 'f(x) = √(1 - x²) [0, 1] (Точно: π/4)' },
+            'exp': { hy: 'f(x) = e^(-x) [0, 2] (Ճշգրիտ՝ 1 - e⁻²)', en: 'f(x) = e^(-x) [0, 2] (Exact: 1 - e⁻²)', ru: 'f(x) = e^(-x) [0, 2] (Точно: 1 - e⁻²)' },
+            'inv_quad': { hy: 'f(x) = 1 / (1 + x²) [0, 1] (Ճշգրիտ՝ π/4)', en: 'f(x) = 1 / (1 + x²) [0, 1] (Exact: π/4)', ru: 'f(x) = 1 / (1 + x²) [0, 1] (Точно: π/4)' },
+            'parabola_inv': { hy: 'f(x) = 4 - x² [0, 2] (Ճշգրիտ՝ 16/3)', en: 'f(x) = 4 - x² [0, 2] (Exact: 16/3)', ru: 'f(x) = 4 - x² [0, 2] (Точно: 16/3)' },
+            'poly': { hy: 'f(x) = x³ - 2x + 3 [0, 2] (Ճշգրիտ՝ 6.0)', en: 'f(x) = x³ - 2x + 3 [0, 2] (Exact: 6.0)', ru: 'f(x) = x³ - 2x + 3 [0, 2] (Точно: 6.0)' }
+        };
+        for (let i = 0; i < mcFuncSelect.options.length; i++) {
+            const opt = mcFuncSelect.options[i];
+            if (funcLabels[opt.value] && funcLabels[opt.value][lang]) {
+                opt.text = funcLabels[opt.value][lang];
+            }
+        }
+    }
+
+    const mcPointsTarget = document.getElementById('mc-points-target');
+    if (mcPointsTarget) {
+        const pointLabels = {
+            '500': { hy: '500 կետ', en: '500 points', ru: '500 точек' },
+            '1000': { hy: '1,000 կետ', en: '1,000 points', ru: '1 000 точек' },
+            '5000': { hy: '5,000 կետ', en: '5,000 points', ru: '5 000 точек' },
+            '10000': { hy: '10,000 կետ', en: '10,000 points', ru: '10 000 точек' },
+            '50000': { hy: '50,000 կետ', en: '50,000 points', ru: '50 000 точек' }
+        };
+        for (let i = 0; i < mcPointsTarget.options.length; i++) {
+            const opt = mcPointsTarget.options[i];
+            if (pointLabels[opt.value] && pointLabels[opt.value][lang]) {
+                opt.text = pointLabels[opt.value][lang];
+            }
+        }
+    }
 }
+
+
+/* ============================================================
+ * 0. MONTE CARLO INTEGRATION SIMULATION (ENHANCED)
+ * Supports Hit-or-Miss and Sample Mean methods, dynamic bounds,
+ * negative/signed functions, error tracking, and persistent state.
+ * ============================================================ */
+const MC_FUNCTIONS = {
+    'x2': {
+        name: 'f(x) = x²',
+        f: (x) => x * x,
+        defaultA: 0,
+        defaultB: 1,
+        exact: (a, b) => (Math.pow(b, 3) - Math.pow(a, 3)) / 3,
+        badge: 'f(x) = x²'
+    },
+    'sin': {
+        name: 'f(x) = sin(x)',
+        f: (x) => Math.sin(x),
+        defaultA: 0,
+        defaultB: Math.PI,
+        exact: (a, b) => Math.cos(a) - Math.cos(b),
+        badge: 'f(x) = sin(x)'
+    },
+    'quarter_circle': {
+        name: 'f(x) = √(1 - x²)',
+        f: (x) => {
+            if (x < -1 || x > 1) return NaN;
+            return Math.sqrt(1 - x * x);
+        },
+        defaultA: 0,
+        defaultB: 1,
+        exact: (a, b) => {
+            const clampedA = Math.max(-1, Math.min(1, a));
+            const clampedB = Math.max(-1, Math.min(1, b));
+            const F = (x) => 0.5 * (x * Math.sqrt(Math.max(0, 1 - x * x)) + Math.asin(x));
+            return F(clampedB) - F(clampedA);
+        },
+        badge: 'f(x) = √(1 - x²)'
+    },
+    'exp': {
+        name: 'f(x) = e^(-x)',
+        f: (x) => Math.exp(-x),
+        defaultA: 0,
+        defaultB: 2,
+        exact: (a, b) => Math.exp(-a) - Math.exp(-b),
+        badge: 'f(x) = e^(-x)'
+    },
+    'inv_quad': {
+        name: 'f(x) = 1 / (1 + x²)',
+        f: (x) => 1 / (1 + x * x),
+        defaultA: 0,
+        defaultB: 1,
+        exact: (a, b) => Math.atan(b) - Math.atan(a),
+        badge: 'f(x) = 1 / (1 + x²)'
+    },
+    'parabola_inv': {
+        name: 'f(x) = 4 - x²',
+        f: (x) => 4 - x * x,
+        defaultA: 0,
+        defaultB: 2,
+        exact: (a, b) => (4 * b - Math.pow(b, 3) / 3) - (4 * a - Math.pow(a, 3) / 3),
+        badge: 'f(x) = 4 - x²'
+    },
+    'poly': {
+        name: 'f(x) = x³ - 2x + 3',
+        f: (x) => Math.pow(x, 3) - 2 * x + 3,
+        defaultA: 0,
+        defaultB: 2,
+        exact: (a, b) => (Math.pow(b, 4) / 4 - Math.pow(b, 2) + 3 * b) - (Math.pow(a, 4) / 4 - Math.pow(a, 2) + 3 * a),
+        badge: 'f(x) = x³ - 2x + 3'
+    }
+};
+
+function getMcFunctionBounds(def, a, b) {
+    let minVal = 0;
+    let maxVal = 0;
+    const steps = 120;
+    const minX = Math.min(a, b);
+    const maxX = Math.max(a, b);
+    for (let i = 0; i <= steps; i++) {
+        const x = minX + (i / steps) * (maxX - minX);
+        const y = def.f(x);
+        if (Number.isFinite(y)) {
+            minVal = Math.min(minVal, y);
+            maxVal = Math.max(maxVal, y);
+        }
+    }
+    let minY = minVal < 0 ? minVal * 1.1 : 0;
+    let maxY = maxVal > 0 ? maxVal * 1.1 : 0.5;
+    if (maxY <= minY) maxY = minY + 1;
+    return { minY, maxY };
+}
+
+let mcCanvas = null;
+let mcCtx = null;
+let mcConvCanvas = null;
+let mcConvCtx = null;
+let mcRunning = false;
+let mcPaused = false;
+let mcAnimId = null;
+let mcFuncKey = 'x2';
+let mcMethod = 'hit_or_miss';
+let mcA = 0;
+let mcB = 1;
+let mcMinY = 0;
+let mcMaxY = 1.05;
+let mcTargetN = 1000;
+let mcCurrentN = 0;
+let mcCurrentNin = 0;
+let mcSumY = 0;
+let mcSumY2 = 0;
+let mcPointsList = [];
+let mcConvergenceHistory = [];
+
+function updateMcButtonStates() {
+    const btnStart = document.getElementById('mc-btn-start');
+    const btnPause = document.getElementById('mc-btn-pause');
+    const btnResume = document.getElementById('mc-btn-resume');
+    const btnReset = document.getElementById('mc-btn-reset');
+
+    if (btnStart) btnStart.disabled = mcRunning;
+    if (btnPause) btnPause.disabled = !mcRunning || mcPaused;
+    if (btnResume) btnResume.disabled = mcRunning;
+    if (btnReset) btnReset.disabled = false;
+}
+
+function initIntegralSim() {
+    mcCanvas = document.getElementById('mc-integral-canvas');
+    mcConvCanvas = document.getElementById('mc-convergence-canvas');
+    if (!mcCanvas || !mcConvCanvas) return;
+
+    mcCtx = mcCanvas.getContext('2d');
+    mcConvCtx = mcConvCanvas.getContext('2d');
+
+    const dpr = window.devicePixelRatio || 1;
+    const w = mcCanvas.offsetWidth || 560;
+    const h = mcCanvas.offsetHeight || 380;
+    mcCanvas.width = w * dpr;
+    mcCanvas.height = h * dpr;
+    mcCtx.scale(dpr, dpr);
+
+    const cw = mcConvCanvas.offsetWidth || 560;
+    const ch = mcConvCanvas.offsetHeight || 160;
+    mcConvCanvas.width = cw * dpr;
+    mcConvCanvas.height = ch * dpr;
+    mcConvCtx.scale(dpr, dpr);
+
+    const sel = document.getElementById('mc-func-select');
+    if (sel) mcFuncKey = sel.value;
+    const def = MC_FUNCTIONS[mcFuncKey] || MC_FUNCTIONS['x2'];
+
+    const inA = document.getElementById('mc-bound-a');
+    const inB = document.getElementById('mc-bound-b');
+    if (inA) mcA = parseFloat(inA.value);
+    if (inB) mcB = parseFloat(inB.value);
+    if (isNaN(mcA)) mcA = def.defaultA;
+    if (isNaN(mcB)) mcB = def.defaultB;
+
+    const bounds = getMcFunctionBounds(def, mcA, mcB);
+    mcMinY = bounds.minY;
+    mcMaxY = bounds.maxY;
+
+    const methodSel = document.getElementById('mc-method-select');
+    if (methodSel) mcMethod = methodSel.value || 'hit_or_miss';
+
+    const targetSel = document.getElementById('mc-points-target');
+    if (targetSel) mcTargetN = parseInt(targetSel.value) || 1000;
+
+    const badge = document.getElementById('mc-func-badge');
+    if (badge) badge.innerText = def.badge;
+
+    updateMcButtonStates();
+    updateIntegralStats();
+    drawIntegralCanvas();
+    drawConvergenceCanvas();
+}
+
+function mcChangeMethod(m) {
+    mcMethod = m || 'hit_or_miss';
+    mcReset();
+}
+
+function mcChangeFunction() {
+    const sel = document.getElementById('mc-func-select');
+    if (!sel) return;
+    mcFuncKey = sel.value;
+    const def = MC_FUNCTIONS[mcFuncKey];
+    if (!def) return;
+
+    mcA = def.defaultA;
+    mcB = def.defaultB;
+    const inA = document.getElementById('mc-bound-a');
+    const inB = document.getElementById('mc-bound-b');
+    if (inA) inA.value = mcA;
+    if (inB) inB.value = Math.round(mcB * 1000) / 1000;
+
+    const bounds = getMcFunctionBounds(def, mcA, mcB);
+    mcMinY = bounds.minY;
+    mcMaxY = bounds.maxY;
+
+    const badge = document.getElementById('mc-func-badge');
+    if (badge) badge.innerText = def.badge;
+
+    mcReset();
+}
+
+function mcUpdateBounds() {
+    const inA = document.getElementById('mc-bound-a');
+    const inB = document.getElementById('mc-bound-b');
+    if (inA) mcA = parseFloat(inA.value);
+    if (inB) mcB = parseFloat(inB.value);
+
+    if (isNaN(mcA)) mcA = 0;
+    if (isNaN(mcB) || mcB === mcA) mcB = mcA + 1;
+
+    // Check quarter circle domain
+    if (mcFuncKey === 'quarter_circle') {
+        if (mcA < -1 || mcB > 1) {
+            alert('√(1 - x²) ֆունկցիան սահմանված է միայն [-1, 1] միջակայքում։');
+            mcA = Math.max(-1, Math.min(1, mcA));
+            mcB = Math.max(-1, Math.min(1, mcB));
+            if (inA) inA.value = mcA;
+            if (inB) inB.value = mcB;
+        }
+    }
+
+    const def = MC_FUNCTIONS[mcFuncKey] || MC_FUNCTIONS['x2'];
+    const bounds = getMcFunctionBounds(def, mcA, mcB);
+    mcMinY = bounds.minY;
+    mcMaxY = bounds.maxY;
+
+    mcReset();
+}
+
+function mcUpdateTarget() {
+    const targetSel = document.getElementById('mc-points-target');
+    if (targetSel) mcTargetN = parseInt(targetSel.value) || 1000;
+}
+
+function mcStart() {
+    if (mcRunning && !mcPaused) return;
+
+    if (!mcPaused) {
+        mcCurrentN = 0;
+        mcCurrentNin = 0;
+        mcSumY = 0;
+        mcSumY2 = 0;
+        mcPointsList = [];
+        mcConvergenceHistory = [];
+    }
+
+    mcRunning = true;
+    mcPaused = false;
+    updateMcButtonStates();
+
+    if (mcAnimId) cancelAnimationFrame(mcAnimId);
+    mcLoop();
+}
+
+function mcPause() {
+    mcPaused = true;
+    mcRunning = false;
+    updateMcButtonStates();
+    if (mcAnimId) cancelAnimationFrame(mcAnimId);
+}
+
+function mcResume() {
+    if (mcCurrentN >= mcTargetN) {
+        mcTargetN += 1000;
+        const targetSel = document.getElementById('mc-points-target');
+        if (targetSel) {
+            for (let i = 0; i < targetSel.options.length; i++) {
+                if (parseInt(targetSel.options[i].value) >= mcTargetN) {
+                    targetSel.selectedIndex = i;
+                    mcTargetN = parseInt(targetSel.options[i].value);
+                    break;
+                }
+            }
+        }
+    }
+    mcRunning = true;
+    mcPaused = false;
+    updateMcButtonStates();
+    if (mcAnimId) cancelAnimationFrame(mcAnimId);
+    mcLoop();
+}
+
+function mcReset() {
+    mcRunning = false;
+    mcPaused = false;
+    if (mcAnimId) cancelAnimationFrame(mcAnimId);
+
+    mcCurrentN = 0;
+    mcCurrentNin = 0;
+    mcSumY = 0;
+    mcSumY2 = 0;
+    mcPointsList = [];
+    mcConvergenceHistory = [];
+
+    updateMcButtonStates();
+    updateIntegralStats();
+    drawIntegralCanvas();
+    drawConvergenceCanvas();
+}
+
+function mcLoop() {
+    if (!mcRunning || mcPaused) return;
+
+    const speedSlider = document.getElementById('mc-speed-slider');
+    const speed = speedSlider ? parseInt(speedSlider.value) : 35;
+    const batchSize = Math.max(1, Math.round(Math.pow(speed / 10, 2.2)));
+
+    const def = MC_FUNCTIONS[mcFuncKey] || MC_FUNCTIONS['x2'];
+    const remaining = mcTargetN - mcCurrentN;
+    const toGen = Math.min(batchSize, remaining);
+
+    const boxH = mcMaxY - mcMinY;
+    const boxW = mcB - mcA;
+
+    for (let i = 0; i < toGen; i++) {
+        const rx = mcA + Math.random() * boxW;
+        const fy = def.f(rx);
+
+        if (mcMethod === 'hit_or_miss') {
+            const ry = mcMinY + Math.random() * boxH;
+            let inside = false;
+            let hitScore = 0;
+
+            if (fy >= 0) {
+                if (ry >= 0 && ry <= fy) {
+                    inside = true;
+                    hitScore = 1;
+                }
+            } else {
+                if (ry <= 0 && ry >= fy) {
+                    inside = true;
+                    hitScore = -1;
+                }
+            }
+
+            mcCurrentN++;
+            mcCurrentNin += hitScore;
+
+            if (mcPointsList.length > 1500) mcPointsList.shift();
+            mcPointsList.push({ x: rx, y: ry, inside: inside });
+
+            if (mcCurrentN <= 100 || mcCurrentN % Math.max(1, Math.floor(mcTargetN / 120)) === 0 || mcCurrentN === mcTargetN) {
+                const currentEst = boxW * boxH * (mcCurrentNin / mcCurrentN);
+                mcConvergenceHistory.push({ n: mcCurrentN, est: currentEst });
+            }
+        } else {
+            // SAMPLE MEAN METHOD: I_N = (b - a)/N * sum f(X_i)
+            if (Number.isFinite(fy)) {
+                mcCurrentN++;
+                mcSumY += fy;
+                mcSumY2 += fy * fy;
+
+                if (mcPointsList.length > 1500) mcPointsList.shift();
+                mcPointsList.push({ x: rx, y: fy, inside: true });
+
+                if (mcCurrentN <= 100 || mcCurrentN % Math.max(1, Math.floor(mcTargetN / 120)) === 0 || mcCurrentN === mcTargetN) {
+                    const currentEst = boxW * (mcSumY / mcCurrentN);
+                    mcConvergenceHistory.push({ n: mcCurrentN, est: currentEst });
+                }
+            }
+        }
+    }
+
+    updateIntegralStats();
+    drawIntegralCanvas();
+    drawConvergenceCanvas();
+
+    if (mcCurrentN >= mcTargetN) {
+        mcRunning = false;
+        mcPaused = false;
+        updateMcButtonStates();
+        return;
+    }
+
+    mcAnimId = requestAnimationFrame(mcLoop);
+}
+
+function updateIntegralStats() {
+    const def = MC_FUNCTIONS[mcFuncKey] || MC_FUNCTIONS['x2'];
+    const exactVal = def.exact(mcA, mcB);
+    const boxW = mcB - mcA;
+    const boxH = mcMaxY - mcMinY;
+
+    let approx = null;
+    let ratio = null;
+    let absErr = null;
+    let stdErr = null;
+
+    if (mcCurrentN > 0) {
+        if (mcMethod === 'hit_or_miss') {
+            ratio = mcCurrentNin / mcCurrentN;
+            approx = boxW * boxH * ratio;
+            const p = Math.abs(ratio);
+            stdErr = (boxW * boxH) * Math.sqrt(Math.max(0, p * (1 - p)) / mcCurrentN);
+        } else {
+            const meanY = mcSumY / mcCurrentN;
+            approx = boxW * meanY;
+            const variance = Math.max(0, (mcSumY2 / mcCurrentN) - Math.pow(meanY, 2));
+            stdErr = Math.abs(boxW) * Math.sqrt(variance / mcCurrentN);
+            ratio = meanY;
+        }
+        absErr = Math.abs(approx - exactVal);
+    }
+
+    const elN = document.getElementById('mc-stat-n');
+    const elNin = document.getElementById('mc-stat-nin');
+    const elRatio = document.getElementById('mc-stat-ratio');
+    const elExact = document.getElementById('mc-stat-exact');
+    const elApprox = document.getElementById('mc-stat-approx');
+    const elAbsErr = document.getElementById('mc-stat-abs-err');
+    const elStdErr = document.getElementById('mc-stat-stderr');
+
+    if (elN) elN.innerText = mcCurrentN > 0 ? mcCurrentN.toLocaleString() : '0';
+    if (elNin) {
+        if (mcMethod === 'sample_mean') elNin.innerText = mcCurrentN > 0 ? mcCurrentN.toLocaleString() : '—';
+        else elNin.innerText = mcCurrentN > 0 ? mcCurrentNin.toLocaleString() : '—';
+    }
+    if (elRatio) elRatio.innerText = ratio !== null ? ratio.toFixed(4) : '—';
+    if (elExact) elExact.innerText = Number.isFinite(exactVal) ? exactVal.toFixed(6) : '—';
+    if (elApprox) elApprox.innerText = approx !== null ? approx.toFixed(6) : '—';
+    if (elAbsErr) elAbsErr.innerText = absErr !== null ? absErr.toFixed(6) : '—';
+    if (elStdErr) elStdErr.innerText = stdErr !== null ? stdErr.toFixed(6) : '—';
+}
+
+function drawIntegralCanvas() {
+    if (!mcCanvas || !mcCtx) return;
+    const w = mcCanvas.offsetWidth || 560;
+    const h = mcCanvas.offsetHeight || 380;
+    const dpr = window.devicePixelRatio || 1;
+
+    if (mcCanvas.width !== w * dpr || mcCanvas.height !== h * dpr) {
+        mcCanvas.width = w * dpr;
+        mcCanvas.height = h * dpr;
+        mcCtx.setTransform(1, 0, 0, 1, 0, 0);
+        mcCtx.scale(dpr, dpr);
+    }
+
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const bgCol = isLight ? '#ffffff' : '#080214';
+    const axisCol = isLight ? '#94a3b8' : 'rgba(255, 255, 255, 0.2)';
+    const textCol = isLight ? '#334155' : 'rgba(255, 255, 255, 0.7)';
+    const gridCol = isLight ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.03)';
+
+    mcCtx.fillStyle = bgCol;
+    mcCtx.fillRect(0, 0, w, h);
+
+    const padLeft = 55;
+    const padRight = 30;
+    const padTop = 30;
+    const padBottom = 42;
+    const plotW = w - padLeft - padRight;
+    const plotH = h - padTop - padBottom;
+
+    const toPxX = (x) => padLeft + ((x - mcA) / (mcB - mcA)) * plotW;
+    const toPxY = (y) => padTop + plotH - ((y - mcMinY) / (mcMaxY - mcMinY)) * plotH;
+
+    // Grid lines
+    mcCtx.strokeStyle = gridCol;
+    mcCtx.lineWidth = 1;
+    for (let i = 1; i <= 4; i++) {
+        const gy = padTop + (plotH / 5) * i;
+        mcCtx.beginPath();
+        mcCtx.moveTo(padLeft, gy);
+        mcCtx.lineTo(padLeft + plotW, gy);
+        mcCtx.stroke();
+
+        const gx = padLeft + (plotW / 5) * i;
+        mcCtx.beginPath();
+        mcCtx.moveTo(gx, padTop);
+        mcCtx.lineTo(gx, padTop + plotH);
+        mcCtx.stroke();
+    }
+
+    // Bounding Box [a, b] x [minY, maxY]
+    if (mcMethod === 'hit_or_miss') {
+        mcCtx.strokeStyle = '#facc15';
+        mcCtx.lineWidth = 1.5;
+        mcCtx.setLineDash([5, 4]);
+        mcCtx.strokeRect(padLeft, padTop, plotW, plotH);
+        mcCtx.setLineDash([]);
+    }
+
+    const def = MC_FUNCTIONS[mcFuncKey] || MC_FUNCTIONS['x2'];
+    const zeroY = toPxY(0);
+
+    // Shaded area under curve
+    mcCtx.beginPath();
+    mcCtx.moveTo(toPxX(mcA), zeroY);
+    const steps = 180;
+    for (let i = 0; i <= steps; i++) {
+        const x = mcA + (i / steps) * (mcB - mcA);
+        const y = def.f(x);
+        if (Number.isFinite(y)) {
+            mcCtx.lineTo(toPxX(x), toPxY(y));
+        }
+    }
+    mcCtx.lineTo(toPxX(mcB), zeroY);
+    mcCtx.closePath();
+
+    const areaGrad = mcCtx.createLinearGradient(0, padTop, 0, padTop + plotH);
+    areaGrad.addColorStop(0, isLight ? 'rgba(124, 58, 237, 0.22)' : 'rgba(168, 85, 247, 0.25)');
+    areaGrad.addColorStop(1, isLight ? 'rgba(56, 189, 248, 0.08)' : 'rgba(56, 189, 248, 0.05)');
+    mcCtx.fillStyle = areaGrad;
+    mcCtx.fill();
+
+    // Curve
+    mcCtx.beginPath();
+    let started = false;
+    for (let i = 0; i <= steps; i++) {
+        const x = mcA + (i / steps) * (mcB - mcA);
+        const y = def.f(x);
+        if (Number.isFinite(y)) {
+            const px = toPxX(x);
+            const py = toPxY(y);
+            if (!started) { mcCtx.moveTo(px, py); started = true; }
+            else mcCtx.lineTo(px, py);
+        }
+    }
+    mcCtx.strokeStyle = '#38bdf8';
+    mcCtx.lineWidth = 2.5;
+    mcCtx.stroke();
+
+    // Plotted points
+    for (let i = 0; i < mcPointsList.length; i++) {
+        const pt = mcPointsList[i];
+        const px = toPxX(pt.x);
+        const py = toPxY(pt.y);
+
+        mcCtx.fillStyle = pt.inside ? '#10b981' : '#f43f5e';
+        mcCtx.beginPath();
+        mcCtx.arc(px, py, 2.2, 0, Math.PI * 2);
+        mcCtx.fill();
+    }
+
+    // Axes
+    mcCtx.strokeStyle = axisCol;
+    mcCtx.lineWidth = 1.5;
+    mcCtx.beginPath();
+    mcCtx.moveTo(padLeft, padTop - 10);
+    mcCtx.lineTo(padLeft, padTop + plotH);
+    mcCtx.moveTo(padLeft, zeroY);
+    mcCtx.lineTo(padLeft + plotW + 15, zeroY);
+    mcCtx.stroke();
+
+    // Ticks & Labels
+    mcCtx.fillStyle = textCol;
+    mcCtx.font = '11px sans-serif';
+    mcCtx.textAlign = 'center';
+    mcCtx.fillText(mcA.toFixed(2), toPxX(mcA), zeroY + 16);
+    mcCtx.fillText(mcB.toFixed(2), toPxX(mcB), zeroY + 16);
+
+    mcCtx.textAlign = 'right';
+    mcCtx.fillText(mcMaxY.toFixed(2), padLeft - 8, padTop + 4);
+    mcCtx.fillText(mcMinY.toFixed(2), padLeft - 8, padTop + plotH);
+    if (mcMinY < 0 && mcMaxY > 0) {
+        mcCtx.fillText('0', padLeft - 8, zeroY + 4);
+    }
+
+    mcCtx.textAlign = 'left';
+    mcCtx.fillStyle = '#38bdf8';
+    mcCtx.fillText(`y [${mcMinY.toFixed(1)}, ${mcMaxY.toFixed(1)}]`, padLeft + 6, padTop - 12);
+    mcCtx.fillText('x', padLeft + plotW + 20, zeroY + 4);
+
+    // Legend
+    mcCtx.textAlign = 'left';
+    mcCtx.font = '10px sans-serif';
+    if (mcMethod === 'hit_or_miss') {
+        mcCtx.fillStyle = '#10b981';
+        mcCtx.fillRect(w - 180, padTop - 18, 10, 10);
+        mcCtx.fillStyle = textCol;
+        mcCtx.fillText('Hit (y ≤ f(x))', w - 165, padTop - 9);
+
+        mcCtx.fillStyle = '#f43f5e';
+        mcCtx.fillRect(w - 95, padTop - 18, 10, 10);
+        mcCtx.fillStyle = textCol;
+        mcCtx.fillText('Miss', w - 80, padTop - 9);
+    } else {
+        mcCtx.fillStyle = '#10b981';
+        mcCtx.fillRect(w - 180, padTop - 18, 10, 10);
+        mcCtx.fillStyle = textCol;
+        mcCtx.fillText('Ընտրանք (Sample point)', w - 165, padTop - 9);
+    }
+}
+
+function drawConvergenceCanvas() {
+    if (!mcConvCanvas || !mcConvCtx) return;
+    const w = mcConvCanvas.offsetWidth || 560;
+    const h = mcConvCanvas.offsetHeight || 160;
+    const dpr = window.devicePixelRatio || 1;
+
+    if (mcConvCanvas.width !== w * dpr || mcConvCanvas.height !== h * dpr) {
+        mcConvCanvas.width = w * dpr;
+        mcConvCanvas.height = h * dpr;
+        mcConvCtx.setTransform(1, 0, 0, 1, 0, 0);
+        mcConvCtx.scale(dpr, dpr);
+    }
+
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const bgCol = isLight ? '#ffffff' : '#080214';
+    const axisCol = isLight ? '#94a3b8' : 'rgba(255, 255, 255, 0.2)';
+    const textCol = isLight ? '#334155' : 'rgba(255, 255, 255, 0.7)';
+
+    mcConvCtx.fillStyle = bgCol;
+    mcConvCtx.fillRect(0, 0, w, h);
+
+    const padLeft = 55;
+    const padRight = 30;
+    const padTop = 15;
+    const padBottom = 30;
+    const plotW = w - padLeft - padRight;
+    const plotH = h - padTop - padBottom;
+
+    const def = MC_FUNCTIONS[mcFuncKey] || MC_FUNCTIONS['x2'];
+    const exact = def.exact(mcA, mcB);
+
+    let minY = exact * 0.5;
+    let maxY = exact * 1.5;
+    if (exact === 0 || !Number.isFinite(exact)) { minY = -1; maxY = 1; }
+    for (const pt of mcConvergenceHistory) {
+        if (pt.est < minY) minY = pt.est * 0.9;
+        if (pt.est > maxY) maxY = pt.est * 1.1;
+    }
+    if (maxY <= minY) maxY = minY + 1;
+
+    const toPxX = (n) => padLeft + (n / mcTargetN) * plotW;
+    const toPxY = (val) => padTop + plotH - ((val - minY) / (maxY - minY)) * plotH;
+
+    mcConvCtx.strokeStyle = axisCol;
+    mcConvCtx.lineWidth = 1;
+    mcConvCtx.beginPath();
+    mcConvCtx.moveTo(padLeft, padTop);
+    mcConvCtx.lineTo(padLeft, padTop + plotH);
+    mcConvCtx.lineTo(padLeft + plotW, padTop + plotH);
+    mcConvCtx.stroke();
+
+    if (Number.isFinite(exact)) {
+        const exactPy = toPxY(exact);
+        mcConvCtx.strokeStyle = '#facc15';
+        mcConvCtx.lineWidth = 1.5;
+        mcConvCtx.setLineDash([6, 4]);
+        mcConvCtx.beginPath();
+        mcConvCtx.moveTo(padLeft, exactPy);
+        mcConvCtx.lineTo(padLeft + plotW, exactPy);
+        mcConvCtx.stroke();
+        mcConvCtx.setLineDash([]);
+        mcConvCtx.fillStyle = textCol;
+        mcConvCtx.font = '10px sans-serif';
+        mcConvCtx.textAlign = 'right';
+        mcConvCtx.fillText(exact.toFixed(3), padLeft - 6, exactPy + 4);
+    }
+
+    if (mcConvergenceHistory.length > 1) {
+        mcConvCtx.beginPath();
+        for (let i = 0; i < mcConvergenceHistory.length; i++) {
+            const pt = mcConvergenceHistory[i];
+            const px = toPxX(pt.n);
+            const py = toPxY(pt.est);
+            if (i === 0) mcConvCtx.moveTo(px, py);
+            else mcConvCtx.lineTo(px, py);
+        }
+        mcConvCtx.strokeStyle = '#38bdf8';
+        mcConvCtx.lineWidth = 2;
+        mcConvCtx.stroke();
+    }
+
+    mcConvCtx.fillStyle = textCol;
+    mcConvCtx.font = '10px sans-serif';
+    mcConvCtx.textAlign = 'right';
+    mcConvCtx.fillText(maxY.toFixed(2), padLeft - 6, padTop + 10);
+    mcConvCtx.fillText(minY.toFixed(2), padLeft - 6, padTop + plotH);
+
+    mcConvCtx.textAlign = 'center';
+    mcConvCtx.fillText('0', padLeft, padTop + plotH + 16);
+    mcConvCtx.fillText(mcTargetN.toLocaleString(), padLeft + plotW, padTop + plotH + 16);
+    mcConvCtx.fillText('N (Trials)', padLeft + plotW / 2, padTop + plotH + 16);
+}
+
+window.mcChangeMethod = mcChangeMethod;
+
+
+// Window resize listener to keep canvases crisp
+window.addEventListener('resize', () => {
+    if (currentSim === 'integral') {
+        drawIntegralCanvas();
+        drawConvergenceCanvas();
+    }
+});
+
+// Global exports
+window.initIntegralSim = initIntegralSim;
+window.mcStart = mcStart;
+window.mcPause = mcPause;
+window.mcResume = mcResume;
+window.mcReset = mcReset;
+window.mcChangeFunction = mcChangeFunction;
+window.mcUpdateBounds = mcUpdateBounds;
+window.mcUpdateTarget = mcUpdateTarget;
+window.updateIntegralStats = updateIntegralStats;
+
 
 
 /* ============================================================
