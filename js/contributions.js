@@ -52,9 +52,13 @@
         {
             name: 'Կարապետյան Մեսրոպ',
             role: ['Վիճակագիր / ռիսկերի վերլուծաբան', 'Statistician / risk analyst', 'Статистик / аналитик рисков'],
-            work: ['Ներկայացրել է աշխատանքի Google Docs հղումը։ Պլանով նրա ուղղությունն է փորձերի քանակից ճշտության/սխալի կախվածությունը և Մոնտե Կառլոյի կիրառությունը ֆինանսներում։', 'Provided a Google Docs link to his work. His planned area is how precision/error depends on sample count and Monte Carlo applications in finance.', 'Представил ссылку на свою работу в Google Docs. Направление по плану — зависимость точности/ошибки от числа испытаний и применение Монте-Карло в финансах.'],
-            status: ['Google Docs փաստաթուղթ', 'Google Docs document', 'Документ Google Docs'], kind: 'linked',
-            links: [{href:'https://docs.google.com/document/d/13DUP6UqVrntDlilQpOCy1FWjfMN-U61alg_3dRZcGVk/edit?usp=sharing',label:['Բացել Մեսրոպի Google Docs փաստաթուղթը','Open Mesrop’s Google Docs document','Открыть документ Месропа в Google Docs']}],
+            work: ['Վերլուծել է π-ի մոտարկման 20 Մոնտե Կառլոյի փորձ՝ N=100,1000,10000,100000 արժեքներից յուրաքանչյուրի համար 5 կրկնությամբ։ Ներկայացրել է առանձին արդյունքներն ու բացարձակ սխալանքները, միջին π-ի և միջին բացարձակ սխալանքի աղյուսակները։ Այդ փորձերում միջին բացարձակ սխալանքը նվազել է 0.099681-ից մինչև 0.003076։', 'Analyzed 20 Monte Carlo estimates of π: five repetitions each at N=100,1000,10000,100000. Presented individual estimates and absolute errors, plus tables of mean π and mean absolute error. Across these experiments, the mean absolute error decreased from 0.099681 to 0.003076.', 'Проанализировал 20 оценок π методом Монте-Карло: по пять повторов при N=100,1000,10000,100000. Представил отдельные оценки и абсолютные ошибки, таблицы среднего π и средней абсолютной ошибки. В этих опытах средняя абсолютная ошибка снизилась с 0.099681 до 0.003076.'],
+            status: ['Վիճակագրական վերլուծություն', 'Statistical analysis', 'Статистический анализ'], kind: 'reviewed',
+            links: [
+                {href:'assets/contributions/mesrop-pi-analysis.html',label:['Բացել Մեսրոպի վերլուծությունն ու աղյուսակները','Open Mesrop’s analysis and tables','Открыть анализ и таблицы Месропа']},
+                {href:'assets/contributions/mesrop-pi-analysis.csv',download:true,label:['Ներբեռնել 20 փորձերի տվյալները՝ CSV','Download the 20 experiments as CSV','Скачать данные 20 опытов в CSV']},
+                {href:'https://docs.google.com/document/d/13DUP6UqVrntDlilQpOCy1FWjfMN-U61alg_3dRZcGVk/edit?usp=sharing',label:['Բացել Մեսրոպի Google Docs փաստաթուղթը','Open Mesrop’s Google Docs document','Открыть документ Месропа в Google Docs']}
+            ],
         },
         {
             name: 'Հալևորյան Արեն',
