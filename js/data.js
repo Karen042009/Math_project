@@ -582,9 +582,9 @@ window.probabilityData = {
     "ru": "© 2026 Проект «Метод Монте-Карло» | Все права защищены"
   },
   "footer_credits": {
-    "hy": "Կայքի ստեղծում՝ Խումարյան Գրիշա | Նախագծի ղեկավար՝ Մ. Սարդարյան",
-    "en": "Website creation: Grisha Khumaryan | Project supervisor: M. Sardaryan",
-    "ru": "Создание сайта: Гриша Хумарян | Руководитель проекта: М. Сардарян"
+    "hy": "Կայքի ստեղծող և կոորդինատոր՝ Գրիշա Խումարյան | Նախագծի ղեկավար՝ Մ. Սարդարյան",
+    "en": "Website creator and coordinator: Grisha Khumaryan | Project supervisor: M. Sardaryan",
+    "ru": "Создатель и координатор сайта: Гриша Хумарян | Руководитель проекта: М. Сардарян"
   },
   "calc_group_basic": {
     "hy": "Հիմնական",
