@@ -58,7 +58,7 @@ def get_chapter_12():
 <details class="selftest-box">
     <summary><i class="fas fa-question-circle"></i> Ինքնաստուգման հարց․ Ի՞նչ տարբերություն կա իրական պատահական թվերի (TRNG) և համակարգչային կեղծ-պատահական թվերի (PRNG) միջև։</summary>
     <div class="selftest-answer">
-        <strong>Պատասխան․</strong> Իրական պատահական թվերը գեներացվում են ֆիզիկական աղմուկից (օրինակ՝ ջերմային կամ ռադիոակտիվ տատանումներ)։ Համակարգչային PRNG-ները (ինչպիսին է JavaScript-ի <code>Math.random()</code>-ը կամ Mersenne Twister-ը) մաթեմատիկական դետերմինացված ալգորիթմներ են, որոնք ունեն հսկայական պարբերություն և վիճակագրորեն անզանազանելի են իրական պատահականությունից։
+        <strong>Պատասխան․</strong> Իրական պատահական թվերը գեներացվում են ֆիզիկական աղմուկից (օրինակ՝ ջերմային կամ ռադիոակտիվ տատանումներ)։ Համակարգչային PRNG-ները (ինչպիսին է JavaScript-ի <code>Math.random()</code>-ը կամ Mersenne Twister-ը) որոշելի մաթեմատիկական ալգորիթմներ են։ Լավ ընտրված գեներատորները կարող են անցնել պատահականության վիճակագրական թեստեր, սակայն նրանց արդյունքները կախված են սկզբնարժեքից և ալգորիթմից։ Մեծ պարբերությունը միայնակ չի երաշխավորում որակը կամ հաշվարկի ճշգրտությունը։
     </div>
 </details>
 """,
@@ -101,7 +101,7 @@ How do computational simulations synthesize truth from stochasticity? Any probab
 <details class="selftest-box">
     <summary><i class="fas fa-question-circle"></i> Self-Test Question: What distinguishes PRNGs from true physical random generators?</summary>
     <div class="selftest-answer">
-        <strong>Answer:</strong> True Random Number Generators (TRNGs) sample chaotic physical noise (quantum, thermal). Pseudo-Random Number Generators (PRNGs) are deterministic mathematical recurrences (e.g., Mersenne Twister) whose outputs are statistically indistinguishable from randomness for computational simulations.
+        <strong>Answer:</strong> True Random Number Generators (TRNGs) sample chaotic physical noise (quantum, thermal). Pseudo-Random Number Generators (PRNGs), such as Mersenne Twister, are deterministic algorithms. Well-chosen generators can pass statistical randomness tests, but their outputs depend on the seed and algorithm. A long period alone does not guarantee quality or numerical accuracy.
     </div>
 </details>
 """,
@@ -132,7 +132,7 @@ How do computational simulations synthesize truth from stochasticity? Any probab
 <details class="selftest-box">
     <summary><i class="fas fa-question-circle"></i> Вопрос для самопроверки: чем отличаются генераторы псевдослучайных чисел от физических случайных чисел?</summary>
     <div class="selftest-answer">
-        <strong>Ответ:</strong> Физические генераторы считывают тепловой или квантовый шум. Псевдослучайные алгоритмы (PRNG) детерминированы, но обладают гигантскими периодами и статистически неотличимы от идеального случайного шума.
+        <strong>Ответ:</strong> Физические генераторы считывают тепловой или квантовый шум. Псевдослучайные алгоритмы (PRNG) детерминированы. Хорошо выбранные генераторы могут проходить статистические тесты случайности, но результат зависит от начального значения и алгоритма. Большой период сам по себе не гарантирует качество или численную точность.
     </div>
 </details>
 """

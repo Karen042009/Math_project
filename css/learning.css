@@ -1,0 +1,34 @@
+.theory-search { margin: 24px 0; }
+.theory-search > label { display: block; margin-bottom: 8px; color: var(--text-primary); }
+.theory-search-controls { display: flex; flex-wrap: wrap; gap: 10px; }
+.theory-search input, .glossary-dialog input { flex: 1 1 250px; min-width: 0; padding: 12px; border: 1px solid var(--glass-border); border-radius: 8px; background: var(--bg-input); color: var(--text-primary); font: inherit; }
+.theory-search ul { list-style: none; padding: 0; border: 1px solid var(--glass-border); border-radius: 10px; max-height: 440px; overflow-y: auto; }
+.theory-search li + li { border-top: 1px solid var(--glass-border); }
+.theory-search li button { display: block; width: 100%; padding: 16px; text-align: start; background: var(--bg-input); color: var(--text-primary); border: 0; cursor: pointer; font: inherit; }
+.theory-search li span, .theory-search li small { display: block; margin-top: 6px; color: var(--text-muted); }
+.theory-search li button:hover, .theory-search li button:focus-visible { outline: 2px solid var(--neon-purple); outline-offset: -2px; }
+.glossary-dialog { width: min(760px, calc(100% - 32px)); max-height: 85vh; overflow-y: auto; padding: 24px; border: 1px solid var(--glass-border); border-radius: 14px; background: var(--bg-dark); color: var(--text-primary); margin: auto; }
+.glossary-dialog::backdrop { background: #000a; }
+.glossary-header { display: flex; justify-content: space-between; align-items: start; gap: 15px; margin-bottom: 20px; }
+.glossary-header h2 { font-size: 1.3rem; }
+.glossary-dialog input { width: 100%; }
+.glossary-dialog details, .study-material { padding: 16px 0; border-bottom: 1px solid var(--glass-border); line-height: 1.7; }
+.glossary-dialog summary, .study-material > summary { cursor: pointer; font-weight: 600; }
+.glossary-dialog p { margin-top: 12px; line-height: 1.8; }
+.glossary-dialog a, #lab-panel-study a { color: var(--accent-gold); text-decoration: underline; text-underline-offset: 3px; }
+.term-help { background: none; border: 0; color: var(--neon-purple); cursor: pointer; font: inherit; min-width: 32px; min-height: 32px; }
+.study-notebook { margin: 24px 0; padding: 20px; border: 1px solid var(--glass-border); border-radius: 10px; }
+.study-notebook label { display: block; margin: 16px 0; color: var(--text-primary); }
+.study-notebook textarea { display: block; margin-top: 8px; width: 100%; padding: 12px; background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--glass-border); border-radius: 8px; font: inherit; resize: vertical; }
+.study-material img { display: block; width: 100%; height: auto; background: white; border-radius: 8px; }
+.study-material figure { margin: 16px 0; }
+.study-material figcaption { color: var(--text-muted); margin-top: 12px; }
+.study-material { margin-top: 24px; scroll-margin-top: 100px; }
+.experiment-record { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--glass-border); overflow-wrap: anywhere; }
+.experiment-record p { font-size: .84rem; color: var(--text-muted); margin-top: 6px; }
+#lab-panel-study [hidden], .theory-search [hidden] { display: none !important; }
+@media (max-width: 600px) {
+    .glossary-dialog { padding: 16px; }
+    .study-notebook { padding: 12px; }
+    .experiment-record .research-actions { width: 100%; }
+}

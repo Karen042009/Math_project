@@ -581,21 +581,9 @@ class CalculusEngine {
         return (h / 3) * sum;
     }
 
-    static monteCarloSampleMean(fn, a, b, N = 10000) {
-        const len = b - a;
-        let sum = 0;
-        let sumSq = 0;
-        for (let i = 0; i < N; i++) {
-            const x = a + Math.random() * len;
-            const y = fn(x);
-            sum += y;
-            sumSq += y * y;
-        }
-        const mean = sum / N;
-        const estimate = len * mean;
-        const variance = Math.max(0, sumSq / N - mean * mean);
-        const standardError = Math.abs(len) * Math.sqrt(variance / N);
-        return { estimate, standardError };
+    static monteCarloSampleMean(fn, a, b, N = 10000, seed = 0) {
+        const result = window.ResearchEngine.integrals({ functions:[fn], a, b, n:N, seed }).results[0];
+        return { ...result, standardError:result.se };
     }
 
     static areaUnderCurve(fn, a, b, n = 400) {
@@ -1088,7 +1076,8 @@ function calculateDefiniteIntegral() {
     let a = parseFloat(document.getElementById('def-input-a')?.value);
     let b = parseFloat(document.getElementById('def-input-b')?.value);
     const method = document.getElementById('def-select-method')?.value || 'auto';
-    let n = parseInt(document.getElementById('def-input-n')?.value) || 100;
+    let n = Number(document.getElementById('def-input-n')?.value);
+    const seed = Number(document.getElementById('def-input-seed')?.value || 0);
     const out = document.getElementById('def-output-card');
     const canvas = document.getElementById('def-canvas');
     if (!out) return;
@@ -1100,6 +1089,7 @@ function calculateDefiniteIntegral() {
     }
 
     try {
+        if (!Number.isInteger(n) || n < 2 || n > 100000) throw new Error('n / N: 2–100000');
         const fn = MathEvaluator.compile(fxStr);
 
         // Check for singularity
@@ -1122,6 +1112,7 @@ function calculateDefiniteIntegral() {
             renderLabMarkup(out, `<p style="color:var(--accent-gold); font-size:1.15rem;">$\\int_{${a}}^{${a}} f(x)dx = 0$ (Սահմանները համընկնում են)</p>`);
             if (canvas) canvas.style.display = 'none';
             if (window.MathJax && window.MathJax.typesetPromise) queueMathTypeset(out);
+            window.ExperimentHistory?.add('definite',{expression:fxStr,a:String(a),b:String(b),n:String(n),method,seed:String(seed)},{estimate:0,se:0});
             return;
         }
 
@@ -1140,10 +1131,10 @@ function calculateDefiniteIntegral() {
             res = CalculusEngine.midpoint(fn, a, b, n);
             methodDesc = `Միջնակետերի կանոն ($n = ${n}$ ենթամիջակայք)`;
         } else if (method === 'monte_carlo') {
-            const mc = CalculusEngine.monteCarloSampleMean(fn, a, b, n > 500 ? n : 5000);
+            const mc = CalculusEngine.monteCarloSampleMean(fn, a, b, n, seed);
             res = mc.estimate;
             se = mc.standardError;
-            methodDesc = `Մոնտե Կառլոյի ընտրանքի միջին ($N = ${n > 500 ? n : 5000}$)`;
+            methodDesc = `Մոնտե Կառլոյի ընտրանքի միջին ($N = ${n}$; seed = ${seed})`;
         }
 
         // Reversal of bounds notice if a > b
@@ -1163,6 +1154,7 @@ function calculateDefiniteIntegral() {
         `);
         if (window.MathJax && window.MathJax.typesetPromise) queueMathTypeset(out);
 
+        if (window.ExperimentHistory) window.ExperimentHistory.add('definite', { expression:fxStr, a:String(a), b:String(b), n:String(n), method, seed:String(seed) }, { estimate:res, se });
         if (canvas) {
             canvas.style.display = 'block';
             drawDefiniteIntegralPlot(canvas, fn, a, b);

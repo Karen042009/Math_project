@@ -83,6 +83,7 @@
         repeatedHistogram: ['Կրկնությունների մոտարկումների բաշխում՝ առաջին ֆունկցիայի համար։', 'Distribution of repeated estimates for the first function.', 'Распределение повторных оценок для первой функции.'],
         referenceNote: ['Սեփական ֆունկցիայի հղումը հաշվվում է Սիմպսոնի կանոնով․ այն անալիտիկ ճշգրիտ արժեք չէ։ Փորձը նախատեսված է վերջավոր, անընդհատ ֆունկցիաների համար։', 'For custom functions the reference uses Simpson’s rule, not an exact analytic value. This experiment is intended for finite, continuous functions.', 'Для своей функции опорное значение вычисляется правилом Симпсона и не является аналитически точным. Опыт рассчитан на конечные непрерывные функции.'],
         invalid: ['Ստուգեք դաշտերի սահմանները։ N՝ 1–100000, seed՝ ամբողջ թիվ 0–4294967295։ Ֆունկցիան պետք է վերջավոր լինի ընտրված միջակայքում։', 'Check the field limits. N: 1–100000; seed: integer 0–4294967295. The function must be finite over the selected interval.', 'Проверьте границы полей. N: 1–100000; seed: целое 0–4294967295. Функция должна быть конечной на выбранном интервале.'],
+        history: ['Փորձերի պատմություն','Experiment history','История опытов'],
         limits: ['Սահմանները ստուգեք․ a≠b, |a| և |b| ≤10000։', 'Check bounds: a≠b, |a| and |b| ≤10000.', 'Проверьте пределы: a≠b, |a| и |b| ≤10000.'],
         samples: ['Ընտրանքներ', 'Samples', 'Выборки'],
         frequency: ['Հաճախականություն', 'Frequency', 'Частота'],
@@ -116,7 +117,7 @@
     const input = (mode, key, value, min, max, step = 1) => `<label>${label(key)}<input name="${key}" id="research-${mode}-${key}" type="number" value="${value}" min="${min}" max="${max}" step="${step}" required></label>`;
     const select = (key, options) => `<label>${label(key)}<select name="${key}">${options.map(([value, key]) => `<option value="${value}" data-research-t="${key}">${t(key)}</option>`).join('')}</select></label>`;
     const table = (headers, rows) => `<div class="research-table-wrap" tabindex="0"><table class="research-table"><thead><tr>${headers.map(h => `<th scope="col">${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-    const stat = (key, value) => `<div class="research-stat"><span>${esc(t(key))}</span><strong>${esc(value)}</strong></div>`;
+    const stat = (key, value) => `<div class="research-stat"><span>${esc(t(key))}${['se','ci','error','n'].includes(key)?` <button type="button" class="term-help" data-glossary-term="${key==='error'?'absolute':key}" aria-label="${esc(t(key))}">ⓘ</button>`:''}</span><strong>${esc(value)}</strong></div>`;
     const note = key => `<p class="research-note">${esc(t(key))}</p>`;
     const heading = key => `<h3>${esc(t(key))}</h3>`;
     const charts = (mode, firstCaption, secondCaption, names = []) => {
@@ -157,6 +158,7 @@
             if (mode === 'risk') fields += input(mode, 'initial', 1000, 1, 1e9, 'any') + input(mode, 'drift', 5, -100, 100, 'any') + input(mode, 'volatility', 20, 0, 200, 'any') + input(mode, 'years', 1, 0.01, 10, 'any');
             if (mode === 'geometry') fields += select('shape', [['ellipse', 'ellipse'], ['ellipsoid', 'ellipsoid']]) + input(mode, 'axisA', 2, 0.01, 100, 'any') + input(mode, 'axisB', 1, 0.01, 100, 'any') + `<div data-axis-c hidden>${input(mode, 'axisC', 1, 0.01, 100, 'any')}</div>`;
             panel.innerHTML = `<h2>${label(mode)}</h2><p class="research-intro">${label(mode + 'Intro')}</p><form class="research-form">${fields}<div class="research-actions research-wide"><button type="submit" class="glow-btn" data-run>${label('run')}</button><button type="button" class="glow-btn secondary" data-export="csv" disabled>${label('csv')}</button><button type="button" class="glow-btn secondary" data-export="png" disabled>${label('png')}</button></div></form><p class="research-note">${label(mode === 'integral' ? 'seedNote' : mode === 'geometry' ? 'geometryNote' : 'ready')}</p><div class="research-output" aria-live="polite">${note('ready')}</div>`;
+            const history=document.createElement('button');history.type='button';history.className='glow-btn secondary small';history.setAttribute('data-open-history','');history.innerHTML=label('history');panel.querySelector('.research-actions').append(history);
             panel.querySelectorAll('[hidden] input').forEach(input => { input.disabled = true; });
             tabs.parentElement.append(panel);
             panel.querySelector('form').addEventListener('submit', event => { event.preventDefault(); run(mode); });
@@ -261,6 +263,7 @@
             }
             if (token !== revisions.get(mode)) return;
             results.set(mode, { data, options, fields });
+            window.ExperimentHistory?.add(mode, fields, {estimate:data.results?data.results.map(r=>r.estimate):data.estimate,se:data.se??null});
             render(mode);
             panel.querySelectorAll('[data-export]').forEach(b => { b.disabled = false; });
         } catch (error) {
@@ -500,6 +503,17 @@
                 if (panel?.offsetWidth && panel.closest('.page-section')?.classList.contains('active-section')) draw(mode);
             }
         });
+    };
+    window.restoreResearchExperiment = async function (mode, fields) {
+        const panel=document.getElementById(panelId(mode)), form=panel?.querySelector('form');
+        if(!form)throw new Error('Unknown experiment');
+        if(mode==='walk'){showPage('simulations');showSimulation('research-walk',document.querySelector('.sim-tabs [data-research-t="walk"]'));}
+        else {showPage('lab');switchLabMode('research-'+mode,document.getElementById('lab-tab-research-'+mode));}
+        for(const [key,value] of Object.entries(fields))if(form.elements[key])form.elements[key].value=value;
+        panel.querySelector('[data-custom]')?.toggleAttribute('hidden',form.elements.mode.value!=='custom');
+        panel.querySelector('[data-axis-c]')?.toggleAttribute('hidden',form.elements.shape.value!=='ellipsoid');
+        panel.querySelectorAll('[data-custom] input, [data-axis-c] input').forEach(input=>{input.disabled=Boolean(input.closest('[hidden]'));});
+        await run(mode);
     };
     window.addEventListener('resize', window.refreshResearchView);
     document.addEventListener('DOMContentLoaded', initialize);

@@ -82,6 +82,38 @@
         return { first, rows, history, results: stats.map(m => summarize(m, b - a)) };
     }
 
+    function compare({ fn, a = 0, b = 1, n = 1000, seed = 0 }) {
+        count(n); finite(a, b);
+        if (n < 2) throw new Error('count');
+        const results = [];
+        const mc = integrals({seed, n, a, b, functions:[fn]}).results[0];
+        results.push({ method:'monte_carlo', ...mc, evaluations:n });
+        for (const method of ['trapezoid','simpson']) {
+            const intervals = method === 'simpson' && n % 2 ? n + 1 : n;
+            const h = (b - a) / intervals;
+            let total = 0;
+            for (let i = 0; i <= intervals; i++) {
+                const y = fn(a + i * h); finite(y);
+                const weight = i === 0 || i === intervals ? 1 : method === 'trapezoid' ? 2 : i % 2 ? 4 : 2;
+                total += weight * y;
+            }
+            results.push({ method, estimate:total * h / (method === 'simpson' ? 3 : 2), evaluations:intervals + 1, intervals, se:null, ci:null });
+        }
+        return results;
+    }
+
+    // Pilot-based normal approximation, not an error guarantee or an adaptive stopping rule.
+    function planSamples({ fn, a = 0, b = 1, pilot = 1000, seed = 0, epsilon = .01, confidence = .95 }) {
+        finite(epsilon, confidence);
+        if (epsilon <= 0 || ![.95,.99].includes(confidence) || pilot < 30) throw new Error('precision');
+        const result = integrals({seed, n:pilot, a, b, functions:[fn]}).results[0];
+        const z = confidence === .99 ? 2.5758293035489004 : 1.959963984540054;
+        const estimateN = Math.max(30, Math.ceil((z * result.se * Math.sqrt(pilot) / epsilon) ** 2));
+        const piBoundN = Math.ceil(8 * Math.log(2 / (1 - confidence)) / epsilon ** 2);
+        if (![estimateN,piBoundN].every(Number.isSafeInteger)) throw new Error('precision');
+        return { pilot, result, z, estimateN, piBoundN, epsilon, confidence };
+    }
+
     function geometry({ seed = 0, n = 10000, shape = 'pi', axes = [1, 1, 1] }) {
         count(n);
         if (!['pi', 'ellipse', 'ellipsoid'].includes(shape)) throw new Error('shape');
@@ -148,7 +180,7 @@
             expectedShortfall95: initial - tail.reduce((s, x) => s + x, 0) / tail.length };
     }
 
-    const api = { RandomState, integrals, geometry, walks, risk, wilson };
+    const api = { RandomState, integrals, compare, planSamples, geometry, walks, risk, wilson, createMoments:moments, updateMoments:push, summarizeMoments:summarize };
     if (typeof module !== 'undefined' && module.exports) module.exports = api;
     else root.ResearchEngine = api;
 })(typeof window === 'undefined' ? globalThis : window);

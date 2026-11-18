@@ -10,7 +10,7 @@ const context = vm.createContext({
   localStorage: { getItem: k => storage.get(k) || null, setItem: (k,v) => storage.set(k,String(v)), removeItem: k => storage.delete(k) },
   console, setTimeout, clearTimeout,
 });
-for (const file of ['js/data.js', 'js/lab-i18n.js', 'js/calculator.js', 'js/app.js']) {
+for (const file of ['js/data.js', 'js/research-engine.js', 'js/lab-i18n.js', 'js/calculator.js', 'js/app.js']) {
   vm.runInContext(fs.readFileSync(file, 'utf8'), context, {filename:file});
 }
 const run = code => vm.runInContext(code, context);

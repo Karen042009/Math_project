@@ -143,6 +143,9 @@ function setLanguage(lang) {
     if (typeof refreshResearchLanguage === 'function') refreshResearchLanguage();
     if (typeof refreshNavigationLanguage === 'function') refreshNavigationLanguage();
     if (typeof refreshContributionsLanguage === 'function') refreshContributionsLanguage();
+    if (typeof refreshStudyLanguage === 'function') refreshStudyLanguage();
+    if (typeof refreshLearningLanguage === 'function') refreshLearningLanguage();
+    if (typeof refreshHistoryLanguage === 'function') refreshHistoryLanguage();
 
     if (typeof typesetVisibleMath === 'function') typesetVisibleMath();
 }

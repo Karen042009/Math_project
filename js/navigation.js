@@ -13,7 +13,7 @@
     const configurations = {
         lab: { container: '.lab-mode-tabs', selector: '.lab-mode-btn', groups: {
             basics: ['basic', 'prob', 'research-pi'],
-            calculus: ['calculus', 'research-integral', 'area', 'volume', 'research-geometry'],
+            calculus: ['calculus', 'research-integral', 'area', 'volume', 'research-geometry', 'study'],
             applications: ['motion', 'research-risk'],
         } },
         simulations: { container: '.sim-tabs', selector: '.sim-tab-btn', groups: {

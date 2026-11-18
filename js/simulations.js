@@ -221,6 +221,10 @@ let mcTargetN = 1000;
 let mcCurrentN = 0;
 let mcCurrentNin = 0;
 let mcHitSumSquares = 0;
+let mcSeed = 0;
+let mcRandom = null;
+let mcMoments = {n:0, mean:0, m2:0};
+let mcRecordHistory = true;
 let mcSumY = 0;
 let mcSumY2 = 0;
 let mcPointsList = [];
@@ -351,13 +355,26 @@ function mcUpdateTarget() {
     if (targetSel) mcTargetN = parseInt(targetSel.value) || 1000;
 }
 
-function mcStart() {
+function mcUpdateSeed() {
+    const input=document.getElementById('mc-seed');
+    const seed=Number(input?.value || 0);
+    if(!Number.isInteger(seed)||seed<0||seed>4294967295) {
+        input?.setCustomValidity('seed: 0–4294967295'); input?.reportValidity(); return false;
+    }
+    input?.setCustomValidity(''); mcSeed=seed;mcReset();return true;
+}
+
+function mcStart(recordHistory = true) {
     if (mcRunning && !mcPaused) return;
+    if(!mcPaused && !mcUpdateSeed()) return;
 
     if (!mcPaused) {
+        mcRecordHistory = recordHistory;
         mcCurrentN = 0;
         mcCurrentNin = 0;
         mcHitSumSquares = 0;
+        mcMoments = window.ResearchEngine.createMoments();
+        mcRandom = new window.ResearchEngine.RandomState(mcSeed);
         mcSumY = 0;
         mcSumY2 = 0;
         mcPointsList = [];
@@ -408,6 +425,8 @@ function mcReset() {
     mcCurrentN = 0;
     mcCurrentNin = 0;
     mcHitSumSquares = 0;
+    mcMoments = {n:0,mean:0,m2:0};
+    mcRandom = null;
     mcSumY = 0;
     mcSumY2 = 0;
     mcPointsList = [];
@@ -421,6 +440,7 @@ function mcReset() {
 
 function mcLoop() {
     if (!mcRunning || mcPaused) return;
+    if(!mcRandom)mcRandom=new window.ResearchEngine.RandomState(mcSeed);
 
     const speedSlider = document.getElementById('mc-speed-slider');
     const speed = speedSlider ? parseInt(speedSlider.value) : 35;
@@ -434,11 +454,11 @@ function mcLoop() {
     const boxW = mcB - mcA;
 
     for (let i = 0; i < toGen; i++) {
-        const rx = mcA + Math.random() * boxW;
+        const rx = mcA + mcRandom.uniform() * boxW;
         const fy = def.f(rx);
 
         if (mcMethod === 'hit_or_miss') {
-            const ry = mcMinY + Math.random() * boxH;
+            const ry = mcMinY + mcRandom.uniform() * boxH;
             let inside = false;
             let hitScore = 0;
 
@@ -471,6 +491,7 @@ function mcLoop() {
                 mcCurrentN++;
                 mcSumY += fy;
                 mcSumY2 += fy * fy;
+                window.ResearchEngine.updateMoments(mcMoments,fy);
 
                 if (mcPointsList.length > 1500) mcPointsList.shift();
                 mcPointsList.push({ x: rx, y: fy, inside: true });
@@ -491,6 +512,8 @@ function mcLoop() {
         mcRunning = false;
         mcPaused = false;
         updateMcButtonStates();
+        const estimate=mcMethod==='sample_mean'?(mcB-mcA)*mcMoments.mean:(mcB-mcA)*(mcMaxY-mcMinY)*mcCurrentNin/mcCurrentN;
+        if(mcRecordHistory)window.ExperimentHistory?.add('simulation',{func:mcFuncKey,method:mcMethod,a:String(mcA),b:String(mcB),n:String(mcCurrentN),seed:String(mcSeed)},{estimate});
         return;
     }
 
@@ -515,10 +538,10 @@ function updateIntegralStats() {
             const variance = mcCurrentN > 1 ? Math.max(0, (mcHitSumSquares - mcCurrentN * ratio * ratio) / (mcCurrentN - 1)) : null;
             stdErr = variance === null ? null : Math.abs(boxW * boxH) * Math.sqrt(variance / mcCurrentN);
         } else {
-            const meanY = mcSumY / mcCurrentN;
-            approx = boxW * meanY;
-            const variance = mcCurrentN > 1 ? Math.max(0, (mcSumY2 - mcCurrentN * meanY * meanY) / (mcCurrentN - 1)) : null;
-            stdErr = variance === null ? null : Math.abs(boxW) * Math.sqrt(variance / mcCurrentN);
+            const meanY = mcMoments.mean;
+            const result=window.ResearchEngine.summarizeMoments(mcMoments,boxW);
+            approx = result.estimate;
+            stdErr = result.se;
             ratio = meanY;
         }
         absErr = Math.abs(approx - exactVal);
@@ -543,6 +566,17 @@ function updateIntegralStats() {
     if (elAbsErr) elAbsErr.innerText = absErr !== null ? absErr.toFixed(6) : '—';
     if (elStdErr) elStdErr.innerText = stdErr !== null ? stdErr.toFixed(6) : '—';
 }
+
+window.restoreIntegralSimulation = function(fields) {
+    showPage('simulations');showSimulation('integral',document.querySelector('.sim-tab-btn[onclick*="integral"]'));
+    document.getElementById('mc-func-select').value=fields.func;mcChangeFunction();
+    for(const [key,id] of Object.entries({a:'mc-bound-a',b:'mc-bound-b',seed:'mc-seed'})) document.getElementById(id).value=fields[key];
+    mcUpdateBounds();mcUpdateSeed();
+    document.getElementById('mc-method-select').value=fields.method;mcChangeMethod(fields.method);
+    const target=document.getElementById('mc-points-target');
+    if(![...target.options].some(o=>o.value===fields.n))target.add(new Option(fields.n,fields.n));
+    target.value=fields.n;mcUpdateTarget();mcStart(false);
+};
 
 function drawIntegralCanvas() {
     if (!mcCanvas || !mcCtx) return;
