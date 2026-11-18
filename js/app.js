@@ -102,6 +102,7 @@ function toggleTheme() {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem(THEME_KEY, newTheme);
+    if (typeof refreshResearchView === 'function') refreshResearchView();
 }
 
 /* --- I18N & LANGUAGE --- */
@@ -138,6 +139,10 @@ function setLanguage(lang) {
     if (typeof updateGaltonStats === 'function') updateGaltonStats();
     if (typeof updateBuffonStats === 'function') updateBuffonStats();
     if (typeof updateIntegralStats === 'function') updateIntegralStats();
+
+    if (typeof refreshResearchLanguage === 'function') refreshResearchLanguage();
+    if (typeof refreshNavigationLanguage === 'function') refreshNavigationLanguage();
+    if (typeof refreshContributionsLanguage === 'function') refreshContributionsLanguage();
 
     if (typeof typesetVisibleMath === 'function') typesetVisibleMath();
 }
@@ -176,10 +181,12 @@ function showPage(pageId) {
         if (typeof initGalton === 'function') initGalton();
         if (typeof initMonty === 'function') initMonty();
         if (typeof initBuffon === 'function') initBuffon();
+        if (typeof refreshResearchView === 'function') refreshResearchView();
     }
     if (pageId === 'lab') {
         if (typeof updateVisualizer === 'function') updateVisualizer();
         if (typeof drawGraph === 'function') drawGraph();
+        if (typeof refreshResearchView === 'function') refreshResearchView();
     }
     if (pageId === 'practice') {
         applyPracticeFilters();

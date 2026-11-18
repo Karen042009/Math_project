@@ -61,6 +61,8 @@
     <link rel="stylesheet" href="css/lab.css?v=2" />
     <link rel="stylesheet" href="css/background.css?v=2" />
     <link rel="stylesheet" href="css/refinements.css?v=5" />
+    <link rel="stylesheet" href="css/research.css?v=3" />
+    <link rel="stylesheet" href="css/contributions.css?v=5" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   </head>
 
@@ -116,6 +118,10 @@
           >
             <i class="fas fa-atom"></i>
             <span data-i18n="nav_simulations">Simulations</span>
+          </button>
+          <button class="nav-btn" onclick="showPage('contributions')" data-target="contributions">
+            <i class="fas fa-users" aria-hidden="true"></i>
+            <span data-i18n="nav_contributions">Մասնակիցներ</span>
           </button>
         </div>
 
@@ -187,6 +193,10 @@
         >
           <i class="fas fa-atom"></i>
           <span data-i18n="nav_simulations">Simulations</span>
+        </button>
+        <button class="mobile-nav-btn" onclick="showPage('contributions')" data-target="contributions">
+          <i class="fas fa-users" aria-hidden="true"></i>
+          <span data-i18n="nav_contributions">Մասնակիցներ</span>
         </button>
         <hr style="border-color: var(--border-dim)" />
         <div style="display: flex; gap: 8px; justify-content: center">
@@ -493,7 +503,7 @@
                 Olympic
               </option>
             </select>
-            <button class="glow-btn" onclick="generateAIProblem()">
+            <button id="ai-generate-btn" class="glow-btn" onclick="generateAIProblem()">
               <i class="fas fa-bolt"></i>
               <span data-i18n="btn_generate_problem">Generate Problem</span>
             </button>
@@ -542,7 +552,7 @@
             </div>
             <button
               class="glow-btn ai-check-btn"
-              onclick="checkSolutionWithAI()"
+              id="ai-check-btn" onclick="checkSolutionWithAI()" disabled
               style="margin-top: 15px"
             >
               <i class="fas fa-microchip"></i>
@@ -1328,6 +1338,7 @@
                   <option value="sin">f(x) = sin(x) [0, π] (Ճշգրիտ՝ 2.0)</option>
                   <option value="quarter_circle">f(x) = √(1 - x²) [0, 1] (Ճշգրիտ՝ π/4)</option>
                   <option value="exp">f(x) = e^(-x) [0, 2] (Ճշգրիտ՝ 1 - e⁻²)</option>
+                  <option value="exp_positive">f(x) = eˣ [0, 1] (Ճշգրիտ՝ e − 1)</option>
                   <option value="inv_quad">f(x) = 1 / (1 + x²) [0, 1] (Ճշգրիտ՝ π/4)</option>
                   <option value="parabola_inv">f(x) = 4 - x² [0, 2] (Ճշգրիտ՝ 16/3)</option>
                   <option value="poly">f(x) = x³ - 2x + 3 [0, 2] (Ճշգրիտ՝ 6.0)</option>
@@ -1347,6 +1358,9 @@
                 <div style="margin-top: 12px;">
                   <label style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="mc_points_label">Կետերի թիրախ (N)</label>
                   <select id="mc-points-target" class="calc-select" onchange="mcUpdateTarget()">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="100">100</option>
                     <option value="500">500 կետ</option>
                     <option value="1000" selected>1,000 կետ</option>
                     <option value="5000">5,000 կետ</option>
@@ -2782,6 +2796,7 @@
           </div>
         </div>
       </section>
+      <section id="contributions" class="page-section" aria-label="Ով ինչ է արել"></section>
     </div>
 
     <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
@@ -2794,8 +2809,7 @@
         </div>
         <div class="footer-section">
           <p class="footer-credits" data-i18n="footer_credits">
-            Created by Karen Poghosyan | Project Advisor Teacher: Manushak
-            Sardaryan
+            Կայքի ստեղծում՝ Խումարյան Գրիշա | Նախագծի ղեկավար՝ Մ. Սարդարյան
           </p>
         </div>
       </div>
@@ -2821,12 +2835,16 @@
       window.GEMINI_API_KEY = (typeof localStorage !== 'undefined' ? localStorage.getItem('probspace_gemini_api_key') : '') || '';
     </script>
     <script src="js/math-renderer.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/lab-i18n.js"></script>
-    <script src="js/calculator.js"></script>
-    <script src="js/simulations.js"></script>
-    <script src="js/ai.js"></script>
+    <script src="js/data.js?v=2"></script>
+    <script src="js/app.js?v=3"></script>
+    <script src="js/lab-i18n.js?v=2"></script>
+    <script src="js/calculator.js?v=2"></script>
+    <script src="js/simulations.js?v=2"></script>
+    <script src="js/research-engine.js"></script>
+    <script src="js/research.js?v=2"></script>
+    <script src="js/navigation.js?v=1"></script>
+    <script src="js/contributions.js?v=4"></script>
+    <script src="js/ai.js?v=3"></script>
     <script src="js/animations.js"></script>
   </body>
 </html>

@@ -1,0 +1,251 @@
+- generic [active] [ref=f1e1]:
+  - navigation [ref=f1e2]:
+    - generic [ref=f1e3]: ProbSpace
+    - generic [ref=f1e5]:
+      - generic [ref=f1e6]:
+        - button " Գլխավոր" [ref=f1e7] [cursor=pointer]:
+          - generic [ref=f1e8]: 
+          - text: Գլխավոր
+        - button " Տեսություն" [ref=f1e9] [cursor=pointer]:
+          - generic [ref=f1e10]: 
+          - text: Տեսություն
+        - button " Խնդիրներ" [ref=f1e11] [cursor=pointer]:
+          - generic [ref=f1e12]: 
+          - text: Խնդիրներ
+        - button " Լաբորատորիա" [ref=f1e13] [cursor=pointer]:
+          - generic [ref=f1e14]: 
+          - text: Լաբորատորիա
+        - button " Սիմուլյացիաներ" [ref=f1e15] [cursor=pointer]:
+          - generic [ref=f1e16]: 
+          - text: Սիմուլյացիաներ
+      - button "Toggle color theme" [ref=f1e17] [cursor=pointer]:
+        - generic [ref=f1e18]: 
+      - generic [ref=f1e19]:
+        - button "ՀՅ" [ref=f1e20] [cursor=pointer]
+        - button "EN" [ref=f1e21] [cursor=pointer]
+        - button "RU" [ref=f1e22] [cursor=pointer]
+      - text: 
+  - text:     
+  - generic [ref=f1e23]:
+    - text:                                                                                                                   
+    - generic [ref=f1e245]:
+      - heading " Ինտերակտիվ Սիմուլյացիաներ  Լսել AI Ուղեցույցին" [level=1] [ref=f1e246]:
+        - generic [ref=f1e247]: 
+        - generic [ref=f1e248]: Ինտերակտիվ Սիմուլյացիաներ
+        - button " Լսել AI Ուղեցույցին" [ref=f1e249] [cursor=pointer]:
+          - generic [ref=f1e250]: 
+          - text: Լսել AI Ուղեցույցին
+      - paragraph [ref=f1e251]: Այստեղ վիզուալ կերպով ցուցադրվում է հավանականությունների տեսության օրենքների կիրառությունը գործնականում՝ Մոնտե Կառլոյի մեթոդով։ Այս բաժնի նպատակն է ինտերակտիվ սիմուլյացիաների և հազարավոր անգամ կրկնվող պատահական երևույթների վերլուծության միջոցով ձեզ սովորեցնել բարդ մաթեմատիկական հասկացություններ՝ ինչպիսիք են նորմալ բաշխումը, անորոշության պայմաններում ճշգրիտ ընտրության կայացումը և երկրաչափական հավանականությունը։
+      - generic [ref=f1e252]:
+        - button " Մոնտե Կառլոյի Ինտեգրում" [ref=f1e253] [cursor=pointer]:
+          - generic [ref=f1e254]: 
+          - text: Մոնտե Կառլոյի Ինտեգրում
+        - button " Գալտոնի տախտակ" [ref=f1e255] [cursor=pointer]:
+          - generic [ref=f1e256]: 
+          - text: Գալտոնի տախտակ
+        - button " Մոնտի Հոլլ" [ref=f1e257] [cursor=pointer]:
+          - generic [ref=f1e258]: 
+          - text: Մոնտի Հոլլ
+        - button " Բյուֆոնի ասեղ" [ref=f1e259] [cursor=pointer]:
+          - generic [ref=f1e260]: 
+          - text: Բյուֆոնի ասեղ
+        - button " Մետաղադրամ" [ref=f1e261] [cursor=pointer]:
+          - generic [ref=f1e262]: 
+          - text: Մետաղադրամ
+        - button " Զառ" [ref=f1e263] [cursor=pointer]:
+          - generic [ref=f1e264]: 
+          - text: Զառ
+        - button "Կրկնելի ինտեգրալներ" [ref=f1e265] [cursor=pointer]
+        - button "π․ շրջան և քառակուսի" [ref=f1e266] [cursor=pointer]
+        - button "Պատահական քայլք" [ref=f1e267] [cursor=pointer]
+        - button "Ֆինանսական ռիսկ" [ref=f1e268] [cursor=pointer]
+        - button "Մակերես և ծավալ" [ref=f1e269] [cursor=pointer]
+      - text:                
+      - generic [ref=f1e341]:
+        - heading "Կրկնելի ինտեգրալներ" [level=2] [ref=f1e342]
+        - paragraph [ref=f1e343]: Դավիթ Ասատրյանի օրինակները․ ∫₀¹x²dx և ∫₀¹eˣdx՝ նույն ընտրանքով։ Կարող եք փորձարկել նաև ձեր ֆունկցիան։
+        - generic [ref=f1e344]:
+          - generic [ref=f1e345]:
+            - generic [ref=f1e346]: Սկզբնարժեք (seed)
+            - spinbutton "Սկզբնարժեք (seed)" [ref=f1e347]: "0"
+          - generic [ref=f1e348]:
+            - generic [ref=f1e349]: Ընտրանքի քանակ (N)
+            - spinbutton "Ընտրանքի քանակ (N)" [ref=f1e350]: "10000"
+          - generic [ref=f1e351]:
+            - generic [ref=f1e352]: Օրինակ
+            - combobox "Օրինակ" [ref=f1e353]:
+              - option "Դավիթի երկու ինտեգրալները" [selected]
+              - option "Իմ ֆունկցիան"
+          - generic [ref=f1e354]:
+            - generic [ref=f1e355]: Անկախ կրկնություններ
+            - combobox "Անկախ կրկնություններ" [ref=f1e356]:
+              - option "Առանց կրկնությունների"
+              - option "20" [selected]
+              - option "50"
+          - generic [ref=f1e357]:
+            - button "Հաշվել փորձը" [ref=f1e358] [cursor=pointer]
+            - button "Աղյուսակներ՝ CSV" [ref=f1e359] [cursor=pointer]
+            - button "Գրաֆիկներ՝ PNG" [ref=f1e360] [cursor=pointer]
+        - paragraph [ref=f1e361]: Գեներատորը համընկնում է NumPy-ի np.random.seed(seed) / RandomState համասեռ ընտրանքի հետ։ Լռելյայն seed=0, N=10000։
+        - generic [ref=f1e362]:
+          - generic [ref=f1e365]:
+            - generic [ref=f1e366]:
+              - generic [ref=f1e367]: Արդյունք
+              - strong [ref=f1e368]: x²
+            - generic [ref=f1e369]:
+              - generic [ref=f1e370]: Մոտարկում
+              - strong [ref=f1e371]: "0.330334"
+            - generic [ref=f1e372]:
+              - generic [ref=f1e373]: Ճշգրիտ արժեք
+              - strong [ref=f1e374]: "0.333333"
+            - generic [ref=f1e375]:
+              - generic [ref=f1e376]: Բացարձակ տարբերություն
+              - strong [ref=f1e377]: "0.002999"
+            - generic [ref=f1e378]:
+              - generic [ref=f1e379]: Ստանդարտ սխալ (SE)
+              - strong [ref=f1e380]: "0.002981"
+            - generic [ref=f1e381]:
+              - generic [ref=f1e382]: Մոտավոր 95% միջակայք
+              - strong [ref=f1e383]: "[0.324493, 0.336176]"
+            - generic [ref=f1e384]:
+              - generic [ref=f1e385]: Արդյունք
+              - strong [ref=f1e386]: eˣ
+            - generic [ref=f1e387]:
+              - generic [ref=f1e388]: Մոտարկում
+              - strong [ref=f1e389]: "1.712728"
+            - generic [ref=f1e390]:
+              - generic [ref=f1e391]: Ճշգրիտ արժեք
+              - strong [ref=f1e392]: "1.718282"
+            - generic [ref=f1e393]:
+              - generic [ref=f1e394]: Բացարձակ տարբերություն
+              - strong [ref=f1e395]: "0.005554"
+            - generic [ref=f1e396]:
+              - generic [ref=f1e397]: Ստանդարտ սխալ (SE)
+              - strong [ref=f1e398]: "0.004927"
+            - generic [ref=f1e399]:
+              - generic [ref=f1e400]: Մոտավոր 95% միջակայք
+              - strong [ref=f1e401]: "[1.703072, 1.722385]"
+          - heading "Նյուտոն–Լեյբնիցի լուծում" [level=3] [ref=f1e402]
+          - generic [ref=f1e403]:
+            - paragraph [ref=f1e404]: ∫₀¹ x² dx = [x³/3]₀¹ = 1³/3 − 0³/3 = 1/3 ≈ 0.333333
+            - paragraph [ref=f1e405]: ∫₀¹ eˣ dx = [eˣ]₀¹ = e¹ − e⁰ = e − 1 ≈ 1.718282
+          - heading "Առաջին հինգ պատահական թվերը" [level=3] [ref=f1e406]
+          - table [ref=f1e408]:
+            - rowgroup [ref=f1e409]:
+              - row [ref=f1e410]:
+                - columnheader "i" [ref=f1e411]
+                - columnheader "xᵢ" [ref=f1e412]
+                - columnheader "x²(xᵢ)" [ref=f1e413]
+                - columnheader "eˣ(xᵢ)" [ref=f1e414]
+            - rowgroup [ref=f1e415]:
+              - row [ref=f1e416]:
+                - cell "1" [ref=f1e417]
+                - cell "0.548814" [ref=f1e418]
+                - cell "0.301196" [ref=f1e419]
+                - cell "1.731198" [ref=f1e420]
+              - row [ref=f1e421]:
+                - cell "2" [ref=f1e422]
+                - cell "0.715189" [ref=f1e423]
+                - cell "0.511496" [ref=f1e424]
+                - cell "2.044574" [ref=f1e425]
+              - row [ref=f1e426]:
+                - cell "3" [ref=f1e427]
+                - cell "0.602763" [ref=f1e428]
+                - cell "0.363324" [ref=f1e429]
+                - cell "1.827161" [ref=f1e430]
+              - row [ref=f1e431]:
+                - cell "4" [ref=f1e432]
+                - cell "0.544883" [ref=f1e433]
+                - cell "0.296898" [ref=f1e434]
+                - cell "1.724407" [ref=f1e435]
+              - row [ref=f1e436]:
+                - cell "5" [ref=f1e437]
+                - cell "0.423655" [ref=f1e438]
+                - cell "0.179483" [ref=f1e439]
+                - cell "1.527534" [ref=f1e440]
+          - heading "Առաջին հինգ ընտրանքի հաշվարկը" [level=3] [ref=f1e441]
+          - generic [ref=f1e442]:
+            - paragraph [ref=f1e443]:
+              - text: "x²: (1.000000 − 0.000000) × (0.301196 + 0.511496 + 0.363324 + 0.296898 + 0.179483) / 5 ≈"
+              - strong [ref=f1e444]: "0.330479"
+              - text: Σf(xᵢ) ≈ 1.652397; |I − Iₙ| ≈ 0.002854
+            - paragraph [ref=f1e445]:
+              - text: "eˣ: (1.000000 − 0.000000) × (1.731198 + 2.044574 + 1.827161 + 1.724407 + 1.527534) / 5 ≈"
+              - strong [ref=f1e446]: "1.770975"
+              - text: Σf(xᵢ) ≈ 8.854874; |I − Iₙ| ≈ 0.052693
+          - heading "Նույն հաջորդականության առաջին N ընտրանքները" [level=3] [ref=f1e447]
+          - table [ref=f1e449]:
+            - rowgroup [ref=f1e450]:
+              - row [ref=f1e451]:
+                - columnheader "N" [ref=f1e452]
+                - columnheader "x² · Մոտարկում" [ref=f1e453]
+                - columnheader "x² · Բացարձակ տարբերություն" [ref=f1e454]
+                - columnheader "eˣ · Մոտարկում" [ref=f1e455]
+                - columnheader "eˣ · Բացարձակ տարբերություն" [ref=f1e456]
+            - rowgroup [ref=f1e457]:
+              - row [ref=f1e458]:
+                - cell "5" [ref=f1e459]
+                - cell "0.330479" [ref=f1e460]
+                - cell "0.002854" [ref=f1e461]
+                - cell "1.770975" [ref=f1e462]
+                - cell "0.052693" [ref=f1e463]
+              - row [ref=f1e464]:
+                - cell "10" [ref=f1e465]
+                - cell "0.413199" [ref=f1e466]
+                - cell "0.079866" [ref=f1e467]
+                - cell "1.883959" [ref=f1e468]
+                - cell "0.165677" [ref=f1e469]
+              - row [ref=f1e470]:
+                - cell "100" [ref=f1e471]
+                - cell "0.306652" [ref=f1e472]
+                - cell "0.026682" [ref=f1e473]
+                - cell "1.672459" [ref=f1e474]
+                - cell "0.045823" [ref=f1e475]
+              - row [ref=f1e476]:
+                - cell "1000" [ref=f1e477]
+                - cell "0.330386" [ref=f1e478]
+                - cell "0.002947" [ref=f1e479]
+                - cell "1.712659" [ref=f1e480]
+                - cell "0.005623" [ref=f1e481]
+              - row [ref=f1e482]:
+                - cell "10000" [ref=f1e483]
+                - cell "0.330334" [ref=f1e484]
+                - cell "0.002999" [ref=f1e485]
+                - cell "1.712728" [ref=f1e486]
+                - cell "0.005554" [ref=f1e487]
+          - generic [ref=f1e488]:
+            - figure "Ֆունկցիա և առաջին ընտրանքները" [ref=f1e489]:
+              - img "Ֆունկցիա և առաջին ընտրանքները" [ref=f1e490]
+            - figure "Մոտարկման զուգամիտություն․ գունավոր՝ ընտրանք, ընդհատ՝ հղումային արժեք։" [ref=f1e492]:
+              - img "Մոտարկման զուգամիտություն․ գունավոր՝ ընտրանք, ընդհատ՝ հղումային արժեք։" [ref=f1e493]
+          - paragraph [ref=f1e495]: SE-ն գնահատում է մոտարկման տատանումը, իսկ բացարձակ սխալը համեմատում է հղումային արժեքի հետ։ N-ի աճը չի երաշխավորում ամեն քայլում ավելի փոքր սխալ։ Սովորական պայմաններում SE∝1/√N։
+          - paragraph [ref=f1e496]: Միջակայքը մեծ ընտրանքի նորմալ մոտարկում է․ այն հուսալի չէ բոլոր բաշխումների համար։ Փոքր կամ զրոյական SE-ն ինքնին ճշտության ապացույց չէ։
+          - heading "Անկախ կրկնությունների վերլուծություն" [level=3] [ref=f1e497]
+          - paragraph [ref=f1e498]: Յուրաքանչյուր կրկնություն ունի առանձին գեներատորի սկզբնարժեք։ Աղյուսակի հիմնական ընտրանքը չի փոխվում։ Ծածկույթը՝ քանի 95% միջակայք է պարունակում հղումային արժեքը։
+          - table [ref=f1e500]:
+            - rowgroup [ref=f1e501]:
+              - row [ref=f1e502]:
+                - columnheader "f(x)" [ref=f1e503]
+                - columnheader "Անկախ կրկնություններ" [ref=f1e504]
+                - columnheader "Ընտրանքի միջին" [ref=f1e505]
+                - columnheader "Մոտարկումների ստանդարտ շեղում" [ref=f1e506]
+                - columnheader "Միջակայքերի ծածկույթ" [ref=f1e507]
+            - rowgroup [ref=f1e508]:
+              - row [ref=f1e509]:
+                - cell "x²" [ref=f1e510]
+                - cell "20" [ref=f1e511]
+                - cell "0.334270" [ref=f1e512]
+                - cell "0.003539" [ref=f1e513]
+                - cell "18/20" [ref=f1e514]
+              - row [ref=f1e515]:
+                - cell "eˣ" [ref=f1e516]
+                - cell "20" [ref=f1e517]
+                - cell "1.719874" [ref=f1e518]
+                - cell "0.005700" [ref=f1e519]
+                - cell "19/20" [ref=f1e520]
+          - figure "Կրկնությունների մոտարկումների բաշխում՝ առաջին ֆունկցիայի համար։" [ref=f1e521]:
+            - img "Կրկնությունների մոտարկումների բաշխում՝ առաջին ֆունկցիայի համար։" [ref=f1e522]
+  - contentinfo [ref=f1e239]:
+    - generic [ref=f1e240]:
+      - paragraph [ref=f1e242]: © 2026 «Մոնտե-Կառլոյի մեթոդը» նախագիծ | Բոլոր իրավունքները պաշտպանված են
+      - paragraph [ref=f1e244]: Ստեղծվել է Կարեն Պողոսյանի կողմից | Նախագծավար ուսուցիչ՝ Մանուշակ Սարդարյան

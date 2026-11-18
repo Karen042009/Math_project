@@ -895,6 +895,8 @@ function switchLabMode(mode, btn) {
     if (mode === 'prob') {
         setTimeout(() => { if (typeof drawGraph === 'function') drawGraph(); }, 60);
     }
+    if (typeof syncNavigationGroup === 'function') syncNavigationGroup('lab', mode);
+    if (typeof refreshResearchView === 'function') refreshResearchView();
 }
 
 /* ----------------------------------------------------

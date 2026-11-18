@@ -30,6 +30,8 @@ function showSimulation(simId, btnEl) {
     if (simId === 'buffon') initBuffon();
     if (simId === 'coin') initCoin();
     if (simId === 'dice') initDice();
+    if (typeof syncNavigationGroup === 'function') syncNavigationGroup('simulations', simId);
+    if (typeof refreshResearchView === 'function') refreshResearchView();
     if (typeof typesetVisibleMath === 'function') typesetVisibleMath();
 }
 
@@ -70,6 +72,7 @@ function updateSimDescriptions() {
             'sin': { hy: 'f(x) = sin(x) [0, π] (Ճշգրիտ՝ 2.0)', en: 'f(x) = sin(x) [0, π] (Exact: 2.0)', ru: 'f(x) = sin(x) [0, π] (Точно: 2.0)' },
             'quarter_circle': { hy: 'f(x) = √(1 - x²) [0, 1] (Ճշգրիտ՝ π/4)', en: 'f(x) = √(1 - x²) [0, 1] (Exact: π/4)', ru: 'f(x) = √(1 - x²) [0, 1] (Точно: π/4)' },
             'exp': { hy: 'f(x) = e^(-x) [0, 2] (Ճշգրիտ՝ 1 - e⁻²)', en: 'f(x) = e^(-x) [0, 2] (Exact: 1 - e⁻²)', ru: 'f(x) = e^(-x) [0, 2] (Точно: 1 - e⁻²)' },
+            'exp_positive': { hy: 'f(x) = eˣ [0, 1] (Ճշգրիտ՝ e − 1)', en: 'f(x) = eˣ [0, 1] (Exact: e − 1)', ru: 'f(x) = eˣ [0, 1] (Точно: e − 1)' },
             'inv_quad': { hy: 'f(x) = 1 / (1 + x²) [0, 1] (Ճշգրիտ՝ π/4)', en: 'f(x) = 1 / (1 + x²) [0, 1] (Exact: π/4)', ru: 'f(x) = 1 / (1 + x²) [0, 1] (Точно: π/4)' },
             'parabola_inv': { hy: 'f(x) = 4 - x² [0, 2] (Ճշգրիտ՝ 16/3)', en: 'f(x) = 4 - x² [0, 2] (Exact: 16/3)', ru: 'f(x) = 4 - x² [0, 2] (Точно: 16/3)' },
             'poly': { hy: 'f(x) = x³ - 2x + 3 [0, 2] (Ճշգրիտ՝ 6.0)', en: 'f(x) = x³ - 2x + 3 [0, 2] (Exact: 6.0)', ru: 'f(x) = x³ - 2x + 3 [0, 2] (Точно: 6.0)' }
@@ -147,6 +150,14 @@ const MC_FUNCTIONS = {
         exact: (a, b) => Math.exp(-a) - Math.exp(-b),
         badge: 'f(x) = e^(-x)'
     },
+    'exp_positive': {
+        name: 'f(x) = eˣ',
+        f: x => Math.exp(x),
+        defaultA: 0,
+        defaultB: 1,
+        exact: (a, b) => Math.exp(b) - Math.exp(a),
+        badge: 'f(x) = eˣ'
+    },
     'inv_quad': {
         name: 'f(x) = 1 / (1 + x²)',
         f: (x) => 1 / (1 + x * x),
@@ -209,6 +220,7 @@ let mcMaxY = 1.05;
 let mcTargetN = 1000;
 let mcCurrentN = 0;
 let mcCurrentNin = 0;
+let mcHitSumSquares = 0;
 let mcSumY = 0;
 let mcSumY2 = 0;
 let mcPointsList = [];
@@ -345,6 +357,7 @@ function mcStart() {
     if (!mcPaused) {
         mcCurrentN = 0;
         mcCurrentNin = 0;
+        mcHitSumSquares = 0;
         mcSumY = 0;
         mcSumY2 = 0;
         mcPointsList = [];
@@ -394,6 +407,7 @@ function mcReset() {
 
     mcCurrentN = 0;
     mcCurrentNin = 0;
+    mcHitSumSquares = 0;
     mcSumY = 0;
     mcSumY2 = 0;
     mcPointsList = [];
@@ -442,6 +456,7 @@ function mcLoop() {
 
             mcCurrentN++;
             mcCurrentNin += hitScore;
+            mcHitSumSquares += hitScore * hitScore;
 
             if (mcPointsList.length > 1500) mcPointsList.shift();
             mcPointsList.push({ x: rx, y: ry, inside: inside });
@@ -497,13 +512,13 @@ function updateIntegralStats() {
         if (mcMethod === 'hit_or_miss') {
             ratio = mcCurrentNin / mcCurrentN;
             approx = boxW * boxH * ratio;
-            const p = Math.abs(ratio);
-            stdErr = (boxW * boxH) * Math.sqrt(Math.max(0, p * (1 - p)) / mcCurrentN);
+            const variance = mcCurrentN > 1 ? Math.max(0, (mcHitSumSquares - mcCurrentN * ratio * ratio) / (mcCurrentN - 1)) : null;
+            stdErr = variance === null ? null : Math.abs(boxW * boxH) * Math.sqrt(variance / mcCurrentN);
         } else {
             const meanY = mcSumY / mcCurrentN;
             approx = boxW * meanY;
-            const variance = Math.max(0, (mcSumY2 / mcCurrentN) - Math.pow(meanY, 2));
-            stdErr = Math.abs(boxW) * Math.sqrt(variance / mcCurrentN);
+            const variance = mcCurrentN > 1 ? Math.max(0, (mcSumY2 - mcCurrentN * meanY * meanY) / (mcCurrentN - 1)) : null;
+            stdErr = variance === null ? null : Math.abs(boxW) * Math.sqrt(variance / mcCurrentN);
             ratio = meanY;
         }
         absErr = Math.abs(approx - exactVal);

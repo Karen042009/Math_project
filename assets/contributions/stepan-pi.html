@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f3ec">
+  <title>Monte Carlo π Lab</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f4f3ec;
+      --surface: #fbfaf6;
+      --ink: #202a26;
+      --muted: #727b74;
+      --line: #d9ddd4;
+      --green: #2e694d;
+      --green-light: #dcebd9;
+      --coral: #e26043;
+      --blue: #426e82;
+      --display: Georgia, "Times New Roman", serif;
+      --body: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background-color: var(--paper);
+      background-image: radial-gradient(#c9cec4 0.65px, transparent 0.65px);
+      background-size: 15px 15px;
+      color: var(--ink);
+      font-family: var(--body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input { font: inherit; }
+
+    .page {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 27px 0 42px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mark {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .edition {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      padding: 32px 0 24px;
+    }
+
+    .eyebrow, .section-label {
+      margin: 0 0 9px;
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1.06;
+    }
+
+    .intro-copy {
+      max-width: 325px;
+      margin: 0 0 3px;
+      color: #626c65;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(245px, 0.78fr) minmax(0, 1.5fr);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .controls {
+      padding: 24px 24px 24px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .section-label { color: var(--muted); }
+
+    .field-label {
+      display: block;
+      margin: 25px 0 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid #cbd1c8;
+      border-radius: 4px;
+    }
+
+    .input-wrap:focus-within {
+      outline: 2px solid #79a58a;
+      outline-offset: 2px;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      min-width: 0;
+      padding: 12px 13px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 16px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .input-suffix {
+      padding: 0 12px;
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .range-note {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-top: 17px;
+    }
+
+    .actions button {
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+    }
+
+    .actions button:active { transform: translateY(1px); }
+
+    .primary {
+      background: var(--green);
+      color: white;
+    }
+
+    .primary:hover:not(:disabled) { background: #24543d; }
+
+    .secondary {
+      background: transparent;
+      border-color: #cbd1c8 !important;
+      color: var(--ink);
+    }
+
+    .secondary:hover:not(:disabled) { background: #e9ebe3; }
+
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid #79a58a;
+      outline-offset: 3px;
+    }
+
+    button:disabled { cursor: not-allowed; opacity: 0.55; }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 30px;
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      border-radius: 50%;
+      background: #a4aaa2;
+    }
+
+    .status-dot.running {
+      background: var(--coral);
+      animation: pulse 900ms ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse { to { opacity: 0.4; } }
+
+    .visual {
+      min-width: 0;
+      padding: 20px 0 24px 24px;
+    }
+
+    .visual-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 13px;
+    }
+
+    .visual-heading .section-label { margin: 0; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: end;
+      gap: 13px;
+      color: #5e6861;
+      font-size: 10px;
+    }
+
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .legend-dot.outside { background: var(--coral); }
+
+    .chart-frame {
+      width: min(100%, 590px);
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid #d5d9d0;
+      border-radius: 4px;
+      background: var(--surface);
+      box-shadow: 0 5px 18px rgb(34 49 39 / 6%);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      margin-top: 20px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .metric {
+      min-width: 0;
+      padding: 14px 12px 15px;
+      border-right: 1px solid var(--line);
+    }
+
+    .metric:first-child { padding-left: 0; }
+    .metric:last-child { padding-right: 0; border-right: 0; }
+
+    .metric-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      display: block;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: var(--display);
+      font-size: clamp(18px, 2.5vw, 25px);
+      font-variant-numeric: tabular-nums;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .metric:first-child .metric-value { color: var(--green); }
+
+    .explanation {
+      display: grid;
+      grid-template-columns: 0.78fr 1.5fr;
+      gap: 24px;
+      padding-top: 23px;
+    }
+
+    .explanation h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .explanation p {
+      max-width: 620px;
+      margin: 0;
+      color: #626c65;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .formula {
+      display: inline-block;
+      margin: 0 3px;
+      color: var(--ink);
+      font-family: var(--display);
+      font-size: 17px;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 720px) {
+      .page { width: min(100% - 32px, 560px); padding-top: 18px; }
+      .intro { align-items: start; flex-direction: column; gap: 12px; padding: 26px 0 20px; }
+      .intro-copy { max-width: 460px; }
+      .workspace { grid-template-columns: 1fr; }
+      .controls { padding: 19px 0 17px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .field-label { margin-top: 15px; }
+      .visual { padding: 18px 0 20px; }
+      .chart-frame { width: min(100%, 520px); }
+      .explanation { grid-template-columns: 1fr; gap: 9px; }
+    }
+
+    @media (max-width: 420px) {
+      .edition { font-size: 9px; }
+      .visual-heading { align-items: start; flex-direction: column; }
+      .legend { justify-content: start; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .metric { padding: 12px 10px; border-bottom: 1px solid var(--line); }
+      .metric:nth-child(2) { border-right: 0; }
+      .metric:nth-child(3), .metric:nth-child(4) { border-bottom: 0; }
+      .metric:first-child { padding-left: 0; }
+      .metric:nth-child(2) { padding-right: 0; }
+      .metric-value { font-size: 21px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="wordmark"><span class="mark" aria-hidden="true">π</span> Field Notes / Mathematics</div>
+      <span class="edition">An interactive experiment · No. 01</span>
+    </header>
+
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Randomness, with a purpose</p>
+        <h1 id="page-title">Monte Carlo π Lab</h1>
+      </div>
+      <p class="intro-copy">Can random points find the value of π? Set a sample size and watch probability do the measuring.</p>
+    </section>
+
+    <section class="workspace" aria-label="Monte Carlo simulation">
+      <aside class="controls">
+        <p class="section-label">01 / Set up</p>
+        <label class="field-label" for="point-count">Number of points</label>
+        <div class="input-wrap">
+          <input id="point-count" type="number" min="100" max="100000" step="100" value="5000" inputmode="numeric">
+          <span class="input-suffix">points</span>
+        </div>
+        <p class="range-note">Choose between 100 and 100,000</p>
+        <div class="actions">
+          <button class="primary" id="start-button" type="button">Start simulation</button>
+          <button class="secondary" id="reset-button" type="button">Reset</button>
+        </div>
+        <div class="status-line" role="status" aria-live="polite">
+          <span id="status-dot" class="status-dot" aria-hidden="true"></span>
+          <span id="status-text">Ready to run</span>
+        </div>
+      </aside>
+
+      <section class="visual" aria-labelledby="plot-title">
+        <div class="visual-heading">
+          <p class="section-label" id="plot-title">02 / Sample space</p>
+          <div class="legend" aria-label="Point legend">
+            <span class="legend-item"><span class="legend-dot" aria-hidden="true"></span>Inside arc</span>
+            <span class="legend-item"><span class="legend-dot outside" aria-hidden="true"></span>Outside arc</span>
+          </div>
+        </div>
+        <div class="chart-frame">
+          <canvas id="plot" role="img" aria-label="Square sample space with a quarter circle and randomly generated points"></canvas>
+        </div>
+        <div class="metrics" aria-label="Simulation results">
+          <div class="metric">
+            <span class="metric-label">π estimate</span>
+            <output class="metric-value" id="estimate">—</output>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Inside / total</span>
+            <output class="metric-value" id="counts">0 / 0</output>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Absolute error</span>
+            <output class="metric-value" id="absolute-error">—</output>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Percent error</span>
+            <output class="metric-value" id="percent-error">—</output>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="explanation" aria-labelledby="formula-title">
+      <h2 id="formula-title">Why this estimates π</h2>
+      <p>Each point lands somewhere in the square at random. The quarter circle covers exactly <span class="formula">π / 4</span> of the square's area, so the fraction of points inside it approaches <span class="formula">π / 4</span>. Multiply that fraction by four: <span class="formula">π ≈ 4 × (inside ÷ total)</span>. More points usually bring the estimate closer.</p>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const canvas = document.querySelector("#plot");
+      const context = canvas.getContext("2d");
+      const countInput = document.querySelector("#point-count");
+      const startButton = document.querySelector("#start-button");
+      const resetButton = document.querySelector("#reset-button");
+      const statusText = document.querySelector("#status-text");
+      const statusDot = document.querySelector("#status-dot");
+      const estimateOutput = document.querySelector("#estimate");
+      const countsOutput = document.querySelector("#counts");
+      const absoluteErrorOutput = document.querySelector("#absolute-error");
+      const percentErrorOutput = document.querySelector("#percent-error");
+      const points = [];
+      const duration = 2800;
+      let insideCount = 0;
+      let targetCount = 5000;
+      let frameId = null;
+      let running = false;
+      let paused = false;
+      let elapsedBeforePause = 0;
+      let startedAt = 0;
+      let plotSize = 0;
+      let padding = 0;
+
+      function setStatus(message, isRunning = false) {
+        statusText.textContent = message;
+        statusDot.classList.toggle("running", isRunning);
+      }
+
+      function drawBase() {
+        const bounds = canvas.getBoundingClientRect();
+        if (!bounds.width) return;
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(bounds.width * pixelRatio);
+        canvas.height = Math.round(bounds.width * pixelRatio);
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+        const width = bounds.width;
+        padding = Math.max(24, width * 0.07);
+        plotSize = width - padding * 2;
+        context.clearRect(0, 0, width, width);
+        context.fillStyle = "#fbfaf6";
+        context.fillRect(0, 0, width, width);
+
+        const left = padding;
+        const top = padding;
+        const bottom = top + plotSize;
+
+        context.fillStyle = "#f1efe6";
+        context.fillRect(left, top, plotSize, plotSize);
+        context.beginPath();
+        context.moveTo(left, bottom);
+        context.lineTo(left, top);
+        context.arc(left, bottom, plotSize, -Math.PI / 2, 0);
+        context.closePath();
+        context.fillStyle = "#dcebd9";
+        context.fill();
+
+        context.strokeStyle = "#9aa69a";
+        context.lineWidth = 1;
+        context.beginPath();
+        context.moveTo(left + 0.5, top);
+        context.lineTo(left + 0.5, bottom + 0.5);
+        context.lineTo(left + plotSize, bottom + 0.5);
+        context.stroke();
+
+        context.strokeStyle = "#5d806a";
+        context.lineWidth = 1.5;
+        context.beginPath();
+        context.arc(left, bottom, plotSize, -Math.PI / 2, 0);
+        context.stroke();
+
+        context.fillStyle = "#727b74";
+        context.font = "10px 'Avenir Next', Avenir, sans-serif";
+        context.textAlign = "center";
+        context.fillText("0", left, bottom + 16);
+        context.fillText("1", left + plotSize, bottom + 16);
+        context.textAlign = "right";
+        context.fillText("1", left - 8, top + 4);
+        context.fillText("0", left - 8, bottom + 4);
+
+        drawPoints(0, points.length);
+      }
+
+      function drawPoints(start, end) {
+        const radius = Math.max(1.05, Math.min(2.5, 720 / Math.sqrt(Math.max(targetCount, 100))));
+        for (let index = start; index < end; index += 1) {
+          const point = points[index];
+          context.beginPath();
+          context.arc(padding + point.x * plotSize, padding + (1 - point.y) * plotSize, radius, 0, Math.PI * 2);
+          context.fillStyle = point.inside ? "#2e694d" : "#e26043";
+          context.fill();
+        }
+      }
+
+      function updateResults() {
+        const total = points.length;
+        countsOutput.value = `${insideCount.toLocaleString()} / ${total.toLocaleString()}`;
+        countsOutput.textContent = countsOutput.value;
+        if (!total) {
+          estimateOutput.value = "—";
+          estimateOutput.textContent = "—";
+          absoluteErrorOutput.value = "—";
+          absoluteErrorOutput.textContent = "—";
+          percentErrorOutput.value = "—";
+          percentErrorOutput.textContent = "—";
+          return;
+        }
+
+        const estimate = 4 * insideCount / total;
+        const absoluteError = Math.abs(Math.PI - estimate);
+        const percentError = absoluteError / Math.PI * 100;
+        estimateOutput.value = estimate.toFixed(6);
+        estimateOutput.textContent = estimateOutput.value;
+        absoluteErrorOutput.value = absoluteError.toFixed(6);
+        absoluteErrorOutput.textContent = absoluteErrorOutput.value;
+        percentErrorOutput.value = `${percentError.toFixed(3)}%`;
+        percentErrorOutput.textContent = percentErrorOutput.value;
+      }
+
+      function finish() {
+        running = false;
+        paused = false;
+        frameId = null;
+        startButton.textContent = "Run again";
+        startButton.disabled = false;
+        setStatus(`Complete · ${points.length.toLocaleString()} points`);
+        updateResults();
+      }
+
+      function animate(timestamp) {
+        if (!running || paused) return;
+        const elapsed = timestamp - startedAt + elapsedBeforePause;
+        const desiredCount = Math.min(targetCount, Math.floor(targetCount * elapsed / duration));
+        const start = points.length;
+
+        while (points.length < desiredCount) {
+          const x = Math.random();
+          const y = Math.random();
+          const inside = x * x + y * y <= 1;
+          if (inside) insideCount += 1;
+          points.push({ x, y, inside });
+        }
+
+        drawPoints(start, points.length);
+        updateResults();
+        if (points.length >= targetCount) {
+          finish();
+          return;
+        }
+        frameId = requestAnimationFrame(animate);
+      }
+
+      function begin() {
+        const requestedCount = Number(countInput.value);
+        if (!Number.isInteger(requestedCount) || requestedCount < 100 || requestedCount > 100000) {
+          countInput.setCustomValidity("Enter a whole number from 100 to 100,000.");
+          countInput.reportValidity();
+          return;
+        }
+        countInput.setCustomValidity("");
+        points.length = 0;
+        insideCount = 0;
+        targetCount = requestedCount;
+        drawBase();
+        updateResults();
+        running = true;
+        paused = false;
+        elapsedBeforePause = 0;
+        startedAt = performance.now();
+        startButton.textContent = "Pause";
+        setStatus("Generating points…", true);
+        frameId = requestAnimationFrame(animate);
+      }
+
+      startButton.addEventListener("click", () => {
+        if (!running) {
+          begin();
+          return;
+        }
+        if (paused) {
+          paused = false;
+          startedAt = performance.now();
+          startButton.textContent = "Pause";
+          setStatus("Generating points…", true);
+          frameId = requestAnimationFrame(animate);
+        } else {
+          paused = true;
+          elapsedBeforePause += performance.now() - startedAt;
+          cancelAnimationFrame(frameId);
+          startButton.textContent = "Resume";
+          setStatus("Paused");
+        }
+      });
+
+      resetButton.addEventListener("click", () => {
+        if (frameId !== null) cancelAnimationFrame(frameId);
+        running = false;
+        paused = false;
+        frameId = null;
+        points.length = 0;
+        insideCount = 0;
+        elapsedBeforePause = 0;
+        startButton.textContent = "Start simulation";
+        countInput.setCustomValidity("");
+        setStatus("Ready to run");
+        updateResults();
+        drawBase();
+      });
+
+      countInput.addEventListener("input", () => countInput.setCustomValidity(""));
+      new ResizeObserver(drawBase).observe(canvas);
+      window.addEventListener("resize", drawBase);
+      drawBase();
+      updateResults();
+    })();
+  </script>
+</body>
+</html>

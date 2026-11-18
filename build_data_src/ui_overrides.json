@@ -373,5 +373,15 @@
     "hy": "© 2026 «Մոնտե-Կառլոյի մեթոդը» նախագիծ | Բոլոր իրավունքները պաշտպանված են",
     "en": "© 2026 The Monte Carlo Method project | All rights reserved",
     "ru": "© 2026 Проект «Метод Монте-Карло» | Все права защищены"
+  },
+  "nav_contributions": {
+    "hy": "Մասնակիցներ",
+    "en": "Contributors",
+    "ru": "Участники"
+  },
+  "footer_credits": {
+    "hy": "Կայքի ստեղծում՝ Խումարյան Գրիշա | Նախագծի ղեկավար՝ Մ. Սարդարյան",
+    "en": "Website creation: Grisha Khumaryan | Project supervisor: M. Sardaryan",
+    "ru": "Создание сайта: Гриша Хумарян | Руководитель проекта: М. Сардарян"
   }
 }

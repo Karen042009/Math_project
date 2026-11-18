@@ -30,7 +30,7 @@ function refreshLabLanguage() {
     const walker = document.createTreeWalker(lab, NodeFilter.SHOW_TEXT);
     let node;
     while ((node = walker.nextNode())) {
-        if (node.parentElement.closest('[data-i18n], [data-calc-output], mjx-container, script, style')) continue;
+        if (node.parentElement.closest('[data-i18n], [data-calc-output], .research-panel, [data-research-t], .navigation-groups, mjx-container, script, style')) continue;
         if (!labOriginalText.has(node)) labOriginalText.set(node,node.textContent);
         node.textContent = calcT(labOriginalText.get(node));
     }

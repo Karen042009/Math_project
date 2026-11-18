@@ -1,0 +1,94 @@
+- generic [ref=f1e1]:
+  - navigation [ref=f1e2]:
+    - generic [ref=f1e3]: ProbSpace
+    - generic [ref=f1e5]:
+      - generic [ref=f1e6]:
+        - button " Գլխավոր" [ref=f1e7] [cursor=pointer]:
+          - generic [ref=f1e8]: 
+          - text: Գլխավոր
+        - button " Տեսություն" [ref=f1e9] [cursor=pointer]:
+          - generic [ref=f1e10]: 
+          - text: Տեսություն
+        - button " Խնդիրներ" [ref=f1e11] [cursor=pointer]:
+          - generic [ref=f1e12]: 
+          - text: Խնդիրներ
+        - button " Լաբորատորիա" [ref=f1e13] [cursor=pointer]:
+          - generic [ref=f1e14]: 
+          - text: Լաբորատորիա
+        - button " Սիմուլյացիաներ" [ref=f1e15] [cursor=pointer]:
+          - generic [ref=f1e16]: 
+          - text: Սիմուլյացիաներ
+      - button "Toggle color theme" [ref=f1e17] [cursor=pointer]:
+        - generic [ref=f1e18]: 
+      - generic [ref=f1e19]:
+        - button "ՀՅ" [ref=f1e20] [cursor=pointer]
+        - button "EN" [ref=f1e21] [cursor=pointer]
+        - button "RU" [ref=f1e22] [cursor=pointer]
+      - text: 
+  - text:     
+  - generic [ref=f1e23]:
+    - text:                                                                                                                   
+    - generic [ref=f1e245]:
+      - heading " Ինտերակտիվ Սիմուլյացիաներ  Լսել AI Ուղեցույցին" [level=1] [ref=f1e246]:
+        - generic [ref=f1e247]: 
+        - generic [ref=f1e248]: Ինտերակտիվ Սիմուլյացիաներ
+        - button " Լսել AI Ուղեցույցին" [ref=f1e249] [cursor=pointer]:
+          - generic [ref=f1e250]: 
+          - text: Լսել AI Ուղեցույցին
+      - paragraph [ref=f1e251]: Այստեղ վիզուալ կերպով ցուցադրվում է հավանականությունների տեսության օրենքների կիրառությունը գործնականում՝ Մոնտե Կառլոյի մեթոդով։ Այս բաժնի նպատակն է ինտերակտիվ սիմուլյացիաների և հազարավոր անգամ կրկնվող պատահական երևույթների վերլուծության միջոցով ձեզ սովորեցնել բարդ մաթեմատիկական հասկացություններ՝ ինչպիսիք են նորմալ բաշխումը, անորոշության պայմաններում ճշգրիտ ընտրության կայացումը և երկրաչափական հավանականությունը։
+      - generic [ref=f1e252]:
+        - button " Մոնտե Կառլոյի Ինտեգրում" [ref=f1e253] [cursor=pointer]:
+          - generic [ref=f1e254]: 
+          - text: Մոնտե Կառլոյի Ինտեգրում
+        - button " Գալտոնի տախտակ" [ref=f1e255] [cursor=pointer]:
+          - generic [ref=f1e256]: 
+          - text: Գալտոնի տախտակ
+        - button " Մոնտի Հոլլ" [ref=f1e257] [cursor=pointer]:
+          - generic [ref=f1e258]: 
+          - text: Մոնտի Հոլլ
+        - button " Բյուֆոնի ասեղ" [ref=f1e259] [cursor=pointer]:
+          - generic [ref=f1e260]: 
+          - text: Բյուֆոնի ասեղ
+        - button " Մետաղադրամ" [ref=f1e261] [cursor=pointer]:
+          - generic [ref=f1e262]: 
+          - text: Մետաղադրամ
+        - button " Զառ" [ref=f1e263] [cursor=pointer]:
+          - generic [ref=f1e264]: 
+          - text: Զառ
+        - button "Կրկնելի ինտեգրալներ" [active] [ref=f1e265] [cursor=pointer]
+        - button "π․ շրջան և քառակուսի" [ref=f1e266] [cursor=pointer]
+        - button "Պատահական քայլք" [ref=f1e267] [cursor=pointer]
+        - button "Ֆինանսական ռիսկ" [ref=f1e268] [cursor=pointer]
+        - button "Մակերես և ծավալ" [ref=f1e269] [cursor=pointer]
+      - text:                
+      - generic [ref=f1e341]:
+        - heading "Կրկնելի ինտեգրալներ" [level=2] [ref=f1e342]
+        - paragraph [ref=f1e343]: Դավիթ Ասատրյանի օրինակները․ ∫₀¹x²dx և ∫₀¹eˣdx՝ նույն ընտրանքով։ Կարող եք փորձարկել նաև ձեր ֆունկցիան։
+        - generic [ref=f1e344]:
+          - generic [ref=f1e345]:
+            - generic [ref=f1e346]: Սկզբնարժեք (seed)
+            - spinbutton "Սկզբնարժեք (seed)" [ref=f1e347]: "0"
+          - generic [ref=f1e348]:
+            - generic [ref=f1e349]: Ընտրանքի քանակ (N)
+            - spinbutton "Ընտրանքի քանակ (N)" [ref=f1e350]: "10000"
+          - generic [ref=f1e351]:
+            - generic [ref=f1e352]: Օրինակ
+            - combobox "Օրինակ" [ref=f1e353]:
+              - option "Դավիթի երկու ինտեգրալները" [selected]
+              - option "Իմ ֆունկցիան"
+          - generic [ref=f1e354]:
+            - generic [ref=f1e355]: Անկախ կրկնություններ
+            - combobox "Անկախ կրկնություններ" [ref=f1e356]:
+              - option "Առանց կրկնությունների"
+              - option "20" [selected]
+              - option "50"
+          - generic [ref=f1e357]:
+            - button "Հաշվել փորձը" [ref=f1e358] [cursor=pointer]
+            - button "Աղյուսակներ՝ CSV" [disabled] [ref=f1e359]
+            - button "Գրաֆիկներ՝ PNG" [disabled] [ref=f1e360]
+        - paragraph [ref=f1e361]: Գեներատորը համընկնում է NumPy-ի np.random.seed(seed) / RandomState համասեռ ընտրանքի հետ։ Լռելյայն seed=0, N=10000։
+        - paragraph [ref=f1e364]: Ընտրեք պարամետրերը և գործարկեք փորձը։ Նույն seed-ը և պարամետրերը տալիս են նույն արդյունքը։
+  - contentinfo [ref=f1e239]:
+    - generic [ref=f1e240]:
+      - paragraph [ref=f1e242]: © 2026 «Մոնտե-Կառլոյի մեթոդը» նախագիծ | Բոլոր իրավունքները պաշտպանված են
+      - paragraph [ref=f1e244]: Ստեղծվել է Կարեն Պողոսյանի կողմից | Նախագծավար ուսուցիչ՝ Մանուշակ Սարդարյան

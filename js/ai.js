@@ -8,9 +8,16 @@ let currentGeneratedProblem = null;
 let aiAttempts = 0;
 let currentUploadedImageBase64 = null;
 let currentUploadedImageMime = null;
+let aiSessionRevision = 0;
+let aiChecking = false;
+let aiController = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     updateAITopicsByTrack(document.getElementById('ai-track')?.value || 'probability');
+    document.getElementById('ai-check-btn').disabled = true;
+    ['ai-track', 'ai-topic', 'ai-difficulty'].forEach(id => {
+        document.getElementById(id)?.addEventListener('change', resetAISession);
+    });
 });
 
 function updateAITopicsByTrack(track) {
@@ -49,6 +56,10 @@ function updateAITopicsByTrack(track) {
 }
 
 function resetAISession() {
+    aiSessionRevision++;
+    aiController?.abort();
+    aiController = null;
+    aiChecking = false;
     currentGeneratedProblem = null;
     aiAttempts = 0;
     currentUploadedImageBase64 = null;
@@ -67,50 +78,48 @@ function resetAISession() {
     if (previewContainer) previewContainer.style.display = 'none';
     const fileInput = document.getElementById('ai-user-image');
     if (fileInput) fileInput.value = '';
+    const content = document.getElementById('ai-feedback-content');
+    if (content) content.innerHTML = '';
+    const score = document.getElementById('ai-score');
+    if (score) { score.innerText = '--/100'; score.style.color = ''; }
+    const check = document.getElementById('ai-check-btn');
+    if (check) check.disabled = true;
+    const generate = document.getElementById('ai-generate-btn');
+    if (generate) generate.disabled = false;
 }
 
 async function generateAIProblem() {
+    resetAISession();
+    const revision = aiSessionRevision;
     const trackSelect = document.getElementById('ai-track');
     const topicSelect = document.getElementById('ai-topic');
     const diffSelect = document.getElementById('ai-difficulty');
     const outputText = document.getElementById('ai-question-text');
     const workspace = document.getElementById('ai-workspace');
-    const feedback = document.getElementById('ai-feedback');
-    const scoreSpan = document.getElementById('ai-score');
+    const generateBtn = document.getElementById('ai-generate-btn');
+    if (generateBtn) generateBtn.disabled = true;
+    const filters = {
+        track: trackSelect ? trackSelect.value : 'probability',
+        topic: topicSelect ? topicSelect.value : 'all',
+        difficulty: diffSelect ? diffSelect.value : 'all'
+    };
 
-    // 1. Reset state, clear past answers, image previews, and scores
-    aiAttempts = 0;
     if (workspace) workspace.style.display = 'block';
-    if (feedback) feedback.style.display = 'none';
-    if (scoreSpan) scoreSpan.innerText = '--/100';
-
-    const userText = document.getElementById('ai-user-text');
-    if (userText) userText.value = '';
-
-    const previewContainer = document.getElementById('img-preview-container');
-    if (previewContainer) previewContainer.style.display = 'none';
-    const fileInput = document.getElementById('ai-user-image');
-    if (fileInput) fileInput.value = '';
-    currentUploadedImageBase64 = null;
-    currentUploadedImageMime = null;
 
     const lang = typeof currentLang !== 'undefined' ? currentLang : 'hy';
-    if (outputText) outputText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Գեներացվում է նոր խնդիր...';
+    if (outputText) outputText.innerText = ({ hy:'Գեներացվում է նոր խնդիր…', en:'Generating a new problem…', ru:'Создаётся новая задача…' })[lang];
 
     await new Promise(r => setTimeout(r, 350));
+    if (revision !== aiSessionRevision) return;
 
-    if (window.probabilityData && window.probabilityData.generateBatch) {
-        const filters = {
-            track: trackSelect ? trackSelect.value : 'probability',
-            topic: topicSelect ? topicSelect.value : 'all',
-            difficulty: diffSelect ? diffSelect.value : 'all'
-        };
-
-        const batch = window.probabilityData.generateBatch(1, filters);
+    try {
+        const batch = window.probabilityData?.generateBatch?.(1, filters);
         if (batch && batch.length > 0) {
             currentGeneratedProblem = batch[0];
             const q = currentGeneratedProblem.question[lang] || currentGeneratedProblem.question['hy'] || currentGeneratedProblem.question['en'];
             outputText.innerText = typeof q === 'string' ? q : q[lang];
+            const check = document.getElementById('ai-check-btn');
+            if (check) check.disabled = false;
             if (window.MathJax && window.MathJax.typesetPromise) {
                 queueMathTypeset(outputText);
             }
@@ -122,11 +131,45 @@ async function generateAIProblem() {
             };
             outputText.innerText = noMatchMsg[lang] || noMatchMsg['hy'];
         }
+    } catch (error) {
+        currentGeneratedProblem = null;
+        const check = document.getElementById('ai-check-btn');
+        if (check) check.disabled = true;
+        outputText.innerText = ({ hy:'Խնդիրը չստեղծվեց։ Ընտրեք այլ թեմա կամ փորձեք կրկին։', en:'The problem could not be generated. Choose another topic or try again.', ru:'Не удалось создать задачу. Выберите другую тему или повторите попытку.' })[lang];
+    } finally {
+        if (revision === aiSessionRevision && generateBtn) generateBtn.disabled = false;
     }
 }
 
+function renderLocalAIFeedback(problem, answer, attempt, lang, networkFallback = false) {
+    const text = (hy, en, ru) => ({ hy, en, ru })[lang] || en;
+    const isCorrect = problem.checkFn ? problem.checkFn(answer, problem.answer)
+        : typeof compareAnswers === 'function' ? compareAnswers(answer, problem.answer)
+        : answer.toLowerCase().trim() === String(problem.answer).toLowerCase().trim();
+    const score = document.getElementById('ai-score');
+    score.innerText = isCorrect ? '100/100' : attempt >= 3 ? '20/100' : '40/100';
+    score.style.color = isCorrect ? '#06d6a0' : '#f72585';
+    let html = networkFallback ? `<p class="research-note">${text('Հեռավար ստուգումը հասանելի չէ։ Կատարվեց պատասխանի տեղային ստուգում։', 'Remote checking is unavailable. Your answer was checked locally.', 'Удалённая проверка недоступна. Ответ проверен локально.')}</p>` : '';
+    if (isCorrect) {
+        html += `<p style="color:#06d6a0;font-weight:bold">${text('Ճիշտ պատասխան է։', 'Correct answer.', 'Ответ верный.')}</p>`;
+    } else if (attempt === 1) {
+        html += `<p>${text('Պատասխանը ճիշտ չէ։ Ստուգեք հաշվարկներն ու միավորները և փորձեք կրկին։', 'The answer is incorrect. Check your calculations and units, then try again.', 'Ответ неверный. Проверьте вычисления и единицы измерения и попробуйте снова.')}</p>`;
+    } else if (attempt === 2) {
+        const hint = problem.related_theory_hint?.[lang] || problem.related_theory_hint?.hy || problem.related_theory_hint?.en;
+        html += `<p><strong>${text('Օգտակար հուշում', 'Helpful hint', 'Подсказка')}</strong></p><div>${hint || text('Կիրառեք թեմային համապատասխան հիմնական բանաձևը։', 'Apply the core formula for this topic.', 'Примените основную формулу этой темы.')}</div>`;
+    } else {
+        const solution = problem.related_theory_solution?.[lang] || problem.related_theory_solution?.hy || problem.related_theory_solution?.en || '';
+        const safeAnswer = String(problem.answer).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+        html += `<p><strong>${text('Ամբողջական լուծում', 'Complete solution', 'Полное решение')}</strong></p><div>${solution}</div><p>${text('Ճիշտ պատասխան՝', 'Correct answer:', 'Правильный ответ:')} <strong>${safeAnswer}</strong></p>`;
+    }
+    const content = document.getElementById('ai-feedback-content');
+    if (typeof clearMathContainer === 'function') clearMathContainer(content);
+    content.innerHTML = html;
+    if (window.MathJax?.typesetPromise) queueMathTypeset(content);
+}
+
 async function checkSolutionWithAI() {
-    if (!currentGeneratedProblem) return;
+    if (!currentGeneratedProblem || aiChecking) return;
 
     const userVal = document.getElementById('ai-user-text')?.value.trim();
     const feedbackDiv = document.getElementById('ai-feedback');
@@ -145,59 +188,31 @@ async function checkSolutionWithAI() {
     }
 
     aiAttempts++;
+    aiChecking = true;
+    const problem = currentGeneratedProblem, attempt = aiAttempts, revision = aiSessionRevision;
+    const checkBtn = document.getElementById('ai-check-btn');
+    if (checkBtn) checkBtn.disabled = true;
     if (feedbackDiv) feedbackDiv.style.display = 'block';
-    if (contentDiv) contentDiv.innerHTML = `<i class="fas fa-robot fa-spin"></i> Ստուգվում է լուծումը (Փորձ #${aiAttempts})...`;
+    if (contentDiv) contentDiv.innerText = ({ hy:`Ստուգվում է պատասխանը․ փորձ ${attempt}…`, en:`Checking the answer: attempt ${attempt}…`, ru:`Проверка ответа: попытка ${attempt}…` })[lang];
     if (scoreSpan) scoreSpan.innerText = "--/100";
 
-    // Safe retrieval of Gemini API Key from localStorage (never hardcoded in bundle)
+    // Both offline checking and remote failures use the same pedagogical stages.
     const apiKey = localStorage.getItem('probspace_gemini_api_key') || window.GEMINI_API_KEY || null;
 
     if (!apiKey || apiKey.includes('YOUR_KEY')) {
-        // Fallback: Local instant assessment engine
-        let isCorrect = false;
-        if (currentGeneratedProblem.checkFn) {
-            isCorrect = currentGeneratedProblem.checkFn(userVal, currentGeneratedProblem.answer);
-        } else if (typeof compareAnswers === 'function') {
-            isCorrect = compareAnswers(userVal, currentGeneratedProblem.answer);
-        } else {
-            isCorrect = (userVal.toLowerCase().trim() === String(currentGeneratedProblem.answer).toLowerCase().trim());
+        try {
+            renderLocalAIFeedback(problem, userVal, attempt, lang);
+        } finally {
+            aiChecking = false;
+            if (checkBtn) checkBtn.disabled = false;
         }
-
-        scoreSpan.innerText = isCorrect ? "100/100" : (aiAttempts >= 3 ? "20/100" : "40/100");
-        scoreSpan.style.color = isCorrect ? "#06d6a0" : "#f72585";
-
-        let html = '';
-        if (isCorrect) {
-            html = `<p style="color:#06d6a0; font-weight:bold;">${lang === 'hy' ? '🎉 Ճիշտ է։ Հիանալի մաթեմատիկական դատողություն։' : (lang === 'ru' ? '🎉 Правильно! Отличное математическое решение.' : '🎉 Correct! Excellent mathematical reasoning.')}</p>`;
-        } else {
-            if (aiAttempts === 1) {
-                html = `
-                    <p style="color:var(--accent-pink); font-weight:bold;">${lang === 'hy' ? 'Պատասխանը ճիշտ չէ։' : 'Answer is incorrect.'}</p>
-                    <p>${lang === 'hy' ? 'Ուշադիր ստուգեք հաշվարկները և միավորները։ Փորձեք ևս մեկ անգամ։' : 'Carefully verify your calculations. Try again.'}</p>
-                `;
-            } else if (aiAttempts === 2) {
-                const hint = currentGeneratedProblem.related_theory_hint?.[lang] || currentGeneratedProblem.related_theory_hint?.['hy'] || currentGeneratedProblem.related_theory_hint?.['en'] || '';
-                html = `
-                    <p style="color:var(--accent-gold); font-weight:bold;">💡 Օգտակար հուշում․</p>
-                    <p>${hint || (lang === 'hy' ? 'Կիրառեք թեմային համապատասխան հիմնական բանաձևը։' : 'Apply the core formula.')}</p>
-                `;
-            } else {
-                const sol = currentGeneratedProblem.related_theory_solution?.[lang] || currentGeneratedProblem.related_theory_solution?.['hy'] || currentGeneratedProblem.related_theory_solution?.['en'] || '';
-                html = `
-                    <p style="color:var(--accent-gold); font-weight:bold;">📖 Ամբողջական լուծում․</p>
-                    <div style="line-height:1.6; margin-bottom:8px;">${sol}</div>
-                    <div style="padding:6px 12px; background:var(--bg-input); border-radius:6px; display:inline-block;">
-                        Ճիշտ պատասխան՝ <strong style="color:var(--accent-pink);">${currentGeneratedProblem.answer}</strong>
-                    </div>
-                `;
-            }
-        }
-        contentDiv.innerHTML = html;
-        if (window.MathJax && window.MathJax.typesetPromise) queueMathTypeset(contentDiv);
         return;
     }
 
     // Remote Gemini API Integration
+    const controller = new AbortController();
+    aiController = controller;
+    const timeout = setTimeout(() => controller.abort(), 10000);
     try {
         let tierHint = "";
         if (aiAttempts === 1) {
@@ -234,6 +249,7 @@ Format output as pure JSON without markdown backticks:
 
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
+            signal: controller.signal,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{ parts }],
@@ -241,10 +257,13 @@ Format output as pure JSON without markdown backticks:
             })
         });
 
+        if (!response.ok) throw new Error('Remote check failed');
         const data = await response.json();
         const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
         const cleanJson = rawText.replace(/```json|```/g, "").trim();
         const aiResponse = JSON.parse(cleanJson);
+        if (!Number.isFinite(aiResponse.score) || aiResponse.score < 0 || aiResponse.score > 100 || typeof aiResponse.feedback_html !== 'string') throw new Error('Invalid feedback');
+        if (revision !== aiSessionRevision || currentGeneratedProblem !== problem) return;
 
         scoreSpan.innerText = aiResponse.score + "/100";
         scoreSpan.style.color = aiResponse.score >= 70 ? "#06d6a0" : (aiResponse.score >= 40 ? "#ffd60a" : "#f72585");
@@ -252,8 +271,14 @@ Format output as pure JSON without markdown backticks:
 
         if (window.MathJax && window.MathJax.typesetPromise) queueMathTypeset(contentDiv);
     } catch (error) {
-        console.warn("AI fallback due to:", error);
-        contentDiv.innerHTML = `<p style="color:var(--text-muted);">AI ցանցային սերվերը հասանելի չէ, կատարվեց տեղային մաթեմատիկական ստուգում։ Ճիշտ պատասխան՝ <strong>${currentGeneratedProblem.answer}</strong></p>`;
+        if (revision === aiSessionRevision && currentGeneratedProblem === problem) renderLocalAIFeedback(problem, userVal, attempt, lang, true);
+    } finally {
+        clearTimeout(timeout);
+        if (revision === aiSessionRevision) {
+            aiChecking = false;
+            aiController = null;
+            if (checkBtn) checkBtn.disabled = !currentGeneratedProblem;
+        }
     }
 }
 

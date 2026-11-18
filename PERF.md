@@ -4,6 +4,7 @@ Measured locally on 2026-10-13 with Chromium through Playwright CLI at
 `http://localhost:8000`, with MathJax loaded and without CPU/network throttling.
 These are synthetic debugging observations, not production INP or RUM results.
 
+
 ## Cause
 
 The previous renderer inserted the entire selected course and asked MathJax to

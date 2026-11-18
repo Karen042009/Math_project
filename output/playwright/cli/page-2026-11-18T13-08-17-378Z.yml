@@ -1,0 +1,119 @@
+- generic [active] [ref=f9e1]:
+  - navigation [ref=f9e2]:
+    - generic [ref=f9e3]: ProbSpace
+    - generic [ref=f9e5]:
+      - generic [ref=f9e6]:
+        - button " Գլխավոր" [ref=f9e7] [cursor=pointer]:
+          - generic [ref=f9e8]: 
+          - text: Գլխավոր
+        - button " Տեսություն" [ref=f9e9] [cursor=pointer]:
+          - generic [ref=f9e10]: 
+          - text: Տեսություն
+        - button " Խնդիրներ" [ref=f9e11] [cursor=pointer]:
+          - generic [ref=f9e12]: 
+          - text: Խնդիրներ
+        - button " Լաբորատորիա" [ref=f9e13] [cursor=pointer]:
+          - generic [ref=f9e14]: 
+          - text: Լաբորատորիա
+        - button " Սիմուլյացիաներ" [ref=f9e15] [cursor=pointer]:
+          - generic [ref=f9e16]: 
+          - text: Սիմուլյացիաներ
+        - button "Մասնակիցներ" [ref=f9e17] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f9e18]: 
+          - text: Մասնակիցներ
+      - button "Toggle color theme" [ref=f9e19] [cursor=pointer]:
+        - generic [ref=f9e20]: 
+      - generic [ref=f9e21]:
+        - button "ՀՅ" [ref=f9e22] [cursor=pointer]
+        - button "EN" [ref=f9e23] [cursor=pointer]
+        - button "RU" [ref=f9e24] [cursor=pointer]
+      - text: 
+  - text:      
+  - generic [ref=f9e25]:
+    - generic [ref=f9e26]:
+      - generic [ref=f9e27]:
+        - generic [ref=f9e28]:
+          - paragraph [ref=f9e29]: ՄԱԹԵՄԱՏԻԿԱ՝ ՓՈՐՁԻ ՄԻՋՈՑՈՎ
+          - heading "Մոնտե-Կառլոյի մեթոդը․ Ինտեգրալների հաշվումը և հավանականության սիմուլյացիաները։" [level=1] [ref=f9e30]:
+            - generic [ref=f9e31]: Մոնտե-Կառլոյի մեթոդը․
+            - generic [ref=f9e32]: Ինտեգրալների հաշվումը և հավանականության սիմուլյացիաները։
+          - paragraph [ref=f9e33]: Պատահական կետերից՝ դեպի հաշվարկված օրինաչափություններ։ Ուսումնասիրեք ինտեգրալը, հաշվեք մակերեսն ու ծավալը և փորձարկեք հավանականությունը։
+          - generic [ref=f9e34]:
+            - button "Սկսել փորձը" [ref=f9e35] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f9e37]: ↗
+            - button "Ուսումնասիրել տեսությունը" [ref=f9e38] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f9e40]: →
+          - generic [ref=f9e41]:
+            - button "Հավանականություն" [ref=f9e42] [cursor=pointer]
+            - generic [aria-hidden] [ref=f9e45]: /
+            - button "Ինտեգրալ" [ref=f9e46] [cursor=pointer]
+        - figure "∫ 1 0 𝑥 2 𝑑 𝑥 = 1 3 Կորի տակ ընկած կետերի բաժնով մոտարկում ենք ինտեգրալը։ Սխեմատիկ պատկեր · ոչ ընթացիկ հաշվարկ" [ref=f9e49]:
+          - generic [ref=f9e50]:
+            - generic [ref=f9e51]: ՄՈՆՏԵ ԿԱՌԼՈՅԻ ԻՆՏԵԳՐՈՒՄ
+            - generic [ref=f9e52]: 01 / ∫
+          - 'img "Monte Carlo integration: random points under the curve y = x²" [ref=f9e53]':
+            - generic [ref=f9e158]:
+              - generic [ref=f9e159]: "0"
+              - generic [ref=f9e160]: "1"
+              - generic [ref=f9e161]: "1"
+              - generic [ref=f9e162]: x
+              - generic [ref=f9e163]: f(x) = x²
+          - generic [ref=f9e164]:
+            - generic [ref=f9e168]:
+              - generic [ref=f9e169]:
+                - generic [ref=f9e170]:
+                  - generic [ref=f9e171]: ∫
+                  - generic [ref=f9e173]:
+                    - generic [ref=f9e174]: "1"
+                    - generic [ref=f9e177]: "0"
+                - generic [ref=f9e179]:
+                  - generic [ref=f9e180]: 𝑥
+                  - generic [ref=f9e182]: "2"
+                - generic [ref=f9e186]:
+                  - generic [ref=f9e187]: 𝑑
+                  - generic [ref=f9e189]: 𝑥
+              - generic [ref=f9e191]: =
+              - generic [ref=f9e194]:
+                - generic [ref=f9e195]: "1"
+                - generic [ref=f9e199]: "3"
+            - paragraph [ref=f9e207]: Կորի տակ ընկած կետերի բաժնով մոտարկում ենք ինտեգրալը։
+            - text: Սխեմատիկ պատկեր · ոչ ընթացիկ հաշվարկ
+      - generic [ref=f9e208]:
+        - generic [ref=f9e209]:
+          - text: 01 — 04
+          - heading "Հասկացեք։ Հաշվեք։ Փորձարկեք։" [level=2] [ref=f9e210]
+        - paragraph [ref=f9e211]: Մի գաղափար՝ տեսությունից մինչև ձեր սեփական փորձը։
+      - generic [ref=f9e212]:
+        - button "01 Երկու ուղղություն, մեկ հիմք Հավանականություն և ինտեգրալ․ սահմանումներից մինչև Մոնտե Կառլոյի մեթոդը։" [ref=f9e213] [cursor=pointer]:
+          - generic [ref=f9e214]:
+            - generic [ref=f9e215]: "01"
+            - generic [aria-hidden] [ref=f9e216]: 
+          - heading "Երկու ուղղություն, մեկ հիմք" [level=3] [ref=f9e217]
+          - paragraph [ref=f9e218]: Հավանականություն և ինտեգրալ․ սահմանումներից մինչև Մոնտե Կառլոյի մեթոդը։
+          - generic [aria-hidden] [ref=f9e219]: ↗
+        - button "02 Խնդիրներ՝ քայլ առ քայլ Լուծեք երկու ուղղությունների խնդիրները՝ հուշումներով և բացատրված լուծումներով։" [ref=f9e220] [cursor=pointer]:
+          - generic [ref=f9e221]:
+            - generic [ref=f9e222]: "02"
+            - generic [aria-hidden] [ref=f9e223]: 
+          - heading "Խնդիրներ՝ քայլ առ քայլ" [level=3] [ref=f9e224]
+          - paragraph [ref=f9e225]: Լուծեք երկու ուղղությունների խնդիրները՝ հուշումներով և բացատրված լուծումներով։
+          - generic [aria-hidden] [ref=f9e226]: ↗
+        - button "03 Ձեր հաշվարկային գործիքները Ածանցյալ, ինտեգրալ, մակերես, ծավալ և շարժում՝ տեսանելի գրաֆիկներով։" [ref=f9e227] [cursor=pointer]:
+          - generic [ref=f9e228]:
+            - generic [ref=f9e229]: "03"
+            - generic [aria-hidden] [ref=f9e230]: 
+          - heading "Ձեր հաշվարկային գործիքները" [level=3] [ref=f9e231]
+          - paragraph [ref=f9e232]: Ածանցյալ, ինտեգրալ, մակերես, ծավալ և շարժում՝ տեսանելի գրաֆիկներով։
+          - generic [aria-hidden] [ref=f9e233]: ↗
+        - button "04 Պատահականությունը՝ գործողության մեջ Ինտեգրում պատահական ընտրանքով, մետաղադրամ, զառ և հավանականային փորձեր։" [ref=f9e234] [cursor=pointer]:
+          - generic [ref=f9e235]:
+            - generic [ref=f9e236]: "04"
+            - generic [aria-hidden] [ref=f9e237]: 
+          - heading "Պատահականությունը՝ գործողության մեջ" [level=3] [ref=f9e238]
+          - paragraph [ref=f9e239]: Ինտեգրում պատահական ընտրանքով, մետաղադրամ, զառ և հավանականային փորձեր։
+          - generic [aria-hidden] [ref=f9e240]: ↗
+    - text:                                                                                                                                       
+  - contentinfo [ref=f9e241]:
+    - generic [ref=f9e242]:
+      - paragraph [ref=f9e244]: © 2026 «Մոնտե-Կառլոյի մեթոդը» նախագիծ | Բոլոր իրավունքները պաշտպանված են
+      - paragraph [ref=f9e246]: Կայքի ստեղծում՝ Խումարյան Գրիշա | Նախագծի ղեկավար՝ Մ. Սարդարյան

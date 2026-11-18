@@ -582,9 +582,9 @@ window.probabilityData = {
     "ru": "© 2026 Проект «Метод Монте-Карло» | Все права защищены"
   },
   "footer_credits": {
-    "hy": "Ստեղծվել է Կարեն Պողոսյանի կողմից | Նախագծավար ուսուցիչ՝ Մանուշակ Սարդարյան",
-    "en": "Created by Karen Poghosyan | Project Advisor Teacher: Manushak Sardaryan",
-    "ru": "Создано Карен Погосяном | Научный руководитель: Манушак Сардарян"
+    "hy": "Կայքի ստեղծում՝ Խումարյան Գրիշա | Նախագծի ղեկավար՝ Մ. Սարդարյան",
+    "en": "Website creation: Grisha Khumaryan | Project supervisor: M. Sardaryan",
+    "ru": "Создание сайта: Гриша Хумарян | Руководитель проекта: М. Сардарян"
   },
   "calc_group_basic": {
     "hy": "Հիմնական",
@@ -1365,6 +1365,11 @@ window.probabilityData = {
     "hy": "Ընտրեք գործիքը և անցեք հաշվարկի․ ինտեգրալներ, մակերեսներ, ծավալներ, շարժում և հավանականություն՝ բացատրված արդյունքներով։",
     "en": "Choose a tool to calculate integrals, areas, volumes, motion and probabilities, with explained results.",
     "ru": "Выберите инструмент: интегралы, площади, объёмы, движение и вероятности с пояснениями к результатам."
+  },
+  "nav_contributions": {
+    "hy": "Մասնակիցներ",
+    "en": "Contributors",
+    "ru": "Участники"
   }
 },
 
