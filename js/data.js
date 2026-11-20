@@ -1,6 +1,6 @@
 /*
  * DATA.JS — Knowledge Base
- * ProbSpace: Probability Theory and Calculus & Integrals Platform
+ * MathLab: Probability Theory and Calculus & Integrals Platform
  * Complete Trilingual Educational Platform with 2 Main Tracks
  */
 window.probabilityData = {

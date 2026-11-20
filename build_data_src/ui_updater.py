@@ -7,9 +7,9 @@ def get_updated_ui():
 
     # Project title & hero
     ui['hero_title'] = {
-        "hy": "ProbSpace — Հավանականություն և Ինտեգրալ",
-        "en": "ProbSpace — Probability & Calculus",
-        "ru": "ProbSpace — Вероятность и Интегралы"
+        "hy": "MathLab — Հավանականություն և Ինտեգրալ",
+        "en": "MathLab — Probability & Calculus",
+        "ru": "MathLab — Вероятность и Интегралы"
     }
     ui['hero_subtitle'] = {
         "hy": "ՀԱՎԱՆԱԿԱՆՈՒԹՅԱՆ ՏԵՍՈՒԹՅԱՆ ԵՎ ՄԱԹԵՄԱՏԻԿԱԿԱՆ ԱՆԱԼԻԶԻ ԻՆՏԵՐԱԿՏԻՎ ՀԱՐԹԱԿ",

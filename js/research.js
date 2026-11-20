@@ -429,7 +429,7 @@
         let blob;
         const save = (blob, ext) => {
             const url = URL.createObjectURL(blob), a = document.createElement('a');
-            a.href = url; a.download = `probspace-${mode}-seed-${o.seed}.${ext}`; a.click();
+            a.href = url; a.download = `mathlab-${mode}-seed-${o.seed}.${ext}`; a.click();
             setTimeout(() => URL.revokeObjectURL(url), 1000);
         };
         if (format === 'png') {
@@ -440,7 +440,7 @@
             canvas.width = Math.max(1200, ...canvases.map(c => c.width));
             canvas.height = 180 + canvases.reduce((n, c) => n + Math.round(c.height * canvas.width / c.width) + 80, 0);
             const ctx = canvas.getContext('2d'); ctx.fillStyle = '#100b20'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ffffff'; ctx.font = '16px sans-serif'; ctx.fillText(`ProbSpace · ${t(mode)} · seed=${o.seed}`, 18, 26);
+            ctx.fillStyle = '#ffffff'; ctx.font = '16px sans-serif'; ctx.fillText(`MathLab · ${t(mode)} · seed=${o.seed}`, 18, 26);
             const wrap = (text, y) => {
                 let line = '';
                 for (const word of text.split(' ')) {
@@ -464,7 +464,7 @@
             if (restoreGuide) render(mode);
             return;
         }
-        const rows = [['ProbSpace', mode], ...Object.entries(fields).map(([k, v]) => [k, v]), []];
+        const rows = [['MathLab', mode], ...Object.entries(fields).map(([k, v]) => [k, v]), []];
         if (mode === 'integral') {
             rows.push(['N', ...d.names.flatMap(name => [name + ' estimate', name + ' absolute error', name + ' SE', name + ' CI low', name + ' CI high'])]);
             d.rows.forEach(row => rows.push([row.n, ...row.results.flatMap((r, j) => [r.estimate, Math.abs(r.estimate - d.references[j]), r.se, ...(r.ci || ['', ''])])]));

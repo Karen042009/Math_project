@@ -1,6 +1,6 @@
 /* 
  * AI.JS
- * Problem Generator & Automated Tutor (ProbSpace)
+ * Problem Generator & Automated Tutor (MathLab)
  * Local generator with template verification & optional Gemini API integration.
  */
 
@@ -223,7 +223,7 @@ async function checkSolutionWithAI() {
             tierHint = "Attempt #3+. If wrong, provide the complete pedagogical solution with all steps and final answer.";
         }
 
-        const prompt = `You are a strict, pedagogical Mathematics Tutor on ProbSpace.
+        const prompt = `You are a strict, pedagogical Mathematics Tutor on MathLab.
 Analyze the student's solution:
 PROBLEM: ${currentGeneratedProblem.question[lang] || currentGeneratedProblem.question['hy'] || currentGeneratedProblem.question['en']}
 CORRECT KEY ANSWER: ${currentGeneratedProblem.answer}

@@ -1,6 +1,6 @@
 /* 
  * MAIN APPLICATION LOGIC
- * ProbSpace Platform: Complete, Trilingual, Connected Probability & Calculus System
+ * MathLab Platform: Complete, Trilingual, Connected Probability & Calculus System
  */
 
 const THEORY_ALIASES = {

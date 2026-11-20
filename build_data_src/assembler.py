@@ -89,7 +89,7 @@ def assemble():
         tail = f.read()
 
     output = []
-    output.append("/*\n * DATA.JS — Knowledge Base\n * ProbSpace: Probability Theory and Calculus & Integrals Platform\n * Complete Trilingual Educational Platform with 2 Main Tracks\n */\n")
+    output.append("/*\n * DATA.JS — Knowledge Base\n * MathLab: Probability Theory and Calculus & Integrals Platform\n * Complete Trilingual Educational Platform with 2 Main Tracks\n */\n")
     output.append("window.probabilityData = {\n")
     output.append("  /* ===================== UI STRINGS ===================== */\n")
     output.append("  ui: " + json.dumps(ui, ensure_ascii=False, indent=2) + ",\n\n")

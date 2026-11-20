@@ -1,4 +1,4 @@
-# Practice Problems for ProbSpace: Probability & Calculus Tracks
+# Practice Problems for MathLab: Probability & Calculus Tracks
 # Auto-generated with 42 verified trilingual practice problems
 
 def get_practice_problems():
