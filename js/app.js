@@ -107,6 +107,7 @@ function toggleTheme() {
 
 /* --- I18N & LANGUAGE --- */
 function setLanguage(lang) {
+    window.stopAIGuide?.();
     currentLang = lang;
     localStorage.setItem('probSpaceLang', lang);
     document.documentElement.lang = lang;
@@ -147,11 +148,13 @@ function setLanguage(lang) {
     if (typeof refreshLearningLanguage === 'function') refreshLearningLanguage();
     if (typeof refreshHistoryLanguage === 'function') refreshHistoryLanguage();
 
+    window.refreshAudioGuides?.();
     if (typeof typesetVisibleMath === 'function') typesetVisibleMath();
 }
 
 /* --- PAGE NAVIGATION --- */
 function showPage(pageId) {
+    window.stopAIGuide?.();
     document.body.classList.toggle('reading-theory', pageId === 'theory');
     document.querySelectorAll('.page-section').forEach(section => {
         section.style.display = 'none';

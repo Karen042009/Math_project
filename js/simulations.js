@@ -11,6 +11,7 @@
 let currentSim = 'integral';
 
 function showSimulation(simId, btnEl) {
+    window.stopAIGuide?.();
     currentSim = simId;
     document.querySelectorAll('.sim-tab-btn').forEach(b => b.classList.remove('active'));
     if (btnEl) btnEl.classList.add('active');

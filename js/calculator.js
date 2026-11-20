@@ -869,6 +869,7 @@ function solveFormulaWithSteps() {
    6. LAB MODE SWITCHER
    ---------------------------------------------------- */
 function switchLabMode(mode, btn) {
+    window.stopAIGuide?.();
     document.querySelectorAll('.lab-mode-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
     document.querySelectorAll('.lab-subpanel').forEach(p => {

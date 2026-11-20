@@ -1,0 +1,100 @@
+- generic [active] [ref=f1e1]:
+  - navigation [ref=f1e2]:
+    - generic [ref=f1e3]: MathLab
+    - generic [ref=f1e5]:
+      - text:      
+      - button "Toggle color theme" [ref=f1e6] [cursor=pointer]:
+        - generic [ref=f1e7]: 
+      - button "Open navigation" [ref=f1e8] [cursor=pointer]:
+        - generic [ref=f1e9]: 
+  - text:      
+  - generic [ref=f1e10]:
+    - generic [ref=f1e11]:
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]:
+          - paragraph [ref=f1e14]: ՄԱԹԵՄԱՏԻԿԱ՝ ՓՈՐՁԻ ՄԻՋՈՑՈՎ
+          - heading "Մոնտե-Կառլոյի մեթոդը․ Ինտեգրալների հաշվումը և հավանականության սիմուլյացիաները։" [level=1] [ref=f1e15]:
+            - generic [ref=f1e16]: Մոնտե-Կառլոյի մեթոդը․
+            - generic [ref=f1e17]: Ինտեգրալների հաշվումը և հավանականության սիմուլյացիաները։
+          - paragraph [ref=f1e18]: Պատահական կետերից՝ դեպի հաշվարկված օրինաչափություններ։ Ուսումնասիրեք ինտեգրալը, հաշվեք մակերեսն ու ծավալը և փորձարկեք հավանականությունը։
+          - generic [ref=f1e19]:
+            - button "Սկսել փորձը" [ref=f1e20] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f1e22]: ↗
+            - button "Ուսումնասիրել տեսությունը" [ref=f1e23] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f1e25]: →
+            - button "AI օգնական" [ref=f1e26] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f1e27]: 
+          - generic [ref=f1e29]:
+            - button "Հավանականություն" [ref=f1e30] [cursor=pointer]
+            - generic [aria-hidden] [ref=f1e33]: /
+            - button "Ինտեգրալ" [ref=f1e34] [cursor=pointer]
+        - figure "∫ 1 0 𝑥 2 𝑑 𝑥 = 1 3 Կորի տակ ընկած կետերի բաժնով մոտարկում ենք ինտեգրալը։ Սխեմատիկ պատկեր · ոչ ընթացիկ հաշվարկ" [ref=f1e37]:
+          - generic [ref=f1e38]:
+            - generic [ref=f1e39]: ՄՈՆՏԵ ԿԱՌԼՈՅԻ ԻՆՏԵԳՐՈՒՄ
+            - generic [ref=f1e40]: 01 / ∫
+          - 'img "Monte Carlo integration: random points under the curve y = x²" [ref=f1e41]':
+            - generic [ref=f1e146]:
+              - generic [ref=f1e147]: "0"
+              - generic [ref=f1e148]: "1"
+              - generic [ref=f1e149]: "1"
+              - generic [ref=f1e150]: x
+              - generic [ref=f1e151]: f(x) = x²
+          - generic [ref=f1e152]:
+            - generic [ref=f1e156]:
+              - generic [ref=f1e157]:
+                - generic [ref=f1e158]:
+                  - generic [ref=f1e159]: ∫
+                  - generic [ref=f1e161]:
+                    - generic [ref=f1e162]: "1"
+                    - generic [ref=f1e164]: "0"
+                - generic [ref=f1e166]:
+                  - generic [ref=f1e167]: 𝑥
+                  - generic [ref=f1e169]: "2"
+                - generic [ref=f1e172]:
+                  - generic [ref=f1e173]: 𝑑
+                  - generic [ref=f1e175]: 𝑥
+              - generic [ref=f1e177]: =
+              - generic [ref=f1e180]:
+                - generic [ref=f1e181]: "1"
+                - generic [ref=f1e184]: "3"
+            - paragraph [ref=f1e191]: Կորի տակ ընկած կետերի բաժնով մոտարկում ենք ինտեգրալը։
+            - text: Սխեմատիկ պատկեր · ոչ ընթացիկ հաշվարկ
+      - generic [ref=f1e192]:
+        - generic [ref=f1e193]:
+          - text: 01 — 04
+          - heading "Հասկացեք։ Հաշվեք։ Փորձարկեք։" [level=2] [ref=f1e194]
+        - paragraph [ref=f1e195]: Մի գաղափար՝ տեսությունից մինչև ձեր սեփական փորձը։
+      - generic [ref=f1e196]:
+        - button "01 Երկու ուղղություն, մեկ հիմք Հավանականություն և ինտեգրալ․ սահմանումներից մինչև Մոնտե Կառլոյի մեթոդը։" [ref=f1e197] [cursor=pointer]:
+          - generic [ref=f1e198]:
+            - generic [ref=f1e199]: "01"
+            - generic [aria-hidden] [ref=f1e200]: 
+          - heading "Երկու ուղղություն, մեկ հիմք" [level=3] [ref=f1e201]
+          - paragraph [ref=f1e202]: Հավանականություն և ինտեգրալ․ սահմանումներից մինչև Մոնտե Կառլոյի մեթոդը։
+          - generic [aria-hidden] [ref=f1e203]: ↗
+        - button "02 Խնդիրներ՝ քայլ առ քայլ Լուծեք երկու ուղղությունների խնդիրները՝ հուշումներով և բացատրված լուծումներով։" [ref=f1e204] [cursor=pointer]:
+          - generic [ref=f1e205]:
+            - generic [ref=f1e206]: "02"
+            - generic [aria-hidden] [ref=f1e207]: 
+          - heading "Խնդիրներ՝ քայլ առ քայլ" [level=3] [ref=f1e208]
+          - paragraph [ref=f1e209]: Լուծեք երկու ուղղությունների խնդիրները՝ հուշումներով և բացատրված լուծումներով։
+          - generic [aria-hidden] [ref=f1e210]: ↗
+        - button "03 Ձեր հաշվարկային գործիքները Ածանցյալ, ինտեգրալ, մակերես, ծավալ և շարժում՝ տեսանելի գրաֆիկներով։" [ref=f1e211] [cursor=pointer]:
+          - generic [ref=f1e212]:
+            - generic [ref=f1e213]: "03"
+            - generic [aria-hidden] [ref=f1e214]: 
+          - heading "Ձեր հաշվարկային գործիքները" [level=3] [ref=f1e215]
+          - paragraph [ref=f1e216]: Ածանցյալ, ինտեգրալ, մակերես, ծավալ և շարժում՝ տեսանելի գրաֆիկներով։
+          - generic [aria-hidden] [ref=f1e217]: ↗
+        - button "04 Պատահականությունը՝ գործողության մեջ Ինտեգրում պատահական ընտրանքով, մետաղադրամ, զառ և հավանականային փորձեր։" [ref=f1e218] [cursor=pointer]:
+          - generic [ref=f1e219]:
+            - generic [ref=f1e220]: "04"
+            - generic [aria-hidden] [ref=f1e221]: 
+          - heading "Պատահականությունը՝ գործողության մեջ" [level=3] [ref=f1e222]
+          - paragraph [ref=f1e223]: Ինտեգրում պատահական ընտրանքով, մետաղադրամ, զառ և հավանականային փորձեր։
+          - generic [aria-hidden] [ref=f1e224]: ↗
+    - text:                                                                                                                                                          
+  - contentinfo [ref=f1e225]:
+    - generic [ref=f1e226]:
+      - paragraph [ref=f1e228]: © 2026 «Մոնտե-Կառլոյի մեթոդը» նախագիծ | Բոլոր իրավունքները պաշտպանված են
+      - paragraph [ref=f1e230]: Կայքի ստեղծող և կոորդինատոր՝ Գրիշա Խումարյան | Նախագծի ղեկավար՝ Մ. Սարդարյան
